@@ -340,6 +340,37 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ===== SITE PHOTOS ===== */}
+      <section className="py-16 lg:py-20 bg-background">
+        <div className="container">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-8">
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">Our Work</span>
+            <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground">ผลงานติดตั้งจริง</h2>
+          </motion.div>
+          <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-hide">
+            {[
+              "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_921587477351636_bde97caf.jpeg",
+              "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_803461432358813_ea7aeaa1.jpeg",
+              "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_4197992190511860_34fd339e.jpeg",
+              "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_1425755759570180_43093913.jpeg",
+              "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_934911282677303_24e134a8.jpeg",
+              "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_931207172874507_436de73d.jpeg",
+              "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_1472436094271800_f72cd94a.jpeg",
+              "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_1308771534448072_f086825c.jpeg",
+            ].map((src, i) => (
+              <motion.img key={i} src={src} alt={`SIRINX project ${i + 1}`}
+                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i % 4}
+                className="w-48 h-36 lg:w-56 lg:h-40 object-cover rounded-xl border border-border-subtle flex-shrink-0 hover:scale-105 hover:border-border-accent transition-all" />
+            ))}
+          </div>
+          <div className="mt-6 text-center">
+            <Link href="/projects" className="inline-flex items-center gap-2 text-sm font-medium text-accent-primary hover:underline">
+              ดูผลงานทั้งหมด <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ===== FINAL CTA ===== */}
       <section className="py-20 lg:py-28 section-alt relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-accent-glow to-transparent" />

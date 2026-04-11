@@ -1,30 +1,109 @@
+/**
+ * SIRINX Contact Page — Lead Capture & Qualification
+ * Dual-theme: semantic CSS vars
+ * Features: URL param prefill from Solar Calculator, lead qualification, success state
+ */
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Clock, Send, ArrowRight } from "lucide-react";
-import { Link } from "wouter";
-import { useState } from "react";
+import { Link, useSearch } from "wouter";
+import {
+  ArrowRight, Phone, Mail, MapPin, Clock, Send, CheckCircle2,
+  Calculator, Shield, FileText, Users, Zap
+} from "lucide-react";
 import { toast } from "sonner";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.6 } }),
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.08, duration: 0.5 } }),
 };
 
-const contactInfo = [
-  { icon: Phone, label: "โทรศัพท์", value: "02-XXX-XXXX", sub: "จันทร์-ศุกร์ 9:00-18:00" },
-  { icon: Mail, label: "อีเมล", value: "info@sirinx.co.th", sub: "ตอบกลับภายใน 24 ชม." },
-  { icon: MapPin, label: "สำนักงาน", value: "กรุงเทพมหานคร", sub: "placeholder — ต้องใส่ที่อยู่จริง" },
-  { icon: Clock, label: "เวลาทำการ", value: "จันทร์-ศุกร์", sub: "9:00 - 18:00 น." },
+const contactChannels = [
+  { icon: Phone, title: "โทรศัพท์", value: "02-000-1234", sub: "จันทร์-ศุกร์ 09:00-18:00", action: "tel:+6620001234" },
+  { icon: Mail, title: "อีเมล", value: "info@sirinx.co.th", sub: "ตอบกลับภายใน 24 ชม.", action: "mailto:info@sirinx.co.th" },
+  { icon: MapPin, title: "สำนักงาน", value: "กรุงเทพมหานคร", sub: "นัดหมายล่วงหน้า", action: "#" },
+  { icon: Clock, title: "เวลาทำการ", value: "จันทร์-ศุกร์", sub: "09:00 - 18:00 น.", action: "#" },
+];
+
+const interestOptions = [
+  "Rooftop Solar", "Floating Solar", "Solar Carport", "BESS / ESS",
+  "AI Energy Management", "O&M Service", "Co-investment / PPA", "ปรึกษาทั่วไป",
+];
+
+const budgetRanges = [
+  "ยังไม่ได้กำหนด", "ต่ำกว่า 5 ล้านบาท", "5-15 ล้านบาท",
+  "15-50 ล้านบาท", "50-100 ล้านบาท", "มากกว่า 100 ล้านบาท",
+];
+
+const timelineOptions = [
+  "ภายใน 1 เดือน", "1-3 เดือน", "3-6 เดือน", "6-12 เดือน", "กำลังศึกษาข้อมูล",
 ];
 
 export default function Contact() {
+  const searchString = useSearch();
+  const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
-    name: "", company: "", email: "", phone: "", interest: "", message: "",
+    name: "", company: "", email: "", phone: "",
+    interest: "", budget: "", timeline: "",
+    monthlyBill: "", roofArea: "", message: "",
   });
+
+  // Prefill from Solar Calculator URL params
+  useEffect(() => {
+    const params = new URLSearchParams(searchString);
+    const system = params.get("system");
+    const type = params.get("type");
+    const bill = params.get("bill");
+    const bess = params.get("bess");
+    if (system || type || bill) {
+      const parts: string[] = [];
+      if (system) parts.push(`ขนาดระบบที่แนะนำ: ${system}`);
+      if (type) parts.push(`ประเภทธุรกิจ: ${type}`);
+      if (bill) parts.push(`ค่าไฟปัจจุบัน: ${Number(bill).toLocaleString()} บาท/เดือน`);
+      if (bess) parts.push(`ระบบ BESS: ${bess}`);
+      parts.push("\n(ข้อมูลจากเครื่องมือคำนวณ Solar Assessment)");
+      setFormData(prev => ({
+        ...prev,
+        interest: system?.includes("BESS") ? "BESS / ESS" : "Rooftop Solar",
+        monthlyBill: bill || "",
+        message: parts.join("\n"),
+      }));
+    }
+  }, [searchString]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("ส่งข้อมูลเรียบร้อยแล้ว ทีมงานจะติดต่อกลับภายใน 24 ชั่วโมง");
+    setSubmitted(true);
+    toast.success("ส่งข้อมูลเรียบร้อย ทีมงานจะติดต่อกลับภายใน 24 ชั่วโมง");
   };
+
+  const update = (field: string, value: string) => setFormData(prev => ({ ...prev, [field]: value }));
+
+  if (submitted) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-md mx-auto p-8">
+          <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-6">
+            <CheckCircle2 className="w-8 h-8 text-green-500" />
+          </div>
+          <h2 className="font-display text-2xl font-bold text-foreground mb-3">ขอบคุณสำหรับข้อมูล</h2>
+          <p className="text-text-secondary mb-6">
+            ทีมวิศวกรของ SIRINX จะตรวจสอบข้อมูลและติดต่อกลับภายใน 24 ชั่วโมง
+            หากต้องการความช่วยเหลือเร่งด่วน กรุณาโทร 02-000-1234
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link href="/" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 btn-accent rounded-lg text-sm font-display font-semibold">
+              กลับหน้าหลัก
+            </Link>
+            <Link href="/assessment" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 btn-accent-outline rounded-lg text-sm font-display font-semibold">
+              คำนวณระบบโซลาร์
+            </Link>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
+  const inputCls = "w-full px-4 py-2.5 rounded-lg border border-border-subtle bg-background text-foreground text-sm placeholder:text-text-muted focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary/30 transition-colors";
 
   return (
     <div>
@@ -34,102 +113,176 @@ export default function Contact() {
           <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0} className="max-w-2xl">
             <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">Contact Us</span>
             <h1 className="font-display text-4xl lg:text-5xl font-bold text-foreground mb-4">
-              พูดคุยกับ<span className="text-gradient-accent">ทีมวิศวกร</span>
+              เริ่มต้น<span className="text-gradient-accent">ลดค่าพลังงาน</span>วันนี้
             </h1>
-            <p className="text-lg text-text-secondary">
-              พร้อมช่วยวิเคราะห์ความต้องการและออกแบบโซลูชันพลังงานที่เหมาะกับธุรกิจของคุณ
+            <p className="text-lg text-text-secondary leading-relaxed">
+              นัดสำรวจหน้างานฟรี ไม่มีข้อผูกมัด ทีมวิศวกรพร้อมออกแบบระบบที่เหมาะสมกับธุรกิจของคุณ
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Contact Info + Form */}
+      {/* Contact Channels */}
+      <section className="pb-12 bg-background">
+        <div className="container">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {contactChannels.map((ch, i) => (
+              <motion.a key={ch.title} href={ch.action}
+                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}
+                className="group p-5 rounded-xl border border-border-subtle bg-surface-elevated hover:border-border-accent transition-all">
+                <ch.icon className="w-5 h-5 text-accent-primary mb-3" />
+                <div className="font-display font-semibold text-foreground text-sm group-hover:text-accent-primary transition-colors">{ch.value}</div>
+                <div className="text-xs text-text-muted mt-1">{ch.sub}</div>
+              </motion.a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Main Form Section */}
       <section className="py-16 lg:py-24 section-alt">
         <div className="container">
-          <div className="grid lg:grid-cols-5 gap-12">
-            {/* Left: Info */}
-            <div className="lg:col-span-2 space-y-6">
-              {contactInfo.map((info, i) => (
-                <motion.div key={info.label} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}
-                  className="flex items-start gap-4 p-4 rounded-xl border border-border-subtle bg-surface-elevated">
-                  <div className="w-10 h-10 rounded-lg bg-accent-glow flex items-center justify-center shrink-0">
-                    <info.icon className="w-5 h-5 text-accent-primary" />
-                  </div>
-                  <div>
-                    <div className="text-sm text-text-muted mb-0.5">{info.label}</div>
-                    <div className="font-medium text-foreground">{info.value}</div>
-                    <div className="text-xs text-text-muted">{info.sub}</div>
-                  </div>
-                </motion.div>
-              ))}
+          <div className="grid lg:grid-cols-[1fr_380px] gap-10">
+            {/* Form */}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
+              <div className="p-6 lg:p-8 rounded-2xl border border-border-subtle bg-surface-elevated">
+                <h2 className="font-display text-xl font-bold text-foreground mb-1">แบบฟอร์มขอใบเสนอราคา</h2>
+                <p className="text-sm text-text-muted mb-6">กรอกข้อมูลเบื้องต้น ทีมวิศวกรจะวิเคราะห์และติดต่อกลับภายใน 24 ชม.</p>
 
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={4}
-                className="p-5 rounded-xl glass-card">
-                <h3 className="font-display font-semibold text-foreground mb-2">ต้องการประเมินเบื้องต้น?</h3>
-                <p className="text-sm text-text-muted mb-3">ใช้เครื่องมือประเมินความคุ้มค่าของเราเพื่อดูผลลัพธ์เบื้องต้น</p>
-                <Link href="/assessment" className="inline-flex items-center gap-1 text-sm font-medium text-accent-primary hover:underline">
-                  ไปหน้าประเมิน <ArrowRight className="w-4 h-4" />
-                </Link>
-              </motion.div>
-            </div>
-
-            {/* Right: Form */}
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
-              className="lg:col-span-3">
-              <div className="p-6 lg:p-8 rounded-xl border border-border-subtle bg-surface-elevated">
-                <h2 className="font-display text-xl font-bold text-foreground mb-6">ส่งข้อมูลเพื่อรับคำปรึกษา</h2>
                 <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid sm:grid-cols-2 gap-5">
+                  <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">ชื่อ-นามสกุล *</label>
-                      <input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-4 py-3 rounded-lg border border-border-subtle bg-background text-foreground placeholder:text-text-muted focus:outline-none focus:border-accent-primary" placeholder="ชื่อของคุณ" />
+                      <input type="text" required value={formData.name} onChange={(e) => update("name", e.target.value)} className={inputCls} placeholder="ชื่อของคุณ" />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-1.5">บริษัท</label>
-                      <input type="text" value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                        className="w-full px-4 py-3 rounded-lg border border-border-subtle bg-background text-foreground placeholder:text-text-muted focus:outline-none focus:border-accent-primary" placeholder="ชื่อบริษัท" />
+                      <label className="block text-sm font-medium text-foreground mb-1.5">บริษัท / องค์กร</label>
+                      <input type="text" value={formData.company} onChange={(e) => update("company", e.target.value)} className={inputCls} placeholder="ชื่อบริษัท" />
                     </div>
                   </div>
-                  <div className="grid sm:grid-cols-2 gap-5">
+                  <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">อีเมล *</label>
-                      <input type="email" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-3 rounded-lg border border-border-subtle bg-background text-foreground placeholder:text-text-muted focus:outline-none focus:border-accent-primary" placeholder="email@company.com" />
+                      <input type="email" required value={formData.email} onChange={(e) => update("email", e.target.value)} className={inputCls} placeholder="email@company.com" />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-1.5">เบอร์โทร</label>
-                      <input type="tel" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full px-4 py-3 rounded-lg border border-border-subtle bg-background text-foreground placeholder:text-text-muted focus:outline-none focus:border-accent-primary" placeholder="0XX-XXX-XXXX" />
+                      <label className="block text-sm font-medium text-foreground mb-1.5">เบอร์โทรศัพท์ *</label>
+                      <input type="tel" required value={formData.phone} onChange={(e) => update("phone", e.target.value)} className={inputCls} placeholder="08X-XXX-XXXX" />
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-1.5">สนใจโซลูชัน</label>
-                    <select value={formData.interest} onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
-                      className="w-full px-4 py-3 rounded-lg border border-border-subtle bg-background text-foreground focus:outline-none focus:border-accent-primary">
-                      <option value="">เลือกโซลูชันที่สนใจ</option>
-                      <option value="rooftop">Rooftop Solar</option>
-                      <option value="floating">Floating Solar</option>
-                      <option value="carport">Solar Carport</option>
-                      <option value="bess">BESS / ESS</option>
-                      <option value="ai-energy">AI Energy Management</option>
-                      <option value="ai-om">Physical AI O&M</option>
-                      <option value="financing">Co-investment / Financing</option>
-                      <option value="other">อื่น ๆ</option>
+                    <label className="block text-sm font-medium text-foreground mb-1.5">โซลูชันที่สนใจ *</label>
+                    <select required value={formData.interest} onChange={(e) => update("interest", e.target.value)} className={inputCls}>
+                      <option value="">เลือกโซลูชัน</option>
+                      {interestOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
                     </select>
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-1.5">ข้อความ</label>
-                    <textarea rows={4} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full px-4 py-3 rounded-lg border border-border-subtle bg-background text-foreground placeholder:text-text-muted focus:outline-none focus:border-accent-primary resize-none" placeholder="รายละเอียดเพิ่มเติม เช่น ขนาดพื้นที่ ค่าไฟต่อเดือน" />
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-1.5">งบประมาณโดยประมาณ</label>
+                      <select value={formData.budget} onChange={(e) => update("budget", e.target.value)} className={inputCls}>
+                        <option value="">เลือกช่วงงบประมาณ</option>
+                        {budgetRanges.map((r) => <option key={r} value={r}>{r}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-1.5">ระยะเวลาที่ต้องการ</label>
+                      <select value={formData.timeline} onChange={(e) => update("timeline", e.target.value)} className={inputCls}>
+                        <option value="">เลือกระยะเวลา</option>
+                        {timelineOptions.map((t) => <option key={t} value={t}>{t}</option>)}
+                      </select>
+                    </div>
                   </div>
-                  <button type="submit" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 font-display font-semibold btn-accent rounded-lg">
-                    <Send className="w-4 h-4" /> ส่งข้อมูล
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-1.5">ค่าไฟฟ้าต่อเดือน (บาท)</label>
+                      <input type="text" value={formData.monthlyBill} onChange={(e) => update("monthlyBill", e.target.value)} className={inputCls} placeholder="เช่น 300,000" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-1.5">พื้นที่หลังคาโดยประมาณ (ตร.ม.)</label>
+                      <input type="text" value={formData.roofArea} onChange={(e) => update("roofArea", e.target.value)} className={inputCls} placeholder="เช่น 5,000" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-1.5">ข้อความเพิ่มเติม</label>
+                    <textarea rows={4} value={formData.message} onChange={(e) => update("message", e.target.value)}
+                      className={`${inputCls} resize-none`} placeholder="รายละเอียดเพิ่มเติมเกี่ยวกับโครงการ หรือคำถามที่ต้องการให้ทีมวิศวกรตอบ" />
+                  </div>
+                  <button type="submit" className="w-full flex items-center justify-center gap-2 px-6 py-3.5 btn-accent rounded-lg font-display font-semibold text-base">
+                    <Send className="w-4 h-4" /> ส่งข้อมูลขอใบเสนอราคา
                   </button>
-                  <p className="text-xs text-text-muted">ทีมงานจะติดต่อกลับภายใน 24 ชั่วโมงทำการ</p>
+                  <p className="text-xs text-text-muted text-center">ข้อมูลของคุณจะถูกเก็บเป็นความลับ ใช้เพื่อการติดต่อกลับเท่านั้น</p>
                 </form>
               </div>
             </motion.div>
+
+            {/* Sidebar */}
+            <div className="space-y-6">
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
+                className="p-6 rounded-xl border border-border-accent bg-accent-glow">
+                <Calculator className="w-6 h-6 text-accent-primary mb-3" />
+                <h3 className="font-display font-semibold text-foreground mb-2">ยังไม่แน่ใจขนาดระบบ?</h3>
+                <p className="text-sm text-text-secondary mb-4">ใช้เครื่องมือคำนวณขั้นสูงของ SIRINX เพื่อประเมินขนาดระบบ ผลตอบแทน และระยะเวลาคืนทุนเบื้องต้น</p>
+                <Link href="/assessment" className="inline-flex items-center gap-2 text-sm font-medium text-accent-primary hover:underline">
+                  คำนวณระบบโซลาร์ <ArrowRight className="w-4 h-4" />
+                </Link>
+              </motion.div>
+
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={2}
+                className="p-6 rounded-xl border border-border-subtle bg-surface-elevated">
+                <h3 className="font-display font-semibold text-foreground mb-4">ขั้นตอนหลังส่งแบบฟอร์ม</h3>
+                <div className="space-y-4">
+                  {[
+                    { step: "1", title: "ทีมวิศวกรตรวจสอบข้อมูล", time: "ภายใน 24 ชม." },
+                    { step: "2", title: "นัดสำรวจหน้างาน", time: "ภายใน 3-5 วัน" },
+                    { step: "3", title: "ออกแบบระบบ + ประเมิน ROI", time: "ภายใน 7 วัน" },
+                    { step: "4", title: "นำเสนอข้อเสนอ", time: "ภายใน 10 วัน" },
+                  ].map((s) => (
+                    <div key={s.step} className="flex items-start gap-3">
+                      <span className="w-6 h-6 rounded-full bg-accent-glow text-accent-primary text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{s.step}</span>
+                      <div>
+                        <div className="text-sm font-medium text-foreground">{s.title}</div>
+                        <div className="text-xs text-text-muted">{s.time}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={3}
+                className="p-6 rounded-xl border border-border-subtle bg-surface-elevated">
+                <h3 className="font-display font-semibold text-foreground mb-4">ทำไมเลือก SIRINX</h3>
+                <div className="space-y-3">
+                  {[
+                    { icon: Shield, text: "สำรวจหน้างานฟรี ไม่มีข้อผูกมัด" },
+                    { icon: FileText, text: "ใบเสนอราคาโปร่งใส ไม่มีค่าใช้จ่ายแอบแฝง" },
+                    { icon: Users, text: "ทีมวิศวกรมืออาชีพ ประสบการณ์ 150+ โครงการ" },
+                    { icon: Zap, text: "ดูแลระบบตลอดอายุ 25 ปี" },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <item.icon className="w-4 h-4 text-accent-primary shrink-0" />
+                      <span className="text-sm text-text-secondary">{item.text}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-16 lg:py-20 bg-background">
+        <div className="container text-center">
+          <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">ต้องการข้อมูลเพิ่มเติม?</h2>
+          <p className="text-text-secondary mb-6 max-w-lg mx-auto">ศึกษาข้อมูลเพิ่มเติมเกี่ยวกับโซลูชันและผลงานของเรา</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/solutions" className="inline-flex items-center justify-center gap-2 px-6 py-3 btn-accent-outline rounded-lg font-display font-semibold">
+              ดูโซลูชันทั้งหมด <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link href="/projects" className="inline-flex items-center justify-center gap-2 px-6 py-3 btn-accent-outline rounded-lg font-display font-semibold">
+              ดูผลงาน <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>
