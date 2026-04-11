@@ -7,14 +7,14 @@ const fadeUp = {
   visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.6 } }),
 };
 
-const HERO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-industries-bBuKhDYLTbHYwqCxiKqhbj.webp";
+const HERO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/sirinx-agrivoltaic-b6XSpaadLj5vpaTu52tenb.webp";
 
 const industries = [
   {
     id: "manufacturing", icon: Factory, title: "โรงงานอุตสาหกรรม",
     challenge: "ค่าไฟฟ้าคิดเป็น 15-30% ของต้นทุนการผลิต การแข่งขันด้านราคาทำให้ต้องลดต้นทุนทุกทาง",
     useCases: [
-      "Rooftop Solar บนหลังคาโรงงาน ลดค่าไฟช่วงกลางวัน 30-70%",
+      "Rooftop Solar บนหลังคาโรงงาน ลดค่าไฟช่วงกลางวัน 30-100% (รวม BESS)",
       "BESS สำหรับ peak shaving ลดค่า demand charge",
       "AI Energy Management ปรับการใช้พลังงานตามกำลังการผลิต",
       "Predictive O&M ลดเวลาหยุดเครื่องจักร",

@@ -20,7 +20,7 @@ const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBN
 const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/photo_2026-03-24_06-45-58_293d121c.jpg";
 
 const solutions = [
-  { icon: Sun, title: "Rooftop Solar", desc: "ลดค่าไฟ 30-70% ด้วยระบบโซลาร์บนหลังคาที่ออกแบบเฉพาะอาคาร", href: "/solutions#rooftop" },
+  { icon: Sun, title: "Rooftop Solar", desc: "ลดค่าไฟ 30-100% ด้วยระบบโซลาร์+แบตเตอรี่ (BESS) ที่ออกแบบเฉพาะอาคาร", href: "/solutions#rooftop" },
   { icon: Waves, title: "Floating Solar", desc: "ใช้พื้นที่ผิวน้ำให้เกิดประโยชน์สูงสุด เหมาะกับอ่างเก็บน้ำและบ่อน้ำอุตสาหกรรม", href: "/solutions#floating" },
   { icon: Car, title: "Solar Carport", desc: "เปลี่ยนที่จอดรถเป็นโรงไฟฟ้า รองรับ EV Charging ในอนาคต", href: "/solutions#carport" },
   { icon: Battery, title: "BESS / ESS", desc: "กักเก็บพลังงานเพื่อใช้ในช่วง peak หรือยามไฟดับ ลดค่า demand charge", href: "/solutions#bess" },
@@ -29,7 +29,7 @@ const solutions = [
 ];
 
 const outcomes = [
-  { value: "30-70%", label: "ลดค่าไฟฟ้า", icon: TrendingUp },
+  { value: "30-100%", label: "ลดค่าไฟฟ้า", icon: TrendingUp },
   { value: "3-5 ปี", label: "คืนทุนเฉลี่ย", icon: Clock },
   { value: "25+ ปี", label: "อายุการใช้งาน", icon: Shield },
   { value: "99.5%", label: "System Uptime", icon: BarChart3 },
@@ -46,7 +46,7 @@ const industries = [
 
 const proofItems = [
   { metric: "2", label: "Solar Farm Node", note: "เรือนแพ Royal Park & โฮลาเทลริมน่าน" },
-  { metric: "30-70%", label: "ลดค่าไฟฟ้า", note: "สำหรับธุรกิจโรงแรม" },
+  { metric: "30-100%", label: "ลดค่าไฟฟ้า", note: "Solar + BESS สำหรับธุรกิจโรงแรม" },
   { metric: "25+ ปี", label: "อายุการใช้งาน", note: "Tier-1 Solar Panel" },
   { metric: "24/7", label: "AI Monitoring", note: "ระบบตรวจสอบแบบ Real-time" },
 ];
@@ -343,33 +343,101 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== SITE PHOTOS ===== */}
+      {/* ===== REAL PROJECTS ===== */}
       <section className="py-16 lg:py-20 bg-background">
         <div className="container">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-8">
-            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">Our Work</span>
-            <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground">ผลงานติดตั้งจริง</h2>
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-10">
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">Our Projects</span>
+            <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground">โครงการติดตั้งจริง</h2>
+            <p className="text-text-secondary mt-2 max-w-2xl mx-auto">Solar Farm Node ที่ดำเนินการโดย SIRINX พร้อมระบบ BESS และ AI Energy Management</p>
+          </motion.div>
+          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            {/* Project 1: เรือนแพ Royal Park */}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
+              className="group relative rounded-2xl overflow-hidden border border-border-subtle hover:border-border-accent transition-all">
+              <div className="relative h-64 overflow-hidden">
+                <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/sirinx-hero-main-6LRbjuoZ8ie4rPGnAVhXnQ.webp"
+                  alt="Solar Farm Node 1 — เรือนแพ Royal Park พิษณุโลก"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <div className="absolute top-3 left-3 flex gap-2">
+                  <span className="px-2.5 py-1 text-xs font-medium bg-accent-primary text-text-inverse rounded-md">Node 1</span>
+                  <span className="px-2.5 py-1 text-xs font-medium bg-green-600 text-white rounded-md">ดำเนินการแล้ว</span>
+                </div>
+                <div className="absolute bottom-4 left-4 right-4">
+                  <h3 className="font-display text-lg font-bold text-white">โรงแรมเรือนแพ รอยัลปาร์ค</h3>
+                  <p className="text-sm text-white/80">พิษณุโลก — Solar Rooftop + BESS + AI EMS</p>
+                </div>
+              </div>
+              <div className="p-4 bg-surface-elevated">
+                <div className="grid grid-cols-3 gap-3 text-center">
+                  <div><div className="text-sm font-bold text-gradient-accent">Solar + BESS</div><div className="text-[10px] text-text-muted">ระบบครบวงจร</div></div>
+                  <div><div className="text-sm font-bold text-gradient-accent">30-100%</div><div className="text-[10px] text-text-muted">ลดค่าไฟฟ้า</div></div>
+                  <div><div className="text-sm font-bold text-gradient-accent">AI EMS</div><div className="text-[10px] text-text-muted">บริหารพลังงาน</div></div>
+                </div>
+              </div>
+            </motion.div>
+            {/* Project 2: โฮลาเทลริมน่าน */}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
+              className="group relative rounded-2xl overflow-hidden border border-border-subtle hover:border-border-accent transition-all">
+              <div className="relative h-64 overflow-hidden">
+                <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/sirinx-smart-energy-JXCSVMQTKJHxRxSagYajgy.webp"
+                  alt="Solar Farm Node 2 — โฮลาเทลริมน่าน"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <div className="absolute top-3 left-3 flex gap-2">
+                  <span className="px-2.5 py-1 text-xs font-medium bg-accent-primary text-text-inverse rounded-md">Node 2</span>
+                  <span className="px-2.5 py-1 text-xs font-medium bg-amber-500 text-white rounded-md">กำลังก่อสร้าง</span>
+                </div>
+                <div className="absolute bottom-4 left-4 right-4">
+                  <h3 className="font-display text-lg font-bold text-white">โรงแรมโฮลาเทลริมน่าน</h3>
+                  <p className="text-sm text-white/80">กำลังปรับปรุงใหม่ — Solar + BESS + Smart Hotel System</p>
+                </div>
+              </div>
+              <div className="p-4 bg-surface-elevated">
+                <div className="grid grid-cols-3 gap-3 text-center">
+                  <div><div className="text-sm font-bold text-gradient-accent">Smart Hotel</div><div className="text-[10px] text-text-muted">ระบบอัจฉริยะ</div></div>
+                  <div><div className="text-sm font-bold text-gradient-accent">Net Zero</div><div className="text-[10px] text-text-muted">เป้าหมาย</div></div>
+                  <div><div className="text-sm font-bold text-gradient-accent">2026</div><div className="text-[10px] text-text-muted">เปิดให้บริการ</div></div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+          <div className="mt-8 text-center">
+            <Link href="/projects" className="inline-flex items-center gap-2 text-sm font-medium text-accent-primary hover:underline">
+              ดูโครงการทั้งหมด <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== MARKETING MATERIALS CAROUSEL ===== */}
+      <section className="py-12 lg:py-16 section-alt">
+        <div className="container">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-6">
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-2 block">Resources</span>
+            <h2 className="font-display text-xl lg:text-2xl font-bold text-foreground">สื่อการตลาดและข้อมูลบริการ</h2>
           </motion.div>
           <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-hide">
             {[
-              "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_921587477351636_bde97caf.jpeg",
-              "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_803461432358813_ea7aeaa1.jpeg",
-              "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_4197992190511860_34fd339e.jpeg",
-              "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_1425755759570180_43093913.jpeg",
-              "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_934911282677303_24e134a8.jpeg",
-              "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_931207172874507_436de73d.jpeg",
-              "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_1472436094271800_f72cd94a.jpeg",
-              "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_1308771534448072_f086825c.jpeg",
-            ].map((src, i) => (
-              <motion.img key={i} src={src} alt={`SIRINX project ${i + 1}`}
-                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i % 4}
-                className="w-48 h-36 lg:w-56 lg:h-40 object-cover rounded-xl border border-border-subtle flex-shrink-0 hover:scale-105 hover:border-border-accent transition-all" />
+              { src: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_921587477351636_bde97caf.jpeg", label: "คู่มือลงทุน ROI" },
+              { src: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_803461432358813_ea7aeaa1.jpeg", label: "Co-Investment 50:50" },
+              { src: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_4197992190511860_34fd339e.jpeg", label: "Smart Farming" },
+              { src: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_1355000406660682_193503d7.jpeg", label: "50:50 Investment" },
+              { src: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_806743748663527_0517d115.jpeg", label: "150% Tax Shield" },
+              { src: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_934911282677303_24e134a8.jpeg", label: "บริการของเรา (TH)" },
+              { src: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_931207172874507_436de73d.jpeg", label: "Our Services (EN)" },
+              { src: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_1611595770045379_f7011547.jpeg", label: "Master Plan 2026" },
+            ].map((item, i) => (
+              <motion.div key={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i % 4}
+                className="flex-shrink-0 w-44 lg:w-52 group">
+                <div className="relative rounded-xl overflow-hidden border border-border-subtle hover:border-border-accent transition-all">
+                  <img src={item.src} alt={item.label}
+                    className="w-full h-56 lg:h-64 object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <p className="text-xs text-text-muted text-center mt-2 font-medium">{item.label}</p>
+              </motion.div>
             ))}
-          </div>
-          <div className="mt-6 text-center">
-            <Link href="/projects" className="inline-flex items-center gap-2 text-sm font-medium text-accent-primary hover:underline">
-              ดูผลงานทั้งหมด <ArrowRight className="w-4 h-4" />
-            </Link>
           </div>
         </div>
       </section>

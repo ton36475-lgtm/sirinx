@@ -28,6 +28,12 @@ SIRINX is a Thai clean-energy and smart-infrastructure brand founded by **Pitoon
 ### Core Services
 Rooftop Solar, Floating Solar, Solar Farm / Utility Scale, Solar Carport, BESS / ESS, AI Energy Management, Physical AI O&M, Co-investment & Financing.
 
+### Key Business Metrics
+- **ลดค่าไฟฟ้า: 30-100%** (Solar + BESS แบตเตอรี่ ทำให้ลดได้สูงสุดถึง 100%)
+- คืนทุนเฉลี่ย: 3-5 ปี
+- อายุระบบ: 25+ ปี
+- ลด CO₂: 40+ ตัน/MW/ปี
+
 ### Target Industries
 Manufacturing, Agriculture / Smart Farming, Hospitality, Education, Commercial Buildings, Government / Public Sector.
 
@@ -36,6 +42,40 @@ Manufacturing, Agriculture / Smart Farming, Hospitality, Education, Commercial B
 2. **โรงแรมโฮลาเทลริมน่าน** — Solar Farm Node 2, under construction 2025, opening soon
 
 Both properties are owned by Pitoon Yingyosruangrong.
+
+### Target Architecture (Executive Summary)
+| Layer | Technology | Purpose |
+|-------|-----------|----------|
+| Frontend | Next.js (App Router) | SEO-friendly, responsive |
+| Admin | Payload CMS | Headless CMS, Draft/Publish, RBAC |
+| Data | Supabase | Postgres DB, Auth, Storage, Edge Functions |
+| Automation | n8n (self-hosted) | Form→CRM→Alerts workflow |
+| Testing | Playwright | Cross-browser automated tests |
+| Agent | Codex (GPT-5.3) + OMX + Manus | AI-powered development & maintenance |
+
+### Data Model Collections
+`pages`, `services`, `industries`, `projects`, `strategy_assets`, `media`, `executive`, `certificates`, `leads`, `qa_reports`, `daily_ops_logs`
+
+### Sprint Roadmap (6 Sprints, ~17 weeks)
+1. Foundation (3w): AGENTS.md, Repo, Payload+Supabase, Sitemap
+2. Content & Backend (3w): CMS collections, content, Manus skills
+3. Automation & SEO (3w): n8n flows, SEO, blog articles
+4. QA & Polishing (3w): Playwright tests, UI/UX, KPI dashboard
+5. Pre-Launch Review (3w): Checklist, dry-run publish
+6. Go-Live & Handover (2w): Domain, SSL, final QA, training
+
+### KPIs
+- **Lead Metrics**: qualified leads/month, conversion rate
+- **Sales Pipeline**: proposals, deals, velocity
+- **Website**: traffic, bounce rate, session duration
+- **Content**: articles published, SEO rankings
+- **Quality**: % tests passed, review issues, PDPA incidents
+- **Trust**: certificates, testimonials count
+
+### Risk Matrix
+- **Risk A (REVIEW REQUIRED)**: financial claims, tax, ROI, BOI/DBD, PDPA
+- **Risk B (VERIFY)**: project images, hero text, form logic
+- **Risk C (COMMUNICATE)**: SEO, internal links, metadata, CTA colors
 
 ---
 
@@ -109,8 +149,9 @@ Neo-Industrial Futurism meets Swiss Grid deconstruction. Dark-first, diagonal en
 6. Industries Overview (6 industry cards)
 7. Strategic Visual Highlights (carousel of infographic/strategy content)
 8. Trust/Proof Section (metrics + real testimonial from hotel projects)
-9. Site Photos Gallery (horizontal scroll of 22 real installation photos)
-10. Final CTA (ขอใบเสนอราคา / นัดสำรวจหน้างาน)
+9. Real Projects Gallery (2 project cards: เรือนแพ Royal Park + โฮลาเทลริมน่าน)
+10. Marketing Materials Carousel (horizontal scroll of infographic/marketing images)
+11. Final CTA (ขอใบเสนอราคา / นัดสำรวจหน้างาน)
 
 ### [2] ABOUT — 6 sections
 1. Hero (brand positioning with AI background)
@@ -169,8 +210,11 @@ Neo-Industrial Futurism meets Swiss Grid deconstruction. Dark-first, diagonal en
 - **Floating Solar**: `https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/sirinx-floating-solar-PQeFK4AUuu9pnf4wYYRCys.webp`
 - **Hero Investment**: `https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-investment-fRtcNVseiLRqovGxudgo83.webp`
 
-### Real Installation Photos (22 images)
-URLs 1-22 from CDN — see `cdn-urls.md` for full list.
+### Marketing Material Images (22 images)
+**NOTE**: All 22 uploaded images are INFOGRAPHIC/MARKETING materials, NOT real installation photos.
+They should be used in the "สื่อการตลาดและข้อมูลบริการ" section, NOT in "โครงการติดตั้งจริง".
+For real project sections, use AI-generated hero images or Unsplash stock photos.
+See `cdn-urls.md` for full URL list.
 
 ### Digital Marketing Toolkit (7 Prompt Template Images)
 1. **Digital Product Idea Generator**: `https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/FB_IMG_1775885863875_30475f7b.jpg`
@@ -354,6 +398,24 @@ SIRINX Full Automation Stack
 | Coolify | Self-hosting platform | github.com/coollabsio/coolify |
 | Dify | LLM app development | github.com/langgenius/dify |
 | Flowise | LLM workflow builder | github.com/FlowiseAI/Flowise |
+| OpenClaw | Free AI chatbot platform (self-hosted) | github.com/open-claw |
+| Antigravity | Free VPS hosting for AI apps | antigravity.dev |
+
+### AI Agent & Knowledge Management
+| Tool | Purpose | Reference |
+|------|---------|----------|
+| Claude Code | AI-powered coding assistant | anthropic.com/claude |
+| Obsidian + Claude | Second Brain knowledge management | obsidian.md |
+| RAG (n8n + OpenClaw) | Document-based AI chat | BoomBigNose tutorials |
+| MCP (Model Context Protocol) | Tool integration for AI agents | anthropic.com/mcp |
+| Paperclip + Claude | Automated AI agent company builder | BoomBigNose tutorial |
+
+### LINE & Social Media Automation
+| Tool | Purpose | Reference |
+|------|---------|----------|
+| LINE Official Account + OpenClaw | AI chatbot for Thai customers | BoomBigNose LINE tutorials |
+| n8n + Shopee/TikTok | Auto cart placement for e-commerce | BoomBigNose automation |
+| n8n + YouTube | Automated channel growth | BoomBigNose YouTube automation |
 
 ---
 
@@ -440,4 +502,34 @@ Report findings and fixes made. Do not ask for clarification — make profession
 
 ---
 
-*Last updated: 2026-04-12 | Version: 2.0 | Author: SIRINX Engineering Copilot*
+*Last updated: 2026-04-12 | Version: 4.0 | Author: SIRINX Engineering Copilot*
+*Incorporates: Executive Summary PDF, Deep Research (Top 100 Thai+Global Solar), SWOT Analysis, Digital Marketing Toolkit, BESS 30-100% update, BoomBigNose YouTube insights (n8n, OpenClaw, Claude Code, RAG, MCP, LINE integration), Photo Classification (22 marketing materials separated from real projects)*
+
+---
+
+## 16. YouTube Research Insights (BoomBigNose Channel)
+
+### Channel: @BoomBigNose — Think, Make, Automate (174K subscribers)
+
+### Key Automation Patterns for SIRINX
+
+1. **n8n as Central Hub** — Use n8n for all workflow automation: lead routing, content scheduling, SEO monitoring, social media posting. Self-hosted for data sovereignty.
+
+2. **OpenClaw + RAG** — Build AI chatbot that reads SIRINX documents (proposals, specs, FAQs) and answers customer questions via LINE/Telegram. Free self-hosted solution.
+
+3. **Claude Code for Development** — Use Claude Code as AI pair programmer for rapid feature development, bug fixes, and code reviews. Integrates with MCP for tool access.
+
+4. **LINE Integration Priority** — Thai market requires LINE Official Account integration. Use OpenClaw + n8n to create automated AI responses on LINE.
+
+5. **Obsidian + Claude Second Brain** — Knowledge management system for company documentation, meeting notes, project specs. Syncs with AI for instant retrieval.
+
+6. **Fullstack Vibe Coding** — Rapid development approach: design → implement → test → iterate. Focus on shipping working features fast.
+
+7. **Content Automation Pipeline** — n8n + AI for automated blog writing, social media content, YouTube descriptions. Reduces marketing overhead.
+
+### Recommended Implementation Order
+1. LINE OA + OpenClaw chatbot (immediate customer value)
+2. n8n workflow engine (lead automation)
+3. Obsidian knowledge base (internal efficiency)
+4. Claude Code integration (development velocity)
+5. Content automation pipeline (marketing scale)
