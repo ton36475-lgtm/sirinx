@@ -17,6 +17,7 @@ const fadeUp = {
 };
 
 const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-main-bCzCTCeaup46mVvtEbpjnr.webp";
+const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/photo_2026-03-24_06-45-58_293d121c.jpg";
 
 const solutions = [
   { icon: Sun, title: "Rooftop Solar", desc: "ลดค่าไฟ 30-70% ด้วยระบบโซลาร์บนหลังคาที่ออกแบบเฉพาะอาคาร", href: "/solutions#rooftop" },
@@ -44,10 +45,10 @@ const industries = [
 ];
 
 const proofItems = [
-  { metric: "150+", label: "โครงการที่ติดตั้ง", note: "ทั่วประเทศไทย" },
-  { metric: "50 MW+", label: "กำลังผลิตรวม", note: "Rooftop, Floating, Carport" },
-  { metric: "200+", label: "ลูกค้าองค์กร", note: "ที่ไว้วางใจ SIRINX" },
-  { metric: "98%", label: "ความพึงพอใจ", note: "จากแบบสำรวจลูกค้า" },
+  { metric: "2", label: "Solar Farm Node", note: "เรือนแพ Royal Park & โฮลาเทลริมน่าน" },
+  { metric: "30-70%", label: "ลดค่าไฟฟ้า", note: "สำหรับธุรกิจโรงแรม" },
+  { metric: "25+ ปี", label: "อายุการใช้งาน", note: "Tier-1 Solar Panel" },
+  { metric: "24/7", label: "AI Monitoring", note: "ระบบตรวจสอบแบบ Real-time" },
 ];
 
 const processSteps = [
@@ -292,14 +293,16 @@ export default function Home() {
             variants={fadeUp} custom={0}
             className="max-w-3xl mx-auto glass-card rounded-2xl p-8 lg:p-10 text-center"
           >
+            <div className="flex justify-center mb-6">
+              <img src={LOGO_URL} alt="SIRINX" className="w-16 h-16 rounded-full ring-2 ring-brand/30" />
+            </div>
             <p className="text-lg lg:text-xl text-text-secondary italic leading-relaxed mb-6">
-              "SIRINX ช่วยให้โรงงานของเราลดค่าไฟได้กว่า 40% ภายในปีแรก ระบบ monitoring ทำให้เราเห็นข้อมูลการใช้พลังงานแบบ real-time ซึ่งช่วยในการวางแผนการผลิตได้ดีขึ้นมาก"
+              "เราเชื่อว่าพลังงานสะอาดไม่ใช่แค่เทรนด์ แต่เป็นโครงสร้างพื้นฐานของอนาคต SIRINX ผสาน Solar Infrastructure เข้ากับ AI และ Digital Strategy เพื่อสร้างมูลค่าที่ยั่งยืนให้ธุรกิจไทย"
             </p>
             <div>
-              <div className="font-display font-semibold text-foreground">คุณสมชาย วิศวกรรม</div>
-              <div className="text-sm text-text-muted">ผู้จัดการโรงงาน — บริษัท ตัวอย่าง จำกัด</div>
+              <div className="font-display font-semibold text-foreground">Pitoon Yingyosruangrong</div>
+              <div className="text-sm text-text-muted">CEO & Founder — SIRINX Co., Ltd.</div>
             </div>
-            <div className="mt-4 text-xs text-text-muted">* placeholder — ต้องแทนที่ด้วยข้อมูลจริง</div>
           </motion.div>
         </div>
       </section>

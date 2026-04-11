@@ -23,3 +23,24 @@
 20. https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_1472436094271800_f72cd94a.jpeg
 21. https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_1308771534448072_f086825c.jpeg
 22. https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/received_965021249379636_0a8114d3.jpeg
+
+## AI Generated Images
+- Hero Main: https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/sirinx-hero-main-6LRbjuoZ8ie4rPGnAVhXnQ.webp
+- Hero About: https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/sirinx-hero-about-MVAWxMzyFVSiDPoJwefDFJ.webp
+- Agrivoltaic: https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/sirinx-agrivoltaic-b6XSpaadLj5vpaTu52tenb.webp
+- Smart Energy: https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/sirinx-smart-energy-JXCSVMQTKJHxRxSagYajgy.webp
+- Floating Solar: https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/sirinx-floating-solar-PQeFK4AUuu9pnf4wYYRCys.webp
+- Hero Investment: https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-investment-fRtcNVseiLRqovGxudgo83.webp
+
+## Prompt Template Images (7)
+1. Digital Product Idea Generator: https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/FB_IMG_1775885863875_30475f7b.jpg
+2. Product Outline Builder: https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/FB_IMG_1775885869355_b57fba4c.jpg
+3. Instagram Bio Converter: https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/FB_IMG_1775885874696_f25f52ab.jpg
+4. Carousel Content Machine: https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/FB_IMG_1775885880725_0a14128b.jpg
+5. Sales Caption Writer: https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/FB_IMG_1775885884784_d66afe94.jpg
+6. Story Selling Script: https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/FB_IMG_1775885889652_bae78f66.jpg
+7. DM Automation Sequence: https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/FB_IMG_1775885893958_021d4da7.jpg
+
+## Brand Assets
+- SIRINX Logo: https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/photo_2026-03-24_06-45-58_293d121c.jpg
+- Business Card (Pitoon): https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/photo_2026-03-24_06-46-04_42f6fb9a.jpg

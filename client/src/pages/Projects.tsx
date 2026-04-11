@@ -17,14 +17,25 @@ const CDN = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYB
 
 const projects = [
   {
-    title: "โรงงานผลิตชิ้นส่วนยานยนต์",
-    location: "ชลบุรี",
+    title: "Solar Farm Node 1 — โรงแรมเรือนแพ รอยัลปาร์ค",
+    location: "พิษณุโลก",
     type: "Rooftop Solar",
-    capacity: "1.2 MW",
-    saving: "ลดค่าไฟ 45%",
+    capacity: "Solar Farm",
+    saving: "ลดค่าพลังงาน 30-50%",
     year: "2024",
-    desc: "ติดตั้ง Rooftop Solar บนหลังคาโรงงาน 3 อาคาร พร้อมระบบ AI Monitoring ช่วยลดค่าไฟฟ้าช่วงกลางวันได้อย่างมีนัยสำคัญ",
+    desc: "Solar Farm สำหรับโรงแรมเรือนแพ รอยัลปาร์ค พิษณุโลก ติดตั้งและเปิดใช้งานแล้ว ลดค่าพลังงานให้โรงแรมอย่างมีประสิทธิภาพ เจ้าของ: คุณ Pitoon Yingyosruangrong",
     image: `${CDN}/received_921587477351636_bde97caf.jpeg`,
+    tag: "rooftop",
+  },
+  {
+    title: "Solar Farm Node 2 — โรงแรมโฮลาเทลริมน่าน",
+    location: "น่าน",
+    type: "Rooftop Solar",
+    capacity: "Solar Farm",
+    saving: "กำลังก่อสร้าง",
+    year: "2025",
+    desc: "Solar Farm Node 2 ที่โรงแรมโฮลาเทลริมน่าน กำลังดำเนินการก่อสร้าง พร้อมปรับปรุงโรงแรมใหม่และเปิดให้บริการเร็วๆ นี้ เจ้าของ: คุณ Pitoon Yingyosruangrong",
+    image: `${CDN}/received_803461432358813_ea7aeaa1.jpeg`,
     tag: "rooftop",
   },
   {
@@ -35,7 +46,7 @@ const projects = [
     saving: "ลดการระเหยน้ำ 35%",
     year: "2024",
     desc: "ระบบ Floating Solar บนอ่างเก็บน้ำ ผลิตไฟฟ้าสำหรับระบบสูบน้ำและ Cold Storage พร้อมลดการระเหยของน้ำ",
-    image: `${CDN}/received_803461432358813_ea7aeaa1.jpeg`,
+    image: `${CDN}/received_4197992190511860_34fd339e.jpeg`,
     tag: "floating",
   },
   {
@@ -168,10 +179,10 @@ export default function Projects() {
         <div className="container">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { value: "150+", label: "โครงการ" },
-              { value: "50 MW+", label: "กำลังผลิตรวม" },
-              { value: "6", label: "ประเภทโซลูชัน" },
-              { value: "30+", label: "จังหวัดทั่วไทย" },
+              { value: "2", label: "Solar Farm Node" },
+              { value: "6+", label: "ประเภทโซลูชัน" },
+              { value: "24/7", label: "AI Monitoring" },
+              { value: "25+ ปี", label: "อายุการใช้งาน" },
             ].map((stat, i) => (
               <motion.div key={stat.label} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i} className="text-center">
                 <div className="font-display text-2xl lg:text-3xl font-bold text-gradient-accent">{stat.value}</div>
@@ -235,7 +246,7 @@ export default function Projects() {
               ))}
             </AnimatePresence>
           </div>
-          <p className="mt-8 text-xs text-text-muted text-center">* ข้อมูลโครงการเป็นตัวอย่าง ต้องแทนที่ด้วยข้อมูลจริง</p>
+
         </div>
       </section>
 

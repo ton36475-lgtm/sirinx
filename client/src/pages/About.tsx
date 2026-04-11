@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowRight, Target, Eye, Cpu, Users, ShieldCheck } from "lucide-react";
+import { ArrowRight, Target, Eye, Cpu, Users, ShieldCheck, Phone, Mail, MapPin } from "lucide-react";
+
+const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/photo_2026-03-24_06-45-58_293d121c.jpg";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -17,12 +19,11 @@ const values = [
 ];
 
 const milestones = [
-  { year: "2020", event: "ก่อตั้ง SIRINX ด้วยวิสัยทัศน์ Smart Energy Infrastructure" },
-  { year: "2021", event: "ติดตั้งโครงการ Rooftop Solar แห่งแรก ขนาด 1 MW" },
-  { year: "2022", event: "ขยายสู่ Floating Solar และ BESS เปิดตัว AI Monitoring" },
-  { year: "2023", event: "ครบ 100 โครงการ กำลังผลิตรวม 30 MW" },
-  { year: "2024", event: "เปิดตัว AI Energy Management Platform" },
-  { year: "2025", event: "มุ่งสู่ Solar Digital Agentic Company" },
+  { year: "2023", event: "ก่อตั้ง SIRINX โดยคุณ Pitoon Yingyosruangrong ด้วยวิสัยทัศน์ Solar Digital Agentic Company" },
+  { year: "2024", event: "Solar Farm Node 1 — โรงแรมเรือนแพ รอยัลปาร์ค พิษณุโลก ติดตั้งและเปิดใช้งาน" },
+  { year: "2025", event: "Solar Farm Node 2 — โรงแรมโฮลาเทลริมน่าน เริ่มก่อสร้าง พร้อมปรับปรุงโรงแรมใหม่" },
+  { year: "2025", event: "เปิดตัว AI Energy Management Platform และ Digital Strategy Toolkit" },
+  { year: "2026", event: "ขยายสู่ Full Automation Corporation System ระดับ World-Wide Enterprise" },
 ];
 
 export default function About() {
@@ -139,22 +140,69 @@ export default function About() {
               ))}
             </div>
           </div>
-          <p className="mt-6 text-xs text-text-muted text-center">* placeholder — ต้องแทนที่ด้วยข้อมูลจริง</p>
+
+        </div>
+      </section>
+
+      {/* CEO Section */}
+      <section className="py-20 lg:py-28 bg-background">
+        <div className="container">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
+              className="flex flex-col items-center text-center lg:text-left lg:items-start">
+              <img src={LOGO_URL} alt="Pitoon Yingyosruangrong" className="w-32 h-32 rounded-full ring-4 ring-brand/30 shadow-2xl mb-6 object-cover" />
+              <h2 className="font-display text-3xl font-bold text-foreground mb-2">Pitoon Yingyosruangrong</h2>
+              <p className="text-accent-primary font-medium mb-4">CEO & Founder — SIRINX Co., Ltd.</p>
+              <p className="text-text-secondary leading-relaxed mb-6">
+                ผู้ก่อตั้งและเจ้าของ SIRINX ผู้มีวิสัยทัศน์ในการปฏิวัติพลังงานอัจฉริยะเพื่ออนาคตที่ยั่งยืน เป็นเจ้าของโรงแรมเรือนแพ รอยัลปาร์ค พิษณุโลก และโรงแรมโฮลาเทลริมน่าน ที่กำลังปรับปรุงใหม่ โดยมี Solar Farm 2 Node ที่ดำเนินการอยู่
+              </p>
+              <div className="space-y-2 text-sm text-text-muted">
+                <a href="tel:+66819723969" className="flex items-center gap-2 hover:text-accent-primary transition-colors">
+                  <Phone className="w-4 h-4" /> +66 81 972 3969
+                </a>
+                <a href="mailto:pitoon.sirinx@gmail.com" className="flex items-center gap-2 hover:text-accent-primary transition-colors">
+                  <Mail className="w-4 h-4" /> pitoon.sirinx@gmail.com
+                </a>
+                <div className="flex items-start gap-2">
+                  <MapPin className="w-4 h-4 mt-0.5" />
+                  <span>600/99 Midtrapab Rd., Mueang Phitsanulok 65000</span>
+                </div>
+              </div>
+            </motion.div>
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
+              className="space-y-6">
+              <div className="p-6 rounded-xl border border-border-subtle bg-surface-elevated">
+                <h3 className="font-display font-semibold text-foreground mb-2">Solar Farm Node 1</h3>
+                <p className="text-accent-primary text-sm font-medium mb-1">โรงแรมเรือนแพ รอยัลปาร์ค พิษณุโลก</p>
+                <p className="text-sm text-text-muted">ติดตั้งและเปิดใช้งานแล้ว — ลดค่าพลังงานให้โรงแรมอย่างมีประสิทธิภาพ</p>
+              </div>
+              <div className="p-6 rounded-xl border border-border-accent bg-accent-glow">
+                <h3 className="font-display font-semibold text-foreground mb-2">Solar Farm Node 2</h3>
+                <p className="text-accent-primary text-sm font-medium mb-1">โรงแรมโฮลาเทลริมน่าน</p>
+                <p className="text-sm text-text-muted">กำลังดำเนินการก่อสร้าง พร้อมปรับปรุงโรงแรมใหม่และเปิดให้บริการเร็วๆ นี้</p>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-20 lg:py-28 bg-background relative">
+      <section className="py-20 lg:py-28 section-alt relative">
         <div className="absolute inset-0 bg-gradient-to-br from-accent-glow to-transparent" />
         <div className="container relative text-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
             <h2 className="font-display text-3xl lg:text-4xl font-bold text-foreground mb-4">พร้อมเป็นพันธมิตรด้านพลังงาน?</h2>
             <p className="text-text-secondary mb-8 max-w-lg mx-auto">
-              พูดคุยกับทีมวิศวกรของเราเพื่อหาโซลูชันที่เหมาะกับธุรกิจของคุณ
+              พูดคุยกับคุณ Pitoon และทีมวิศวกรของเราเพื่อหาโซลูชันที่เหมาะกับธุรกิจของคุณ
             </p>
-            <Link href="/contact" className="inline-flex items-center gap-2 px-8 py-4 font-display font-semibold btn-accent rounded-lg">
-              ติดต่อเรา <ArrowRight className="w-5 h-5" />
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/contact" className="inline-flex items-center gap-2 px-8 py-4 font-display font-semibold btn-accent rounded-lg">
+                ติดต่อเรา <ArrowRight className="w-5 h-5" />
+              </Link>
+              <a href="tel:+66819723969" className="inline-flex items-center gap-2 px-8 py-4 font-display font-semibold btn-accent-outline rounded-lg">
+                <Phone className="w-5 h-5" /> โทรหาเราเลย
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>

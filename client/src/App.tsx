@@ -16,6 +16,7 @@ import BlogPost from "./pages/BlogPost";
 import Contact from "./pages/Contact";
 import SolarAssessment from "./pages/SolarAssessment";
 import Partner from "./pages/Partner";
+import Strategy from "./pages/Strategy";
 
 function Router() {
   return (
@@ -27,6 +28,7 @@ function Router() {
         <Route path="/industries" component={Industries} />
         <Route path="/investment" component={InvestmentTaxHub} />
         <Route path="/projects" component={Projects} />
+        <Route path="/strategy" component={Strategy} />
         <Route path="/blog" component={Blog} />
         <Route path="/blog/:slug" component={BlogPost} />
         <Route path="/contact" component={Contact} />

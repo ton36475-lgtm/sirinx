@@ -1,8 +1,18 @@
+/*
+ * Layout — SIRINX Solar Digital Agentic Company
+ * Real brand data: Logo, Contact, Address, DBD Registered badge
+ * CEO: Pitoon Yingyosruangrong
+ */
 import { ReactNode, useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, Zap, Phone, Mail, Moon, Sun } from "lucide-react";
+import { Menu, X, ChevronDown, Phone, Mail, Moon, Sun, ArrowUpRight, Linkedin, Facebook, MapPin, Globe } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
+
+const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/photo_2026-03-24_06-45-58_293d121c.jpg";
+const DBD_REGISTERED_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/DLpAL6PTE5qU_2bde4df9.png";
+const THAILAND_TRUST_MARK_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/yOSTZisxsQLA_fba48286.jpg";
+const DBD_VERIFIED_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/pxcfay2CDun0_9a6a41ea.jpg";
 
 const navLinks = [
   { href: "/", label: "หน้าหลัก" },
@@ -23,6 +33,7 @@ const navLinks = [
   { href: "/industries", label: "อุตสาหกรรม" },
   { href: "/investment", label: "การลงทุน" },
   { href: "/projects", label: "ผลงาน" },
+  { href: "/strategy", label: "กลยุทธ์" },
   { href: "/blog", label: "บทความ" },
 ];
 
@@ -53,18 +64,25 @@ function Navbar() {
       }`}
     >
       <div className="container flex items-center justify-between h-16 lg:h-20">
-        {/* Logo — brand colors always (cyan gradient) */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-lg bg-gradient-to-br from-brand to-brand-light flex items-center justify-center">
-            <Zap className="w-5 h-5 lg:w-6 lg:h-6 text-white" />
+        {/* Logo — Real SIRINX brand */}
+        <Link href="/" className="flex items-center gap-2.5 group">
+          <img
+            src={LOGO_URL}
+            alt="SIRINX Logo"
+            className="w-10 h-10 lg:w-11 lg:h-11 rounded-full object-cover shadow-lg shadow-brand/20 ring-2 ring-brand/30"
+          />
+          <div className="flex flex-col">
+            <span className="font-display text-xl lg:text-2xl font-bold tracking-tight text-foreground leading-none">
+              SIRINX
+            </span>
+            <span className="text-[9px] lg:text-[10px] tracking-[0.15em] text-text-muted uppercase leading-none mt-0.5">
+              Solar Digital Agentic
+            </span>
           </div>
-          <span className="font-display text-xl lg:text-2xl font-bold tracking-tight text-foreground">
-            SIRINX
-          </span>
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden lg:flex items-center gap-1">
+        <div className="hidden lg:flex items-center gap-0.5">
           {navLinks.map((link) => (
             <div
               key={link.href}
@@ -88,13 +106,13 @@ function Navbar() {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 8 }}
-                  className="absolute top-full left-0 mt-1 w-56 py-2 rounded-lg glass-card shadow-xl"
+                  className="absolute top-full left-0 mt-1 w-56 py-2 rounded-xl glass-card shadow-xl"
                 >
                   {link.children.map((child) => (
                     <Link
                       key={child.href}
                       href={child.href}
-                      className="block px-4 py-2 text-sm text-text-secondary hover:text-accent-primary hover:bg-accent-glow transition-colors"
+                      className="block px-4 py-2.5 text-sm text-text-secondary hover:text-accent-primary hover:bg-accent-glow transition-colors"
                     >
                       {child.label}
                     </Link>
@@ -107,7 +125,6 @@ function Navbar() {
 
         {/* Desktop CTA + Theme Toggle */}
         <div className="hidden lg:flex items-center gap-3">
-          {/* Theme toggle */}
           <button
             onClick={toggleTheme}
             className="p-2 rounded-lg text-text-secondary hover:text-foreground hover:bg-accent-glow transition-colors"
@@ -225,6 +242,7 @@ const footerLinks = {
   บริษัท: [
     { href: "/about", label: "เกี่ยวกับเรา" },
     { href: "/projects", label: "ผลงาน" },
+    { href: "/strategy", label: "กลยุทธ์ดิจิทัล" },
     { href: "/blog", label: "บทความ" },
     { href: "/partner", label: "พันธมิตร" },
     { href: "/investment", label: "การลงทุน" },
@@ -233,26 +251,56 @@ const footerLinks = {
 
 function Footer() {
   return (
-    <footer className="bg-surface-secondary border-t border-border-subtle">
-      <div className="container py-16">
+    <footer className="bg-surface-secondary border-t border-border-subtle relative overflow-hidden">
+      {/* Subtle gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-accent-glow opacity-30 pointer-events-none" />
+
+      <div className="container py-16 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
-          {/* Brand — logo always uses brand colors */}
+          {/* Brand — Real SIRINX info */}
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand to-brand-light flex items-center justify-center">
-                <Zap className="w-5 h-5 text-white" />
+            <Link href="/" className="flex items-center gap-2.5 mb-5">
+              <img
+                src={LOGO_URL}
+                alt="SIRINX Logo"
+                className="w-10 h-10 rounded-full object-cover shadow-lg shadow-brand/20 ring-2 ring-brand/30"
+              />
+              <div className="flex flex-col">
+                <span className="font-display text-xl font-bold text-foreground leading-none">SIRINX</span>
+                <span className="text-[9px] tracking-[0.15em] text-text-muted uppercase leading-none mt-0.5">
+                  Solar Digital Agentic Company
+                </span>
               </div>
-              <span className="font-display text-xl font-bold text-foreground">SIRINX</span>
             </Link>
-            <p className="text-text-muted text-sm leading-relaxed mb-6 max-w-sm">
-              ผู้นำด้านพลังงานสะอาดและโครงสร้างพื้นฐานอัจฉริยะ ออกแบบ ติดตั้ง และบริหารระบบพลังงานครบวงจรสำหรับธุรกิจไทย
+            <p className="text-text-muted text-sm leading-relaxed mb-5 max-w-sm">
+              ปฏิวัติพลังงานอัจฉริยะ เพื่ออนาคตที่ยั่งยืน — ผู้นำด้านระบบพลังงานสะอาดและนวัตกรรมอัจฉริยะ
+              ออกแบบ ติดตั้ง และบริหารระบบ Solar ครบวงจร ผสาน AI และ Digital Strategy
             </p>
-            <div className="flex items-center gap-4 text-sm text-text-muted">
-              <a href="tel:+6620001234" className="flex items-center gap-1.5 hover:text-accent-primary transition-colors">
-                <Phone className="w-4 h-4" /> 02-000-1234
+
+            {/* Real Contact Info */}
+            <div className="space-y-2.5 text-sm text-text-muted mb-6">
+              <a href="tel:+66819723969" className="flex items-center gap-2.5 hover:text-accent-primary transition-colors">
+                <Phone className="w-4 h-4 shrink-0" /> +66 81 972 3969
               </a>
-              <a href="mailto:info@sirinx.co.th" className="flex items-center gap-1.5 hover:text-accent-primary transition-colors">
-                <Mail className="w-4 h-4" /> info@sirinx.co.th
+              <a href="mailto:pitoon.sirinx@gmail.com" className="flex items-center gap-2.5 hover:text-accent-primary transition-colors">
+                <Mail className="w-4 h-4 shrink-0" /> pitoon.sirinx@gmail.com
+              </a>
+              <a href="https://www.sirinx.co" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 hover:text-accent-primary transition-colors">
+                <Globe className="w-4 h-4 shrink-0" /> www.sirinx.co
+              </a>
+              <div className="flex items-start gap-2.5">
+                <MapPin className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>600/99 Midtrapab Rd., Mueang Phitsanulok, Phitsanulok 65000, Thailand</span>
+              </div>
+            </div>
+
+            {/* Social */}
+            <div className="flex gap-3">
+              <a href="#" className="w-9 h-9 rounded-lg border border-border-subtle flex items-center justify-center text-text-muted hover:text-accent-primary hover:border-border-accent transition-colors" aria-label="Facebook">
+                <Facebook className="w-4 h-4" />
+              </a>
+              <a href="#" className="w-9 h-9 rounded-lg border border-border-subtle flex items-center justify-center text-text-muted hover:text-accent-primary hover:border-border-accent transition-colors" aria-label="LinkedIn">
+                <Linkedin className="w-4 h-4" />
               </a>
             </div>
           </div>
@@ -268,9 +316,10 @@ function Footer() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-sm text-text-muted hover:text-accent-primary transition-colors"
+                      className="text-sm text-text-muted hover:text-accent-primary transition-colors inline-flex items-center gap-1 group"
                     >
                       {link.label}
+                      <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-0.5 group-hover:opacity-100 group-hover:translate-y-0 transition-all" />
                     </Link>
                   </li>
                 ))}
@@ -279,14 +328,68 @@ function Footer() {
           ))}
         </div>
 
+        {/* Certification Badges — DBD Registered, Thailand Trust Mark */}
+        <div className="mt-12 pt-8 border-t border-border-subtle">
+          <div className="flex flex-col items-center gap-4 mb-8">
+            <p className="text-xs text-text-muted tracking-wider uppercase font-medium">Certified & Trusted</p>
+            <div className="flex flex-wrap items-center justify-center gap-6">
+              {/* DBD Registered */}
+              <a
+                href="https://www.trustmarkthai.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-border-subtle hover:border-border-accent transition-all group"
+                title="DBD Registered — กรมพัฒนาธุรกิจการค้า"
+              >
+                <img src={DBD_REGISTERED_URL} alt="DBD Registered" className="h-8 object-contain" />
+              </a>
+              {/* DBD Verified */}
+              <a
+                href="https://www.trustmarkthai.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-border-subtle hover:border-border-accent transition-all group"
+                title="DBD Verified"
+              >
+                <img src={DBD_VERIFIED_URL} alt="DBD Verified" className="h-8 object-contain" />
+              </a>
+              {/* Thailand Trust Mark */}
+              <a
+                href="https://www.thailandtrustmark.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-border-subtle hover:border-border-accent transition-all group"
+                title="Thailand Trust Mark"
+              >
+                <img src={THAILAND_TRUST_MARK_URL} alt="Thailand Trust Mark" className="h-10 w-10 rounded-full object-cover" />
+              </a>
+              {/* ISO Badge (SVG inline) */}
+              <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-border-subtle" title="ISO 9001:2015 Quality Management">
+                <div className="w-8 h-8 rounded-full border-2 border-accent-primary flex items-center justify-center">
+                  <span className="text-[8px] font-bold text-accent-primary leading-none">ISO<br/>9001</span>
+                </div>
+                <span className="text-[10px] text-text-muted leading-tight">Quality<br/>Management</span>
+              </div>
+              {/* BOI Badge */}
+              <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-border-subtle" title="BOI Promoted — สำนักงานคณะกรรมการส่งเสริมการลงทุน">
+                <div className="w-8 h-8 rounded-full border-2 border-accent-secondary flex items-center justify-center">
+                  <span className="text-[8px] font-bold text-accent-secondary leading-none">BOI</span>
+                </div>
+                <span className="text-[10px] text-text-muted leading-tight">Investment<br/>Promoted</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Bottom */}
-        <div className="mt-12 pt-8 border-t border-border-subtle flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="pt-6 border-t border-border-subtle flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-text-muted">
-            © {new Date().getFullYear()} SIRINX Co., Ltd. สงวนลิขสิทธิ์
+            © {new Date().getFullYear()} SIRINX Co., Ltd. สงวนลิขสิทธิ์ — ปฏิวัติพลังงานอัจฉริยะ เพื่ออนาคตที่ยั่งยืน
           </p>
           <div className="flex gap-6 text-xs text-text-muted">
             <a href="#" className="hover:text-accent-primary transition-colors">นโยบายความเป็นส่วนตัว</a>
             <a href="#" className="hover:text-accent-primary transition-colors">เงื่อนไขการใช้งาน</a>
+            <a href="#" className="hover:text-accent-primary transition-colors">Cookie Policy</a>
           </div>
         </div>
       </div>

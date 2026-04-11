@@ -18,10 +18,10 @@ const fadeUp = {
 };
 
 const contactChannels = [
-  { icon: Phone, title: "โทรศัพท์", value: "02-000-1234", sub: "จันทร์-ศุกร์ 09:00-18:00", action: "tel:+6620001234" },
-  { icon: Mail, title: "อีเมล", value: "info@sirinx.co.th", sub: "ตอบกลับภายใน 24 ชม.", action: "mailto:info@sirinx.co.th" },
-  { icon: MapPin, title: "สำนักงาน", value: "กรุงเทพมหานคร", sub: "นัดหมายล่วงหน้า", action: "#" },
-  { icon: Clock, title: "เวลาทำการ", value: "จันทร์-ศุกร์", sub: "09:00 - 18:00 น.", action: "#" },
+  { icon: Phone, title: "โทรศัพท์", value: "+66 81 972 3969", sub: "คุณ Pitoon — CEO & Founder", action: "tel:+66819723969" },
+  { icon: Mail, title: "อีเมล", value: "pitoon.sirinx@gmail.com", sub: "ตอบกลับภายใน 24 ชม.", action: "mailto:pitoon.sirinx@gmail.com" },
+  { icon: MapPin, title: "สำนักงาน", value: "600/99 Midtrapab Rd.", sub: "Mueang Phitsanulok 65000", action: "https://maps.google.com/?q=600/99+Midtrapab+Rd+Phitsanulok" },
+  { icon: Clock, title: "เว็บไซต์", value: "www.sirinx.co", sub: "ติดต่อได้ตลอด 24 ชม.", action: "https://www.sirinx.co" },
 ];
 
 const interestOptions = [
@@ -88,7 +88,7 @@ export default function Contact() {
           <h2 className="font-display text-2xl font-bold text-foreground mb-3">ขอบคุณสำหรับข้อมูล</h2>
           <p className="text-text-secondary mb-6">
             ทีมวิศวกรของ SIRINX จะตรวจสอบข้อมูลและติดต่อกลับภายใน 24 ชั่วโมง
-            หากต้องการความช่วยเหลือเร่งด่วน กรุณาโทร 02-000-1234
+            หากต้องการความช่วยเหลือเร่งด่วน กรุณาโทร +66 81 972 3969
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 btn-accent rounded-lg text-sm font-display font-semibold">
