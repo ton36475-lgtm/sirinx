@@ -69,3 +69,9 @@
 - [x] Upload OG image to CDN and reference in meta tags
 - [x] Add server-side OG tag injection for social media crawlers (per-route)
 - [x] Save checkpoint after meta tags fix
+
+## Phase 5 — OG Content SEO/AEO Optimization
+- [x] Rewrite OG title/description to be marketing-focused SEO/AEO copy (not generic corporate description)
+- [x] Update per-route metadata with keyword-rich promotional copy
+- [x] Verify OG tags render correctly via curl test on production domain
+- [x] Save checkpoint

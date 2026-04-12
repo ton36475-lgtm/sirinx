@@ -2,15 +2,17 @@
  * Server-side Open Graph tag injection for social media crawlers.
  * LINE, Facebook, Messenger, Twitter crawlers don't execute JavaScript,
  * so we need to inject route-specific OG tags into the HTML before serving.
+ *
+ * Content strategy: SEO/AEO-focused promotional copy with high-value keywords.
  */
 
 const OG_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/sirinx-og-image-hbNko5JADXArPGo26hmGrN.png";
 
 const SITE_NAME = "SIRINX";
-const DEFAULT_TITLE = "SIRINX — พลังงานสะอาด โครงสร้างพื้นฐานอัจฉริยะ เพื่อธุรกิจไทย";
-const DEFAULT_DESC = "Solar Digital Agentic Company — ออกแบบ ติดตั้ง บริหารระบบพลังงานครบวงจร Solar, BESS, AI Energy Management ลดค่าไฟ 30-100% คืนทุน 3-5 ปี อายุใช้งาน 25+ ปี";
+const DEFAULT_TITLE = "SIRINX | ติดตั้งโซลาร์เซลล์ ลดค่าไฟ 30-100% คืนทุน 3-5 ปี — Solar, BESS, AI Energy";
+const DEFAULT_DESC = "ติดตั้งโซลาร์เซลล์สำหรับโรงงาน อาคาร โรงแรม ลดค่าไฟฟ้าได้จริง 30-100% พร้อมแบตเตอรี่กักเก็บพลังงาน (BESS) และระบบ AI จัดการพลังงานอัตโนมัติ คืนทุนใน 3-5 ปี อายุใช้งาน 25+ ปี นัดสำรวจหน้างานฟรี";
 
-// Route-specific metadata map
+// Route-specific metadata map — SEO/AEO promotional copy
 interface PageMeta {
   title: string;
   description: string;
@@ -23,40 +25,40 @@ const routeMetaMap: Record<string, PageMeta> = {
     description: DEFAULT_DESC,
   },
   "/about": {
-    title: "เกี่ยวกับเรา — SIRINX Solar Digital Agentic Company",
-    description: "รู้จัก SIRINX บริษัทพลังงานสะอาดที่ผสาน AI และเทคโนโลยีดิจิทัล เพื่อสร้างโครงสร้างพื้นฐานพลังงานอัจฉริยะสำหรับธุรกิจไทย",
+    title: "SIRINX คือใคร? บริษัทติดตั้งโซลาร์เซลล์ + AI Energy ครบวงจรของไทย",
+    description: "SIRINX ผู้เชี่ยวชาญด้านพลังงานแสงอาทิตย์ครบวงจร ตั้งแต่ออกแบบ ติดตั้ง ไปจนถึงดูแลระบบด้วย AI ตลอด 25 ปี เราช่วยธุรกิจไทยลดต้นทุนพลังงานและเพิ่มกำไรด้วยเทคโนโลยีสะอาด",
   },
   "/solutions": {
-    title: "โซลูชันพลังงาน — Rooftop Solar, Floating Solar, BESS, AI Energy | SIRINX",
-    description: "โซลูชันพลังงานครบวงจร Rooftop Solar, Floating Solar, Solar Carport, BESS, AI Energy Management และ Physical AI O&M สำหรับทุกอุตสาหกรรม",
+    title: "โซลูชันโซลาร์เซลล์ครบวงจร | Rooftop Solar, Floating Solar, BESS, AI Energy",
+    description: "เลือกโซลูชันที่เหมาะกับธุรกิจคุณ — โซลาร์หลังคา, โซลาร์ลอยน้ำ, Solar Carport, แบตเตอรี่กักเก็บพลังงาน BESS และ AI วิเคราะห์การใช้ไฟฟ้าแบบ Real-time ลดค่าไฟทันที",
   },
   "/industries": {
-    title: "โซลูชันเฉพาะอุตสาหกรรม — โรงงาน, โรงแรม, เกษตร, ภาครัฐ | SIRINX",
-    description: "โซลูชันพลังงานสะอาดออกแบบเฉพาะทาง สำหรับโรงงาน เกษตรกรรม โรงแรม สถานศึกษา อาคารพาณิชย์ และภาครัฐ",
+    title: "โซลาร์เซลล์สำหรับโรงงาน โรงแรม เกษตร ภาครัฐ | ลดค่าไฟเฉพาะทาง",
+    description: "โซลูชันพลังงานแสงอาทิตย์ออกแบบเฉพาะอุตสาหกรรม — โรงงานลดต้นทุนผลิต, โรงแรม Green Hotel, ฟาร์มเกษตร Floating Solar, สถานศึกษา Living Lab, อาคารพาณิชย์ ESG, ภาครัฐ Carbon Neutral",
   },
   "/investment": {
-    title: "การลงทุน & สิทธิประโยชน์ทางภาษี — Solar Investment | SIRINX",
-    description: "รูปแบบการลงทุน Solar ที่หลากหลาย ตั้งแต่ซื้อขาด PPA ไปจนถึง Leasing พร้อมสิทธิประโยชน์ทางภาษี BOI และค่าเสื่อมราคาเร่ง",
+    title: "ลงทุนโซลาร์เซลล์ คุ้มค่าแค่ไหน? ROI, สิทธิ์ BOI, ค่าเสื่อมเร่ง | SIRINX",
+    description: "วิเคราะห์ความคุ้มค่าการลงทุนโซลาร์เซลล์ — ซื้อขาด, PPA จ่ายตามหน่วย, Leasing ผ่อน 0% พร้อมสิทธิประโยชน์ BOI ลดหย่อนภาษี 200% และค่าเสื่อมราคาเร่ง คืนทุนเร็วกว่าที่คิด",
   },
   "/projects": {
-    title: "ผลงานของเรา — โครงการ Solar ที่ติดตั้งจริง | SIRINX",
-    description: "รวมผลงานโครงการ Solar ที่ SIRINX ออกแบบและติดตั้ง ทั้ง Rooftop Solar, Floating Solar และ Solar Farm พร้อมภาพจริงจากหน้างาน",
+    title: "ผลงานติดตั้งโซลาร์เซลล์จริง | ภาพโครงการ Solar Farm & Rooftop | SIRINX",
+    description: "ดูผลงานจริงจากโครงการที่ SIRINX ติดตั้ง — Rooftop Solar โรงงาน, Floating Solar อ่างเก็บน้ำ, Solar Farm Node พร้อมภาพถ่ายจริงจากหน้างานและตัวเลขผลประหยัดค่าไฟ",
   },
   "/strategy": {
-    title: "กลยุทธ์พลังงาน — Energy Strategy & Roadmap | SIRINX",
-    description: "กลยุทธ์การเปลี่ยนผ่านพลังงานสำหรับธุรกิจ วางแผนลดต้นทุนพลังงานระยะยาวด้วย Solar, BESS และ AI Energy Management",
+    title: "วางแผนลดค่าไฟระยะยาว | กลยุทธ์ Solar + BESS + AI Energy | SIRINX",
+    description: "วางกลยุทธ์พลังงานสะอาดสำหรับธุรกิจ — เริ่มจาก Solar Rooftop ต่อยอดด้วย BESS กักเก็บพลังงาน และ AI Energy Management ลดค่าไฟได้ทุกปีตลอด 25 ปี",
   },
   "/blog": {
-    title: "บทความ — ความรู้พลังงานสะอาด Solar & BESS | SIRINX",
-    description: "บทความและความรู้เกี่ยวกับพลังงานสะอาด Solar, BESS, AI Energy Management แนวโน้มตลาด และเทคโนโลยีล่าสุด",
+    title: "บทความโซลาร์เซลล์ & พลังงานสะอาด | ความรู้ ROI, BESS, AI Energy | SIRINX",
+    description: "อัพเดตความรู้พลังงานสะอาดล่าสุด — วิเคราะห์ ROI โซลาร์เซลล์, เทคโนโลยี BESS แบตเตอรี่, AI Energy Management, แนวโน้มราคาแผงโซลาร์ และสิทธิประโยชน์ทางภาษี",
   },
   "/contact": {
-    title: "ติดต่อเรา — นัดสำรวจหน้างานฟรี | SIRINX",
-    description: "ติดต่อ SIRINX เพื่อนัดสำรวจหน้างานฟรี ขอใบเสนอราคา หรือปรึกษาเรื่องพลังงานสะอาด โทร, LINE, หรือกรอกแบบฟอร์ม",
+    title: "นัดสำรวจหน้างานฟรี | ขอใบเสนอราคาโซลาร์เซลล์ | SIRINX",
+    description: "ปรึกษาฟรี! นัดทีมวิศวกร SIRINX สำรวจหน้างาน ประเมินค่าไฟ ออกแบบระบบโซลาร์เซลล์เฉพาะอาคารของคุณ พร้อมใบเสนอราคาภายใน 3 วัน โทร, LINE หรือกรอกแบบฟอร์ม",
   },
   "/assessment": {
-    title: "ประเมินความคุ้มค่า Solar — Solar Assessment | SIRINX",
-    description: "ประเมินความคุ้มค่าการติดตั้ง Solar สำหรับธุรกิจของคุณ คำนวณ ROI ระยะเวลาคืนทุน และค่าไฟที่ประหยัดได้",
+    title: "คำนวณค่าไฟที่ประหยัดได้ | ประเมินความคุ้มค่าโซลาร์เซลล์ฟรี | SIRINX",
+    description: "กรอกข้อมูลค่าไฟรายเดือน รับผลประเมิน ROI ทันที — คำนวณระยะเวลาคืนทุน ค่าไฟที่ลดได้ต่อปี และขนาดระบบ Solar ที่เหมาะกับธุรกิจคุณ ฟรีไม่มีค่าใช้จ่าย",
   },
 };
 
@@ -76,9 +78,10 @@ export function getPageMeta(urlPath: string): PageMeta {
   // Blog post pattern: /blog/:slug
   if (cleanPath.startsWith("/blog/")) {
     const slug = cleanPath.replace("/blog/", "");
+    const readableSlug = slug.replace(/-/g, " ");
     return {
-      title: `${slug.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase())} | SIRINX Blog`,
-      description: `อ่านบทความเกี่ยวกับ ${slug.replace(/-/g, " ")} จาก SIRINX — ความรู้พลังงานสะอาด Solar, BESS และ AI Energy Management`,
+      title: `${readableSlug.replace(/\b\w/g, c => c.toUpperCase())} | บทความโซลาร์เซลล์ SIRINX`,
+      description: `อ่านบทความ "${readableSlug}" — ความรู้เชิงลึกเกี่ยวกับโซลาร์เซลล์ พลังงานสะอาด BESS และ AI Energy Management จากทีมวิศวกร SIRINX`,
     };
   }
 
