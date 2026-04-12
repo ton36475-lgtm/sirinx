@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { Users, Phone, Mail, Building2, Calendar, MessageSquare, X } from "lucide-react";
+import { Users, Phone, Mail, Building2, Calendar, MessageSquare, X, Car, Banknote, Plug } from "lucide-react";
 
 const statusOptions = [
   { value: "new", label: "ใหม่", color: "bg-blue-500/20 text-blue-400 border-blue-500/30" },
@@ -135,6 +135,29 @@ export default function AdminLeads() {
                           )}
                           {lead.interest && (
                             <span className="flex items-center gap-1">ความสนใจ: {lead.interest}</span>
+                          )}
+                        </div>
+                        {/* Category Tags */}
+                        <div className="flex flex-wrap gap-1 mt-1.5">
+                          {lead.interest?.toLowerCase().includes("carport") && (
+                            <Badge variant="outline" className="text-[10px] bg-amber-500/15 text-amber-400 border-amber-500/30">
+                              <Car className="h-2.5 w-2.5 mr-0.5" /> Solar Carport
+                            </Badge>
+                          )}
+                          {(lead.interest?.toLowerCase().includes("ppa") || lead.interest?.toLowerCase().includes("co-invest") || lead.budget) && (
+                            <Badge variant="outline" className="text-[10px] bg-emerald-500/15 text-emerald-400 border-emerald-500/30">
+                              <Banknote className="h-2.5 w-2.5 mr-0.5" /> Financing
+                            </Badge>
+                          )}
+                          {(lead.interest?.toLowerCase().includes("ev") || lead.interest?.toLowerCase().includes("carport") || lead.bessInterest === "yes") && (
+                            <Badge variant="outline" className="text-[10px] bg-sky-500/15 text-sky-400 border-sky-500/30">
+                              <Plug className="h-2.5 w-2.5 mr-0.5" /> EV-Ready
+                            </Badge>
+                          )}
+                          {lead.bessInterest === "yes" && (
+                            <Badge variant="outline" className="text-[10px] bg-purple-500/15 text-purple-400 border-purple-500/30">
+                              BESS
+                            </Badge>
                           )}
                         </div>
                       </div>

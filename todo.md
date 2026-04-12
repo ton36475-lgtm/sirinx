@@ -125,7 +125,7 @@
 - [x] Add FAQ schema markup where appropriate
 - [x] Strengthen internal linking across all pages
 - [x] Improve conversion form logic (Solar Carport as default interest)
-- [ ] Update admin lead categories: Solar Carport primary, financing tag, EV-ready tag
+- [x] Update admin lead categories: Solar Carport primary, financing tag, EV-ready tag
 
 ### DAY 7: QA & Hardening
 - [ ] Responsive QA: desktop, tablet, mobile
