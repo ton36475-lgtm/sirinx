@@ -61,3 +61,11 @@
 - [x] Admin: Analytics Dashboard page with real charts (daily visitors, top pages, conversion funnel, lead source attribution)
 - [x] Write vitest tests for analytics API routes (41 tests total, all passing)
 - [x] Save checkpoint after Analytics feature
+
+## Phase 4 — Meta Tags / OG Tags Fix
+- [x] Fix Open Graph meta tags (og:title, og:description, og:image, og:url)
+- [x] Fix Twitter Card meta tags (twitter:card, twitter:title, twitter:description, twitter:image)
+- [x] Add proper meta description tag
+- [x] Upload OG image to CDN and reference in meta tags
+- [x] Add server-side OG tag injection for social media crawlers (per-route)
+- [x] Save checkpoint after meta tags fix
