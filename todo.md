@@ -50,3 +50,14 @@
 - [x] Save checkpoint after Full-Stack upgrade
 - [x] Connect Contact form to tRPC backend (lead.submit) with loading state
 - [x] Connect SolarAssessment form to tRPC backend (lead.submit with source=assessment)
+
+## Phase 3 — Traffic Analytics & Measurement
+- [x] Create DB Schema: page_views table for tracking page visits
+- [x] Create DB Schema: events table for conversion/action tracking
+- [x] Create tRPC API: public event tracking endpoint (pageview, click, form_submit, cta_click)
+- [x] Create tRPC API: admin analytics queries (page views by date, top pages, referrers, conversions)
+- [x] Frontend: Auto page-view tracking hook (fires on every route change)
+- [x] Frontend: Event tracking utility (track CTA clicks, form submissions, LINE clicks)
+- [x] Admin: Analytics Dashboard page with real charts (daily visitors, top pages, conversion funnel, lead source attribution)
+- [x] Write vitest tests for analytics API routes (41 tests total, all passing)
+- [x] Save checkpoint after Analytics feature

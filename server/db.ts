@@ -245,3 +245,218 @@ export async function getContactSubmissions(opts?: { limit?: number; offset?: nu
     .offset(opts?.offset ?? 0);
   return rows;
 }
+
+// ==================== ANALYTICS: PAGE VIEWS ====================
+
+import {
+  InsertPageView, pageViews,
+  InsertEvent, events,
+} from "../drizzle/schema";
+import { gte, count } from "drizzle-orm";
+
+export async function recordPageView(data: InsertPageView) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.insert(pageViews).values(data);
+  return { success: true };
+}
+
+export async function recordEvent(data: InsertEvent) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.insert(events).values(data);
+  return { success: true };
+}
+
+/**
+ * Get page view analytics for admin dashboard.
+ * Returns daily page views, unique visitors, top pages, top referrers.
+ */
+export async function getPageViewAnalytics(opts?: { days?: number }) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const daysBack = opts?.days ?? 30;
+  const since = new Date();
+  since.setDate(since.getDate() - daysBack);
+
+  // All page views in range
+  const allViews = await db
+    .select()
+    .from(pageViews)
+    .where(gte(pageViews.createdAt, since))
+    .orderBy(desc(pageViews.createdAt));
+
+  // Daily aggregation
+  const dailyMap = new Map<string, { views: number; visitors: Set<string> }>();
+  const topPagesMap = new Map<string, number>();
+  const referrerMap = new Map<string, number>();
+  const deviceMap = new Map<string, number>();
+  const utmSourceMap = new Map<string, number>();
+  const uniqueVisitors = new Set<string>();
+
+  for (const view of allViews) {
+    const dateKey = view.createdAt.toISOString().split("T")[0];
+
+    // Daily stats
+    if (!dailyMap.has(dateKey)) {
+      dailyMap.set(dateKey, { views: 0, visitors: new Set() });
+    }
+    const day = dailyMap.get(dateKey)!;
+    day.views++;
+    if (view.visitorId) {
+      day.visitors.add(view.visitorId);
+      uniqueVisitors.add(view.visitorId);
+    }
+
+    // Top pages
+    topPagesMap.set(view.path, (topPagesMap.get(view.path) || 0) + 1);
+
+    // Top referrers
+    if (view.referrer) {
+      try {
+        const refHost = new URL(view.referrer).hostname;
+        if (refHost) referrerMap.set(refHost, (referrerMap.get(refHost) || 0) + 1);
+      } catch {
+        referrerMap.set(view.referrer, (referrerMap.get(view.referrer) || 0) + 1);
+      }
+    }
+
+    // Device types
+    if (view.deviceType) {
+      deviceMap.set(view.deviceType, (deviceMap.get(view.deviceType) || 0) + 1);
+    }
+
+    // UTM sources
+    if (view.utmSource) {
+      utmSourceMap.set(view.utmSource, (utmSourceMap.get(view.utmSource) || 0) + 1);
+    }
+  }
+
+  // Convert daily map to sorted array
+  const daily = Array.from(dailyMap.entries())
+    .map(([date, data]) => ({ date, views: data.views, uniqueVisitors: data.visitors.size }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  // Top pages sorted by views
+  const topPages = Array.from(topPagesMap.entries())
+    .map(([path, views]) => ({ path, views }))
+    .sort((a, b) => b.views - a.views)
+    .slice(0, 20);
+
+  // Top referrers
+  const topReferrers = Array.from(referrerMap.entries())
+    .map(([referrer, views]) => ({ referrer, views }))
+    .sort((a, b) => b.views - a.views)
+    .slice(0, 15);
+
+  // Device breakdown
+  const devices = Array.from(deviceMap.entries())
+    .map(([type, count]) => ({ type, count }))
+    .sort((a, b) => b.count - a.count);
+
+  // UTM sources
+  const utmSources = Array.from(utmSourceMap.entries())
+    .map(([source, count]) => ({ source, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 15);
+
+  return {
+    totalViews: allViews.length,
+    uniqueVisitors: uniqueVisitors.size,
+    daily,
+    topPages,
+    topReferrers,
+    devices,
+    utmSources,
+    period: { from: since.toISOString(), to: new Date().toISOString(), days: daysBack },
+  };
+}
+
+/**
+ * Get event analytics for admin dashboard.
+ * Returns event counts by category, top actions, conversion funnel.
+ */
+export async function getEventAnalytics(opts?: { days?: number }) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const daysBack = opts?.days ?? 30;
+  const since = new Date();
+  since.setDate(since.getDate() - daysBack);
+
+  const allEvents = await db
+    .select()
+    .from(events)
+    .where(gte(events.createdAt, since))
+    .orderBy(desc(events.createdAt));
+
+  // Category aggregation
+  const categoryMap = new Map<string, number>();
+  const actionMap = new Map<string, number>();
+  const dailyEventsMap = new Map<string, number>();
+
+  for (const evt of allEvents) {
+    categoryMap.set(evt.category, (categoryMap.get(evt.category) || 0) + 1);
+
+    const actionKey = `${evt.category}:${evt.action}`;
+    actionMap.set(actionKey, (actionMap.get(actionKey) || 0) + 1);
+
+    const dateKey = evt.createdAt.toISOString().split("T")[0];
+    dailyEventsMap.set(dateKey, (dailyEventsMap.get(dateKey) || 0) + 1);
+  }
+
+  const byCategory = Array.from(categoryMap.entries())
+    .map(([category, count]) => ({ category, count }))
+    .sort((a, b) => b.count - a.count);
+
+  const topActions = Array.from(actionMap.entries())
+    .map(([action, count]) => ({ action, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 20);
+
+  const dailyEvents = Array.from(dailyEventsMap.entries())
+    .map(([date, count]) => ({ date, count }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  // Real conversion funnel: page_view → cta_click → form_submit → lead_created
+  // Get real lead count from leads table for the same period
+  const leadsInPeriod = await db
+    .select()
+    .from(leads)
+    .where(gte(leads.createdAt, since));
+
+  // Get real page view count for the same period
+  const pvInPeriod = await db
+    .select()
+    .from(pageViews)
+    .where(gte(pageViews.createdAt, since));
+
+  const funnelStages = [
+    { stage: "Page Views", count: pvInPeriod.length },
+    { stage: "CTA Clicks", count: categoryMap.get("cta_click") || 0 },
+    { stage: "Form Submits", count: categoryMap.get("form_submit") || 0 },
+    { stage: "Leads Created", count: leadsInPeriod.length },
+    { stage: "LINE Clicks", count: categoryMap.get("line_click") || 0 },
+  ];
+
+  // Lead source attribution
+  const leadSourceMap = new Map<string, number>();
+  for (const lead of leadsInPeriod) {
+    const src = lead.source || "unknown";
+    leadSourceMap.set(src, (leadSourceMap.get(src) || 0) + 1);
+  }
+  const leadSources = Array.from(leadSourceMap.entries())
+    .map(([source, count]) => ({ source, count }))
+    .sort((a, b) => b.count - a.count);
+
+  return {
+    totalEvents: allEvents.length,
+    byCategory,
+    topActions,
+    dailyEvents,
+    funnelStages,
+    leadSources,
+    period: { from: since.toISOString(), to: new Date().toISOString(), days: daysBack },
+  };
+}

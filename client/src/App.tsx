@@ -6,6 +6,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Layout from "./components/Layout";
 import DashboardLayout from "./components/DashboardLayout";
+import { usePageViewTracking } from "@/hooks/useAnalytics";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Solutions from "./pages/Solutions";
@@ -22,6 +23,7 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import AdminLeads from "./pages/admin/Leads";
 import AdminBlogCMS from "./pages/admin/BlogCMS";
 import AdminContactSubmissions from "./pages/admin/ContactSubmissions";
+import AdminAnalytics from "./pages/admin/Analytics";
 
 function PublicRouter() {
   return (
@@ -54,6 +56,7 @@ function AdminRouter() {
         <Route path="/admin/leads" component={AdminLeads} />
         <Route path="/admin/blog" component={AdminBlogCMS} />
         <Route path="/admin/contacts" component={AdminContactSubmissions} />
+        <Route path="/admin/analytics" component={AdminAnalytics} />
         <Route component={NotFound} />
       </Switch>
     </DashboardLayout>
@@ -72,12 +75,18 @@ function Router() {
   );
 }
 
+function PageViewTracker() {
+  usePageViewTracking();
+  return null;
+}
+
 function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark" switchable>
         <TooltipProvider>
           <Toaster />
+          <PageViewTracker />
           <Router />
         </TooltipProvider>
       </ThemeProvider>

@@ -279,7 +279,74 @@ const projectRouter = router({
     }),
 });
 
-// ==================== CONTACT ROUTER ====================
+// ==================== ANALYTICS ROUTER ====================
+
+const analyticsRouter = router({
+  /** Public: Record a page view (called automatically by frontend tracking) */
+  trackPageView: publicProcedure
+    .input(
+      z.object({
+        path: z.string().min(1),
+        referrer: z.string().optional(),
+        utmSource: z.string().optional(),
+        utmMedium: z.string().optional(),
+        utmCampaign: z.string().optional(),
+        visitorId: z.string().optional(),
+        sessionId: z.string().optional(),
+        deviceType: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const userAgent = ctx.req.headers["user-agent"] || null;
+      return db.recordPageView({
+        ...input,
+        userAgent,
+        referrer: input.referrer || null,
+      });
+    }),
+
+  /** Public: Record an event (CTA click, form submit, LINE click, etc.) */
+  trackEvent: publicProcedure
+    .input(
+      z.object({
+        category: z.string().min(1),
+        action: z.string().min(1),
+        label: z.string().optional(),
+        value: z.number().optional(),
+        pagePath: z.string().optional(),
+        visitorId: z.string().optional(),
+        sessionId: z.string().optional(),
+        metadata: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      return db.recordEvent(input);
+    }),
+
+  /** Admin: Get page view analytics */
+  pageViews: adminProcedure
+    .input(
+      z.object({
+        days: z.number().min(1).max(365).default(30),
+      }).optional()
+    )
+    .query(async ({ input }) => {
+      return db.getPageViewAnalytics({ days: input?.days });
+    }),
+
+  /** Admin: Get event analytics */
+  events: adminProcedure
+    .input(
+      z.object({
+        days: z.number().min(1).max(365).default(30),
+      }).optional()
+    )
+    .query(async ({ input }) => {
+      return db.getEventAnalytics({ days: input?.days });
+    }),
+});
+
+// ==================== CONTACT ROUTER ==
 
 const contactRouter = router({
   /** Admin: List contact submissions */
@@ -311,6 +378,7 @@ export const appRouter = router({
   blog: blogRouter,
   project: projectRouter,
   contact: contactRouter,
+  analytics: analyticsRouter,
 });
 
 export type AppRouter = typeof appRouter;

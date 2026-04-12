@@ -133,3 +133,57 @@ export const contactSubmissions = mysqlTable("contact_submissions", {
 
 export type ContactSubmission = typeof contactSubmissions.$inferSelect;
 export type InsertContactSubmission = typeof contactSubmissions.$inferInsert;
+
+/**
+ * Page views table — tracks every page visit for traffic analytics.
+ */
+export const pageViews = mysqlTable("page_views", {
+  id: int("id").autoincrement().primaryKey(),
+  /** URL path visited (e.g. /solutions, /contact) */
+  path: varchar("path", { length: 500 }).notNull(),
+  /** Referrer URL */
+  referrer: text("referrer"),
+  /** UTM parameters stored as JSON */
+  utmSource: varchar("utmSource", { length: 255 }),
+  utmMedium: varchar("utmMedium", { length: 255 }),
+  utmCampaign: varchar("utmCampaign", { length: 255 }),
+  /** Visitor fingerprint (hashed IP + UA for unique visitor counting, no PII) */
+  visitorId: varchar("visitorId", { length: 64 }),
+  /** Session ID to group page views in a single visit */
+  sessionId: varchar("sessionId", { length: 64 }),
+  /** Device info */
+  userAgent: text("userAgent"),
+  deviceType: varchar("deviceType", { length: 20 }), // desktop, mobile, tablet
+  /** Country/region from IP (optional) */
+  country: varchar("country", { length: 10 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type PageView = typeof pageViews.$inferSelect;
+export type InsertPageView = typeof pageViews.$inferInsert;
+
+/**
+ * Events table — tracks user actions (CTA clicks, form submissions, LINE clicks, etc.)
+ */
+export const events = mysqlTable("events", {
+  id: int("id").autoincrement().primaryKey(),
+  /** Event category: cta_click, form_submit, line_click, download, scroll_depth */
+  category: varchar("category", { length: 50 }).notNull(),
+  /** Specific action: e.g. "contact_form_submit", "hero_cta_click" */
+  action: varchar("action", { length: 100 }).notNull(),
+  /** Label for additional context (e.g. button text, page section) */
+  label: varchar("label", { length: 255 }),
+  /** Numeric value (e.g. scroll percentage, form field count) */
+  value: int("value"),
+  /** Page where event occurred */
+  pagePath: varchar("pagePath", { length: 500 }),
+  /** Visitor fingerprint (same as page_views) */
+  visitorId: varchar("visitorId", { length: 64 }),
+  sessionId: varchar("sessionId", { length: 64 }),
+  /** Optional metadata as JSON */
+  metadata: text("metadata"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type Event = typeof events.$inferSelect;
+export type InsertEvent = typeof events.$inferInsert;

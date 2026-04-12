@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useSearch } from "wouter";
 import { trpc } from "@/lib/trpc";
+import { useTrackCTA, useTrackFormSubmit, useTrackLINEClick } from "@/hooks/useAnalytics";
 import {
   ArrowRight, Phone, Mail, MapPin, Clock, Send, CheckCircle2,
   Calculator, Shield, FileText, Users, Zap, MessageCircle, Loader2
@@ -45,6 +46,9 @@ const timelineOptions = [
 export default function Contact() {
   const searchString = useSearch();
   const [submitted, setSubmitted] = useState(false);
+  const trackCTA = useTrackCTA();
+  const trackFormSubmit = useTrackFormSubmit();
+  const trackLINEClick = useTrackLINEClick();
   const [formData, setFormData] = useState({
     name: "", company: "", email: "", phone: "",
     interest: "", budget: "", timeline: "",
@@ -54,6 +58,7 @@ export default function Contact() {
   const submitLead = trpc.lead.submit.useMutation({
     onSuccess: () => {
       setSubmitted(true);
+      trackFormSubmit("contact_form", Object.values(formData).filter(Boolean).length);
       toast.success("ส่งข้อมูลเรียบร้อย ทีมงานจะติดต่อกลับภายใน 24 ชั่วโมง");
     },
     onError: (err) => {
@@ -129,6 +134,7 @@ export default function Contact() {
               href={LINE_OA_URL}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackLINEClick("contact_success_cta")}
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#06C755] hover:bg-[#05b34c] text-white rounded-lg text-sm font-semibold transition-colors"
             >
               <MessageCircle className="w-4 h-4" /> เพิ่มเพื่อน LINE @SIRINX
@@ -176,6 +182,7 @@ export default function Contact() {
               href={LINE_OA_URL}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackLINEClick("contact_channel_card")}
               initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={4}
               className="group p-5 rounded-xl border border-[#06C755]/30 bg-[#06C755]/10 hover:border-[#06C755]/60 hover:bg-[#06C755]/20 transition-all"
             >
@@ -284,6 +291,7 @@ export default function Contact() {
                   href={LINE_OA_URL}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackLINEClick("contact_sidebar_cta")}
                   className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#06C755] hover:bg-[#05b34c] text-white rounded-lg text-sm font-semibold transition-colors w-full justify-center"
                 >
                   <MessageCircle className="w-4 h-4" /> เพิ่มเพื่อน LINE @SIRINX

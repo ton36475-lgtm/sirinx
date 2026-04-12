@@ -22,6 +22,36 @@ vi.mock("./db", () => ({
   deleteProject: vi.fn().mockResolvedValue({ success: true }),
   createContactSubmission: vi.fn().mockResolvedValue({ id: 1 }),
   getContactSubmissions: vi.fn().mockResolvedValue([]),
+  recordPageView: vi.fn().mockResolvedValue({ success: true }),
+  recordEvent: vi.fn().mockResolvedValue({ success: true }),
+  getPageViewAnalytics: vi.fn().mockResolvedValue({
+    totalViews: 150,
+    uniqueVisitors: 80,
+    daily: [
+      { date: "2026-04-10", views: 50, uniqueVisitors: 30 },
+      { date: "2026-04-11", views: 100, uniqueVisitors: 50 },
+    ],
+    topPages: [{ path: "/", views: 80 }, { path: "/contact", views: 40 }],
+    topReferrers: [{ referrer: "google.com", views: 30 }],
+    devices: [{ type: "desktop", count: 100 }, { type: "mobile", count: 50 }],
+    utmSources: [{ source: "facebook", count: 20 }],
+    period: { from: "2026-03-12", to: "2026-04-12", days: 30 },
+  }),
+  getEventAnalytics: vi.fn().mockResolvedValue({
+    totalEvents: 45,
+    byCategory: [{ category: "cta_click", count: 20 }, { category: "form_submit", count: 10 }],
+    topActions: [{ action: "cta_click:hero_cta", count: 15 }],
+    dailyEvents: [{ date: "2026-04-11", count: 25 }],
+    funnelStages: [
+      { stage: "Page Views", count: 150 },
+      { stage: "CTA Clicks", count: 20 },
+      { stage: "Form Submits", count: 10 },
+      { stage: "Leads Created", count: 5 },
+      { stage: "LINE Clicks", count: 8 },
+    ],
+    leadSources: [{ source: "contact", count: 3 }, { source: "assessment", count: 2 }],
+    period: { from: "2026-03-12", to: "2026-04-12", days: 30 },
+  }),
 }));
 
 vi.mock("./_core/notification", () => ({
@@ -285,5 +315,166 @@ describe("contact.list (admin only)", () => {
   it("rejects non-admin", async () => {
     const caller = appRouter.createCaller(createUserContext());
     await expect(caller.contact.list()).rejects.toThrow();
+  });
+});
+
+// ==================== ANALYTICS TESTS ====================
+
+describe("analytics.trackPageView (public)", () => {
+  it("records a page view from public context", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const result = await caller.analytics.trackPageView({
+      path: "/",
+      referrer: "https://google.com",
+      visitorId: "v123",
+      sessionId: "s456",
+      deviceType: "desktop",
+    });
+    expect(result).toEqual({ success: true });
+  });
+
+  it("records a page view with minimal data", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const result = await caller.analytics.trackPageView({ path: "/contact" });
+    expect(result).toEqual({ success: true });
+  });
+
+  it("validates path is required", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    await expect(
+      caller.analytics.trackPageView({ path: "" })
+    ).rejects.toThrow();
+  });
+
+  it("accepts UTM parameters", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const result = await caller.analytics.trackPageView({
+      path: "/solutions",
+      utmSource: "facebook",
+      utmMedium: "cpc",
+      utmCampaign: "solar_promo",
+    });
+    expect(result).toEqual({ success: true });
+  });
+});
+
+describe("analytics.trackEvent (public)", () => {
+  it("records a CTA click event", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const result = await caller.analytics.trackEvent({
+      category: "cta_click",
+      action: "hero_cta",
+      label: "นัดสำรวจหน้างานฟรี",
+      pagePath: "/",
+      visitorId: "v123",
+      sessionId: "s456",
+    });
+    expect(result).toEqual({ success: true });
+  });
+
+  it("records a form submit event", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const result = await caller.analytics.trackEvent({
+      category: "form_submit",
+      action: "contact_form",
+      value: 5,
+    });
+    expect(result).toEqual({ success: true });
+  });
+
+  it("records a LINE click event", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const result = await caller.analytics.trackEvent({
+      category: "line_click",
+      action: "line_oa_open",
+      label: "contact_sidebar_cta",
+    });
+    expect(result).toEqual({ success: true });
+  });
+
+  it("validates category is required", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    await expect(
+      caller.analytics.trackEvent({ category: "", action: "test" })
+    ).rejects.toThrow();
+  });
+
+  it("validates action is required", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    await expect(
+      caller.analytics.trackEvent({ category: "test", action: "" })
+    ).rejects.toThrow();
+  });
+});
+
+describe("analytics.pageViews (admin only)", () => {
+  it("returns page view analytics for admin", async () => {
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.analytics.pageViews({ days: 30 });
+    expect(result).toHaveProperty("totalViews", 150);
+    expect(result).toHaveProperty("uniqueVisitors", 80);
+    expect(result.daily).toHaveLength(2);
+    expect(result.topPages).toHaveLength(2);
+    expect(result.topReferrers).toHaveLength(1);
+    expect(result.devices).toHaveLength(2);
+    expect(result.utmSources).toHaveLength(1);
+  });
+
+  it("rejects non-admin users", async () => {
+    const caller = appRouter.createCaller(createUserContext());
+    await expect(caller.analytics.pageViews({ days: 30 })).rejects.toThrow();
+  });
+
+  it("rejects unauthenticated users", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    await expect(caller.analytics.pageViews({ days: 30 })).rejects.toThrow();
+  });
+
+  it("uses default days when no input provided", async () => {
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.analytics.pageViews();
+    expect(result).toHaveProperty("totalViews");
+  });
+});
+
+describe("analytics.events (admin only)", () => {
+  it("returns event analytics for admin", async () => {
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.analytics.events({ days: 30 });
+    expect(result).toHaveProperty("totalEvents", 45);
+    expect(result.byCategory).toHaveLength(2);
+    expect(result.topActions).toHaveLength(1);
+    expect(result.funnelStages).toHaveLength(5);
+    expect(result.leadSources).toHaveLength(2);
+  });
+
+  it("includes conversion funnel with real data", async () => {
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.analytics.events({ days: 30 });
+    const funnel = result.funnelStages;
+    expect(funnel[0].stage).toBe("Page Views");
+    expect(funnel[0].count).toBe(150);
+    expect(funnel[1].stage).toBe("CTA Clicks");
+    expect(funnel[2].stage).toBe("Form Submits");
+    expect(funnel[3].stage).toBe("Leads Created");
+    expect(funnel[4].stage).toBe("LINE Clicks");
+  });
+
+  it("includes lead source attribution", async () => {
+    const caller = appRouter.createCaller(createAdminContext());
+    const result = await caller.analytics.events({ days: 30 });
+    expect(result.leadSources).toBeDefined();
+    expect(result.leadSources[0]).toHaveProperty("source");
+    expect(result.leadSources[0]).toHaveProperty("count");
+  });
+
+  it("rejects non-admin users", async () => {
+    const caller = appRouter.createCaller(createUserContext());
+    await expect(caller.analytics.events({ days: 30 })).rejects.toThrow();
+  });
+
+  it("rejects unauthenticated users", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    await expect(caller.analytics.events({ days: 30 })).rejects.toThrow();
   });
 });
