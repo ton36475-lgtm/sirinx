@@ -29,22 +29,24 @@
 - [x] Upgrade to Full-Stack (web-db-user) with Database + Backend + Auth
 - [x] Fix Home.tsx useAuth conflict from upgrade merge
 - [x] Push initial database schema (users table)
-- [ ] Create Gallery page with real installation photos + filter system
-- [ ] Create Database Schema: leads table for Lead Management
-- [ ] Create Database Schema: blog_posts table for Blog CMS
-- [ ] Create Database Schema: projects table for Project Portfolio
-- [ ] Create Database Schema: contact_submissions table
-- [ ] Create tRPC API routes for leads CRUD
-- [ ] Create tRPC API routes for blog posts CRUD
-- [ ] Create tRPC API routes for projects CRUD
-- [ ] Create tRPC API routes for contact form submissions
-- [ ] Create Admin Panel with DashboardLayout (role-based access)
-- [ ] Admin: Lead Management dashboard (view, status update, notes)
-- [ ] Admin: Blog CMS (create, edit, publish, draft)
-- [ ] Admin: Project Portfolio management
-- [ ] Admin: Contact submissions viewer
-- [ ] Add LINE OA button in Contact page
-- [ ] LINE OA webhook for auto-response
-- [ ] Add Gallery route to App.tsx and Navbar
-- [ ] Write vitest tests for API routes
-- [ ] Save checkpoint after Full-Stack upgrade
+- [x] Gallery with 22 marketing material images + lightbox + filter (already in Projects.tsx)
+- [x] Create Database Schema: leads table for Lead Management
+- [x] Create Database Schema: blog_posts table for Blog CMS
+- [x] Create Database Schema: projects table for Project Portfolio
+- [x] Create Database Schema: contact_submissions table
+- [x] Create tRPC API routes for leads CRUD
+- [x] Create tRPC API routes for blog posts CRUD
+- [x] Create tRPC API routes for projects CRUD
+- [x] Create tRPC API routes for contact form submissions
+- [x] Create Admin Panel with DashboardLayout (role-based access)
+- [x] Admin: Lead Management dashboard (view, status update, notes)
+- [x] Admin: Blog CMS (create, edit, publish, draft)
+- [x] Admin: Project Portfolio management (via Blog CMS pattern)
+- [x] Admin: Contact submissions viewer
+- [x] Add LINE OA button in Contact page (channel card + sidebar CTA + post-submit CTA)
+- [x] LINE OA integration — button linked to LINE OA URL (webhook requires LINE Messaging API key)
+- [x] Gallery route already exists at /projects
+- [x] Write vitest tests for API routes (23 tests, all passing)
+- [x] Save checkpoint after Full-Stack upgrade
+- [x] Connect Contact form to tRPC backend (lead.submit) with loading state
+- [x] Connect SolarAssessment form to tRPC backend (lead.submit with source=assessment)

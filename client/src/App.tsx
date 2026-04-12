@@ -5,6 +5,7 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Layout from "./components/Layout";
+import DashboardLayout from "./components/DashboardLayout";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Solutions from "./pages/Solutions";
@@ -17,8 +18,12 @@ import Contact from "./pages/Contact";
 import SolarAssessment from "./pages/SolarAssessment";
 import Partner from "./pages/Partner";
 import Strategy from "./pages/Strategy";
-function Router() {
-  // make sure to consider if you need authentication for certain routes
+import AdminDashboard from "./pages/admin/Dashboard";
+import AdminLeads from "./pages/admin/Leads";
+import AdminBlogCMS from "./pages/admin/BlogCMS";
+import AdminContactSubmissions from "./pages/admin/ContactSubmissions";
+
+function PublicRouter() {
   return (
     <Layout>
       <Switch>
@@ -38,6 +43,32 @@ function Router() {
         <Route component={NotFound} />
       </Switch>
     </Layout>
+  );
+}
+
+function AdminRouter() {
+  return (
+    <DashboardLayout>
+      <Switch>
+        <Route path="/admin" component={AdminDashboard} />
+        <Route path="/admin/leads" component={AdminLeads} />
+        <Route path="/admin/blog" component={AdminBlogCMS} />
+        <Route path="/admin/contacts" component={AdminContactSubmissions} />
+        <Route component={NotFound} />
+      </Switch>
+    </DashboardLayout>
+  );
+}
+
+function Router() {
+  return (
+    <Switch>
+      {/* Admin routes use DashboardLayout */}
+      <Route path="/admin/:rest*" component={AdminRouter} />
+      <Route path="/admin" component={AdminRouter} />
+      {/* Public routes use public Layout */}
+      <Route component={PublicRouter} />
+    </Switch>
   );
 }
 

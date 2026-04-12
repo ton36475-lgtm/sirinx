@@ -21,19 +21,21 @@ import {
 } from "@/components/ui/sidebar";
 import { getLoginUrl } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
-import { LayoutDashboard, LogOut, PanelLeft, Users } from "lucide-react";
+import { LayoutDashboard, Users, FileText, Inbox, ArrowLeft, LogOut, PanelLeft, Zap } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
 
 const menuItems = [
-  { icon: LayoutDashboard, label: "Page 1", path: "/" },
-  { icon: Users, label: "Page 2", path: "/some-path" },
+  { icon: LayoutDashboard, label: "Dashboard", path: "/admin" },
+  { icon: Users, label: "Lead Management", path: "/admin/leads" },
+  { icon: FileText, label: "Blog CMS", path: "/admin/blog" },
+  { icon: Inbox, label: "Contact Submissions", path: "/admin/contacts" },
 ];
 
 const SIDEBAR_WIDTH_KEY = "sidebar-width";
-const DEFAULT_WIDTH = 280;
+const DEFAULT_WIDTH = 260;
 const MIN_WIDTH = 200;
 const MAX_WIDTH = 480;
 
@@ -58,25 +60,49 @@ export default function DashboardLayout({
 
   if (!user) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-background">
         <div className="flex flex-col items-center gap-8 p-8 max-w-md w-full">
-          <div className="flex flex-col items-center gap-6">
-            <h1 className="text-2xl font-semibold tracking-tight text-center">
-              Sign in to continue
+          <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
+            <Zap className="h-6 w-6 text-primary" />
+          </div>
+          <div className="flex flex-col items-center gap-3">
+            <h1 className="text-2xl font-display font-bold tracking-tight text-center text-foreground">
+              SIRINX Admin
             </h1>
             <p className="text-sm text-muted-foreground text-center max-w-sm">
-              Access to this dashboard requires authentication. Continue to launch the login flow.
+              เข้าสู่ระบบเพื่อจัดการ leads, บทความ, และเนื้อหาเว็บไซต์
             </p>
           </div>
           <Button
-            onClick={() => {
-              window.location.href = getLoginUrl();
-            }}
+            onClick={() => { window.location.href = getLoginUrl(); }}
             size="lg"
             className="w-full shadow-lg hover:shadow-xl transition-all"
           >
-            Sign in
+            เข้าสู่ระบบ
           </Button>
+          <a href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
+            <ArrowLeft className="h-3 w-3" /> กลับหน้าหลัก
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  // Check admin role
+  if (user.role !== "admin") {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <div className="flex flex-col items-center gap-6 p-8 max-w-md w-full text-center">
+          <div className="w-12 h-12 rounded-xl bg-destructive/20 flex items-center justify-center">
+            <Zap className="h-6 w-6 text-destructive" />
+          </div>
+          <h1 className="text-xl font-display font-bold text-foreground">ไม่มีสิทธิ์เข้าถึง</h1>
+          <p className="text-sm text-muted-foreground">
+            คุณไม่มีสิทธิ์ Admin กรุณาติดต่อผู้ดูแลระบบ
+          </p>
+          <a href="/" className="text-sm text-primary hover:underline flex items-center gap-1">
+            <ArrowLeft className="h-3 w-3" /> กลับหน้าหลัก
+          </a>
         </div>
       </div>
     );
@@ -84,11 +110,9 @@ export default function DashboardLayout({
 
   return (
     <SidebarProvider
-      style={
-        {
-          "--sidebar-width": `${sidebarWidth}px`,
-        } as CSSProperties
-      }
+      style={{
+        "--sidebar-width": `${sidebarWidth}px`,
+      } as CSSProperties}
     >
       <DashboardLayoutContent setSidebarWidth={setSidebarWidth}>
         {children}
@@ -124,17 +148,13 @@ function DashboardLayoutContent({
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isResizing) return;
-
       const sidebarLeft = sidebarRef.current?.getBoundingClientRect().left ?? 0;
       const newWidth = e.clientX - sidebarLeft;
       if (newWidth >= MIN_WIDTH && newWidth <= MAX_WIDTH) {
         setSidebarWidth(newWidth);
       }
     };
-
-    const handleMouseUp = () => {
-      setIsResizing(false);
-    };
+    const handleMouseUp = () => setIsResizing(false);
 
     if (isResizing) {
       document.addEventListener("mousemove", handleMouseMove);
@@ -142,7 +162,6 @@ function DashboardLayoutContent({
       document.body.style.cursor = "col-resize";
       document.body.style.userSelect = "none";
     }
-
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
@@ -154,11 +173,7 @@ function DashboardLayoutContent({
   return (
     <>
       <div className="relative" ref={sidebarRef}>
-        <Sidebar
-          collapsible="icon"
-          className="border-r-0"
-          disableTransition={isResizing}
-        >
+        <Sidebar collapsible="icon" className="border-r-0" disableTransition={isResizing}>
           <SidebarHeader className="h-16 justify-center">
             <div className="flex items-center gap-3 px-2 transition-all w-full">
               <button
@@ -170,8 +185,9 @@ function DashboardLayoutContent({
               </button>
               {!isCollapsed ? (
                 <div className="flex items-center gap-2 min-w-0">
-                  <span className="font-semibold tracking-tight truncate">
-                    Navigation
+                  <Zap className="h-4 w-4 text-primary shrink-0" />
+                  <span className="font-display font-semibold tracking-tight truncate text-sm">
+                    SIRINX Admin
                   </span>
                 </div>
               ) : null}
@@ -188,17 +204,26 @@ function DashboardLayoutContent({
                       isActive={isActive}
                       onClick={() => setLocation(item.path)}
                       tooltip={item.label}
-                      className={`h-10 transition-all font-normal`}
+                      className="h-10 transition-all font-normal"
                     >
-                      <item.icon
-                        className={`h-4 w-4 ${isActive ? "text-primary" : ""}`}
-                      />
+                      <item.icon className={`h-4 w-4 ${isActive ? "text-primary" : ""}`} />
                       <span>{item.label}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
               })}
             </SidebarMenu>
+
+            {/* Back to site link */}
+            <div className="px-3 mt-4">
+              <a
+                href="/"
+                className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors px-2 py-2"
+              >
+                <ArrowLeft className="h-3 w-3" />
+                {!isCollapsed && <span>กลับหน้าเว็บ</span>}
+              </a>
+            </div>
           </SidebarContent>
 
           <SidebarFooter className="p-3">
@@ -215,7 +240,7 @@ function DashboardLayoutContent({
                       {user?.name || "-"}
                     </p>
                     <p className="text-xs text-muted-foreground truncate mt-1.5">
-                      {user?.email || "-"}
+                      Admin
                     </p>
                   </div>
                 </button>
@@ -226,7 +251,7 @@ function DashboardLayoutContent({
                   className="cursor-pointer text-destructive focus:text-destructive"
                 >
                   <LogOut className="mr-2 h-4 w-4" />
-                  <span>Sign out</span>
+                  <span>ออกจากระบบ</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -249,7 +274,7 @@ function DashboardLayoutContent({
               <SidebarTrigger className="h-9 w-9 rounded-lg bg-background" />
               <div className="flex items-center gap-3">
                 <div className="flex flex-col gap-1">
-                  <span className="tracking-tight text-foreground">
+                  <span className="tracking-tight text-foreground text-sm">
                     {activeMenuItem?.label ?? "Menu"}
                   </span>
                 </div>
@@ -257,7 +282,7 @@ function DashboardLayoutContent({
             </div>
           </div>
         )}
-        <main className="flex-1 p-4">{children}</main>
+        <main className="flex-1 p-4 lg:p-6">{children}</main>
       </SidebarInset>
     </>
   );

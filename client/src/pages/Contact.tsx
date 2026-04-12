@@ -1,14 +1,16 @@
 /**
  * SIRINX Contact Page — Lead Capture & Qualification
  * Dual-theme: semantic CSS vars
- * Features: URL param prefill from Solar Calculator, lead qualification, success state
+ * Features: URL param prefill from Solar Calculator, lead qualification, success state,
+ *           tRPC backend integration, LINE OA button
  */
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useSearch } from "wouter";
+import { trpc } from "@/lib/trpc";
 import {
   ArrowRight, Phone, Mail, MapPin, Clock, Send, CheckCircle2,
-  Calculator, Shield, FileText, Users, Zap
+  Calculator, Shield, FileText, Users, Zap, MessageCircle, Loader2
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -16,6 +18,8 @@ const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.08, duration: 0.5 } }),
 };
+
+const LINE_OA_URL = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_LINE_OA_URL) || "https://lin.ee/sirinx";
 
 const contactChannels = [
   { icon: Phone, title: "โทรศัพท์", value: "+66 81 972 3969", sub: "คุณ Pitoon — CEO & Founder", action: "tel:+66819723969" },
@@ -47,6 +51,16 @@ export default function Contact() {
     monthlyBill: "", roofArea: "", message: "",
   });
 
+  const submitLead = trpc.lead.submit.useMutation({
+    onSuccess: () => {
+      setSubmitted(true);
+      toast.success("ส่งข้อมูลเรียบร้อย ทีมงานจะติดต่อกลับภายใน 24 ชั่วโมง");
+    },
+    onError: (err) => {
+      toast.error(err.message || "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
+    },
+  });
+
   // Prefill from Solar Calculator URL params
   useEffect(() => {
     const params = new URLSearchParams(searchString);
@@ -72,8 +86,18 @@ export default function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    toast.success("ส่งข้อมูลเรียบร้อย ทีมงานจะติดต่อกลับภายใน 24 ชั่วโมง");
+    submitLead.mutate({
+      source: "contact",
+      name: formData.name,
+      company: formData.company || undefined,
+      email: formData.email || undefined,
+      phone: formData.phone || undefined,
+      interest: formData.interest || undefined,
+      budget: formData.budget || undefined,
+      timeline: formData.timeline || undefined,
+      monthlyBill: formData.monthlyBill || undefined,
+      message: formData.message || undefined,
+    });
   };
 
   const update = (field: string, value: string) => setFormData(prev => ({ ...prev, [field]: value }));
@@ -97,6 +121,18 @@ export default function Contact() {
             <Link href="/assessment" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 btn-accent-outline rounded-lg text-sm font-display font-semibold">
               คำนวณระบบโซลาร์
             </Link>
+          </div>
+          {/* LINE OA CTA after submit */}
+          <div className="mt-6 p-4 rounded-xl border border-[#06C755]/30 bg-[#06C755]/10">
+            <p className="text-sm text-text-secondary mb-3">ติดตามสถานะผ่าน LINE OA ได้เลย</p>
+            <a
+              href={LINE_OA_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#06C755] hover:bg-[#05b34c] text-white rounded-lg text-sm font-semibold transition-colors"
+            >
+              <MessageCircle className="w-4 h-4" /> เพิ่มเพื่อน LINE @SIRINX
+            </a>
           </div>
         </motion.div>
       </div>
@@ -122,10 +158,10 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Contact Channels */}
+      {/* Contact Channels + LINE OA */}
       <section className="pb-12 bg-background">
         <div className="container">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {contactChannels.map((ch, i) => (
               <motion.a key={ch.title} href={ch.action}
                 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}
@@ -135,6 +171,18 @@ export default function Contact() {
                 <div className="text-xs text-text-muted mt-1">{ch.sub}</div>
               </motion.a>
             ))}
+            {/* LINE OA Channel Card */}
+            <motion.a
+              href={LINE_OA_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={4}
+              className="group p-5 rounded-xl border border-[#06C755]/30 bg-[#06C755]/10 hover:border-[#06C755]/60 hover:bg-[#06C755]/20 transition-all"
+            >
+              <MessageCircle className="w-5 h-5 text-[#06C755] mb-3" />
+              <div className="font-display font-semibold text-foreground text-sm group-hover:text-[#06C755] transition-colors">LINE @SIRINX</div>
+              <div className="text-xs text-text-muted mt-1">แชทสดกับทีมงาน</div>
+            </motion.a>
           </div>
         </div>
       </section>
@@ -162,8 +210,8 @@ export default function Contact() {
                   </div>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-1.5">อีเมล *</label>
-                      <input type="email" required value={formData.email} onChange={(e) => update("email", e.target.value)} className={inputCls} placeholder="email@company.com" />
+                      <label className="block text-sm font-medium text-foreground mb-1.5">อีเมล</label>
+                      <input type="email" value={formData.email} onChange={(e) => update("email", e.target.value)} className={inputCls} placeholder="email@company.com" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">เบอร์โทรศัพท์ *</label>
@@ -208,8 +256,16 @@ export default function Contact() {
                     <textarea rows={4} value={formData.message} onChange={(e) => update("message", e.target.value)}
                       className={`${inputCls} resize-none`} placeholder="รายละเอียดเพิ่มเติมเกี่ยวกับโครงการ หรือคำถามที่ต้องการให้ทีมวิศวกรตอบ" />
                   </div>
-                  <button type="submit" className="w-full flex items-center justify-center gap-2 px-6 py-3.5 btn-accent rounded-lg font-display font-semibold text-base">
-                    <Send className="w-4 h-4" /> ส่งข้อมูลขอใบเสนอราคา
+                  <button
+                    type="submit"
+                    disabled={submitLead.isPending}
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 btn-accent rounded-lg font-display font-semibold text-base disabled:opacity-60"
+                  >
+                    {submitLead.isPending ? (
+                      <><Loader2 className="w-4 h-4 animate-spin" /> กำลังส่ง...</>
+                    ) : (
+                      <><Send className="w-4 h-4" /> ส่งข้อมูลขอใบเสนอราคา</>
+                    )}
                   </button>
                   <p className="text-xs text-text-muted text-center">ข้อมูลของคุณจะถูกเก็บเป็นความลับ ใช้เพื่อการติดต่อกลับเท่านั้น</p>
                 </form>
@@ -218,10 +274,26 @@ export default function Contact() {
 
             {/* Sidebar */}
             <div className="space-y-6">
+              {/* LINE OA prominent CTA */}
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0.5}
+                className="p-6 rounded-xl border border-[#06C755]/30 bg-[#06C755]/10">
+                <MessageCircle className="w-6 h-6 text-[#06C755] mb-3" />
+                <h3 className="font-display font-semibold text-foreground mb-2">แชทกับเราผ่าน LINE</h3>
+                <p className="text-sm text-text-secondary mb-4">สอบถามข้อมูลเบื้องต้น หรือนัดสำรวจหน้างานผ่าน LINE OA ได้ทันที ตอบกลับรวดเร็วภายใน 5 นาที</p>
+                <a
+                  href={LINE_OA_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#06C755] hover:bg-[#05b34c] text-white rounded-lg text-sm font-semibold transition-colors w-full justify-center"
+                >
+                  <MessageCircle className="w-4 h-4" /> เพิ่มเพื่อน LINE @SIRINX
+                </a>
+              </motion.div>
+
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
                 className="p-6 rounded-xl border border-border-accent bg-accent-glow">
                 <Calculator className="w-6 h-6 text-accent-primary mb-3" />
-                <h3 className="font-display font-semibold text-foreground mb-2">ยังไม่แน่ใจขนาดระบบ?</h3>
+                <h3 className="font-display font-semibold text-foreground mb-2">ยังไม่แน่ใจ?</h3>
                 <p className="text-sm text-text-secondary mb-4">ใช้เครื่องมือคำนวณขั้นสูงของ SIRINX เพื่อประเมินขนาดระบบ ผลตอบแทน และระยะเวลาคืนทุนเบื้องต้น</p>
                 <Link href="/assessment" className="inline-flex items-center gap-2 text-sm font-medium text-accent-primary hover:underline">
                   คำนวณระบบโซลาร์ <ArrowRight className="w-4 h-4" />
