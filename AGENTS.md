@@ -46,12 +46,16 @@ Both properties are owned by Pitoon Yingyosruangrong.
 ### Target Architecture (Executive Summary)
 | Layer | Technology | Purpose |
 |-------|-----------|----------|
-| Frontend | Next.js (App Router) | SEO-friendly, responsive |
-| Admin | Payload CMS | Headless CMS, Draft/Publish, RBAC |
-| Data | Supabase | Postgres DB, Auth, Storage, Edge Functions |
-| Automation | n8n (self-hosted) | Form→CRM→Alerts workflow |
-| Testing | Playwright | Cross-browser automated tests |
-| Agent | Codex (GPT-5.3) + OMX + Manus | AI-powered development & maintenance |
+| Frontend | React 19 + Tailwind 4 + shadcn/ui | SPA with SSR-ready structure |
+| Backend | Express 4 + tRPC 11 | Type-safe API with Superjson |
+| Database | MySQL/TiDB (Drizzle ORM) | Leads, Blog CMS, Projects, Users |
+| Auth | Manus OAuth + JWT | Role-based access (admin/user) |
+| Storage | S3 (Manus built-in) | File uploads, media assets |
+| LLM | Manus Forge API | AI-powered features (Solar Assessment, auto-response) |
+| Automation | tRPC procedures + Owner Notification | Lead routing, alerts |
+| LINE | LINE OA + Webhook | Thai customer communication |
+| Testing | Vitest | Unit tests for API routes |
+| Agent | Manus AI Platform | AI-powered development & maintenance |
 
 ### Data Model Collections
 `pages`, `services`, `industries`, `projects`, `strategy_assets`, `media`, `executive`, `certificates`, `leads`, `qa_reports`, `daily_ops_logs`
@@ -83,26 +87,44 @@ Both properties are owned by Pitoon Yingyosruangrong.
 
 | Layer | Technology |
 |-------|-----------|
-| Framework | React 19 + TypeScript + Vite |
+| Frontend | React 19 + TypeScript + Vite |
+| Backend | Express 4 + tRPC 11 + Superjson |
+| Database | MySQL/TiDB + Drizzle ORM |
+| Auth | Manus OAuth + JWT + Role-based (admin/user) |
 | Styling | Tailwind CSS 4 + shadcn/ui |
 | Animation | Framer Motion |
 | Routing | Wouter |
 | Fonts | Space Grotesk (display) + IBM Plex Sans Thai (body) |
 | Theme | Dark-first (Navy + Cyan + Amber), CSS Variables in `client/src/index.css` |
+| Storage | S3 (Manus built-in helpers) |
+| Testing | Vitest |
 | Hosting | Manus Platform (built-in hosting with custom domain) |
 
 ### Project Structure
 ```
 client/
   src/
-    pages/          ← Page-level components (Home, About, Solutions, Industries, Projects, Strategy, Contact, etc.)
-    components/     ← Reusable UI (Layout, ErrorBoundary, shadcn/ui/*)
+    _core/hooks/    ← useAuth (authentication hook)
+    pages/          ← Page-level components (Home, About, Solutions, Industries, Projects, Strategy, Contact, Admin, etc.)
+    components/     ← Reusable UI (Layout, DashboardLayout, ErrorBoundary, shadcn/ui/*)
     contexts/       ← ThemeContext
     hooks/          ← useMobile, useComposition, usePersistFn
-    lib/            ← utils
+    lib/            ← utils, trpc client, blogData
     App.tsx         ← Routes & top-level layout
-    main.tsx        ← React entry point
+    main.tsx        ← React entry point + tRPC provider
     index.css       ← Global design tokens & theme
+server/
+  _core/            ← Framework plumbing (OAuth, context, LLM, notification, etc.)
+  routers.ts        ← tRPC procedures (auth + features)
+  db.ts             ← Query helpers (reuse across procedures)
+  storage.ts        ← S3 file storage helpers
+drizzle/
+  schema.ts         ← Database tables & types
+  relations.ts      ← Table relations
+  migrations/       ← Generated migrations
+shared/
+  const.ts          ← Shared constants
+  types.ts          ← Shared types
 ```
 
 ---
@@ -346,25 +368,30 @@ SIRINX Full Automation Stack
 
 ### Implementation Phases
 
-**Phase 1 — Current (Static Frontend)**: Complete corporate website with all pages, real data, CDN assets, responsive design, SEO basics. **STATUS: ACTIVE**
+**Phase 1 — Static Frontend**: Complete corporate website with all pages, real data, CDN assets, responsive design, SEO basics. **STATUS: COMPLETE**
 
-**Phase 2 — Backend Upgrade** (requires `webdev_add_feature web-db-user`):
-- Database for leads, projects, blog posts
-- User authentication for admin panel
-- API endpoints for form submissions
-- Server-side rendering for SEO
+**Phase 2 — Full-Stack Upgrade** (web-db-user enabled):
+- Database schema: leads, blog_posts, projects, contact_submissions **STATUS: ACTIVE**
+- tRPC API routes with zod validation
+- Admin Panel with DashboardLayout (role-based access)
+- Lead Management dashboard
+- Blog CMS (draft/publish workflow)
+- LINE OA button + webhook integration
+- Owner notification on new leads
+- Vitest tests for all API routes
 
-**Phase 3 — Automation Layer**:
-- n8n integration for workflow automation
-- Headless CMS for content management
-- Automated lead routing and notifications
+**Phase 3 — Automation & AI Enhancement**:
+- AI-powered Solar Assessment enhancement (using LLM)
+- LINE OA auto-response chatbot
+- Content automation pipeline
+- Interactive charts in Admin dashboard
+- Lead analytics and conversion tracking
+
+**Phase 4 — Scale & Optimize**:
 - SEO monitoring and reporting
-
-**Phase 4 — AI Enhancement**:
-- AI-powered Solar Assessment (using LLM)
-- Chatbot for customer inquiries
-- Automated content generation pipeline
-- Predictive analytics for energy savings
+- Performance optimization
+- A/B testing for lead conversion
+- Multi-language support (TH/EN)
 
 ---
 
@@ -502,8 +529,8 @@ Report findings and fixes made. Do not ask for clarification — make profession
 
 ---
 
-*Last updated: 2026-04-12 | Version: 4.0 | Author: SIRINX Engineering Copilot*
-*Incorporates: Executive Summary PDF, Deep Research (Top 100 Thai+Global Solar), SWOT Analysis, Digital Marketing Toolkit, BESS 30-100% update, BoomBigNose YouTube insights (n8n, OpenClaw, Claude Code, RAG, MCP, LINE integration), Photo Classification (22 marketing materials separated from real projects)*
+*Last updated: 2026-04-12 | Version: 5.0 | Author: SIRINX Engineering Copilot*
+*Incorporates: v4.0 content + Full-Stack Upgrade (tRPC + Drizzle + Manus Auth) + Knowledge Extraction (Interactive Dashboards, Spec-Driven Development, Self-Improving Loop, LINE OA Priority, Production-Grade Standards)*
 
 ---
 
@@ -533,3 +560,25 @@ Report findings and fixes made. Do not ask for clarification — make profession
 3. Obsidian knowledge base (internal efficiency)
 4. Claude Code integration (development velocity)
 5. Content automation pipeline (marketing scale)
+
+---
+
+## 17. Knowledge Extraction — Applied Principles (v5.0)
+
+### Spec-Driven Development
+จาก Addy Osmani's agent-skills framework: ทุก feature ต้องผ่าน plan → execute → verify → complete ห้ามข้ามขั้นตอน ห้ามหาข้ออ้างไม่เขียน test (Anti-Rationalization) ทุก API route ต้องมี vitest test ก่อน deliver
+
+### Interactive Data Visualization
+จากแนวคิด "อย่าสร้างแค่กราฟ สร้างเครื่องมือให้คนเล่นกับข้อมูล": Solar ROI Calculator ควรเป็น interactive chart ที่ปรับค่าได้ real-time Admin Dashboard ควรมี lead analytics แบบ interactive
+
+### Self-Improving Loop (CODE Framework)
+Capture → Organize → Distill → Express: Lead form → DB → Auto-categorize → Admin summary → Owner notification Blog draft → DB → Category/tags → SEO metadata → Publish
+
+### Production-Grade Standards
+- Beyonce Rule: ถ้าคุณชอบมัน ก็ต้องเขียน test ให้มัน
+- Milestone-based workflow: แบ่งงานเป็น milestones ชัดเจน
+- Context management: Clear context ระหว่าง phases
+- Non-Negotiable Verification: "ดูเหมือนจะโอเค" ไม่ใช่คำตอบที่ผ่านเกณฑ์
+
+### LINE OA Priority (Thai Market)
+ตลาดไทยต้องมี LINE เป็น primary channel: ปุ่ม LINE ในหน้า Contact + floating button, Lead capture เมื่อ user เพิ่มเพื่อน, Owner notification เมื่อมี lead ใหม่

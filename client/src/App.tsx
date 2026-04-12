@@ -17,8 +17,8 @@ import Contact from "./pages/Contact";
 import SolarAssessment from "./pages/SolarAssessment";
 import Partner from "./pages/Partner";
 import Strategy from "./pages/Strategy";
-
 function Router() {
+  // make sure to consider if you need authentication for certain routes
   return (
     <Layout>
       <Switch>
