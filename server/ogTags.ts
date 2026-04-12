@@ -9,8 +9,8 @@
 const OG_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/sirinx-og-image-hbNko5JADXArPGo26hmGrN.png";
 
 const SITE_NAME = "SIRINX";
-const DEFAULT_TITLE = "SIRINX | ติดตั้งโซลาร์เซลล์ ลดค่าไฟ 30-100% คืนทุน 3-5 ปี — Solar, BESS, AI Energy";
-const DEFAULT_DESC = "ติดตั้งโซลาร์เซลล์สำหรับโรงงาน อาคาร โรงแรม ลดค่าไฟฟ้าได้จริง 30-100% พร้อมแบตเตอรี่กักเก็บพลังงาน (BESS) และระบบ AI จัดการพลังงานอัตโนมัติ คืนทุนใน 3-5 ปี อายุใช้งาน 25+ ปี นัดสำรวจหน้างานฟรี";
+const DEFAULT_TITLE = "SIRINX | Solar Carport ผลิตไฟฟ้าจากที่จอดรถ ลดค่าไฟ 30-100% คืนทุน 3-5 ปี พร้อม EV Charger & AI Energy";
+const DEFAULT_DESC = "เปลี่ยนที่จอดรถเป็นโรงไฟฟ้าพลังงานแสงอาทิตย์ — Solar Carport โดย SIRINX ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger พร้อม AI Energy Management ลดค่าไฟ 30-100% คืนทุน 3-5 ปี ดูแลตลอด 25 ปี นัดสำรวจหน้างานฟรี";
 
 // Route-specific metadata map — SEO/AEO promotional copy
 interface PageMeta {
@@ -21,8 +21,12 @@ interface PageMeta {
 
 const routeMetaMap: Record<string, PageMeta> = {
   "/": {
-    title: DEFAULT_TITLE,
-    description: DEFAULT_DESC,
+    title: "SIRINX | Solar Carport ผลิตไฟฟ้าจากที่จอดรถ ลดค่าไฟ 30-100% คืนทุน 3-5 ปี พร้อม EV Charger & AI Energy",
+    description: "เปลี่ยนที่จอดรถเป็นโรงไฟฟ้าพลังงานแสงอาทิตย์ — Solar Carport โดย SIRINX ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger พร้อม AI Energy Management ลดค่าไฟ 30-100% คืนทุน 3-5 ปี ดูแลตลอด 25 ปี นัดสำรวจหน้างานฟรี",
+  },
+  "/solar-carport": {
+    title: "Solar Carport โดย SIRINX | เปลี่ยนที่จอดรถเป็นโรงไฟฟ้า ผลิตไฟฟ้า+ร่มเงา+EV Charger",
+    description: "Solar Carport โครงสร้างหลังคาพลังงานแสงอาทิตย์ครบวงจร — ผลิตไฟฟ้าจากที่จอดรถ ให้ร่มเงารถยนต์ รองรับ EV Charging Station พร้อม BESS และ AI Energy Management ลดค่าไฟ 30-100% คืนทุน 3-5 ปี อายุใช้งาน 25+ ปี",
   },
   "/about": {
     title: "SIRINX คือใคร? บริษัทติดตั้งโซลาร์เซลล์ + AI Energy ครบวงจรของไทย",
@@ -41,8 +45,8 @@ const routeMetaMap: Record<string, PageMeta> = {
     description: "วิเคราะห์ความคุ้มค่าการลงทุนโซลาร์เซลล์ — ซื้อขาด, PPA จ่ายตามหน่วย, Leasing ผ่อน 0% พร้อมสิทธิประโยชน์ BOI ลดหย่อนภาษี 200% และค่าเสื่อมราคาเร่ง คืนทุนเร็วกว่าที่คิด",
   },
   "/projects": {
-    title: "ผลงานติดตั้งโซลาร์เซลล์จริง | ภาพโครงการ Solar Farm & Rooftop | SIRINX",
-    description: "ดูผลงานจริงจากโครงการที่ SIRINX ติดตั้ง — Rooftop Solar โรงงาน, Floating Solar อ่างเก็บน้ำ, Solar Farm Node พร้อมภาพถ่ายจริงจากหน้างานและตัวเลขผลประหยัดค่าไฟ",
+    title: "ผลงานติดตั้ง Solar Carport & โซลาร์เซลล์จริง | ภาพโครงการ | SIRINX",
+    description: "ดูผลงานจริงจากโครงการที่ SIRINX ติดตั้ง — Solar Carport, Rooftop Solar โรงงาน, Floating Solar อ่างเก็บน้ำ, Solar Farm Node พร้อมภาพถ่ายจริงจากหน้างานและตัวเลขผลประหยัดค่าไฟ",
   },
   "/strategy": {
     title: "วางแผนลดค่าไฟระยะยาว | กลยุทธ์ Solar + BESS + AI Energy | SIRINX",

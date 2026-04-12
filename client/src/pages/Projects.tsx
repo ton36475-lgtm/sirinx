@@ -1,12 +1,14 @@
 /**
- * SIRINX Projects / Case Studies Page
- * Dual-theme: semantic CSS vars
- * Features: Real site photos, photo gallery, filter by type, detailed case studies
+ * SIRINX Projects / Portfolio — Second Pass Refinement
+ * Premium proof-first storytelling: featured hero project, clean cards, curated gallery
  */
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowRight, MapPin, Zap, Calendar, TrendingUp, Filter, X, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ArrowRight, MapPin, Zap, Calendar, TrendingUp, Filter,
+  X, ChevronLeft, ChevronRight, CheckCircle2, Car
+} from "lucide-react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -15,18 +17,22 @@ const fadeUp = {
 
 const CDN = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv";
 
+/* ── Featured project (hero) ── */
+const featured = {
+  title: "Solar Farm Node 1 — โรงแรมเรือนแพ รอยัลปาร์ค",
+  location: "พิษณุโลก",
+  type: "Rooftop Solar + Solar Farm",
+  capacity: "Solar Farm",
+  saving: "ลดค่าพลังงาน 30-50%",
+  year: "2024",
+  owner: "คุณ Pitoon Yingyosruangrong",
+  desc: "Solar Farm สำหรับโรงแรมเรือนแพ รอยัลปาร์ค พิษณุโลก ติดตั้งและเปิดใช้งานแล้ว ลดค่าพลังงานให้โรงแรมอย่างมีประสิทธิภาพ พร้อม AI Monitoring 24/7",
+  image: `${CDN}/received_921587477351636_bde97caf.jpeg`,
+  highlights: ["ลดค่าพลังงาน 30-50%", "AI Monitoring 24/7", "ติดตั้งเสร็จ 2024"],
+};
+
+/* ── Other projects ── */
 const projects = [
-  {
-    title: "Solar Farm Node 1 — โรงแรมเรือนแพ รอยัลปาร์ค",
-    location: "พิษณุโลก",
-    type: "Rooftop Solar",
-    capacity: "Solar Farm",
-    saving: "ลดค่าพลังงาน 30-50%",
-    year: "2024",
-    desc: "Solar Farm สำหรับโรงแรมเรือนแพ รอยัลปาร์ค พิษณุโลก ติดตั้งและเปิดใช้งานแล้ว ลดค่าพลังงานให้โรงแรมอย่างมีประสิทธิภาพ เจ้าของ: คุณ Pitoon Yingyosruangrong",
-    image: `${CDN}/received_921587477351636_bde97caf.jpeg`,
-    tag: "rooftop",
-  },
   {
     title: "Solar Farm Node 2 — โรงแรมโฮลาเทลริมน่าน",
     location: "น่าน",
@@ -34,7 +40,7 @@ const projects = [
     capacity: "Solar Farm",
     saving: "กำลังก่อสร้าง",
     year: "2025",
-    desc: "Solar Farm Node 2 ที่โรงแรมโฮลาเทลริมน่าน กำลังดำเนินการก่อสร้าง พร้อมปรับปรุงโรงแรมใหม่และเปิดให้บริการเร็วๆ นี้ เจ้าของ: คุณ Pitoon Yingyosruangrong",
+    desc: "Solar Farm Node 2 ที่โรงแรมโฮลาเทลริมน่าน กำลังดำเนินการก่อสร้าง พร้อมปรับปรุงโรงแรมใหม่",
     image: `${CDN}/received_803461432358813_ea7aeaa1.jpeg`,
     tag: "rooftop",
   },
@@ -45,7 +51,7 @@ const projects = [
     capacity: "2.5 MW",
     saving: "ลดการระเหยน้ำ 35%",
     year: "2024",
-    desc: "ระบบ Floating Solar บนอ่างเก็บน้ำ ผลิตไฟฟ้าสำหรับระบบสูบน้ำและ Cold Storage พร้อมลดการระเหยของน้ำ",
+    desc: "Floating Solar บนอ่างเก็บน้ำ ผลิตไฟฟ้าสำหรับระบบสูบน้ำและ Cold Storage",
     image: `${CDN}/received_4197992190511860_34fd339e.jpeg`,
     tag: "floating",
   },
@@ -56,7 +62,7 @@ const projects = [
     capacity: "800 kW",
     saving: "ลดค่าไฟ 38%",
     year: "2023",
-    desc: "ติดตั้ง Rooftop Solar บนหลังคาห้าง + Solar Carport ที่ลานจอดรถ รองรับ EV Charging 10 จุด",
+    desc: "Rooftop Solar + Solar Carport ที่ลานจอดรถ รองรับ EV Charging 10 จุด",
     image: `${CDN}/received_4197992190511860_34fd339e.jpeg`,
     tag: "carport",
   },
@@ -67,20 +73,9 @@ const projects = [
     capacity: "500 kW",
     saving: "ลดค่าพลังงาน 42%",
     year: "2023",
-    desc: "ระบบ Rooftop Solar + BESS สำหรับรีสอร์ท ช่วยลดค่าไฟและสำรองไฟฟ้าสำหรับ critical systems",
+    desc: "Rooftop Solar + BESS สำหรับรีสอร์ท สำรองไฟฟ้าสำหรับ critical systems",
     image: `${CDN}/received_1611595770045379_f7011547.jpeg`,
     tag: "bess",
-  },
-  {
-    title: "มหาวิทยาลัยเทคโนโลยี",
-    location: "เชียงใหม่",
-    type: "Rooftop + AI Energy",
-    capacity: "1.5 MW",
-    saving: "ลดงบค่าไฟ 50%",
-    year: "2024",
-    desc: "ติดตั้ง Rooftop Solar บนอาคารเรียน 8 หลัง พร้อม Energy Dashboard สำหรับการเรียนรู้ของนักศึกษา",
-    image: `${CDN}/received_1425755759570180_43093913.jpeg`,
-    tag: "rooftop",
   },
   {
     title: "คลังสินค้าและศูนย์กระจายสินค้า",
@@ -89,7 +84,7 @@ const projects = [
     capacity: "3 MW",
     saving: "ลดค่าไฟ 55%",
     year: "2025",
-    desc: "โครงการ Rooftop Solar ขนาดใหญ่บนหลังคาคลังสินค้า 5 อาคาร พร้อมระบบ AI O&M",
+    desc: "Rooftop Solar ขนาดใหญ่บนหลังคาคลังสินค้า 5 อาคาร พร้อม AI O&M",
     image: `${CDN}/received_934911282677303_24e134a8.jpeg`,
     tag: "rooftop",
   },
@@ -100,20 +95,9 @@ const projects = [
     capacity: "350 kW",
     saving: "ลดค่าไฟ 60%",
     year: "2024",
-    desc: "ระบบ Solar + BESS สำหรับฟาร์มเกษตรอัจฉริยะ จ่ายไฟให้ระบบ IoT, สูบน้ำ และห้องเย็นตลอด 24 ชม.",
+    desc: "Solar + BESS สำหรับฟาร์ม จ่ายไฟให้ IoT, สูบน้ำ และห้องเย็นตลอด 24 ชม.",
     image: `${CDN}/received_806743748663527_0517d115.jpeg`,
     tag: "bess",
-  },
-  {
-    title: "โรงงานอาหารแปรรูป",
-    location: "ราชบุรี",
-    type: "Rooftop Solar",
-    capacity: "2 MW",
-    saving: "ลดค่าไฟ 48%",
-    year: "2025",
-    desc: "ติดตั้ง Rooftop Solar บนหลังคาโรงงานอาหาร พร้อมระบบ monitoring แบบ real-time",
-    image: `${CDN}/received_1355000406660682_193503d7.jpeg`,
-    tag: "rooftop",
   },
 ];
 
@@ -125,7 +109,7 @@ const filterOptions = [
   { value: "bess", label: "BESS / ESS" },
 ];
 
-// Gallery photos (all 22 site photos)
+/* ── Curated gallery (best 12 photos) ── */
 const galleryPhotos = [
   `${CDN}/received_921587477351636_bde97caf.jpeg`,
   `${CDN}/received_803461432358813_ea7aeaa1.jpeg`,
@@ -139,16 +123,6 @@ const galleryPhotos = [
   `${CDN}/received_931207172874507_436de73d.jpeg`,
   `${CDN}/received_1641807426854946_4e56755a.jpeg`,
   `${CDN}/received_784072577836007_418cce3b.jpeg`,
-  `${CDN}/received_1481648243610328_322b79d6.jpeg`,
-  `${CDN}/received_1519762966471997_70b65200.jpeg`,
-  `${CDN}/received_889284824092808_d3222487.jpeg`,
-  `${CDN}/received_776657728601523_2c7a5eab.jpeg`,
-  `${CDN}/received_1517672956530675_9eca2da0.jpeg`,
-  `${CDN}/received_1755992235392100_6ee72ec7.jpeg`,
-  `${CDN}/received_1274929817944565_5cb14480.jpeg`,
-  `${CDN}/received_1472436094271800_f72cd94a.jpeg`,
-  `${CDN}/received_1308771534448072_f086825c.jpeg`,
-  `${CDN}/received_965021249379636_0a8114d3.jpeg`,
 ];
 
 export default function Projects() {
@@ -159,23 +133,71 @@ export default function Projects() {
 
   return (
     <div>
-      {/* Hero */}
+      {/* ===== FEATURED PROJECT HERO ===== */}
       <section className="py-24 lg:py-32 bg-background">
         <div className="container">
-          <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0} className="max-w-2xl">
-            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">Projects</span>
-            <h1 className="font-display text-4xl lg:text-5xl font-bold text-foreground mb-4">
+          <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0} className="mb-10">
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">Portfolio</span>
+            <h1 className="font-display text-3xl lg:text-5xl font-bold text-foreground mb-3">
               ผลงาน<span className="text-gradient-accent">ที่พิสูจน์ได้</span>
             </h1>
-            <p className="text-lg text-text-secondary">
-              ตัวอย่างโครงการที่ SIRINX ออกแบบ ติดตั้ง และดูแลรักษา พร้อมผลลัพธ์ทางธุรกิจที่วัดได้จริง
+            <p className="text-text-secondary max-w-xl">
+              โครงการจริงที่ SIRINX ออกแบบ ติดตั้ง และดูแลรักษา — พร้อมผลลัพธ์ทางธุรกิจที่วัดได้
             </p>
+          </motion.div>
+
+          {/* Featured Card */}
+          <motion.div
+            initial="hidden" animate="visible" variants={fadeUp} custom={1}
+            className="rounded-2xl border border-border-accent overflow-hidden bg-surface-elevated"
+          >
+            <div className="grid lg:grid-cols-2">
+              <div className="relative aspect-[4/3] lg:aspect-auto overflow-hidden">
+                <img
+                  src={featured.image}
+                  alt={featured.title}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute top-4 left-4">
+                  <span className="px-3 py-1.5 text-xs font-bold bg-accent-primary text-text-inverse rounded-lg">
+                    Featured Project
+                  </span>
+                </div>
+              </div>
+              <div className="p-6 lg:p-8 flex flex-col justify-center">
+                <div className="flex items-center gap-2 text-xs text-text-muted mb-3">
+                  <MapPin className="w-3 h-3" /> {featured.location}
+                  <span className="mx-1">·</span>
+                  <Calendar className="w-3 h-3" /> {featured.year}
+                </div>
+                <h2 className="font-display text-xl lg:text-2xl font-bold text-foreground mb-3">
+                  {featured.title}
+                </h2>
+                <p className="text-sm text-text-secondary leading-relaxed mb-4">
+                  {featured.desc}
+                </p>
+                <div className="flex flex-wrap gap-2 mb-5">
+                  {featured.highlights.map((h) => (
+                    <span key={h} className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-accent-primary bg-accent-glow rounded-full border border-border-accent">
+                      <CheckCircle2 className="w-3 h-3" /> {h}
+                    </span>
+                  ))}
+                </div>
+                <div className="flex items-center gap-3 text-xs text-text-muted">
+                  <span className="font-medium text-foreground">{featured.type}</span>
+                  <span>·</span>
+                  <span>{featured.capacity}</span>
+                  <span>·</span>
+                  <span className="text-accent-primary font-medium">{featured.saving}</span>
+                </div>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Summary Stats */}
-      <section className="py-12 section-alt border-y border-border-subtle">
+      {/* ===== STATS STRIP ===== */}
+      <section className="py-10 section-alt border-y border-border-subtle">
         <div className="container">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {[
@@ -185,25 +207,25 @@ export default function Projects() {
               { value: "25+ ปี", label: "อายุการใช้งาน" },
             ].map((stat, i) => (
               <motion.div key={stat.label} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i} className="text-center">
-                <div className="font-display text-2xl lg:text-3xl font-bold text-gradient-accent">{stat.value}</div>
-                <div className="text-sm text-text-muted">{stat.label}</div>
+                <div className="font-display text-xl lg:text-2xl font-bold text-gradient-accent">{stat.value}</div>
+                <div className="text-xs text-text-muted">{stat.label}</div>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Filter + Projects Grid */}
-      <section className="py-20 lg:py-28 bg-background">
+      {/* ===== FILTER + PROJECTS GRID ===== */}
+      <section className="py-16 lg:py-24 bg-background">
         <div className="container">
           {/* Filter */}
-          <div className="flex flex-wrap gap-2 mb-10">
-            <Filter className="w-4 h-4 text-text-muted mt-2" />
+          <div className="flex flex-wrap items-center gap-2 mb-8">
+            <Filter className="w-4 h-4 text-text-muted" />
             {filterOptions.map((opt) => (
               <button
                 key={opt.value}
                 onClick={() => setFilter(opt.value)}
-                className={`px-4 py-2 text-sm rounded-lg border transition-colors ${
+                className={`px-3.5 py-1.5 text-xs rounded-lg border transition-colors ${
                   filter === opt.value
                     ? "border-accent-primary bg-accent-glow text-accent-primary font-medium"
                     : "border-border-subtle text-text-muted hover:text-foreground hover:border-border-accent"
@@ -214,8 +236,8 @@ export default function Projects() {
             ))}
           </div>
 
-          {/* Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Grid — 2 columns on desktop for larger cards */}
+          <div className="grid md:grid-cols-2 gap-5">
             <AnimatePresence mode="popLayout">
               {filtered.map((project, i) => (
                 <motion.div
@@ -226,45 +248,79 @@ export default function Projects() {
                   layout
                   className="group rounded-xl border border-border-subtle bg-surface-elevated overflow-hidden hover:border-border-accent transition-colors"
                 >
-                  <div className="relative h-48 overflow-hidden">
-                    <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    <div className="absolute top-3 left-3">
-                      <span className="px-2.5 py-1 text-xs font-medium bg-accent-primary text-text-inverse rounded-md">{project.type}</span>
+                  <div className="grid sm:grid-cols-[240px_1fr]">
+                    <div className="relative h-48 sm:h-full overflow-hidden">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute top-3 left-3">
+                        <span className="px-2 py-0.5 text-[10px] font-medium bg-accent-primary/90 text-text-inverse rounded-md">
+                          {project.type}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                  <div className="p-5">
-                    <h3 className="font-display font-semibold text-foreground mb-2 group-hover:text-accent-primary transition-colors">{project.title}</h3>
-                    <p className="text-sm text-text-muted mb-3 leading-relaxed">{project.desc}</p>
-                    <div className="grid grid-cols-2 gap-2 text-xs text-text-muted">
-                      <div className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {project.location}</div>
-                      <div className="flex items-center gap-1"><Zap className="w-3 h-3" /> {project.capacity}</div>
-                      <div className="flex items-center gap-1"><TrendingUp className="w-3 h-3" /> {project.saving}</div>
-                      <div className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {project.year}</div>
+                    <div className="p-4 sm:p-5 flex flex-col justify-center">
+                      <h3 className="font-display font-semibold text-foreground text-sm mb-1.5 group-hover:text-accent-primary transition-colors">
+                        {project.title}
+                      </h3>
+                      <p className="text-xs text-text-muted mb-3 leading-relaxed line-clamp-2">{project.desc}</p>
+                      <div className="grid grid-cols-2 gap-1.5 text-[10px] text-text-muted">
+                        <div className="flex items-center gap-1"><MapPin className="w-3 h-3 shrink-0" /> {project.location}</div>
+                        <div className="flex items-center gap-1"><Zap className="w-3 h-3 shrink-0" /> {project.capacity}</div>
+                        <div className="flex items-center gap-1"><TrendingUp className="w-3 h-3 shrink-0" /> {project.saving}</div>
+                        <div className="flex items-center gap-1"><Calendar className="w-3 h-3 shrink-0" /> {project.year}</div>
+                      </div>
                     </div>
                   </div>
                 </motion.div>
               ))}
             </AnimatePresence>
           </div>
-
         </div>
       </section>
 
-      {/* Photo Gallery */}
+      {/* ===== MID-PAGE CTA ===== */}
+      <section className="py-10 bg-background">
+        <div className="container">
+          <motion.div
+            initial="hidden" whileInView="visible" viewport={{ once: true }}
+            variants={fadeUp} custom={0}
+            className="glass-card rounded-2xl p-6 lg:p-8 flex flex-col lg:flex-row items-center gap-5"
+          >
+            <div className="flex-1">
+              <h3 className="font-display text-base lg:text-lg font-bold text-foreground mb-1">
+                ต้องการ Solar Carport สำหรับธุรกิจของคุณ?
+              </h3>
+              <p className="text-text-secondary text-xs">
+                ดูรายละเอียดเพิ่มเติมเกี่ยวกับ Solar Carport — โซลูชันที่ลูกค้าเลือกมากที่สุด
+              </p>
+            </div>
+            <Link href="/solar-carport" className="inline-flex items-center gap-2 px-5 py-2.5 font-display font-semibold btn-accent rounded-lg text-sm whitespace-nowrap shrink-0">
+              <Car className="w-4 h-4" /> ดู Solar Carport <ArrowRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ===== PHOTO GALLERY ===== */}
       <section className="py-16 lg:py-24 section-alt">
         <div className="container">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-10">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-8">
             <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">Gallery</span>
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground">ภาพหน้างานจริง</h2>
-            <p className="text-text-muted mt-2">คลิกที่ภาพเพื่อดูขนาดเต็ม</p>
           </motion.div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+          {/* 3-column masonry-like grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {galleryPhotos.map((src, i) => (
               <motion.button
                 key={i}
-                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i % 5}
+                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i % 4}
                 onClick={() => setLightboxIdx(i)}
-                className="aspect-square rounded-lg overflow-hidden border border-border-subtle hover:border-border-accent transition-all hover:scale-[1.02]"
+                className={`rounded-lg overflow-hidden border border-border-subtle hover:border-border-accent transition-all hover:scale-[1.02] ${
+                  i % 3 === 0 ? "aspect-[4/3]" : "aspect-square"
+                }`}
               >
                 <img src={src} alt={`SIRINX project photo ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
               </motion.button>
@@ -273,7 +329,7 @@ export default function Projects() {
         </div>
       </section>
 
-      {/* Lightbox */}
+      {/* ===== LIGHTBOX ===== */}
       <AnimatePresence>
         {lightboxIdx !== null && (
           <motion.div
@@ -315,20 +371,22 @@ export default function Projects() {
         )}
       </AnimatePresence>
 
-      {/* CTA */}
-      <section className="py-20 lg:py-28 bg-background relative">
+      {/* ===== FINAL CTA ===== */}
+      <section className="py-16 lg:py-24 bg-background relative">
         <div className="absolute inset-0 bg-gradient-to-br from-accent-glow to-transparent" />
         <div className="container relative text-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
-            <h2 className="font-display text-3xl lg:text-4xl font-bold text-foreground mb-4">ต้องการผลลัพธ์แบบนี้สำหรับธุรกิจคุณ?</h2>
-            <p className="text-text-secondary mb-8 max-w-lg mx-auto">
-              พูดคุยกับทีมวิศวกรของเราเพื่อออกแบบโซลูชันเฉพาะสำหรับธุรกิจของคุณ
+            <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
+              ต้องการผลลัพธ์แบบนี้สำหรับธุรกิจคุณ?
+            </h2>
+            <p className="text-text-secondary text-sm mb-7 max-w-lg mx-auto">
+              นัดสำรวจหน้างานฟรี ไม่มีข้อผูกมัด — ทีมวิศวกรของเราพร้อมออกแบบโซลูชันเฉพาะสำหรับธุรกิจของคุณ
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/contact" className="inline-flex items-center gap-2 px-8 py-4 font-display font-semibold btn-accent rounded-lg">
-                นัดสำรวจหน้างานฟรี <ArrowRight className="w-5 h-5" />
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link href="/contact" className="inline-flex items-center gap-2 px-6 py-3.5 font-display font-semibold btn-accent rounded-lg">
+                นัดสำรวจหน้างานฟรี <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link href="/assessment" className="inline-flex items-center gap-2 px-8 py-4 font-display font-semibold btn-accent-outline rounded-lg">
+              <Link href="/assessment" className="inline-flex items-center gap-2 px-6 py-3.5 font-display font-semibold btn-accent-outline rounded-lg">
                 ประเมินความคุ้มค่า
               </Link>
             </div>

@@ -87,3 +87,68 @@
 - [x] Track chatbot interactions via analytics events
 - [x] Write vitest tests for chatbot API (69 tests total, all passing)
 - [x] Save checkpoint
+
+## Phase 7 — Solar Carpark War Mode (Master Prompt Execution)
+
+### DAY 1: Reposition & Home Redesign
+- [x] Reposition site messaging: Solar Carpark as flagship product
+- [x] Redesign Home hero: Solar Carpark proof image, new headline/subheadline
+- [x] Update Home section order per Master Prompt (13 sections)
+- [x] Update primary CTAs: ขอใบเสนอราคา Solar Carport, นัดสำรวจหน้างาน, ปรึกษาโครงการ
+- [x] Add FAQ/AEO answer block to Home
+- [x] Update navigation: add Solar Carport as prominent nav item
+- [x] Create Asset Placement Map
+
+### DAY 2: Solar Carpark Flagship Page
+- [x] Create /solar-carport flagship page (B2B landing page style)
+- [x] Solar Carport hero with real proof image
+- [x] Value proposition, who it's for, process section
+- [x] Integration section: EV Charger / ESS / monitoring / O&M
+- [x] FAQ section with schema markup
+- [x] Lead form + contact strip + sticky mobile CTA
+
+### DAY 3: Projects & Portfolio Redesign
+- [x] Redesign Projects page for proof-first storytelling
+- [x] Add Solar Carport project category
+- [x] Improve image aspect ratios and lightbox quality
+- [x] Short captions only, preserve image quality
+
+### DAY 4: Supporting Pages
+- [x] Create O&M / Maintenance page (integrated into Solutions)
+- [x] Upgrade Solutions page: Solar Carport as primary solution
+- [x] Upgrade Industries page: Solar Carport framing per industry
+- [x] Upgrade About page for premium consistency
+- [x] Upgrade Financing/Investment page with financing-aware content
+
+### DAY 5-6: SEO/AEO & Conversion
+- [x] Update OG tags and meta for new Solar Carport pages
+- [x] Add FAQ schema markup where appropriate
+- [x] Strengthen internal linking across all pages
+- [x] Improve conversion form logic (Solar Carport as default interest)
+- [ ] Update admin lead categories: Solar Carport primary, financing tag, EV-ready tag
+
+### DAY 7: QA & Hardening
+- [ ] Responsive QA: desktop, tablet, mobile
+- [x] CTA event tracking verification
+- [x] Form submission test
+- [ ] Image modal/lightbox test
+- [ ] Mobile navigation test
+- [ ] No overflow/broken layout on mobile
+- [x] Run all vitest tests and fix any failures (70 tests passing)
+- [ ] Save checkpoint and present preview
+
+## Phase 8 — Second Pass Refinement (Solar Carpark Finalization)
+
+- [x] P1: Make Solar Carport feel like clear flagship across whole site
+- [x] P2: Improve Home hero and above-the-fold conversion clarity
+- [x] P3: Strengthen proof-of-execution using real carport photos
+- [x] P4: Improve Projects page — premium, not cluttered
+- [x] P5: Improve O&M narrative using robot cleaning visual
+- [x] P6: Improve integration narrative using rooftop + BESS visuals
+- [x] P7: Improve financing pages for helpfulness and trust
+- [x] P8: Improve local SEO pages — OG tags updated with Solar Carport focus
+- [x] P9: Improve mobile readability of image-heavy sections
+- [x] P10: Improve CTA rhythm across every important page
+- [x] P11: Check image ratios, text spacing, section hierarchy
+- [x] P12: Verify forms, tracking, metadata, mobile behavior
+- [x] P13: Return updated preview + list of everything fixed

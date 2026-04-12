@@ -16,25 +16,23 @@ const DBD_VERIFIED_URL = "https://d2xsxph8kpxj0f.cloudfront.net/3105196635415254
 
 const navLinks = [
   { href: "/", label: "หน้าหลัก" },
-  { href: "/about", label: "เกี่ยวกับเรา" },
+  { href: "/solar-carport", label: "Solar Carport", featured: true },
   {
     href: "/solutions",
     label: "โซลูชัน",
     children: [
+      { href: "/solar-carport", label: "Solar Carport" },
       { href: "/solutions#rooftop", label: "Rooftop Solar" },
       { href: "/solutions#floating", label: "Floating Solar" },
-      { href: "/solutions#carport", label: "Solar Carport" },
       { href: "/solutions#bess", label: "BESS / ESS" },
       { href: "/solutions#ai-energy", label: "AI Energy Management" },
-      { href: "/solutions#ai-om", label: "Physical AI O&M" },
-      { href: "/solutions#financing", label: "Co-investment" },
+      { href: "/solutions#ai-om", label: "O&M ดูแลระบบ" },
     ],
   },
   { href: "/industries", label: "อุตสาหกรรม" },
-  { href: "/investment", label: "การลงทุน" },
   { href: "/projects", label: "ผลงาน" },
-  { href: "/strategy", label: "กลยุทธ์" },
-  { href: "/blog", label: "บทความ" },
+  { href: "/investment", label: "การลงทุน" },
+  { href: "/about", label: "เกี่ยวกับเรา" },
 ];
 
 function Navbar() {
@@ -98,7 +96,7 @@ function Navbar() {
                     : "text-text-secondary hover:text-foreground"
                 }`}
               >
-                {link.label}
+                <span className={link.featured ? "text-accent-primary font-semibold" : ""}>{link.label}</span>
                 {link.children && <ChevronDown className="w-3.5 h-3.5" />}
               </Link>
               {link.children && dropdownOpen === link.href && (
@@ -204,14 +202,14 @@ function Navbar() {
               ))}
               <div className="pt-4 space-y-2 border-t border-border-subtle">
                 <Link
-                  href="/assessment"
-                  className="block text-center btn-accent-outline px-4 py-3 text-sm font-medium rounded-lg"
+                  href="/solar-carport"
+                  className="block text-center btn-accent px-4 py-3 text-sm font-semibold rounded-lg"
                 >
-                  ประเมินโซลาร์
+                  Solar Carport — Flagship
                 </Link>
                 <Link
                   href="/contact"
-                  className="block text-center btn-accent px-4 py-3 text-sm font-medium rounded-lg"
+                  className="block text-center btn-accent-outline px-4 py-3 text-sm font-medium rounded-lg"
                 >
                   ขอใบเสนอราคา
                 </Link>
@@ -226,11 +224,12 @@ function Navbar() {
 
 const footerLinks = {
   โซลูชัน: [
+    { href: "/solar-carport", label: "Solar Carport" },
     { href: "/solutions#rooftop", label: "Rooftop Solar" },
     { href: "/solutions#floating", label: "Floating Solar" },
-    { href: "/solutions#carport", label: "Solar Carport" },
     { href: "/solutions#bess", label: "BESS / ESS" },
     { href: "/solutions#ai-energy", label: "AI Energy Management" },
+    { href: "/solutions#ai-om", label: "O&M ดูแลระบบ" },
   ],
   อุตสาหกรรม: [
     { href: "/industries#manufacturing", label: "โรงงาน" },
@@ -255,7 +254,7 @@ function Footer() {
       {/* Subtle gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-accent-glow opacity-30 pointer-events-none" />
 
-      <div className="container py-16 relative z-10">
+      <div className="container py-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand — Real SIRINX info */}
           <div className="lg:col-span-2">
@@ -329,7 +328,7 @@ function Footer() {
         </div>
 
         {/* Certification Badges — DBD Registered, Thailand Trust Mark */}
-        <div className="mt-12 pt-8 border-t border-border-subtle">
+        <div className="mt-8 pt-6 border-t border-border-subtle">
           <div className="flex flex-col items-center gap-4 mb-8">
             <p className="text-xs text-text-muted tracking-wider uppercase font-medium">Certified & Trusted</p>
             <div className="flex flex-wrap items-center justify-center gap-6">

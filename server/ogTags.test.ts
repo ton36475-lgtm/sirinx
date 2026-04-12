@@ -2,12 +2,20 @@ import { describe, it, expect } from "vitest";
 import { getPageMeta, injectOgTags } from "./ogTags";
 
 describe("getPageMeta", () => {
-  it("returns SEO-focused meta for homepage", () => {
+  it("returns Solar Carport-focused meta for homepage", () => {
     const meta = getPageMeta("/");
-    expect(meta.title).toContain("ติดตั้งโซลาร์เซลล์");
+    expect(meta.title).toContain("Solar Carport");
     expect(meta.title).toContain("ลดค่าไฟ");
-    expect(meta.description).toContain("โรงงาน");
-    expect(meta.description).toContain("BESS");
+    expect(meta.description).toContain("Solar Carport");
+    expect(meta.description).toContain("EV Charger");
+  });
+
+  it("returns dedicated meta for /solar-carport", () => {
+    const meta = getPageMeta("/solar-carport");
+    expect(meta.title).toContain("Solar Carport");
+    expect(meta.title).toContain("SIRINX");
+    expect(meta.description).toContain("ผลิตไฟฟ้า");
+    expect(meta.description).toContain("EV Charging");
   });
 
   it("returns promotional meta for /contact", () => {
@@ -81,10 +89,10 @@ describe("getPageMeta", () => {
     expect(meta.title).toContain("โซลาร์เซลล์");
   });
 
-  it("returns default SEO meta for unknown routes", () => {
+  it("returns default Solar Carport meta for unknown routes", () => {
     const meta = getPageMeta("/unknown-page");
-    expect(meta.title).toContain("ติดตั้งโซลาร์เซลล์");
-    expect(meta.description).toContain("ลดค่าไฟฟ้าได้จริง");
+    expect(meta.title).toContain("Solar Carport");
+    expect(meta.description).toContain("Solar Carport");
   });
 });
 

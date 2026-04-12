@@ -30,7 +30,7 @@ const contactChannels = [
 ];
 
 const interestOptions = [
-  "Rooftop Solar", "Floating Solar", "Solar Carport", "BESS / ESS",
+  "Solar Carport", "Rooftop Solar", "Floating Solar", "BESS / ESS",
   "AI Energy Management", "O&M Service", "Co-investment / PPA", "ปรึกษาทั่วไป",
 ];
 
@@ -150,14 +150,14 @@ export default function Contact() {
   return (
     <div>
       {/* Hero */}
-      <section className="py-24 lg:py-32 bg-background">
+      <section className="py-16 lg:py-24 bg-background">
         <div className="container">
           <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0} className="max-w-2xl">
             <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">Contact Us</span>
-            <h1 className="font-display text-4xl lg:text-5xl font-bold text-foreground mb-4">
+            <h1 className="font-display text-3xl lg:text-4xl font-bold text-foreground mb-3">
               เริ่มต้น<span className="text-gradient-accent">ลดค่าพลังงาน</span>วันนี้
             </h1>
-            <p className="text-lg text-text-secondary leading-relaxed">
+            <p className="text-text-secondary leading-relaxed">
               นัดสำรวจหน้างานฟรี ไม่มีข้อผูกมัด ทีมวิศวกรพร้อมออกแบบระบบที่เหมาะสมกับธุรกิจของคุณ
             </p>
           </motion.div>
@@ -195,7 +195,7 @@ export default function Contact() {
       </section>
 
       {/* Main Form Section */}
-      <section className="py-16 lg:py-24 section-alt">
+      <section className="py-12 lg:py-16 section-alt">
         <div className="container">
           <div className="grid lg:grid-cols-[1fr_380px] gap-10">
             {/* Form */}
@@ -336,7 +336,7 @@ export default function Contact() {
                   {[
                     { icon: Shield, text: "สำรวจหน้างานฟรี ไม่มีข้อผูกมัด" },
                     { icon: FileText, text: "ใบเสนอราคาโปร่งใส ไม่มีค่าใช้จ่ายแอบแฝง" },
-                    { icon: Users, text: "ทีมวิศวกรมืออาชีพ ประสบการณ์ 150+ โครงการ" },
+                    { icon: Users, text: "ทีมวิศวกรมืออาชีพ" },
                     { icon: Zap, text: "ดูแลระบบตลอดอายุ 25 ปี" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3">
