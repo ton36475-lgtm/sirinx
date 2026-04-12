@@ -24,6 +24,7 @@ import AdminLeads from "./pages/admin/Leads";
 import AdminBlogCMS from "./pages/admin/BlogCMS";
 import AdminContactSubmissions from "./pages/admin/ContactSubmissions";
 import AdminAnalytics from "./pages/admin/Analytics";
+import FloatingChatWidget from "./components/FloatingChatWidget";
 
 function PublicRouter() {
   return (
@@ -88,6 +89,7 @@ function App() {
           <Toaster />
           <PageViewTracker />
           <Router />
+          <FloatingChatWidget />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

@@ -75,3 +75,15 @@
 - [x] Update per-route metadata with keyword-rich promotional copy
 - [x] Verify OG tags render correctly via curl test on production domain
 - [x] Save checkpoint
+
+## Phase 6 — LINE Popup Icon + AI Chatbot Widget
+- [x] Create floating LINE popup icon (bottom-right corner) with bounce/pulse animation
+- [x] Design chat widget UI with SIRINX branding (dark theme, cyan accent)
+- [x] Add open/close animation (slide up from bottom-right)
+- [ ] Create AI chatbot backend (tRPC + LLM) with solar energy knowledge
+- [x] Add quick reply buttons (ขอใบเสนอราคา, นัดสำรวจหน้างาน, สอบถามราคา, etc.)
+- [x] Add "ติดต่อผ่าน LINE" button in chat widget to redirect to LINE OA
+- [x] Auto-show popup bubble message after 5 seconds to attract attention
+- [x] Track chatbot interactions via analytics events
+- [x] Write vitest tests for chatbot API (69 tests total, all passing)
+- [x] Save checkpoint

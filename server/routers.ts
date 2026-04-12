@@ -346,6 +346,84 @@ const analyticsRouter = router({
     }),
 });
 
+// ==================== CHATBOT ROUTER ====================
+
+import { invokeLLM } from "./_core/llm";
+
+const SIRINX_SYSTEM_PROMPT = `คุณคือ SIRINX Assistant — ผู้ช่วย AI ของบริษัท SIRINX (Solar Digital Agentic Company)
+บริษัทให้บริการออกแบบ ติดตั้ง และดูแลระบบพลังงานแสงอาทิตย์ครบวงจรในประเทศไทย
+
+บริการหลัก:
+- Rooftop Solar: ติดตั้งแผงโซลาร์บนหลังคาโรงงาน อาคาร โรงแรม ลดค่าไฟ 30-100%
+- Floating Solar: โซลาร์ลอยน้ำสำหรับอ่างเก็บน้ำและบ่อน้ำอุตสาหกรรม
+- Solar Carport: เปลี่ยนที่จอดรถเป็นโรงไฟฟ้า รองรับ EV Charging
+- BESS (Battery Energy Storage System): แบตเตอรี่กักเก็บพลังงาน ลด demand charge
+- AI Energy Management: ระบบ AI วิเคราะห์และเพิ่มประสิทธิภาพการใช้พลังงาน real-time
+- Physical AI O&M: ดูแลรักษาระบบด้วย predictive maintenance
+
+ข้อมูลสำคัญ:
+- คืนทุนเฉลี่ย 3-5 ปี
+- อายุการใช้งาน 25+ ปี
+- System Uptime 99.5%
+- รองรับสิทธิ์ BOI ลดหย่อนภาษี 200% และค่าเสื่อมราคาเร่ง
+- รูปแบบการลงทุน: ซื้อขาด, PPA (จ่ายตามหน่วย), Leasing (ผ่อน 0%)
+
+กฎ:
+1. ตอบเป็นภาษาไทยเสมอ ยกเว้นคำศัพท์เทคนิค
+2. ตอบกระชับ ไม่เกิน 150 คำ
+3. เมื่อลูกค้าสนใจจริงจัง ให้แนะนำนัดสำรวจหน้างานฟรี หรือติดต่อผ่าน LINE @sirinx
+4. อย่าให้ราคาที่แน่นอน เพราะขึ้นกับขนาดระบบและสถานที่ ให้แนะนำนัดสำรวจแทน
+5. ถ้าคำถามไม่เกี่ยวกับพลังงาน/โซลาร์ ให้ตอบสั้นๆ แล้วนำกลับมาเรื่องบริการ
+6. ใช้น้ำเสียงเป็นมิตร มืออาชีพ ไม่ทางการเกินไป`;
+
+const chatbotRouter = router({
+  /** Public: Chat with SIRINX AI assistant */
+  chat: publicProcedure
+    .input(
+      z.object({
+        messages: z.array(
+          z.object({
+            role: z.enum(["user", "assistant", "system"]),
+            content: z.string(),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ input }) => {
+      // Build message history with system prompt
+      const llmMessages = [
+        { role: "system" as const, content: SIRINX_SYSTEM_PROMPT },
+        ...input.messages
+          .filter((m) => m.role !== "system")
+          .slice(-10) // Keep last 10 messages for context window
+          .map((m) => ({
+            role: m.role as "user" | "assistant",
+            content: m.content,
+          })),
+      ];
+
+      try {
+        const result = await invokeLLM({
+          messages: llmMessages,
+          maxTokens: 500,
+        });
+
+        const reply =
+          typeof result.choices[0]?.message?.content === "string"
+            ? result.choices[0].message.content
+            : "ขออภัยครับ ไม่สามารถตอบได้ในขณะนี้ กรุณาติดต่อเราผ่าน LINE @sirinx";
+
+        return { reply };
+      } catch (error) {
+        console.error("[Chatbot] LLM error:", error);
+        return {
+          reply:
+            "ขออภัยครับ ระบบขัดข้องชั่วคราว กรุณาลองใหม่อีกครั้ง หรือติดต่อเราผ่าน LINE @sirinx ได้เลยครับ",
+        };
+      }
+    }),
+});
+
 // ==================== CONTACT ROUTER ==
 
 const contactRouter = router({
@@ -379,6 +457,7 @@ export const appRouter = router({
   project: projectRouter,
   contact: contactRouter,
   analytics: analyticsRouter,
+  chatbot: chatbotRouter,
 });
 
 export type AppRouter = typeof appRouter;
