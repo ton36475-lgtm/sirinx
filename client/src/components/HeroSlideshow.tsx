@@ -29,7 +29,7 @@ const ALL_SLIDES: HeroSlide[] = [
     id: "carport-aerial",
     category: "solar-carport",
     image:
-      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-01-carport-aerial-hMFYZMCkyYw7XaWhJHz4U9.webp",
+      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-01-carport-aerial_c002987a.jpg",
     badge: "Solar Carport",
     headline: "เปลี่ยนที่จอดรถ",
     highlightLine: "เป็นโรงไฟฟ้าพลังงานแสงอาทิตย์",
@@ -42,7 +42,7 @@ const ALL_SLIDES: HeroSlide[] = [
     id: "carport-ground",
     category: "solar-carport",
     image:
-      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-02-carport-ground-j3Dw4HnYuQ2kZ6RLxJ9Dg9.webp",
+      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-02-carport-ground_724c7ad7.jpg",
     badge: "Solar Carport",
     headline: "โครงสร้างเหล็กมาตรฐาน",
     highlightLine: "แผงโซลาร์เซลล์คุณภาพ Tier-1",
@@ -55,7 +55,7 @@ const ALL_SLIDES: HeroSlide[] = [
     id: "rooftop-factory",
     category: "rooftop-solar",
     image:
-      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-03-rooftop-factory-Mf5eohxnQxu8LrDoiUW77t.webp",
+      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-03-rooftop-factory_7c52b0c3.jpg",
     badge: "Rooftop Solar",
     headline: "โซลาร์บนหลังคาโรงงาน",
     highlightLine: "ลดต้นทุนพลังงานการผลิต",
@@ -68,7 +68,7 @@ const ALL_SLIDES: HeroSlide[] = [
     id: "floating-solar",
     category: "floating-solar",
     image:
-      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-04-floating-solar-mfqgraXP7h4zQMPmLxhD5W.webp",
+      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-04-floating-solar_1d083f09.jpg",
     badge: "Floating Solar",
     headline: "โซลาร์ลอยน้ำ",
     highlightLine: "ใช้พื้นที่ผิวน้ำให้เกิดประโยชน์",
@@ -81,7 +81,7 @@ const ALL_SLIDES: HeroSlide[] = [
     id: "carport-ev",
     category: "solar-carport",
     image:
-      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-05-carport-ev-4bcwyB3kZBNvx234pLLXdP.webp",
+      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-05-carport-ev_993f529d.jpg",
     badge: "Solar Carport + EV Charging",
     headline: "Solar Carport",
     highlightLine: "พร้อม EV Charging Station",
@@ -94,7 +94,7 @@ const ALL_SLIDES: HeroSlide[] = [
     id: "bess-realistic",
     category: "bess",
     image:
-      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-06-bess-realistic-5iXACehQRQHTg7kiKQetBK.webp",
+      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-06-bess-realistic_884e849f.jpg",
     badge: "BESS / ESS",
     headline: "ระบบกักเก็บพลังงาน",
     highlightLine: "ใช้ไฟฟ้าได้แม้ไม่มีแสงแดด",
@@ -107,7 +107,7 @@ const ALL_SLIDES: HeroSlide[] = [
     id: "hotel-resort",
     category: "hospitality",
     image:
-      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-07-hotel-resort-9hFMqYqA5qjRJtStoejgyS.webp",
+      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-07-hotel-resort_947837b6.jpg",
     badge: "โรงแรม & รีสอร์ท",
     headline: "พลังงานสะอาด",
     highlightLine: "สำหรับธุรกิจโรงแรม",
@@ -120,7 +120,7 @@ const ALL_SLIDES: HeroSlide[] = [
     id: "carport-realistic",
     category: "solar-carport",
     image:
-      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-08-carport-realistic-7p6xFfA9X5NrKxv49i9fLs.webp",
+      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-08-carport-realistic_a75f7b0e.jpg",
     badge: "Solar Carport",
     headline: "ติดตั้งจริง",
     highlightLine: "ผลงาน Solar Carport สำนักงาน",
@@ -133,7 +133,7 @@ const ALL_SLIDES: HeroSlide[] = [
     id: "ai-monitoring",
     category: "ai-energy",
     image:
-      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-09-ai-monitoring-UQ6Z8T6aZjXGZPRapKPyCy.webp",
+      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-09-ai-monitoring_814e9276.jpg",
     badge: "AI Energy Management",
     headline: "ระบบ AI",
     highlightLine: "บริหารพลังงานอัจฉริยะ",
@@ -146,7 +146,7 @@ const ALL_SLIDES: HeroSlide[] = [
     id: "carport-mall",
     category: "solar-carport",
     image:
-      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-10-carport-mall-realistic-7iSZd84snZwhTDcdWjEfCe.webp",
+      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-10-carport-mall-realistic_4b322654.jpg",
     badge: "Solar Carport",
     headline: "Solar Carport ขนาดใหญ่",
     highlightLine: "สำหรับห้างสรรพสินค้า & โรงงาน",

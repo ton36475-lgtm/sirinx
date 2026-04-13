@@ -20,6 +20,7 @@ import SolarAssessment from "./pages/SolarAssessment";
 import Partner from "./pages/Partner";
 import Strategy from "./pages/Strategy";
 import SolarCarport from "./pages/SolarCarport";
+import Pricing from "./pages/Pricing";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminLeads from "./pages/admin/Leads";
 import AdminBlogCMS from "./pages/admin/BlogCMS";
@@ -34,6 +35,7 @@ function PublicRouter() {
         <Route path="/" component={Home} />
         <Route path="/about" component={About} />
         <Route path="/solar-carport" component={SolarCarport} />
+        <Route path="/pricing" component={Pricing} />
         <Route path="/solutions" component={Solutions} />
         <Route path="/industries" component={Industries} />
         <Route path="/investment" component={InvestmentTaxHub} />

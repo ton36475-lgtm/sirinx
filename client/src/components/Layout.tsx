@@ -30,6 +30,7 @@ const navLinks = [
     ],
   },
   { href: "/industries", label: "อุตสาหกรรม" },
+  { href: "/pricing", label: "แพ็คเกจราคา" },
   { href: "/projects", label: "ผลงาน" },
   { href: "/investment", label: "การลงทุน" },
   { href: "/about", label: "เกี่ยวกับเรา" },
@@ -230,6 +231,7 @@ const footerLinks = {
     { href: "/solutions#bess", label: "BESS / ESS" },
     { href: "/solutions#ai-energy", label: "AI Energy Management" },
     { href: "/solutions#ai-om", label: "O&M ดูแลระบบ" },
+    { href: "/pricing", label: "แพ็คเกจราคา" },
   ],
   อุตสาหกรรม: [
     { href: "/industries#manufacturing", label: "โรงงาน" },

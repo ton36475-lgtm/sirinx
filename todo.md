@@ -163,4 +163,20 @@
 - [x] Add preference tracking to all solution/industry pages (SolarCarport, Solutions, Industries)
 - [x] Test slideshow on desktop and mobile — 70 tests pass, screenshot verified
 - [x] Write vitest tests for HeroSlideshow personalization (13 tests, 83 total)
-- [ ] Save checkpoint (pending)
+- [x] Save checkpoint (version 6cf6ac83)
+
+## Phase 10 — Pricing Packages Page (Size S, M, L)
+- [x] Research Thai solar carport/rooftop pricing for S, M, L packages
+- [x] Design Pricing page with 3 package tiers (S, M, L) + custom/enterprise CTA
+- [x] Include: kW capacity, estimated savings, ROI period, what's included per package
+- [x] Size L+ (custom): show "ติดต่อทีมงาน" with self-assessment form for capacity needs
+- [x] Add /pricing route and navigation link
+- [x] Integrate package selection with contact form (prefill interest + package size)
+- [x] Write vitest tests for pricing page (21 tests, 104 total)
+- [x] Save checkpoint
+
+### Phase 10 Additional — EV Readiness + Government Policy
+- [x] Research Thai government EV support policies (EV 3.5, BOI, tax incentives 2025-2026)
+- [x] Highlight Solar Carport EV readiness: รองรับ EV ที่เพิ่มขึ้นจากมาตรการรัฐ
+- [x] Add government policy benefits section to Pricing page
+- [x] Add comparison of Solar Carport vs traditional parking (revenue, shade, EV, property value)

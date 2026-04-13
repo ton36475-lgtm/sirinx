@@ -66,14 +66,45 @@ export default function Contact() {
     },
   });
 
-  // Prefill from Solar Calculator URL params
+  // Prefill from Solar Calculator URL params or Pricing page
   useEffect(() => {
     const params = new URLSearchParams(searchString);
     const system = params.get("system");
     const type = params.get("type");
     const bill = params.get("bill");
     const bess = params.get("bess");
-    if (system || type || bill) {
+    const interest = params.get("interest");
+    const pkg = params.get("package");
+
+    // Pricing page prefill
+    if (interest || pkg) {
+      const interestMap: Record<string, string> = {
+        "solar-carport": "Solar Carport",
+        "rooftop-solar": "Rooftop Solar",
+        "floating-solar": "Floating Solar",
+        "bess": "BESS / ESS",
+        "ai-energy": "AI Energy Management",
+        "hospitality": "ปรึกษาทั่วไป",
+      };
+      const packageLabels: Record<string, string> = {
+        "size-s": "Size S (10-30 kWp)",
+        "size-m": "Size M (30-100 kWp)",
+        "size-l": "Size L (100-500 kWp)",
+        "custom": "Custom (500+ kWp)",
+      };
+      const mappedInterest = interest ? (interestMap[interest] || "Solar Carport") : "Solar Carport";
+      const pkgLabel = pkg ? packageLabels[pkg] : null;
+      const msgParts: string[] = [];
+      if (pkgLabel) msgParts.push(`แพ็คเกจที่สนใจ: ${pkgLabel}`);
+      msgParts.push("(ข้อมูลจากหน้าแพ็คเกจราคา)");
+      setFormData(prev => ({
+        ...prev,
+        interest: mappedInterest,
+        message: prev.message || msgParts.join("\n"),
+      }));
+    }
+    // Solar Calculator prefill
+    else if (system || type || bill) {
       const parts: string[] = [];
       if (system) parts.push(`ขนาดระบบที่แนะนำ: ${system}`);
       if (type) parts.push(`ประเภทธุรกิจ: ${type}`);
