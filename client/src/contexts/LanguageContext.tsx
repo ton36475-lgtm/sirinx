@@ -8,11 +8,6 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   cn: "中文",
 };
 
-export const LANGUAGE_FLAGS: Record<Language, string> = {
-  th: "🇹🇭",
-  en: "🇬🇧",
-  cn: "🇨🇳",
-};
 
 interface LanguageContextType {
   lang: Language;

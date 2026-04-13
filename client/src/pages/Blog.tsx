@@ -231,15 +231,15 @@ export default function Blog() {
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="font-display text-2xl font-bold text-foreground mb-3">รับข้อมูลเชิงลึกด้านพลังงาน</h2>
             <p className="text-text-secondary mb-6">สมัครรับจดหมายข่าวเพื่อรับบทความ ข้อมูลอุตสาหกรรม และข่าวสารจาก SIRINX ทุกสัปดาห์</p>
-            <div className="flex gap-3 max-w-md mx-auto">
-              <input type="email" placeholder="อีเมลของคุณ" className="flex-1 px-4 py-3 rounded-lg border border-border-subtle bg-surface-elevated text-foreground placeholder:text-text-muted focus:outline-none focus:border-accent-primary" />
+            <form onSubmit={(e) => { e.preventDefault(); const input = e.currentTarget.querySelector('input'); if (input && input.value) { toast.success("ขอบคุณที่สมัครรับข่าวสาร! ระบบจะเปิดให้บริการเร็ว ๆ นี้"); input.value = ''; } else { toast.error("กรุณากรอกอีเมล"); } }} className="flex gap-3 max-w-md mx-auto">
+              <input type="email" required placeholder="อีเมลของคุณ" className="flex-1 px-4 py-3 rounded-lg border border-border-subtle bg-surface-elevated text-foreground placeholder:text-text-muted focus:outline-none focus:border-accent-primary" />
               <button
-                onClick={() => toast.success("ขอบคุณที่สมัครรับข่าวสาร! ระบบจะเปิดให้บริการเร็ว ๆ นี้")}
+                type="submit"
                 className="px-6 py-3 font-display font-semibold btn-accent rounded-lg whitespace-nowrap"
               >
                 สมัครรับข่าว
               </button>
-            </div>
+            </form>
             <p className="text-xs text-text-muted mt-3">ไม่มีสแปม ยกเลิกได้ทุกเมื่อ</p>
           </div>
         </div>

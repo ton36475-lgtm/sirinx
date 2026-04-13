@@ -11,6 +11,7 @@ import {
   Globe, BarChart3, Shield, Users, Zap, Target, Leaf
 } from "lucide-react";
 import { toast } from "sonner";
+import { trpc } from "@/lib/trpc";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -52,10 +53,27 @@ export default function Partner() {
     investmentRange: "", message: "",
   });
 
+  const leadMutation = trpc.lead.submit.useMutation({
+    onSuccess: () => {
+      setSubmitted(true);
+      toast.success("ส่งข้อมูลเรียบร้อยแล้ว ทีมพัฒนาธุรกิจจะติดต่อกลับภายใน 48 ชั่วโมง");
+    },
+    onError: () => {
+      toast.error("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
+    },
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    toast.success("ส่งข้อมูลเรียบร้อยแล้ว ทีมพัฒนาธุรกิจจะติดต่อกลับภายใน 48 ชั่วโมง");
+    leadMutation.mutate({
+      name: formData.name,
+      company: formData.company || undefined,
+      email: formData.email || "",
+      phone: formData.phone || undefined,
+      interest: `พันธมิตร: ${formData.type}`,
+      source: "partner",
+      message: `${formData.type ? `ประเภท: ${formData.type}` : ""}${formData.investmentRange ? ` | งบลงทุน: ${formData.investmentRange}` : ""}${formData.message ? ` | ${formData.message}` : ""}`,
+    });
   };
 
   const update = (field: string, value: string) => setFormData(prev => ({ ...prev, [field]: value }));

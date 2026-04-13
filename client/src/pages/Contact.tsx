@@ -25,7 +25,7 @@ const LINE_OA_URL = (typeof import.meta !== 'undefined' && import.meta.env?.VITE
 const contactChannels = [
   { icon: Phone, title: "โทรศัพท์", value: "+66 81 972 3969", sub: "คุณ Pitoon — CEO & Founder", action: "tel:+66819723969" },
   { icon: Mail, title: "อีเมล", value: "pitoon.sirinx@gmail.com", sub: "ตอบกลับภายใน 24 ชม.", action: "mailto:pitoon.sirinx@gmail.com" },
-  { icon: MapPin, title: "สำนักงาน", value: "600/99 Midtrapab Rd.", sub: "Mueang Phitsanulok 65000", action: "https://maps.google.com/?q=600/99+Midtrapab+Rd+Phitsanulok" },
+  { icon: MapPin, title: "สำนักงาน", value: "600/99 Mittraphap Rd.", sub: "Mueang Phitsanulok 65000", action: "https://maps.google.com/?q=600/99+Mittraphap+Rd+Phitsanulok" },
   { icon: Clock, title: "เว็บไซต์", value: "www.sirinx.co", sub: "ติดต่อได้ตลอด 24 ชม.", action: "https://www.sirinx.co" },
 ];
 
@@ -282,11 +282,11 @@ export default function Contact() {
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">ค่าไฟฟ้าต่อเดือน (บาท)</label>
-                      <input type="text" value={formData.monthlyBill} onChange={(e) => update("monthlyBill", e.target.value)} className={inputCls} placeholder="เช่น 300,000" />
+                      <input type="number" min="0" value={formData.monthlyBill} onChange={(e) => update("monthlyBill", e.target.value)} className={inputCls} placeholder="เช่น 300000" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">พื้นที่หลังคาโดยประมาณ (ตร.ม.)</label>
-                      <input type="text" value={formData.roofArea} onChange={(e) => update("roofArea", e.target.value)} className={inputCls} placeholder="เช่น 5,000" />
+                      <input type="number" min="0" value={formData.roofArea} onChange={(e) => update("roofArea", e.target.value)} className={inputCls} placeholder="เช่น 5000" />
                     </div>
                   </div>
                   <div>

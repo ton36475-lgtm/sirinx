@@ -1,4 +1,4 @@
-import { eq, desc, and, like, sql } from "drizzle-orm";
+import { eq, desc, and, like, sql, count } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
   InsertUser, users,
@@ -121,14 +121,15 @@ export async function updateLead(id: number, data: Partial<InsertLead>) {
 export async function getLeadStats() {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  const allLeads = await db.select().from(leads);
-  const total = allLeads.length;
+  // Use SQL aggregation instead of fetching all rows
+  const [totalResult] = await db.select({ count: count() }).from(leads);
+  const total = totalResult?.count ?? 0;
+  const statusRows = await db.select({ status: leads.status, count: count() }).from(leads).groupBy(leads.status);
+  const sourceRows = await db.select({ source: leads.source, count: count() }).from(leads).groupBy(leads.source);
   const byStatus: Record<string, number> = {};
+  for (const row of statusRows) byStatus[row.status] = row.count;
   const bySource: Record<string, number> = {};
-  for (const lead of allLeads) {
-    byStatus[lead.status] = (byStatus[lead.status] || 0) + 1;
-    bySource[lead.source] = (bySource[lead.source] || 0) + 1;
-  }
+  for (const row of sourceRows) bySource[row.source] = row.count;
   return { total, byStatus, bySource };
 }
 
@@ -252,7 +253,7 @@ import {
   InsertPageView, pageViews,
   InsertEvent, events,
 } from "../drizzle/schema";
-import { gte, count } from "drizzle-orm";
+import { gte } from "drizzle-orm";
 
 export async function recordPageView(data: InsertPageView) {
   const db = await getDb();
@@ -420,34 +421,33 @@ export async function getEventAnalytics(opts?: { days?: number }) {
     .sort((a, b) => a.date.localeCompare(b.date));
 
   // Real conversion funnel: page_view → cta_click → form_submit → lead_created
-  // Get real lead count from leads table for the same period
-  const leadsInPeriod = await db
-    .select()
+  // Use SQL COUNT instead of fetching all rows for performance
+  const [leadCountResult] = await db
+    .select({ count: count() })
     .from(leads)
     .where(gte(leads.createdAt, since));
 
-  // Get real page view count for the same period
-  const pvInPeriod = await db
-    .select()
+  const [pvCountResult] = await db
+    .select({ count: count() })
     .from(pageViews)
     .where(gte(pageViews.createdAt, since));
 
   const funnelStages = [
-    { stage: "Page Views", count: pvInPeriod.length },
+    { stage: "Page Views", count: pvCountResult?.count ?? 0 },
     { stage: "CTA Clicks", count: categoryMap.get("cta_click") || 0 },
     { stage: "Form Submits", count: categoryMap.get("form_submit") || 0 },
-    { stage: "Leads Created", count: leadsInPeriod.length },
+    { stage: "Leads Created", count: leadCountResult?.count ?? 0 },
     { stage: "LINE Clicks", count: categoryMap.get("line_click") || 0 },
   ];
 
-  // Lead source attribution
-  const leadSourceMap = new Map<string, number>();
-  for (const lead of leadsInPeriod) {
-    const src = lead.source || "unknown";
-    leadSourceMap.set(src, (leadSourceMap.get(src) || 0) + 1);
-  }
-  const leadSources = Array.from(leadSourceMap.entries())
-    .map(([source, count]) => ({ source, count }))
+  // Lead source attribution via SQL aggregation
+  const leadSourceRows = await db
+    .select({ source: leads.source, count: count() })
+    .from(leads)
+    .where(gte(leads.createdAt, since))
+    .groupBy(leads.source);
+  const leadSources = leadSourceRows
+    .map((row) => ({ source: row.source || "unknown", count: row.count }))
     .sort((a, b) => b.count - a.count);
 
   return {

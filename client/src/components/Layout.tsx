@@ -359,10 +359,10 @@ function Footer() {
 
             {/* Social */}
             <div className="flex gap-3">
-              <a href="#" className="w-9 h-9 rounded-lg border border-border-subtle flex items-center justify-center text-text-muted hover:text-accent-primary hover:border-border-accent transition-colors" aria-label="Facebook">
+              <a href="https://www.facebook.com/sirinxsolar" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg border border-border-subtle flex items-center justify-center text-text-muted hover:text-accent-primary hover:border-border-accent transition-colors" aria-label="Facebook">
                 <Facebook className="w-4 h-4" />
               </a>
-              <a href="#" className="w-9 h-9 rounded-lg border border-border-subtle flex items-center justify-center text-text-muted hover:text-accent-primary hover:border-border-accent transition-colors" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/company/sirinx" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg border border-border-subtle flex items-center justify-center text-text-muted hover:text-accent-primary hover:border-border-accent transition-colors" aria-label="LinkedIn">
                 <Linkedin className="w-4 h-4" />
               </a>
             </div>
@@ -450,9 +450,9 @@ function Footer() {
 © {new Date().getFullYear()} SIRINX Co., Ltd. {t("footer.rights")}
           </p>
           <div className="flex gap-6 text-xs text-text-muted">
-            <a href="#" className="hover:text-accent-primary transition-colors">นโยบายความเป็นส่วนตัว</a>
-            <a href="#" className="hover:text-accent-primary transition-colors">เงื่อนไขการใช้งาน</a>
-            <a href="#" className="hover:text-accent-primary transition-colors">Cookie Policy</a>
+            <a href="/privacy" className="hover:text-accent-primary transition-colors">นโยบายความเป็นส่วนตัว</a>
+            <a href="/terms" className="hover:text-accent-primary transition-colors">เงื่อนไขการใช้งาน</a>
+            <a href="/cookies" className="hover:text-accent-primary transition-colors">Cookie Policy</a>
           </div>
         </div>
       </div>
