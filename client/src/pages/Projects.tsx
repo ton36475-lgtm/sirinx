@@ -42,8 +42,9 @@ const projects = [
     saving: "กำลังก่อสร้าง",
     year: "2025",
     desc: "Solar Farm Node 2 ที่โรงแรมโฮลาเทลริมน่าน กำลังดำเนินการก่อสร้าง พร้อมปรับปรุงโรงแรมใหม่",
-    image: `${CDN}/received_803461432358813_ea7aeaa1.jpeg`,
+    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/solar-farm-nan-construction-QGr9YXP2AW2qpMnWCVJjj3.webp",
     tag: "rooftop",
+    isRendering: true,
   },
   {
     title: "อ่างเก็บน้ำเพื่อการเกษตร",
@@ -53,8 +54,9 @@ const projects = [
     saving: "ลดการระเหยน้ำ 35%",
     year: "2024",
     desc: "Floating Solar บนอ่างเก็บน้ำ ผลิตไฟฟ้าสำหรับระบบสูบน้ำและ Cold Storage",
-    image: `${CDN}/received_4197992190511860_34fd339e.jpeg`,
+    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/floating-solar-reservoir-BHro9zmCAKLtycFVXgfe9G.webp",
     tag: "floating",
+    isRendering: true,
   },
   {
     title: "Solar Carport — โรงแรมเรือนแพ รอยัลปาร์ค",
@@ -75,8 +77,9 @@ const projects = [
     saving: "ลดค่าพลังงาน 42%",
     year: "2023",
     desc: "Rooftop Solar + BESS สำหรับรีสอร์ท สำรองไฟฟ้าสำหรับ critical systems",
-    image: `${CDN}/received_1611595770045379_f7011547.jpeg`,
+    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/resort-rooftop-solar-Q4vG7VqDnaYmRWdsyKtp7H.webp",
     tag: "bess",
+    isRendering: true,
   },
   {
     title: "คลังสินค้าและศูนย์กระจายสินค้า",
@@ -86,8 +89,9 @@ const projects = [
     saving: "ลดค่าไฟ 55%",
     year: "2025",
     desc: "Rooftop Solar ขนาดใหญ่บนหลังคาคลังสินค้า 5 อาคาร พร้อม AI O&M",
-    image: `${CDN}/received_934911282677303_24e134a8.jpeg`,
+    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/warehouse-rooftop-solar-eGvaQedufCt28G4VBAahMs.webp",
     tag: "rooftop",
+    isRendering: true,
   },
   {
     title: "ฟาร์มเกษตรอัจฉริยะ",
@@ -97,8 +101,9 @@ const projects = [
     saving: "ลดค่าไฟ 60%",
     year: "2024",
     desc: "Solar + BESS สำหรับฟาร์ม จ่ายไฟให้ IoT, สูบน้ำ และห้องเย็นตลอด 24 ชม.",
-    image: `${CDN}/received_806743748663527_0517d115.jpeg`,
+    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/farm-solar-bess-VwUa48BekdDzTkGLwkeJJX.webp",
     tag: "bess",
+    isRendering: true,
   },
 ];
 
@@ -129,11 +134,11 @@ const galleryPhotos = [
   `${CDN}/carport-structure-4_cc6ef3f6.jpeg`,
   `${CDN}/carport-underside-3_b58d5713.jpeg`,
   `${CDN}/carport-underside-4_297c327b.jpeg`,
-  // Marketing materials
-  `${CDN}/received_921587477351636_bde97caf.jpeg`,
-  `${CDN}/received_803461432358813_ea7aeaa1.jpeg`,
-  `${CDN}/received_1611595770045379_f7011547.jpeg`,
-  `${CDN}/received_806743748663527_0517d115.jpeg`,
+  // Generated realistic project photos
+  "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/floating-solar-reservoir-BHro9zmCAKLtycFVXgfe9G.webp",
+  "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/resort-rooftop-solar-Q4vG7VqDnaYmRWdsyKtp7H.webp",
+  "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/warehouse-rooftop-solar-eGvaQedufCt28G4VBAahMs.webp",
+  "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/farm-solar-bess-VwUa48BekdDzTkGLwkeJJX.webp",
 ];
 
 export default function Projects() {
@@ -267,10 +272,19 @@ export default function Projects() {
                         alt={project.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                      <div className="absolute top-3 left-3">
+                      <div className="absolute top-3 left-3 flex flex-col gap-1">
                         <span className="px-2 py-0.5 text-[10px] font-medium bg-accent-primary/90 text-text-inverse rounded-md">
                           {project.type}
                         </span>
+                        {project.isRendering ? (
+                          <span className="px-2 py-0.5 text-[10px] font-medium bg-amber-500/90 text-white rounded-md">
+                            ภาพจำลอง
+                          </span>
+                        ) : (
+                          <span className="px-2 py-0.5 text-[10px] font-medium bg-emerald-500/90 text-white rounded-md">
+                            ผลงานจริง
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div className="p-4 sm:p-5 flex flex-col justify-center">

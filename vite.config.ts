@@ -5,6 +5,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { defineConfig, type Plugin, type ViteDevServer } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
+import obfuscatorPlugin from "vite-plugin-javascript-obfuscator";
 
 // =============================================================================
 // Manus Debug Collector - Vite Plugin
@@ -150,7 +151,39 @@ function vitePluginManusDebugCollector(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
+const isProduction = process.env.NODE_ENV === "production";
+
+const plugins = [
+  react(),
+  tailwindcss(),
+  jsxLocPlugin(),
+  vitePluginManusRuntime(),
+  vitePluginManusDebugCollector(),
+  // Anti-Copy: Obfuscate production JS to deter code theft
+  ...(isProduction
+    ? [
+        obfuscatorPlugin({
+          options: {
+            compact: true,
+            controlFlowFlattening: true,
+            controlFlowFlatteningThreshold: 0.5,
+            deadCodeInjection: true,
+            deadCodeInjectionThreshold: 0.2,
+            debugProtection: false,
+            disableConsoleOutput: false,
+            identifierNamesGenerator: "hexadecimal",
+            renameGlobals: false,
+            selfDefending: true,
+            stringArray: true,
+            stringArrayEncoding: ["base64"],
+            stringArrayThreshold: 0.75,
+            domainLock: [],
+            domainLockRedirectUrl: "about:blank",
+          },
+        }),
+      ]
+    : []),
+];
 
 export default defineConfig({
   plugins,
@@ -167,6 +200,7 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    sourcemap: false, // Anti-Copy: Never expose source maps in production
   },
   server: {
     host: true,

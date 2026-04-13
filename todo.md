@@ -259,3 +259,35 @@
 - [ ] Create example second-brand config to prove reusability
 - [ ] Write deployment guide for new brand onboarding
 - [ ] Save checkpoint
+
+## Phase 15 — Replace AI Images in Projects with Realistic Generated Photos
+- [x] Generate realistic Floating Solar photo (solar panels on water reservoir, agricultural setting)
+- [x] Generate realistic Rooftop+BESS resort photo (solar panels on seaside resort roof)
+- [x] Generate realistic Rooftop Solar warehouse photo (large solar panels on warehouse/distribution center roof)
+- [x] Upload generated images to CDN (5 images: floating, resort, warehouse, farm, Nan construction)
+- [x] Replace AI image URLs in Projects.tsx for Floating Solar project
+- [x] Replace AI image URLs in Projects.tsx for Resort project
+- [x] Replace AI image URLs in Projects.tsx for Warehouse project
+- [x] Also replaced: Holatel Nan construction, Farm BESS, SolarAssessment site photos
+- [x] Verify all project cards show appropriate realistic images
+- [x] Added isRendering flag: "ภาพจำลอง" (amber) vs "ผลงานจริง" (green) badges on project cards
+- [ ] Save checkpoint (pending)
+
+## Phase 16 — Full i18n System (TH/EN/CN) for All Pages
+- [ ] Create i18n infrastructure: translation files per page, LanguageContext, useTranslation hook
+- [ ] Translate Layout (Navbar + Footer) to TH/EN/CN
+- [ ] Translate Home.tsx to TH/EN/CN
+- [ ] Translate SolarCarport.tsx to TH/EN/CN
+- [ ] Translate Solutions.tsx to TH/EN/CN
+- [ ] Translate Industries.tsx to TH/EN/CN
+- [ ] Translate Pricing.tsx to TH/EN/CN
+- [ ] Translate Projects.tsx to TH/EN/CN
+- [ ] Translate Contact.tsx to TH/EN/CN
+- [ ] Translate SolarAssessment.tsx to TH/EN/CN
+- [ ] Translate About.tsx to TH/EN/CN
+- [ ] Translate Blog.tsx to TH/EN/CN
+- [ ] Translate InvestmentTaxHub.tsx to TH/EN/CN
+- [ ] Translate Strategy.tsx to TH/EN/CN
+- [ ] Translate Partner.tsx to TH/EN/CN
+- [ ] Test language switching TH→EN→CN on all pages
+- [ ] Save checkpoint

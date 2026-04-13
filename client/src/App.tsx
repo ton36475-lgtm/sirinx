@@ -28,6 +28,7 @@ import AdminBlogCMS from "./pages/admin/BlogCMS";
 import AdminContactSubmissions from "./pages/admin/ContactSubmissions";
 import AdminAnalytics from "./pages/admin/Analytics";
 import FloatingChatWidget from "./components/FloatingChatWidget";
+import AntiCopy from "./components/AntiCopy";
 
 function PublicRouter() {
   return (
@@ -94,6 +95,7 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <PageViewTracker />
+          <AntiCopy enabled={import.meta.env.PROD} />
           <Router />
           <FloatingChatWidget />
         </TooltipProvider>
