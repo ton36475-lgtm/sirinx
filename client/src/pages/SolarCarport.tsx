@@ -10,7 +10,8 @@ import { trackSolutionVisit } from "@/components/HeroSlideshow";
 import {
   Car, Sun, Battery, Brain, Plug, Shield, Clock, TrendingUp,
   ArrowRight, CheckCircle2, ChevronDown, ChevronUp,
-  Zap, BarChart3, Wrench, Leaf, Building2, Factory, Hotel, GraduationCap
+  Zap, BarChart3, Wrench, Leaf, Building2, Factory, Hotel, GraduationCap,
+  X, ChevronLeft, ChevronRight, Camera
 } from "lucide-react";
 
 const fadeUp = {
@@ -19,10 +20,25 @@ const fadeUp = {
 };
 
 const CDN = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv";
-const HERO_CARPARK = `${CDN}/solar-carpark-hero-HkuPbSXRuEJEzybRN8Xb7W.webp`;
-const IMG_EV = `${CDN}/solar-carpark-ev-charging-niYjh6gCmDqQNQiCE6oq8M.webp`;
-const IMG_AI = `${CDN}/solar-ai-dashboard-CDhHz7V3K98CLU6eGvW8PP.webp`;
-const IMG_OM = `${CDN}/solar-om-maintenance-7BKbWXXHKbZ3Adwwdk9XvZ.webp`;
+// Real photos from Royal Park Solar Carport installation
+const HERO_CARPARK = `${CDN}/carport-wide-1_30e3af4c.jpeg`;
+const IMG_EV = `${CDN}/carport-structure-1_c0c17293.jpeg`;
+const IMG_AI = `${CDN}/bess-cabinet-2_54c824b8.jpeg`;
+const IMG_OM = `${CDN}/install-team-2_23aa9cdf.jpeg`;
+const IMG_CARPORT_GALLERY = [
+  `${CDN}/carport-wide-1_30e3af4c.jpeg`,
+  `${CDN}/carport-structure-1_c0c17293.jpeg`,
+  `${CDN}/carport-structure-2_f0ab2f56.jpeg`,
+  `${CDN}/carport-underside-1_51e3d09a.jpeg`,
+  `${CDN}/carport-underside-2_e70e97e1.jpeg`,
+  `${CDN}/install-team-1_91970553.jpeg`,
+  `${CDN}/bess-cabinet-1_f027743f.jpeg`,
+  `${CDN}/bess-cabinet-2_54c824b8.jpeg`,
+  `${CDN}/carport-pillar-1_b7680b5f.jpeg`,
+  `${CDN}/carport-detail-1_34c7c42f.jpeg`,
+  `${CDN}/cable-tray-detail_1ddf9610.jpeg`,
+  `${CDN}/carport-structure-4_cc6ef3f6.jpeg`,
+];
 
 const benefits = [
   {
@@ -96,6 +112,7 @@ const faqs = [
 export default function SolarCarport() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showStickyCta, setShowStickyCta] = useState(false);
+  const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
 
   useEffect(() => {
     trackSolutionVisit("solar-carport");
@@ -450,6 +467,85 @@ export default function SolarCarport() {
           </div>
         </div>
       </section>
+
+      {/* ===== REAL PHOTO GALLERY ===== */}
+      <section className="py-16 lg:py-24 bg-background">
+        <div className="container">
+          <motion.div
+            initial="hidden" whileInView="visible" viewport={{ once: true }}
+            variants={fadeUp} custom={0}
+            className="text-center max-w-2xl mx-auto mb-10"
+          >
+            <span className="inline-flex items-center gap-2 text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3">
+              <Camera className="w-3.5 h-3.5" /> Real Installation
+            </span>
+            <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
+              ภาพผลงานติดตั้งจริง
+            </h2>
+            <p className="text-text-secondary text-sm">
+              Solar Carport ที่โรงแรมเรือนแพ รอยัลปาร์ค พิษณุโลก — ติดตั้งโดยทีมวิศวกร SIRINX
+            </p>
+          </motion.div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            {IMG_CARPORT_GALLERY.map((src, i) => (
+              <motion.div
+                key={i}
+                initial="hidden" whileInView="visible" viewport={{ once: true }}
+                variants={fadeUp} custom={i % 4}
+                className="cursor-pointer group"
+                onClick={() => setLightboxIdx(i)}
+              >
+                <div className="aspect-[4/3] rounded-xl overflow-hidden border border-border-subtle hover:border-accent-primary/40 transition-all">
+                  <img
+                    src={src}
+                    alt={`Solar Carport ติดตั้งจริง ${i + 1}`}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <div className="mt-8 text-center">
+            <Link href="/projects" className="inline-flex items-center gap-2 text-sm font-medium text-accent-primary hover:underline">
+              ดูผลงานทั้งหมด <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Lightbox */}
+      {lightboxIdx !== null && (
+        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center" onClick={() => setLightboxIdx(null)}>
+          <button
+            className="absolute top-4 right-4 text-white/70 hover:text-white z-50"
+            onClick={() => setLightboxIdx(null)}
+          >
+            <X className="w-8 h-8" />
+          </button>
+          <button
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white z-50"
+            onClick={(e) => { e.stopPropagation(); setLightboxIdx((lightboxIdx - 1 + IMG_CARPORT_GALLERY.length) % IMG_CARPORT_GALLERY.length); }}
+          >
+            <ChevronLeft className="w-10 h-10" />
+          </button>
+          <button
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white z-50"
+            onClick={(e) => { e.stopPropagation(); setLightboxIdx((lightboxIdx + 1) % IMG_CARPORT_GALLERY.length); }}
+          >
+            <ChevronRight className="w-10 h-10" />
+          </button>
+          <img
+            src={IMG_CARPORT_GALLERY[lightboxIdx]}
+            alt={`Solar Carport ${lightboxIdx + 1}`}
+            className="max-h-[85vh] max-w-[90vw] object-contain rounded-lg"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <div className="absolute bottom-4 text-white/60 text-sm">
+            {lightboxIdx + 1} / {IMG_CARPORT_GALLERY.length}
+          </div>
+        </div>
+      )}
 
       {/* ===== FAQ ===== */}
       <section className="py-16 lg:py-24 section-alt">

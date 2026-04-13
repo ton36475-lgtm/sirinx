@@ -20,16 +20,16 @@ const CDN = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYB
 
 /* ── Featured project (hero) ── */
 const featured = {
-  title: "Solar Farm Node 1 — โรงแรมเรือนแพ รอยัลปาร์ค",
+  title: "Solar Carport — โรงแรมเรือนแพ รอยัลปาร์ค",
   location: "พิษณุโลก",
-  type: "Rooftop Solar + Solar Farm",
-  capacity: "Solar Farm",
-  saving: "ลดค่าพลังงาน 30-50%",
+  type: "Solar Carport + BESS",
+  capacity: "Solar Carport",
+  saving: "ลดค่าพลังงาน 30-100%",
   year: "2024",
   owner: "คุณ Pitoon Yingyosruangrong",
-  desc: "Solar Farm สำหรับโรงแรมเรือนแพ รอยัลปาร์ค พิษณุโลก ติดตั้งและเปิดใช้งานแล้ว ลดค่าพลังงานให้โรงแรมอย่างมีประสิทธิภาพ พร้อม AI Monitoring 24/7",
-  image: `${CDN}/received_921587477351636_bde97caf.jpeg`,
-  highlights: ["ลดค่าพลังงาน 30-50%", "AI Monitoring 24/7", "ติดตั้งเสร็จ 2024"],
+  desc: "Solar Carport ติดตั้งจริงที่โรงแรมเรือนแพ รอยัลปาร์ค พิษณุโลก พร้อมระบบ BESS กักเก็บพลังงาน โครงสร้างเหล็กมาตรฐานวิศวกรรม Cable Tray และระบบไฟฟ้าครบวงจร พร้อม AI Monitoring 24/7",
+  image: `${CDN}/carport-wide-1_30e3af4c.jpeg`,
+  highlights: ["ลดค่าพลังงาน 30-100%", "BESS กักเก็บพลังงาน", "AI Monitoring 24/7", "ติดตั้งเสร็จ 2024"],
 };
 
 /* ── Other projects ── */
@@ -57,14 +57,14 @@ const projects = [
     tag: "floating",
   },
   {
-    title: "ห้างสรรพสินค้าขนาดใหญ่",
-    location: "กรุงเทพฯ",
-    type: "Rooftop + Carport",
-    capacity: "800 kW",
-    saving: "ลดค่าไฟ 38%",
-    year: "2023",
-    desc: "Rooftop Solar + Solar Carport ที่ลานจอดรถ รองรับ EV Charging 10 จุด",
-    image: `${CDN}/received_4197992190511860_34fd339e.jpeg`,
+    title: "Solar Carport — โรงแรมเรือนแพ รอยัลปาร์ค",
+    location: "พิษณุโลก",
+    type: "Solar Carport + BESS",
+    capacity: "Solar Carport",
+    saving: "ลดค่าไฟ 30-100%",
+    year: "2024",
+    desc: "Solar Carport ติดตั้งจริงที่โรงแรมเรือนแพ รอยัลปาร์ค พร้อมระบบ BESS กักเก็บพลังงาน และ Cable Tray มาตรฐานวิศวกรรม",
+    image: `${CDN}/carport-structure-2_f0ab2f56.jpeg`,
     tag: "carport",
   },
   {
@@ -110,20 +110,30 @@ const filterOptions = [
   { value: "bess", label: "BESS / ESS" },
 ];
 
-/* ── Curated gallery (best 12 photos) ── */
+/* ── Curated gallery — real Solar Carport photos from Royal Park + marketing materials ── */
 const galleryPhotos = [
+  // Real installation photos — Solar Carport at Royal Park
+  `${CDN}/carport-wide-1_30e3af4c.jpeg`,
+  `${CDN}/carport-structure-1_c0c17293.jpeg`,
+  `${CDN}/carport-structure-2_f0ab2f56.jpeg`,
+  `${CDN}/carport-underside-1_51e3d09a.jpeg`,
+  `${CDN}/carport-underside-2_e70e97e1.jpeg`,
+  `${CDN}/carport-pillar-1_b7680b5f.jpeg`,
+  `${CDN}/bess-cabinet-1_f027743f.jpeg`,
+  `${CDN}/bess-cabinet-2_54c824b8.jpeg`,
+  `${CDN}/install-team-1_91970553.jpeg`,
+  `${CDN}/install-team-2_23aa9cdf.jpeg`,
+  `${CDN}/carport-detail-1_34c7c42f.jpeg`,
+  `${CDN}/cable-tray-detail_1ddf9610.jpeg`,
+  `${CDN}/carport-structure-3_dc2bbd1c.jpeg`,
+  `${CDN}/carport-structure-4_cc6ef3f6.jpeg`,
+  `${CDN}/carport-underside-3_b58d5713.jpeg`,
+  `${CDN}/carport-underside-4_297c327b.jpeg`,
+  // Marketing materials
   `${CDN}/received_921587477351636_bde97caf.jpeg`,
   `${CDN}/received_803461432358813_ea7aeaa1.jpeg`,
-  `${CDN}/received_4197992190511860_34fd339e.jpeg`,
   `${CDN}/received_1611595770045379_f7011547.jpeg`,
-  `${CDN}/received_1425755759570180_43093913.jpeg`,
   `${CDN}/received_806743748663527_0517d115.jpeg`,
-  `${CDN}/received_1355000406660682_193503d7.jpeg`,
-  `${CDN}/received_921422724005854_9d4e7b3b.jpeg`,
-  `${CDN}/received_934911282677303_24e134a8.jpeg`,
-  `${CDN}/received_931207172874507_436de73d.jpeg`,
-  `${CDN}/received_1641807426854946_4e56755a.jpeg`,
-  `${CDN}/received_784072577836007_418cce3b.jpeg`,
 ];
 
 export default function Projects() {

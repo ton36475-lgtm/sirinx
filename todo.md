@@ -212,3 +212,50 @@
 - [x] Run full test suite + TypeScript check + browser QA (0 TS errors, 104 tests)
 - [x] Fix critical issues: Partner form, Layout links, Contact inputs, Legal ref, DB perf, Blog form, HMR fix
 - [x] Compile Final Audit Report with development roadmap
+
+## Phase 13 — Real Photos + Rebuild i18n System
+
+### 13A: Upload Real Solar Carport Photos
+- [x] Upload 17 real Solar Carport photos from Royal Park to CDN (16 uploaded, all on CDN)
+- [x] Categorize photos: BESS (2), Carport Structure (5), Carport Underside (4), Installation Team (2), Pillar (1), Detail (2)
+- [x] Replace AI-generated images with real photos on Home page (Node 1 section)
+- [x] Replace AI-generated images with real photos on Solar Carport page
+- [x] Replace AI-generated images with real photos on Projects page
+- [x] Create real project photo gallery section (12 photos in SolarCarport + 20 in Projects)
+
+### 13B: Rebuild i18n System
+- [ ] Rebuild i18n system with per-page translation files (TH/EN/CN)
+- [ ] Convert all hardcoded Thai text in Home.tsx to translation keys
+- [ ] Convert all hardcoded Thai text in Pricing.tsx to translation keys
+- [ ] Convert all hardcoded Thai text in SolarCarport.tsx to translation keys
+- [ ] Convert all hardcoded Thai text in Solutions.tsx to translation keys
+- [ ] Convert all hardcoded Thai text in Industries.tsx to translation keys
+- [ ] Convert all hardcoded Thai text in InvestmentTaxHub.tsx to translation keys
+- [ ] Convert all hardcoded Thai text in Contact.tsx to translation keys
+- [ ] Convert all hardcoded Thai text in About.tsx to translation keys
+- [ ] Convert all hardcoded Thai text in Projects.tsx to translation keys
+- [ ] Convert all hardcoded Thai text in Blog.tsx to translation keys
+- [ ] Convert all hardcoded Thai text in Assessment.tsx to translation keys
+- [ ] Test language switching TH→EN→CN on all pages
+- [ ] Save checkpoint
+
+## Phase 14 — Anti-Copy Protection + White-Label Architecture
+
+### 14A: Anti-Copy Coding Protection System
+- [ ] Research anti-copy techniques: code obfuscation, right-click disable, DevTools detection, watermarking
+- [ ] Implement client-side copy protection (disable right-click, text selection, keyboard shortcuts)
+- [ ] Implement DevTools detection and warning system
+- [ ] Add JavaScript code obfuscation to production build
+- [ ] Add dynamic watermarking system (invisible + visible options)
+- [ ] Add license verification / domain-lock system
+- [ ] Write documentation on anti-copy protection measures
+
+### 14B: White-Label Architecture (Multi-Brand Reusable System)
+- [ ] Research white-label SaaS architecture patterns and best practices
+- [ ] Design Brand Abstraction Layer (colors, logos, fonts, content per brand)
+- [ ] Design Config-driven architecture (brand.config.ts pattern)
+- [ ] Create White-Label Architecture Document with diagrams
+- [ ] Implement brand configuration system (theme, content, assets)
+- [ ] Create example second-brand config to prove reusability
+- [ ] Write deployment guide for new brand onboarding
+- [ ] Save checkpoint

@@ -24,12 +24,15 @@ const CDN = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYB
 
 const HERO_CARPARK = `${CDN}/solar-carpark-hero-HkuPbSXRuEJEzybRN8Xb7W.webp`;
 const IMG_EV = `${CDN}/solar-carpark-ev-charging-niYjh6gCmDqQNQiCE6oq8M.webp`;
-const IMG_OM = `${CDN}/solar-om-maintenance-7BKbWXXHKbZ3Adwwdk9XvZ.webp`;
+const IMG_OM = `${CDN}/install-team-2_23aa9cdf.jpeg`;
 const IMG_AI = `${CDN}/solar-ai-dashboard-CDhHz7V3K98CLU6eGvW8PP.webp`;
 const IMG_INVESTMENT = `${CDN}/hero-investment-fRtcNVseiLRqovGxudgo83.webp`;
 const LOGO_URL = `${CDN}/photo_2026-03-24_06-45-58_293d121c.jpg`;
-const IMG_NODE1 = `${CDN}/sirinx-hero-main-6LRbjuoZ8ie4rPGnAVhXnQ.webp`;
-const IMG_NODE2 = `${CDN}/sirinx-smart-energy-JXCSVMQTKJHxRxSagYajgy.webp`;
+// Real photos from Royal Park Solar Carport installation
+const IMG_NODE1 = `${CDN}/carport-wide-1_30e3af4c.jpeg`;
+const IMG_NODE2 = `${CDN}/bess-cabinet-2_54c824b8.jpeg`;
+const IMG_CARPORT_TEAM = `${CDN}/install-team-1_91970553.jpeg`;
+const IMG_CARPORT_UNDER = `${CDN}/carport-underside-2_e70e97e1.jpeg`;
 
 /* ── FAQ Data ── */
 const faqs = [
