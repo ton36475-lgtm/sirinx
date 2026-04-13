@@ -4,6 +4,7 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { LanguageProvider } from "./contexts/LanguageContext";
 import Layout from "./components/Layout";
 import DashboardLayout from "./components/DashboardLayout";
 import { usePageViewTracking } from "@/hooks/useAnalytics";
@@ -88,6 +89,7 @@ function PageViewTracker() {
 function App() {
   return (
     <ErrorBoundary>
+      <LanguageProvider>
       <ThemeProvider defaultTheme="dark" switchable>
         <TooltipProvider>
           <Toaster />
@@ -96,6 +98,7 @@ function App() {
           <FloatingChatWidget />
         </TooltipProvider>
       </ThemeProvider>
+      </LanguageProvider>
     </ErrorBoundary>
   );
 }

@@ -180,3 +180,27 @@
 - [x] Highlight Solar Carport EV readiness: รองรับ EV ที่เพิ่มขึ้นจากมาตรการรัฐ
 - [x] Add government policy benefits section to Pricing page
 - [x] Add comparison of Solar Carport vs traditional parking (revenue, shade, EV, property value)
+
+## Phase 11 — Pricing Enhancements + Multi-Language + Executive Report
+
+### 11A: Pricing Page Images
+- [x] Search/generate realistic Solar Carport images for Size S, M, L packages
+- [x] Upload images to CDN and integrate into Pricing page package cards
+- [x] Ensure images are responsive and properly sized
+
+### 11B: Interactive ROI Calculator
+- [x] Build ROI calculator component with input fields (monthly electricity bill, parking spaces)
+- [x] Calculate and display: estimated savings, payback period, 25-year total savings
+- [x] Add visual chart/progress bar for ROI visualization
+- [x] Integrate calculator into Pricing page
+
+### 11C: Multi-Language System (TH/EN/CN)
+- [x] Create language context/provider with TH/EN/CN support
+- [x] Add language switcher button in navbar (prominent, accessible)
+- [x] Translate navbar + footer labels (TH/EN/CN) with 100+ translation keys
+- [x] Persist language preference in localStorage
+
+### 11D: Executive System Report + Timeline
+- [ ] Compile full project timeline from Phase 1 to Phase 11
+- [ ] Write executive System Report with metrics, features, architecture
+- [ ] Format as professional PDF document for management presentation

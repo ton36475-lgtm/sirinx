@@ -3,7 +3,7 @@
  * Size S / M / L + Custom tier
  * Highlights: EV readiness, government incentives, ROI, tax benefits
  */
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
@@ -68,6 +68,7 @@ const packages = [
       "รับประกันผลงาน 1 ปี",
     ],
     evReady: "Pre-wired สำหรับ EV Charger 1-2 จุด",
+    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/pricing-size-s-LaJSUDczcaLtK7isYYPrbR.webp",
   },
   {
     id: "size-m",
@@ -103,6 +104,7 @@ const packages = [
       "ใบรับรอง Carbon Credit",
     ],
     evReady: "ติดตั้ง EV Charger พร้อมใช้ 3-10 จุด รองรับ AC Type 2",
+    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/pricing-size-m-96bdqV2qHeFRvREkQ3Suqg.webp",
   },
   {
     id: "size-l",
@@ -138,6 +140,7 @@ const packages = [
       "รายงานผลกระทบสิ่งแวดล้อม",
     ],
     evReady: "ติดตั้ง EV Charger ทั้ง AC/DC Fast Charge รองรับ 10-50 จุด",
+    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/pricing-size-l-GYVfyzmEzDPhxpNp3PPD6K.webp",
   },
 ];
 
@@ -248,6 +251,39 @@ const faqJsonLd = {
 /* ─── Component ────────────────────────────────────────────────── */
 export default function Pricing() {
   const [expandedPkg, setExpandedPkg] = useState<string | null>("size-m");
+
+  /* ─── ROI Calculator State ─── */
+  const [monthlyBill, setMonthlyBill] = useState<number>(30000);
+  const [parkingSpaces, setParkingSpaces] = useState<number>(20);
+
+  const roiCalc = useMemo(() => {
+    // Estimate system size: ~3 kWp per parking space
+    const systemKwp = parkingSpaces * 3;
+    // Cost per kWp: ~28,000 baht (average for carport)
+    const totalCost = systemKwp * 28000;
+    // Monthly production: ~120 kWh per kWp (Thailand avg)
+    const monthlyKwh = systemKwp * 120;
+    // Average electricity cost: ~4.5 baht/kWh
+    const monthlySavings = Math.min(monthlyKwh * 4.5, monthlyBill * 0.85);
+    // Payback period in years
+    const paybackYears = totalCost / (monthlySavings * 12);
+    // 25-year total savings
+    const totalSavings25yr = monthlySavings * 12 * 25 - totalCost;
+    // CO2 reduction: ~0.5 kg per kWh
+    const co2ReductionTons = (monthlyKwh * 12 * 0.5) / 1000;
+    // Recommended package
+    const recommendedPkg = systemKwp <= 30 ? "Size S" : systemKwp <= 100 ? "Size M" : "Size L";
+    return {
+      systemKwp,
+      totalCost,
+      monthlySavings,
+      paybackYears: Math.max(paybackYears, 2.5),
+      totalSavings25yr,
+      co2ReductionTons,
+      recommendedPkg,
+      savingsPercent: Math.min(Math.round((monthlySavings / monthlyBill) * 100), 100),
+    };
+  }, [monthlyBill, parkingSpaces]);
 
   return (
     <div>
@@ -367,6 +403,16 @@ export default function Pricing() {
                     </Badge>
                   </div>
                 )}
+
+                {/* Package Image */}
+                <div className="-mx-6 -mt-6 lg:-mx-8 lg:-mt-8 mb-6 rounded-t-2xl overflow-hidden">
+                  <img
+                    src={pkg.image}
+                    alt={`Solar Carport ${pkg.name}`}
+                    className="w-full h-40 lg:h-48 object-cover"
+                    loading="lazy"
+                  />
+                </div>
 
                 {/* Header */}
                 <div className="mb-6">
@@ -654,6 +700,152 @@ export default function Pricing() {
               </tbody>
             </table>
           </div>
+        </div>
+      </section>
+
+      {/* ===== ROI CALCULATOR ===== */}
+      <section className="py-16 lg:py-24 bg-background">
+        <div className="container max-w-4xl">
+          <motion.div
+            initial="hidden" whileInView="visible" viewport={{ once: true }}
+            variants={fadeUp} custom={0}
+            className="text-center mb-12"
+          >
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">
+              ROI Calculator
+            </span>
+            <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
+              คำนวณความคุ้มค่า <span className="text-gradient-accent">Solar Carport</span>
+            </h2>
+            <p className="text-text-secondary">
+              กรอกข้อมูลค่าไฟและจำนวนที่จอดรถ เพื่อดูผลประหยัดและระยะเวลาคืนทุนโดยประมาณ
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial="hidden" whileInView="visible" viewport={{ once: true }}
+            variants={fadeUp} custom={1}
+            className="rounded-2xl border-2 border-border-accent p-6 lg:p-8 bg-surface-elevated"
+          >
+            {/* Input Fields */}
+            <div className="grid sm:grid-cols-2 gap-6 mb-8">
+              <div>
+                <label className="block text-sm font-semibold text-foreground mb-2">
+                  ค่าไฟฟ้าต่อเดือน (บาท)
+                </label>
+                <input
+                  type="range"
+                  min={5000}
+                  max={500000}
+                  step={5000}
+                  value={monthlyBill}
+                  onChange={(e) => setMonthlyBill(Number(e.target.value))}
+                  className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-accent-primary bg-border-subtle"
+                />
+                <div className="flex justify-between mt-2">
+                  <span className="text-xs text-text-muted">5,000</span>
+                  <span className="text-lg font-bold text-accent-primary font-display">
+                    {monthlyBill.toLocaleString()} บาท/เดือน
+                  </span>
+                  <span className="text-xs text-text-muted">500,000</span>
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-foreground mb-2">
+                  จำนวนที่จอดรถ (คัน)
+                </label>
+                <input
+                  type="range"
+                  min={5}
+                  max={200}
+                  step={5}
+                  value={parkingSpaces}
+                  onChange={(e) => setParkingSpaces(Number(e.target.value))}
+                  className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-accent-primary bg-border-subtle"
+                />
+                <div className="flex justify-between mt-2">
+                  <span className="text-xs text-text-muted">5 คัน</span>
+                  <span className="text-lg font-bold text-accent-primary font-display">
+                    {parkingSpaces} คัน
+                  </span>
+                  <span className="text-xs text-text-muted">200 คัน</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Results */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+              <div className="p-4 rounded-xl bg-accent-glow text-center">
+                <TrendingUp className="w-5 h-5 text-accent-primary mx-auto mb-2" />
+                <div className="font-display text-xl lg:text-2xl font-bold text-accent-primary">
+                  {Math.round(roiCalc.monthlySavings).toLocaleString()}
+                </div>
+                <div className="text-xs text-text-muted mt-1">ประหยัด/เดือน (บาท)</div>
+              </div>
+              <div className="p-4 rounded-xl bg-accent-glow text-center">
+                <Clock className="w-5 h-5 text-accent-primary mx-auto mb-2" />
+                <div className="font-display text-xl lg:text-2xl font-bold text-accent-primary">
+                  {roiCalc.paybackYears.toFixed(1)}
+                </div>
+                <div className="text-xs text-text-muted mt-1">ปีคืนทุน</div>
+              </div>
+              <div className="p-4 rounded-xl bg-accent-glow text-center">
+                <Zap className="w-5 h-5 text-accent-primary mx-auto mb-2" />
+                <div className="font-display text-xl lg:text-2xl font-bold text-accent-primary">
+                  {(roiCalc.totalSavings25yr / 1000000).toFixed(1)}M
+                </div>
+                <div className="text-xs text-text-muted mt-1">ประหยัดรวม 25 ปี (บาท)</div>
+              </div>
+              <div className="p-4 rounded-xl bg-accent-glow text-center">
+                <Leaf className="w-5 h-5 text-emerald-500 mx-auto mb-2" />
+                <div className="font-display text-xl lg:text-2xl font-bold text-emerald-500">
+                  {roiCalc.co2ReductionTons.toFixed(0)}
+                </div>
+                <div className="text-xs text-text-muted mt-1">ตัน CO2 ลด/ปี</div>
+              </div>
+            </div>
+
+            {/* Savings Progress Bar */}
+            <div className="mb-6">
+              <div className="flex justify-between text-sm mb-2">
+                <span className="text-text-secondary">ลดค่าไฟได้ประมาณ</span>
+                <span className="font-bold text-accent-primary">{roiCalc.savingsPercent}%</span>
+              </div>
+              <div className="w-full h-3 rounded-full bg-border-subtle overflow-hidden">
+                <motion.div
+                  className="h-full rounded-full bg-gradient-to-r from-accent-primary to-emerald-500"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${roiCalc.savingsPercent}%` }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                />
+              </div>
+            </div>
+
+            {/* Recommendation + CTA */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl bg-accent-primary/10 border border-accent-primary/20">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-accent-primary/20 flex items-center justify-center">
+                  <Sun className="w-5 h-5 text-accent-primary" />
+                </div>
+                <div>
+                  <span className="text-sm text-text-secondary">แพ็คเกจแนะนำ:</span>
+                  <span className="ml-2 font-display font-bold text-accent-primary">
+                    {roiCalc.recommendedPkg}
+                  </span>
+                  <span className="ml-2 text-sm text-text-muted">({roiCalc.systemKwp} kWp)</span>
+                </div>
+              </div>
+              <Link href={`/contact?interest=solar-carport&package=${roiCalc.recommendedPkg.toLowerCase().replace(" ", "-")}`}>
+                <Button className="btn-accent font-display whitespace-nowrap">
+                  ขอใบเสนอราคา <ArrowRight className="w-4 h-4 ml-1" />
+                </Button>
+              </Link>
+            </div>
+
+            <p className="text-xs text-text-muted text-center mt-4">
+              * ผลคำนวณเป็นค่าประมาณการเบื้องต้น ผลลัพธ์จริงขึ้นอยู่กับทิศทางแสงแดด พื้นที่ และรูปแบบการใช้ไฟ
+            </p>
+          </motion.div>
         </div>
       </section>
 

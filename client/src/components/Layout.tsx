@@ -8,32 +8,33 @@ import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown, Phone, Mail, Moon, Sun, ArrowUpRight, Linkedin, Facebook, MapPin, Globe } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage, LANGUAGE_LABELS, type Language } from "@/contexts/LanguageContext";
 
 const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/photo_2026-03-24_06-45-58_293d121c.jpg";
 const DBD_REGISTERED_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/DLpAL6PTE5qU_2bde4df9.png";
 const THAILAND_TRUST_MARK_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/yOSTZisxsQLA_fba48286.jpg";
 const DBD_VERIFIED_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/pxcfay2CDun0_9a6a41ea.jpg";
 
-const navLinks = [
-  { href: "/", label: "หน้าหลัก" },
-  { href: "/solar-carport", label: "Solar Carport", featured: true },
+const navLinksData = [
+  { href: "/", i18nKey: "nav.home" },
+  { href: "/solar-carport", i18nKey: "nav.solarCarport", featured: true },
   {
     href: "/solutions",
-    label: "โซลูชัน",
+    i18nKey: "nav.solutions",
     children: [
-      { href: "/solar-carport", label: "Solar Carport" },
-      { href: "/solutions#rooftop", label: "Rooftop Solar" },
-      { href: "/solutions#floating", label: "Floating Solar" },
-      { href: "/solutions#bess", label: "BESS / ESS" },
-      { href: "/solutions#ai-energy", label: "AI Energy Management" },
-      { href: "/solutions#ai-om", label: "O&M ดูแลระบบ" },
+      { href: "/solar-carport", i18nKey: "sol.solarCarport" },
+      { href: "/solutions#rooftop", i18nKey: "sol.rooftopSolar" },
+      { href: "/solutions#floating", i18nKey: "sol.floatingSolar" },
+      { href: "/solutions#bess", i18nKey: "sol.bess" },
+      { href: "/solutions#ai-energy", i18nKey: "sol.aiEnergy" },
+      { href: "/solutions#ai-om", i18nKey: "sol.oAndM" },
     ],
   },
-  { href: "/industries", label: "อุตสาหกรรม" },
-  { href: "/pricing", label: "แพ็คเกจราคา" },
-  { href: "/projects", label: "ผลงาน" },
-  { href: "/investment", label: "การลงทุน" },
-  { href: "/about", label: "เกี่ยวกับเรา" },
+  { href: "/industries", i18nKey: "nav.industries" },
+  { href: "/pricing", i18nKey: "nav.pricing" },
+  { href: "/projects", i18nKey: "nav.projects" },
+  { href: "/investment", i18nKey: "nav.investment" },
+  { href: "/about", i18nKey: "nav.about" },
 ];
 
 function Navbar() {
@@ -42,6 +43,9 @@ function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
   const { theme, toggleTheme } = useTheme();
+  const { lang, setLang, t } = useLanguage();
+  const [langMenuOpen, setLangMenuOpen] = useState(false);
+  const languages: Language[] = ["th", "en", "cn"];
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -82,7 +86,7 @@ function Navbar() {
 
         {/* Desktop Nav */}
         <div className="hidden lg:flex items-center gap-0.5">
-          {navLinks.map((link) => (
+          {navLinksData.map((link) => (
             <div
               key={link.href}
               className="relative"
@@ -97,7 +101,7 @@ function Navbar() {
                     : "text-text-secondary hover:text-foreground"
                 }`}
               >
-                <span className={link.featured ? "text-accent-primary font-semibold" : ""}>{link.label}</span>
+                <span className={link.featured ? "text-accent-primary font-semibold" : ""}>{t(link.i18nKey)}</span>
                 {link.children && <ChevronDown className="w-3.5 h-3.5" />}
               </Link>
               {link.children && dropdownOpen === link.href && (
@@ -113,7 +117,7 @@ function Navbar() {
                       href={child.href}
                       className="block px-4 py-2.5 text-sm text-text-secondary hover:text-accent-primary hover:bg-accent-glow transition-colors"
                     >
-                      {child.label}
+                      {t(child.i18nKey)}
                     </Link>
                   ))}
                 </motion.div>
@@ -122,8 +126,45 @@ function Navbar() {
           ))}
         </div>
 
-        {/* Desktop CTA + Theme Toggle */}
+        {/* Desktop CTA + Theme Toggle + Language */}
         <div className="hidden lg:flex items-center gap-3">
+          {/* Language Switcher */}
+          <div
+            className="relative"
+            onMouseEnter={() => setLangMenuOpen(true)}
+            onMouseLeave={() => setLangMenuOpen(false)}
+          >
+            <button
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-sm font-medium text-text-secondary hover:text-foreground hover:bg-accent-glow transition-colors border border-border-subtle"
+              aria-label="Change language"
+            >
+              <Globe className="w-4 h-4" />
+              <span>{LANGUAGE_LABELS[lang]}</span>
+              <ChevronDown className="w-3 h-3" />
+            </button>
+            {langMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="absolute top-full right-0 mt-1 w-32 py-1 rounded-xl glass-card shadow-xl z-50"
+              >
+                {languages.map((l) => (
+                  <button
+                    key={l}
+                    onClick={() => { setLang(l); setLangMenuOpen(false); }}
+                    className={`w-full text-left px-4 py-2 text-sm transition-colors ${
+                      lang === l
+                        ? "text-accent-primary bg-accent-glow font-medium"
+                        : "text-text-secondary hover:text-foreground hover:bg-accent-glow"
+                    }`}
+                  >
+                    {LANGUAGE_LABELS[l]}
+                  </button>
+                ))}
+              </motion.div>
+            )}
+          </div>
+
           <button
             onClick={toggleTheme}
             className="p-2 rounded-lg text-text-secondary hover:text-foreground hover:bg-accent-glow transition-colors"
@@ -135,18 +176,30 @@ function Navbar() {
             href="/assessment"
             className="btn-accent-outline px-4 py-2 text-sm font-medium rounded-lg"
           >
-            ประเมินโซลาร์
+            {t("nav.assessment")}
           </Link>
           <Link
             href="/contact"
             className="btn-accent px-4 py-2 text-sm font-medium rounded-lg"
           >
-            ขอใบเสนอราคา
+            {t("nav.getQuote")}
           </Link>
         </div>
 
-        {/* Mobile: Theme toggle + Menu */}
-        <div className="flex lg:hidden items-center gap-2">
+        {/* Mobile: Language + Theme toggle + Menu */}
+        <div className="flex lg:hidden items-center gap-1">
+          {/* Mobile Language Switcher */}
+          <button
+            onClick={() => {
+              const idx = languages.indexOf(lang);
+              setLang(languages[(idx + 1) % languages.length]);
+            }}
+            className="px-2 py-1.5 rounded-lg text-xs font-medium text-text-secondary hover:text-foreground border border-border-subtle transition-colors"
+            aria-label="Change language"
+          >
+            <Globe className="w-4 h-4 inline mr-0.5" />
+            {LANGUAGE_LABELS[lang]}
+          </button>
           <button
             onClick={toggleTheme}
             className="p-2 rounded-lg text-text-secondary hover:text-foreground transition-colors"
@@ -174,7 +227,7 @@ function Navbar() {
             className="lg:hidden bg-surface-overlay backdrop-blur-xl border-t border-border-subtle"
           >
             <div className="container py-4 space-y-1">
-              {navLinks.map((link) => (
+              {navLinksData.map((link) => (
                 <div key={link.href}>
                   <Link
                     href={link.href}
@@ -184,7 +237,7 @@ function Navbar() {
                         : "text-text-secondary hover:text-foreground"
                     }`}
                   >
-                    {link.label}
+                    {t(link.i18nKey)}
                   </Link>
                   {link.children && (
                     <div className="ml-4 space-y-1">
@@ -194,7 +247,7 @@ function Navbar() {
                           href={child.href}
                           className="block px-4 py-2 text-sm text-text-muted hover:text-accent-primary"
                         >
-                          {child.label}
+                          {t(child.i18nKey)}
                         </Link>
                       ))}
                     </div>
@@ -223,34 +276,44 @@ function Navbar() {
   );
 }
 
-const footerLinks = {
-  โซลูชัน: [
-    { href: "/solar-carport", label: "Solar Carport" },
-    { href: "/solutions#rooftop", label: "Rooftop Solar" },
-    { href: "/solutions#floating", label: "Floating Solar" },
-    { href: "/solutions#bess", label: "BESS / ESS" },
-    { href: "/solutions#ai-energy", label: "AI Energy Management" },
-    { href: "/solutions#ai-om", label: "O&M ดูแลระบบ" },
-    { href: "/pricing", label: "แพ็คเกจราคา" },
-  ],
-  อุตสาหกรรม: [
-    { href: "/industries#manufacturing", label: "โรงงาน" },
-    { href: "/industries#agriculture", label: "เกษตรกรรม" },
-    { href: "/industries#hospitality", label: "โรงแรม" },
-    { href: "/industries#education", label: "สถานศึกษา" },
-    { href: "/industries#commercial", label: "อาคารพาณิชย์" },
-  ],
-  บริษัท: [
-    { href: "/about", label: "เกี่ยวกับเรา" },
-    { href: "/projects", label: "ผลงาน" },
-    { href: "/strategy", label: "กลยุทธ์ดิจิทัล" },
-    { href: "/blog", label: "บทความ" },
-    { href: "/partner", label: "พันธมิตร" },
-    { href: "/investment", label: "การลงทุน" },
-  ],
-};
+const footerLinksData = [
+  {
+    titleKey: "footer.solutions",
+    links: [
+      { href: "/solar-carport", i18nKey: "sol.solarCarport" },
+      { href: "/solutions#rooftop", i18nKey: "sol.rooftopSolar" },
+      { href: "/solutions#floating", i18nKey: "sol.floatingSolar" },
+      { href: "/solutions#bess", i18nKey: "sol.bess" },
+      { href: "/solutions#ai-energy", i18nKey: "sol.aiEnergy" },
+      { href: "/solutions#ai-om", i18nKey: "sol.oAndM" },
+      { href: "/pricing", i18nKey: "nav.pricing" },
+    ],
+  },
+  {
+    titleKey: "footer.industries",
+    links: [
+      { href: "/industries#manufacturing", i18nKey: "ind.manufacturing" },
+      { href: "/industries#agriculture", i18nKey: "ind.agriculture" },
+      { href: "/industries#hospitality", i18nKey: "ind.hospitality" },
+      { href: "/industries#education", i18nKey: "ind.education" },
+      { href: "/industries#commercial", i18nKey: "ind.commercial" },
+    ],
+  },
+  {
+    titleKey: "footer.company",
+    links: [
+      { href: "/about", i18nKey: "nav.about" },
+      { href: "/projects", i18nKey: "nav.projects" },
+      { href: "/strategy", i18nKey: "nav.strategy" },
+      { href: "/blog", i18nKey: "nav.blog" },
+      { href: "/partner", i18nKey: "nav.partner" },
+      { href: "/investment", i18nKey: "nav.investment" },
+    ],
+  },
+];
 
 function Footer() {
+  const { t } = useLanguage();
   return (
     <footer className="bg-surface-secondary border-t border-border-subtle relative overflow-hidden">
       {/* Subtle gradient overlay */}
@@ -274,8 +337,7 @@ function Footer() {
               </div>
             </Link>
             <p className="text-text-muted text-sm leading-relaxed mb-5 max-w-sm">
-              ปฏิวัติพลังงานอัจฉริยะ เพื่ออนาคตที่ยั่งยืน — ผู้นำด้านระบบพลังงานสะอาดและนวัตกรรมอัจฉริยะ
-              ออกแบบ ติดตั้ง และบริหารระบบ Solar ครบวงจร ผสาน AI และ Digital Strategy
+              {t("footer.tagline")}
             </p>
 
             {/* Real Contact Info */}
@@ -307,19 +369,19 @@ function Footer() {
           </div>
 
           {/* Links */}
-          {Object.entries(footerLinks).map(([title, links]) => (
-            <div key={title}>
+          {footerLinksData.map((section) => (
+            <div key={section.titleKey}>
               <h4 className="font-display font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">
-                {title}
+                {t(section.titleKey)}
               </h4>
               <ul className="space-y-2.5">
-                {links.map((link) => (
+                {section.links.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
                       className="text-sm text-text-muted hover:text-accent-primary transition-colors inline-flex items-center gap-1 group"
                     >
-                      {link.label}
+                      {t(link.i18nKey)}
                       <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-0.5 group-hover:opacity-100 group-hover:translate-y-0 transition-all" />
                     </Link>
                   </li>
@@ -385,7 +447,7 @@ function Footer() {
         {/* Bottom */}
         <div className="pt-6 border-t border-border-subtle flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-text-muted">
-            © {new Date().getFullYear()} SIRINX Co., Ltd. สงวนลิขสิทธิ์ — ปฏิวัติพลังงานอัจฉริยะ เพื่ออนาคตที่ยั่งยืน
+© {new Date().getFullYear()} SIRINX Co., Ltd. {t("footer.rights")}
           </p>
           <div className="flex gap-6 text-xs text-text-muted">
             <a href="#" className="hover:text-accent-primary transition-colors">นโยบายความเป็นส่วนตัว</a>
