@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Helmet } from "react-helmet-async";
+import { trackSolutionVisit } from "@/components/HeroSlideshow";
 import {
   Car, Sun, Battery, Brain, Plug, Shield, Clock, TrendingUp,
   ArrowRight, CheckCircle2, ChevronDown, ChevronUp,
@@ -97,6 +98,7 @@ export default function SolarCarport() {
   const [showStickyCta, setShowStickyCta] = useState(false);
 
   useEffect(() => {
+    trackSolutionVisit("solar-carport");
     const onScroll = () => setShowStickyCta(window.scrollY > 600);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);

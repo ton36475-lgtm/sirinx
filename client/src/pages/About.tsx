@@ -2,8 +2,10 @@
  * SIRINX About — Second Pass Refinement
  * Tighter spacing, Solar Carport in milestones, trust-first CEO section
  */
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
+import { trackSolutionVisit } from "@/components/HeroSlideshow";
 import {
   ArrowRight, Target, Eye, Cpu, Users, ShieldCheck, Phone, Mail, MapPin,
   Car, Zap
@@ -34,6 +36,8 @@ const milestones = [
 ];
 
 export default function About() {
+  useEffect(() => { trackSolutionVisit("solar-carport"); }, []);
+
   return (
     <div>
       {/* ===== HERO ===== */}

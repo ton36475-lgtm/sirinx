@@ -2,8 +2,10 @@
  * SIRINX Solutions — Second Pass Refinement
  * Solar Carport as first/featured solution, visual images, tighter layout
  */
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
+import { trackSolutionVisit, type SolutionCategory } from "@/components/HeroSlideshow";
 import {
   ArrowRight, Sun, Waves, Car, Battery, Brain, Wrench, Handshake,
   CheckCircle2, Zap
@@ -83,6 +85,19 @@ const solutions = [
 ];
 
 export default function Solutions() {
+  // Track page visit — general solutions interest, plus specific if hash present
+  useEffect(() => {
+    trackSolutionVisit("solar-carport"); // default: most visitors land for carport
+    const hash = window.location.hash.replace("#", "");
+    const categoryMap: Record<string, SolutionCategory> = {
+      carport: "solar-carport", rooftop: "rooftop-solar", floating: "floating-solar",
+      bess: "bess", "ai-energy": "ai-energy",
+    };
+    if (hash && categoryMap[hash]) {
+      trackSolutionVisit(categoryMap[hash]);
+    }
+  }, []);
+
   return (
     <div>
       {/* ===== HERO ===== */}

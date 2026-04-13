@@ -2,8 +2,10 @@
  * SIRINX Investment & Tax Hub — Second Pass Refinement
  * Tighter spacing, Solar Carport ROI example, more helpful tone
  */
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
+import { trackSolutionVisit } from "@/components/HeroSlideshow";
 import {
   ArrowRight, TrendingUp, PiggyBank, FileText, Calculator,
   AlertTriangle, CheckCircle2, Shield, Car
@@ -56,6 +58,8 @@ const taxBenefits = [
 ];
 
 export default function InvestmentTaxHub() {
+  useEffect(() => { trackSolutionVisit("solar-carport"); }, []);
+
   return (
     <div>
       {/* ===== HERO ===== */}

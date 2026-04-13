@@ -2,8 +2,10 @@
  * SIRINX Industries — Second Pass Refinement
  * Solar Carport callout per industry, tighter layout, mid-page CTA
  */
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
+import { trackSolutionVisit } from "@/components/HeroSlideshow";
 import {
   ArrowRight, Factory, Wheat, Hotel, GraduationCap, Building2, Landmark,
   CheckCircle2, Car
@@ -93,6 +95,13 @@ const industries = [
 ];
 
 export default function Industries() {
+  // Track page visit — general industry interest
+  useEffect(() => {
+    trackSolutionVisit("solar-carport"); // industries page prominently features carport
+    const hash = window.location.hash.replace("#", "");
+    if (hash === "hospitality") trackSolutionVisit("hospitality");
+  }, []);
+
   return (
     <div>
       {/* ===== HERO ===== */}

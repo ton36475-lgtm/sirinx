@@ -13,6 +13,7 @@ import {
   Factory, Hotel, Building2, GraduationCap,
   BatteryCharging, Cpu, Plug
 } from "lucide-react";
+import HeroSlideshow from "@/components/HeroSlideshow";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -73,48 +74,9 @@ export default function Home() {
         <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
       </Helmet>
       {/* ══════════════════════════════════════════════
-          1. HERO — Solar Carpark Flagship
+          1. HERO — Multi-Product Slideshow with Personalization
       ══════════════════════════════════════════════ */}
-      <section className="relative min-h-[92vh] flex items-center overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={HERO_CARPARK} alt="Solar Carport — SIRINX" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/75 to-background/30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-        </div>
-        <div className="container relative z-10 pt-24 pb-12">
-          <div className="max-w-3xl">
-            <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0}>
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-accent-primary bg-accent-glow border border-border-accent rounded-full mb-5">
-                <Car className="w-3.5 h-3.5" /> Solar Carport — Flagship Solution
-              </span>
-            </motion.div>
-            <motion.h1
-              initial="hidden" animate="visible" variants={fadeUp} custom={1}
-              className="font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground leading-[1.12] mb-5"
-            >
-              เปลี่ยนที่จอดรถ<br />
-              <span className="text-gradient-accent">เป็นโรงไฟฟ้าพลังงานแสงอาทิตย์</span>
-            </motion.h1>
-            <motion.p
-              initial="hidden" animate="visible" variants={fadeUp} custom={2}
-              className="text-base sm:text-lg text-text-secondary leading-relaxed mb-7 max-w-xl"
-            >
-              Solar Carport โดย SIRINX — ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger พร้อม AI Energy Management ลดค่าไฟ 30-100% คืนทุน 3-5 ปี ดูแลตลอด 25 ปี
-            </motion.p>
-            <motion.div
-              initial="hidden" animate="visible" variants={fadeUp} custom={3}
-              className="flex flex-col sm:flex-row gap-3"
-            >
-              <Link href="/contact" className="inline-flex items-center justify-center gap-2 px-6 py-3.5 font-display font-semibold btn-accent rounded-lg">
-                ขอใบเสนอราคา Solar Carport <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link href="/assessment" className="inline-flex items-center justify-center gap-2 px-6 py-3.5 font-display font-semibold btn-accent-outline rounded-lg">
-                ประเมินความคุ้มค่าฟรี
-              </Link>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+      <HeroSlideshow />
 
       {/* ══════════════════════════════════════════════
           2. SOCIAL PROOF STRIP — Above the fold metrics

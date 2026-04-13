@@ -2,9 +2,10 @@
  * SIRINX Projects / Portfolio — Second Pass Refinement
  * Premium proof-first storytelling: featured hero project, clean cards, curated gallery
  */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
+import { trackSolutionVisit } from "@/components/HeroSlideshow";
 import {
   ArrowRight, MapPin, Zap, Calendar, TrendingUp, Filter,
   X, ChevronLeft, ChevronRight, CheckCircle2, Car
@@ -126,6 +127,7 @@ const galleryPhotos = [
 ];
 
 export default function Projects() {
+  useEffect(() => { trackSolutionVisit("solar-carport"); }, []);
   const [filter, setFilter] = useState("all");
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
 

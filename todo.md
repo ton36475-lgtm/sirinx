@@ -152,3 +152,15 @@
 - [x] P11: Check image ratios, text spacing, section hierarchy
 - [x] P12: Verify forms, tracking, metadata, mobile behavior
 - [x] P13: Return updated preview + list of everything fixed
+
+## Phase 9 — Multi-Product Hero Slideshow (10 images + Personalization)
+- [x] Generate first 5 hero images (Carport Aerial, Carport Ground, Rooftop Factory, Floating Solar, Carport EV)
+- [x] Generate remaining 5 hero images (BESS, Hotel Resort, Night Carport, AI Monitoring, Wide Carport) — regenerated 3 for realism
+- [x] Build hero slideshow component with auto-rotation + smooth crossfade transitions
+- [x] Add cookie/localStorage-based personalization (track which solution pages visitor browses)
+- [x] Reorder hero slides based on visitor interest preferences
+- [x] Integrate slideshow into Home page replacing single hero image
+- [x] Add preference tracking to all solution/industry pages (SolarCarport, Solutions, Industries)
+- [x] Test slideshow on desktop and mobile — 70 tests pass, screenshot verified
+- [x] Write vitest tests for HeroSlideshow personalization (13 tests, 83 total)
+- [ ] Save checkpoint (pending)
