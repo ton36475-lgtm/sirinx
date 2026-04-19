@@ -1,11 +1,13 @@
 /**
- * SIRINX Solutions — Second Pass Refinement
+ * SIRINX Solutions — Full i18n Integration
  * Solar Carport as first/featured solution, visual images, tighter layout
  */
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { trackSolutionVisit, type SolutionCategory } from "@/components/HeroSlideshow";
+import { usePageTranslation } from "@/i18n";
+import "@/i18n/pages/solutions";
 import {
   ArrowRight, Sun, Waves, Car, Battery, Brain, Wrench, Handshake,
   CheckCircle2, Zap
@@ -23,71 +25,78 @@ const IMG_EV = `${CDN}/solar-carpark-ev-charging-niYjh6gCmDqQNQiCE6oq8M.webp`;
 const IMG_AI = `${CDN}/solar-ai-dashboard-CDhHz7V3K98CLU6eGvW8PP.webp`;
 const IMG_OM = `${CDN}/solar-om-maintenance-7BKbWXXHKbZ3Adwwdk9XvZ.webp`;
 
-const solutions = [
+type SolutionDef = {
+  id: string;
+  icon: typeof Car;
+  titleKey: string;
+  featured?: boolean;
+  image: string | null;
+  taglineKey?: string;
+  problemKey: string;
+  solutionKey: string;
+  suitableKeys: string[];
+  benefitKeys: string[];
+  link?: string;
+};
+
+const solutions: SolutionDef[] = [
   {
-    id: "carport", icon: Car, title: "Solar Carport", featured: true,
-    image: IMG_CARPARK,
-    tagline: "Flagship Solution",
-    problem: "ที่จอดรถเป็นพื้นที่ว่างที่ไม่สร้างรายได้ รถร้อนจัดจากแดด ไม่มี EV Charger",
-    solution: "โครงสร้างหลังคาโซลาร์สำหรับที่จอดรถ ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charging พร้อม BESS และ AI Energy Management",
-    suitable: ["ห้างสรรพสินค้า / อาคารพาณิชย์", "โรงงานที่มีลานจอดรถ 50+ คัน", "โรงแรม / รีสอร์ท", "สถานศึกษา / หน่วยงานราชการ"],
-    benefits: ["ลดค่าไฟ 30-100%", "คืนทุน 3-5 ปี", "รองรับ EV Charging", "เพิ่มมูลค่าอสังหาริมทรัพย์"],
+    id: "carport", icon: Car, titleKey: "sol.carport.title", featured: true,
+    image: IMG_CARPARK, taglineKey: "sol.carport.tagline",
+    problemKey: "sol.carport.problem", solutionKey: "sol.carport.solution",
+    suitableKeys: ["sol.carport.suitable1", "sol.carport.suitable2", "sol.carport.suitable3", "sol.carport.suitable4"],
+    benefitKeys: ["sol.carport.benefit1", "sol.carport.benefit2", "sol.carport.benefit3", "sol.carport.benefit4"],
     link: "/solar-carport",
   },
   {
-    id: "rooftop", icon: Sun, title: "Rooftop Solar",
+    id: "rooftop", icon: Sun, titleKey: "sol.rooftop.title",
     image: null,
-    problem: "ค่าไฟฟ้าเป็นต้นทุนหลักของธุรกิจ โดยเฉพาะโรงงานและอาคารขนาดใหญ่ที่ใช้ไฟในช่วงกลางวันสูง",
-    solution: "ระบบโซลาร์บนหลังคาที่ออกแบบเฉพาะสำหรับแต่ละอาคาร ใช้แผง Tier-1 Mono PERC ประสิทธิภาพสูง พร้อม monitoring real-time",
-    suitable: ["โรงงานที่มีหลังคาขนาดใหญ่", "อาคารพาณิชย์และสำนักงาน", "ห้างสรรพสินค้าและคลังสินค้า", "โรงแรมและรีสอร์ท"],
-    benefits: ["ลดค่าไฟ 30-100% (รวม BESS)", "คืนทุนภายใน 3-5 ปี", "อายุการใช้งาน 25+ ปี", "เพิ่มมูลค่าอาคาร"],
+    problemKey: "sol.rooftop.problem", solutionKey: "sol.rooftop.solution",
+    suitableKeys: ["sol.rooftop.suitable1", "sol.rooftop.suitable2", "sol.rooftop.suitable3", "sol.rooftop.suitable4"],
+    benefitKeys: ["sol.rooftop.benefit1", "sol.rooftop.benefit2", "sol.rooftop.benefit3", "sol.rooftop.benefit4"],
   },
   {
-    id: "floating", icon: Waves, title: "Floating Solar",
+    id: "floating", icon: Waves, titleKey: "sol.floating.title",
     image: null,
-    problem: "ธุรกิจที่มีพื้นที่น้ำแต่ไม่มีหลังคาเพียงพอ หรือต้องการใช้พื้นที่ผิวน้ำให้เกิดประโยชน์",
-    solution: "ระบบโซลาร์ลอยน้ำสำหรับอ่างเก็บน้ำ บ่อน้ำอุตสาหกรรม ช่วยลดการระเหยของน้ำและผลิตไฟฟ้าพร้อมกัน",
-    suitable: ["อ่างเก็บน้ำชลประทาน", "บ่อน้ำในโรงงาน", "ฟาร์มเพาะเลี้ยงสัตว์น้ำ", "แหล่งน้ำสาธารณะ"],
-    benefits: ["ใช้พื้นที่น้ำให้เกิดประโยชน์", "ลดการระเหยของน้ำ 30-50%", "ประสิทธิภาพสูงกว่า ground-mount", "ไม่เสียพื้นที่ดิน"],
+    problemKey: "sol.floating.problem", solutionKey: "sol.floating.solution",
+    suitableKeys: ["sol.floating.suitable1", "sol.floating.suitable2", "sol.floating.suitable3", "sol.floating.suitable4"],
+    benefitKeys: ["sol.floating.benefit1", "sol.floating.benefit2", "sol.floating.benefit3", "sol.floating.benefit4"],
   },
   {
-    id: "bess", icon: Battery, title: "BESS / ESS",
+    id: "bess", icon: Battery, titleKey: "sol.bess.title",
     image: IMG_EV,
-    problem: "ค่า demand charge สูง ไฟฟ้าดับบ่อย หรือต้องการใช้พลังงานโซลาร์ในช่วงกลางคืน",
-    solution: "ระบบกักเก็บพลังงาน (Battery Energy Storage System) ทำงานร่วมกับโซลาร์ บริหารจัดการพลังงานอย่างชาญฉลาด",
-    suitable: ["โรงงานที่มี demand charge สูง", "ธุรกิจที่ต้องการ backup power", "อาคารที่ต้องการ peak shaving", "พื้นที่ที่ไฟฟ้าไม่เสถียร"],
-    benefits: ["ลดค่า demand charge 15-30%", "สำรองไฟฟ้ายามฉุกเฉิน", "ใช้โซลาร์ได้ตลอด 24 ชม.", "เพิ่มความเสถียรของระบบ"],
+    problemKey: "sol.bess.problem", solutionKey: "sol.bess.solution",
+    suitableKeys: ["sol.bess.suitable1", "sol.bess.suitable2", "sol.bess.suitable3", "sol.bess.suitable4"],
+    benefitKeys: ["sol.bess.benefit1", "sol.bess.benefit2", "sol.bess.benefit3", "sol.bess.benefit4"],
   },
   {
-    id: "ai-energy", icon: Brain, title: "AI Energy Management",
+    id: "ai-energy", icon: Brain, titleKey: "sol.ai.title",
     image: IMG_AI,
-    problem: "ไม่สามารถมองเห็นการใช้พลังงานแบบ real-time ทำให้ไม่รู้ว่าจุดไหนสิ้นเปลืองและควรปรับปรุงอย่างไร",
-    solution: "แพลตฟอร์ม AI วิเคราะห์ข้อมูลพลังงาน real-time แนะนำการปรับปรุง ควบคุมระบบอัตโนมัติเพื่อประสิทธิภาพสูงสุด",
-    suitable: ["โรงงานที่ต้องการลดต้นทุนพลังงาน", "อาคารที่มีระบบพลังงานหลายชนิด", "ธุรกิจที่ต้องการ ESG reporting", "องค์กรที่มีหลายสาขา"],
-    benefits: ["เห็นข้อมูลพลังงาน real-time", "AI แนะนำการประหยัด", "รายงาน ESG อัตโนมัติ", "ลดพลังงานสิ้นเปลืองเพิ่ม 10-20%"],
+    problemKey: "sol.ai.problem", solutionKey: "sol.ai.solution",
+    suitableKeys: ["sol.ai.suitable1", "sol.ai.suitable2", "sol.ai.suitable3", "sol.ai.suitable4"],
+    benefitKeys: ["sol.ai.benefit1", "sol.ai.benefit2", "sol.ai.benefit3", "sol.ai.benefit4"],
   },
   {
-    id: "ai-om", icon: Wrench, title: "O&M ดูแลระบบ",
+    id: "ai-om", icon: Wrench, titleKey: "sol.om.title",
     image: IMG_OM,
-    problem: "ระบบโซลาร์เสื่อมประสิทธิภาพตามเวลา การตรวจสอบแบบเดิมช้าและมีค่าใช้จ่ายสูง",
-    solution: "ระบบดูแลรักษาด้วย AI + Drone Inspection + ทีมวิศวกร ตรวจจับปัญหาก่อนเกิดความเสียหาย ดูแลตลอด 25 ปี",
-    suitable: ["โครงการโซลาร์ทุกขนาด", "ระบบ BESS ที่ต้องการ monitoring", "โรงงานที่มีระบบพลังงานซับซ้อน", "ฟาร์มโซลาร์ขนาดใหญ่"],
-    benefits: ["Predictive maintenance", "ลดเวลา downtime", "ยืดอายุอุปกรณ์", "ลดค่าซ่อมบำรุง 30%"],
+    problemKey: "sol.om.problem", solutionKey: "sol.om.solution",
+    suitableKeys: ["sol.om.suitable1", "sol.om.suitable2", "sol.om.suitable3", "sol.om.suitable4"],
+    benefitKeys: ["sol.om.benefit1", "sol.om.benefit2", "sol.om.benefit3", "sol.om.benefit4"],
   },
   {
-    id: "financing", icon: Handshake, title: "Co-investment / Financing",
+    id: "financing", icon: Handshake, titleKey: "sol.financing.title",
     image: null,
-    problem: "ต้องการติดตั้งโซลาร์แต่ไม่ต้องการลงทุนเงินก้อนใหญ่ตั้งแต่วันแรก",
-    solution: "รูปแบบการลงทุนร่วมที่ยืดหยุ่น ทั้งซื้อขาด ผ่อนชำระ และ Co-investment ให้ธุรกิจเข้าถึงพลังงานสะอาดได้ง่ายขึ้น",
-    suitable: ["SME ที่งบจำกัด", "ธุรกิจที่ต้องการ cash flow flexibility", "โครงการขนาดใหญ่", "องค์กรที่ต้องการ off-balance sheet"],
-    benefits: ["ไม่ต้องลงทุนสูงตั้งแต่วันแรก", "รูปแบบยืดหยุ่น", "ลดค่าไฟตั้งแต่เดือนแรก", "ทีมที่ปรึกษาช่วยวิเคราะห์"],
+    problemKey: "sol.financing.problem", solutionKey: "sol.financing.solution",
+    suitableKeys: ["sol.financing.suitable1", "sol.financing.suitable2", "sol.financing.suitable3", "sol.financing.suitable4"],
+    benefitKeys: ["sol.financing.benefit1", "sol.financing.benefit2", "sol.financing.benefit3", "sol.financing.benefit4"],
   },
 ];
 
 export default function Solutions() {
-  // Track page visit — general solutions interest, plus specific if hash present
+  const { t } = usePageTranslation("solutions");
+
   useEffect(() => {
-    trackSolutionVisit("solar-carport"); // default: most visitors land for carport
+    trackSolutionVisit("solar-carport");
     const hash = window.location.hash.replace("#", "");
     const categoryMap: Record<string, SolutionCategory> = {
       carport: "solar-carport", rooftop: "rooftop-solar", floating: "floating-solar",
@@ -108,13 +117,11 @@ export default function Solutions() {
         </div>
         <div className="container relative z-10 pt-20">
           <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0} className="max-w-2xl">
-            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">Solutions</span>
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("sol.hero.tag")}</span>
             <h1 className="font-display text-3xl lg:text-4xl font-bold text-foreground mb-3">
-              โซลูชันพลังงาน<span className="text-gradient-accent">ครบวงจร</span>
+              {t("sol.hero.title1")}<span className="text-gradient-accent">{t("sol.hero.title2")}</span>
             </h1>
-            <p className="text-text-secondary">
-              ทุกโซลูชันออกแบบเพื่อผลลัพธ์ทางธุรกิจที่วัดได้ ตั้งแต่การผลิตไฟฟ้า กักเก็บพลังงาน ไปจนถึง AI Energy Management
-            </p>
+            <p className="text-text-secondary">{t("sol.hero.desc")}</p>
           </motion.div>
         </div>
       </section>
@@ -127,44 +134,41 @@ export default function Solutions() {
           className={`py-16 lg:py-20 ${idx % 2 === 0 ? "bg-background" : "section-alt"} ${sol.featured ? "border-t-2 border-accent-primary/30" : ""}`}
         >
           <div className="container">
-            {/* Featured badge */}
-            {sol.featured && (
+            {sol.featured && sol.taglineKey && (
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="mb-6">
                 <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-accent-primary bg-accent-glow border border-border-accent rounded-full">
-                  <Zap className="w-3 h-3" /> {sol.tagline}
+                  <Zap className="w-3 h-3" /> {t(sol.taglineKey)}
                 </span>
               </motion.div>
             )}
 
             <div className={`grid ${sol.image ? "lg:grid-cols-2" : "lg:grid-cols-[1fr_400px]"} gap-10 lg:gap-14 items-start`}>
-              {/* Left: Content */}
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
                 <div className="flex items-center gap-3 mb-4">
                   <div className={`w-9 h-9 rounded-lg ${sol.featured ? "bg-accent-primary/20" : "bg-accent-glow"} flex items-center justify-center`}>
-                    <sol.icon className={`w-5 h-5 ${sol.featured ? "text-accent-primary" : "text-accent-primary"}`} />
+                    <sol.icon className="w-5 h-5 text-accent-primary" />
                   </div>
                   <h2 className={`font-display ${sol.featured ? "text-2xl lg:text-3xl" : "text-xl lg:text-2xl"} font-bold text-foreground`}>
-                    {sol.title}
+                    {t(sol.titleKey)}
                   </h2>
                 </div>
 
                 <div className="space-y-4 mb-6">
                   <div>
-                    <h3 className="text-xs font-medium text-accent-secondary uppercase tracking-wider mb-1.5">ปัญหาที่ลูกค้าเจอ</h3>
-                    <p className="text-sm text-text-secondary leading-relaxed">{sol.problem}</p>
+                    <h3 className="text-xs font-medium text-accent-secondary uppercase tracking-wider mb-1.5">{t("sol.label.problem")}</h3>
+                    <p className="text-sm text-text-secondary leading-relaxed">{t(sol.problemKey)}</p>
                   </div>
                   <div>
-                    <h3 className="text-xs font-medium text-accent-primary uppercase tracking-wider mb-1.5">วิธีแก้ของ SIRINX</h3>
-                    <p className="text-sm text-text-secondary leading-relaxed">{sol.solution}</p>
+                    <h3 className="text-xs font-medium text-accent-primary uppercase tracking-wider mb-1.5">{t("sol.label.solution")}</h3>
+                    <p className="text-sm text-text-secondary leading-relaxed">{t(sol.solutionKey)}</p>
                   </div>
                 </div>
 
-                {/* Benefits inline */}
                 <div className="grid grid-cols-2 gap-2 mb-6">
-                  {sol.benefits.map((b) => (
-                    <div key={b} className="flex items-start gap-2 text-xs text-text-secondary">
+                  {sol.benefitKeys.map((bk) => (
+                    <div key={bk} className="flex items-start gap-2 text-xs text-text-secondary">
                       <CheckCircle2 className="w-3.5 h-3.5 text-accent-primary shrink-0 mt-0.5" />
-                      {b}
+                      {t(bk)}
                     </div>
                   ))}
                 </div>
@@ -172,32 +176,27 @@ export default function Solutions() {
                 <div className="flex flex-wrap gap-3">
                   {sol.link ? (
                     <Link href={sol.link} className="inline-flex items-center gap-2 px-5 py-2.5 font-display font-semibold btn-accent rounded-lg text-sm">
-                      ดูรายละเอียด {sol.title} <ArrowRight className="w-4 h-4" />
+                      {t("sol.cta.details")} {t(sol.titleKey)} <ArrowRight className="w-4 h-4" />
                     </Link>
                   ) : (
                     <Link href="/contact" className="inline-flex items-center gap-2 px-5 py-2.5 font-display font-semibold btn-accent rounded-lg text-sm">
-                      ขอคำปรึกษา {sol.title} <ArrowRight className="w-4 h-4" />
+                      {t("sol.cta.consult")} {t(sol.titleKey)} <ArrowRight className="w-4 h-4" />
                     </Link>
                   )}
                 </div>
               </motion.div>
 
-              {/* Right: Image or Suitable list */}
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}>
                 {sol.image && (
-                  <img
-                    src={sol.image}
-                    alt={sol.title}
-                    className="rounded-xl w-full aspect-[16/10] object-cover mb-5"
-                  />
+                  <img src={sol.image} alt={t(sol.titleKey)} className="rounded-xl w-full aspect-[16/10] object-cover mb-5" />
                 )}
                 <div className="p-5 rounded-xl border border-border-subtle bg-surface-elevated">
-                  <h3 className="font-display font-semibold text-foreground text-sm mb-3">เหมาะกับใคร</h3>
+                  <h3 className="font-display font-semibold text-foreground text-sm mb-3">{t("sol.label.suitable")}</h3>
                   <ul className="space-y-2">
-                    {sol.suitable.map((s) => (
-                      <li key={s} className="flex items-start gap-2 text-xs text-text-secondary">
+                    {sol.suitableKeys.map((sk) => (
+                      <li key={sk} className="flex items-start gap-2 text-xs text-text-secondary">
                         <CheckCircle2 className="w-3.5 h-3.5 text-accent-secondary shrink-0 mt-0.5" />
-                        {s}
+                        {t(sk)}
                       </li>
                     ))}
                   </ul>
@@ -213,16 +212,14 @@ export default function Solutions() {
         <div className="absolute inset-0 bg-gradient-to-br from-accent-glow to-transparent" />
         <div className="container relative text-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
-            <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">ไม่แน่ใจว่าโซลูชันไหนเหมาะ?</h2>
-            <p className="text-text-secondary text-sm mb-7 max-w-lg mx-auto">
-              ทีมวิศวกรของเราพร้อมช่วยวิเคราะห์ความต้องการและแนะนำโซลูชันที่เหมาะสมที่สุดสำหรับธุรกิจของคุณ
-            </p>
+            <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">{t("sol.bottomCta.title")}</h2>
+            <p className="text-text-secondary text-sm mb-7 max-w-lg mx-auto">{t("sol.bottomCta.desc")}</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/contact" className="inline-flex items-center gap-2 px-6 py-3.5 font-display font-semibold btn-accent rounded-lg">
-                นัดสำรวจหน้างานฟรี <ArrowRight className="w-4 h-4" />
+                {t("sol.bottomCta.btn1")} <ArrowRight className="w-4 h-4" />
               </Link>
               <Link href="/assessment" className="inline-flex items-center gap-2 px-6 py-3.5 font-display font-semibold btn-accent-outline rounded-lg">
-                ประเมินความคุ้มค่าเบื้องต้น
+                {t("sol.bottomCta.btn2")}
               </Link>
             </div>
           </motion.div>

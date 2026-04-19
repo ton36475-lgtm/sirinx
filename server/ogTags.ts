@@ -10,7 +10,7 @@ const OG_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBN
 
 const SITE_NAME = "SIRINX";
 const DEFAULT_TITLE = "SIRINX | Solar Carport ผลิตไฟฟ้าจากที่จอดรถ ลดค่าไฟ 30-100% คืนทุน 3-5 ปี พร้อม EV Charger & AI Energy";
-const DEFAULT_DESC = "เปลี่ยนที่จอดรถเป็นโรงไฟฟ้าพลังงานแสงอาทิตย์ — Solar Carport โดย SIRINX ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger พร้อม AI Energy Management ลดค่าไฟ 30-100% คืนทุน 3-5 ปี ดูแลตลอด 25 ปี นัดสำรวจหน้างานฟรี";
+const DEFAULT_DESC = "SIRINX Solar Carport ผลิตไฟฟ้าจากที่จอดรถ ลดค่าไฟ 30-100% คืนทุน 3-5 ปี รองรับ EV Charger + BESS + AI Energy ดูแลตลอด 25 ปี นัดสำรวจฟรี";
 
 // Route-specific metadata map — SEO/AEO promotional copy
 interface PageMeta {
@@ -22,15 +22,15 @@ interface PageMeta {
 const routeMetaMap: Record<string, PageMeta> = {
   "/": {
     title: "SIRINX | Solar Carport ผลิตไฟฟ้าจากที่จอดรถ ลดค่าไฟ 30-100% คืนทุน 3-5 ปี พร้อม EV Charger & AI Energy",
-    description: "เปลี่ยนที่จอดรถเป็นโรงไฟฟ้าพลังงานแสงอาทิตย์ — Solar Carport โดย SIRINX ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger พร้อม AI Energy Management ลดค่าไฟ 30-100% คืนทุน 3-5 ปี ดูแลตลอด 25 ปี นัดสำรวจหน้างานฟรี",
+    description: "SIRINX Solar Carport ผลิตไฟฟ้าจากที่จอดรถ ลดค่าไฟ 30-100% คืนทุน 3-5 ปี รองรับ EV Charger + BESS + AI Energy ดูแลตลอด 25 ปี นัดสำรวจฟรี",
   },
   "/solar-carport": {
     title: "Solar Carport โดย SIRINX | เปลี่ยนที่จอดรถเป็นโรงไฟฟ้า ผลิตไฟฟ้า+ร่มเงา+EV Charger",
-    description: "Solar Carport โครงสร้างหลังคาพลังงานแสงอาทิตย์ครบวงจร — ผลิตไฟฟ้าจากที่จอดรถ ให้ร่มเงารถยนต์ รองรับ EV Charging Station พร้อม BESS และ AI Energy Management ลดค่าไฟ 30-100% คืนทุน 3-5 ปี อายุใช้งาน 25+ ปี",
+    description: "Solar Carport ผลิตไฟฟ้าจากที่จอดรถ ให้ร่มเงา รองรับ EV Charging + BESS + AI Energy ลดค่าไฟ 30-100% คืนทุน 3-5 ปี อายุใช้งาน 25+ ปี",
   },
   "/about": {
     title: "SIRINX คือใคร? บริษัทติดตั้งโซลาร์เซลล์ + AI Energy ครบวงจรของไทย",
-    description: "SIRINX ผู้เชี่ยวชาญด้านพลังงานแสงอาทิตย์ครบวงจร ตั้งแต่ออกแบบ ติดตั้ง ไปจนถึงดูแลระบบด้วย AI ตลอด 25 ปี เราช่วยธุรกิจไทยลดต้นทุนพลังงานและเพิ่มกำไรด้วยเทคโนโลยีสะอาด",
+    description: "SIRINX ผู้เชี่ยวชาญโซลาร์เซลล์ครบวงจร ออกแบบ ติดตั้ง ดูแลระบบด้วย AI ตลอด 25 ปี ช่วยธุรกิจไทยลดต้นทุนพลังงานด้วยเทคโนโลยีสะอาด",
   },
   "/solutions": {
     title: "โซลูชันโซลาร์เซลล์ครบวงจร | Rooftop Solar, Floating Solar, BESS, AI Energy",
@@ -38,15 +38,15 @@ const routeMetaMap: Record<string, PageMeta> = {
   },
   "/industries": {
     title: "โซลาร์เซลล์สำหรับโรงงาน โรงแรม เกษตร ภาครัฐ | ลดค่าไฟเฉพาะทาง",
-    description: "โซลูชันพลังงานแสงอาทิตย์ออกแบบเฉพาะอุตสาหกรรม — โรงงานลดต้นทุนผลิต, โรงแรม Green Hotel, ฟาร์มเกษตร Floating Solar, สถานศึกษา Living Lab, อาคารพาณิชย์ ESG, ภาครัฐ Carbon Neutral",
+    description: "โซลูชันโซลาร์เซลล์เฉพาะอุตสาหกรรม — โรงงาน โรงแรม เกษตร สถานศึกษา อาคารพาณิชย์ ภาครัฐ ออกแบบระบบตามรูปแบบการใช้ไฟจริง ลดค่าไฟทันที",
   },
   "/investment": {
     title: "ลงทุนโซลาร์เซลล์ คุ้มค่าแค่ไหน? ROI, สิทธิ์ BOI, ค่าเสื่อมเร่ง | SIRINX",
-    description: "วิเคราะห์ความคุ้มค่าการลงทุนโซลาร์เซลล์ — ซื้อขาด, PPA จ่ายตามหน่วย, Leasing ผ่อน 0% พร้อมสิทธิประโยชน์ BOI ลดหย่อนภาษี 200% และค่าเสื่อมราคาเร่ง คืนทุนเร็วกว่าที่คิด",
+    description: "วิเคราะห์ความคุ้มค่าลงทุนโซลาร์เซลล์ — ซื้อขาด PPA Leasing พร้อมสิทธิ BOI ลดหย่อนภาษี 200% ค่าเสื่อมเร่ง คืนทุนเร็วกว่าที่คิด",
   },
   "/projects": {
     title: "ผลงานติดตั้ง Solar Carport & โซลาร์เซลล์จริง | ภาพโครงการ | SIRINX",
-    description: "ดูผลงานจริงจากโครงการที่ SIRINX ติดตั้ง — Solar Carport, Rooftop Solar โรงงาน, Floating Solar อ่างเก็บน้ำ, Solar Farm Node พร้อมภาพถ่ายจริงจากหน้างานและตัวเลขผลประหยัดค่าไฟ",
+    description: "ผลงานจริง SIRINX — Solar Carport, Rooftop Solar, Floating Solar, Solar Farm พร้อมภาพถ่ายจริงจากหน้างานและตัวเลขผลประหยัดค่าไฟ",
   },
   "/strategy": {
     title: "วางแผนลดค่าไฟระยะยาว | กลยุทธ์ Solar + BESS + AI Energy | SIRINX",

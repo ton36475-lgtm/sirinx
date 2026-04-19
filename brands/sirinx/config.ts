@@ -307,7 +307,7 @@ const sirinxConfig: BrandConfig = {
     titleTemplate: "%s | SIRINX Solar",
     defaultTitle: "SIRINX — Solar Digital Agentic Company",
     defaultDescription: "ออกแบบ ติดตั้ง และบริหารระบบพลังงานครบวงจร Solar, BESS, AI Energy Management สำหรับธุรกิจไทย",
-    keywords: ["solar", "พลังงานแสงอาทิตย์", "BESS", "solar carport", "AI energy", "SIRINX"],
+    keywords: ["Solar Carport", "โซลาร์เซลล์", "BESS", "AI Energy", "EV Charger", "ลดค่าไฟ", "SIRINX"],
   },
 
   allowedDomains: [

@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { usePageTranslation } from "@/i18n";
+import "@/i18n/pages/heroSlideshow";
 
 // ─── Solution categories & slide data ───────────────────────────────
 export type SolutionCategory =
@@ -238,6 +240,7 @@ export default function HeroSlideshow() {
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const { t } = usePageTranslation("heroSlideshow");
 
   const next = useCallback(() => {
     setCurrent((prev) => (prev + 1) % slides.length);
@@ -303,20 +306,20 @@ export default function HeroSlideshow() {
             >
               {/* Badge */}
               <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-accent-primary bg-accent-glow border border-border-accent rounded-full mb-6">
-                {slide.badge}
+                {t(`hero.${slide.id}.badge`) !== `hero.${slide.id}.badge` ? t(`hero.${slide.id}.badge`) : slide.badge}
               </span>
 
               {/* Headline */}
               <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground leading-[1.1] mb-2">
-                {slide.headline}
+                {t(`hero.${slide.id}.headline`) !== `hero.${slide.id}.headline` ? t(`hero.${slide.id}.headline`) : slide.headline}
               </h1>
               <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gradient-accent leading-[1.1] mb-6">
-                {slide.highlightLine}
+                {t(`hero.${slide.id}.highlight`) !== `hero.${slide.id}.highlight` ? t(`hero.${slide.id}.highlight`) : slide.highlightLine}
               </h2>
 
               {/* Description */}
               <p className="text-lg sm:text-xl text-text-secondary leading-relaxed mb-8 max-w-xl">
-                {slide.description}
+                {t(`hero.${slide.id}.desc`) !== `hero.${slide.id}.desc` ? t(`hero.${slide.id}.desc`) : slide.description}
               </p>
 
               {/* CTAs */}
@@ -325,14 +328,14 @@ export default function HeroSlideshow() {
                   href={slide.cta.href}
                   className="inline-flex items-center justify-center gap-2 px-6 py-3.5 font-display font-semibold btn-accent rounded-lg"
                 >
-                  {slide.cta.label} <ArrowRight className="w-4 h-4" />
+                  {t(`hero.${slide.id}.cta`) !== `hero.${slide.id}.cta` ? t(`hero.${slide.id}.cta`) : slide.cta.label} <ArrowRight className="w-4 h-4" />
                 </Link>
                 {slide.secondaryCta && (
                   <Link
                     href={slide.secondaryCta.href}
                     className="inline-flex items-center justify-center gap-2 px-6 py-3.5 font-display font-semibold btn-accent-outline rounded-lg"
                   >
-                    {slide.secondaryCta.label}
+                    {t(`hero.${slide.id}.cta2`) !== `hero.${slide.id}.cta2` ? t(`hero.${slide.id}.cta2`) : slide.secondaryCta.label}
                   </Link>
                 )}
               </div>
@@ -345,14 +348,14 @@ export default function HeroSlideshow() {
       <button
         onClick={prev}
         className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-background/40 backdrop-blur-sm border border-border-subtle hover:bg-background/60 transition-colors hidden sm:flex items-center justify-center"
-        aria-label="ภาพก่อนหน้า"
+        aria-label={t("hero.prev")}
       >
         <ChevronLeft className="w-5 h-5 text-foreground" />
       </button>
       <button
         onClick={next}
         className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-background/40 backdrop-blur-sm border border-border-subtle hover:bg-background/60 transition-colors hidden sm:flex items-center justify-center"
-        aria-label="ภาพถัดไป"
+        aria-label={t("hero.next")}
       >
         <ChevronRight className="w-5 h-5 text-foreground" />
       </button>
@@ -368,7 +371,7 @@ export default function HeroSlideshow() {
                 ? "w-8 h-2.5 bg-accent-primary"
                 : "w-2.5 h-2.5 bg-foreground/30 hover:bg-foreground/50"
             }`}
-            aria-label={`ไปยังภาพ ${i + 1}: ${s.badge}`}
+            aria-label={`${t("hero.goToSlide")} ${i + 1}`}
           />
         ))}
       </div>

@@ -1,11 +1,12 @@
 /**
- * SIRINX Projects / Portfolio — Second Pass Refinement
+ * SIRINX Projects / Portfolio — i18n Integrated
  * Premium proof-first storytelling: featured hero project, clean cards, curated gallery
  */
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { trackSolutionVisit } from "@/components/HeroSlideshow";
+import { usePageTranslation } from "@/i18n";
 import {
   ArrowRight, MapPin, Zap, Calendar, TrendingUp, Filter,
   X, ChevronLeft, ChevronRight, CheckCircle2, Car
@@ -18,106 +19,8 @@ const fadeUp = {
 
 const CDN = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv";
 
-/* ── Featured project (hero) ── */
-const featured = {
-  title: "Solar Carport — โรงแรมเรือนแพ รอยัลปาร์ค",
-  location: "พิษณุโลก",
-  type: "Solar Carport + BESS",
-  capacity: "Solar Carport",
-  saving: "ลดค่าพลังงาน 30-100%",
-  year: "2024",
-  owner: "คุณ Pitoon Yingyosruangrong",
-  desc: "Solar Carport ติดตั้งจริงที่โรงแรมเรือนแพ รอยัลปาร์ค พิษณุโลก พร้อมระบบ BESS กักเก็บพลังงาน โครงสร้างเหล็กมาตรฐานวิศวกรรม Cable Tray และระบบไฟฟ้าครบวงจร พร้อม AI Monitoring 24/7",
-  image: `${CDN}/carport-wide-1_30e3af4c.jpeg`,
-  highlights: ["ลดค่าพลังงาน 30-100%", "BESS กักเก็บพลังงาน", "AI Monitoring 24/7", "ติดตั้งเสร็จ 2024"],
-};
-
-/* ── Other projects ── */
-const projects = [
-  {
-    title: "Solar Farm Node 2 — โรงแรมโฮลาเทลริมน่าน",
-    location: "น่าน",
-    type: "Rooftop Solar",
-    capacity: "Solar Farm",
-    saving: "กำลังก่อสร้าง",
-    year: "2025",
-    desc: "Solar Farm Node 2 ที่โรงแรมโฮลาเทลริมน่าน กำลังดำเนินการก่อสร้าง พร้อมปรับปรุงโรงแรมใหม่",
-    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/solar-farm-nan-construction-QGr9YXP2AW2qpMnWCVJjj3.webp",
-    tag: "rooftop",
-    isRendering: true,
-  },
-  {
-    title: "อ่างเก็บน้ำเพื่อการเกษตร",
-    location: "นครราชสีมา",
-    type: "Floating Solar",
-    capacity: "2.5 MW",
-    saving: "ลดการระเหยน้ำ 35%",
-    year: "2024",
-    desc: "Floating Solar บนอ่างเก็บน้ำ ผลิตไฟฟ้าสำหรับระบบสูบน้ำและ Cold Storage",
-    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/floating-solar-reservoir-BHro9zmCAKLtycFVXgfe9G.webp",
-    tag: "floating",
-    isRendering: true,
-  },
-  {
-    title: "Solar Carport — โรงแรมเรือนแพ รอยัลปาร์ค",
-    location: "พิษณุโลก",
-    type: "Solar Carport + BESS",
-    capacity: "Solar Carport",
-    saving: "ลดค่าไฟ 30-100%",
-    year: "2024",
-    desc: "Solar Carport ติดตั้งจริงที่โรงแรมเรือนแพ รอยัลปาร์ค พร้อมระบบ BESS กักเก็บพลังงาน และ Cable Tray มาตรฐานวิศวกรรม",
-    image: `${CDN}/carport-structure-2_f0ab2f56.jpeg`,
-    tag: "carport",
-  },
-  {
-    title: "รีสอร์ทติดทะเล",
-    location: "ภูเก็ต",
-    type: "Rooftop + BESS",
-    capacity: "500 kW",
-    saving: "ลดค่าพลังงาน 42%",
-    year: "2023",
-    desc: "Rooftop Solar + BESS สำหรับรีสอร์ท สำรองไฟฟ้าสำหรับ critical systems",
-    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/resort-rooftop-solar-Q4vG7VqDnaYmRWdsyKtp7H.webp",
-    tag: "bess",
-    isRendering: true,
-  },
-  {
-    title: "คลังสินค้าและศูนย์กระจายสินค้า",
-    location: "สมุทรปราการ",
-    type: "Rooftop Solar",
-    capacity: "3 MW",
-    saving: "ลดค่าไฟ 55%",
-    year: "2025",
-    desc: "Rooftop Solar ขนาดใหญ่บนหลังคาคลังสินค้า 5 อาคาร พร้อม AI O&M",
-    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/warehouse-rooftop-solar-eGvaQedufCt28G4VBAahMs.webp",
-    tag: "rooftop",
-    isRendering: true,
-  },
-  {
-    title: "ฟาร์มเกษตรอัจฉริยะ",
-    location: "นครปฐม",
-    type: "Solar + BESS",
-    capacity: "350 kW",
-    saving: "ลดค่าไฟ 60%",
-    year: "2024",
-    desc: "Solar + BESS สำหรับฟาร์ม จ่ายไฟให้ IoT, สูบน้ำ และห้องเย็นตลอด 24 ชม.",
-    image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/farm-solar-bess-VwUa48BekdDzTkGLwkeJJX.webp",
-    tag: "bess",
-    isRendering: true,
-  },
-];
-
-const filterOptions = [
-  { value: "all", label: "ทั้งหมด" },
-  { value: "rooftop", label: "Rooftop Solar" },
-  { value: "floating", label: "Floating Solar" },
-  { value: "carport", label: "Solar Carport" },
-  { value: "bess", label: "BESS / ESS" },
-];
-
-/* ── Curated gallery — real Solar Carport photos from Royal Park + marketing materials ── */
+/* ── Curated gallery — real Solar Carport photos from Royal Park + generated photos ── */
 const galleryPhotos = [
-  // Real installation photos — Solar Carport at Royal Park
   `${CDN}/carport-wide-1_30e3af4c.jpeg`,
   `${CDN}/carport-structure-1_c0c17293.jpeg`,
   `${CDN}/carport-structure-2_f0ab2f56.jpeg`,
@@ -134,19 +37,92 @@ const galleryPhotos = [
   `${CDN}/carport-structure-4_cc6ef3f6.jpeg`,
   `${CDN}/carport-underside-3_b58d5713.jpeg`,
   `${CDN}/carport-underside-4_297c327b.jpeg`,
-  // Generated realistic project photos
   "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/floating-solar-reservoir-BHro9zmCAKLtycFVXgfe9G.webp",
   "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/resort-rooftop-solar-Q4vG7VqDnaYmRWdsyKtp7H.webp",
   "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/warehouse-rooftop-solar-eGvaQedufCt28G4VBAahMs.webp",
   "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/farm-solar-bess-VwUa48BekdDzTkGLwkeJJX.webp",
 ];
 
+const filterOptions = [
+  { value: "all", key: "filterAll" },
+  { value: "rooftop", label: "Rooftop Solar" },
+  { value: "floating", label: "Floating Solar" },
+  { value: "carport", label: "Solar Carport" },
+  { value: "bess", label: "BESS / ESS" },
+];
+
 export default function Projects() {
+  const { t } = usePageTranslation("projects");
   useEffect(() => { trackSolutionVisit("solar-carport"); }, []);
   const [filter, setFilter] = useState("all");
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
 
+  const featured = {
+    title: t("featuredTitle"),
+    location: t("featuredLocation"),
+    type: t("featuredType"),
+    capacity: t("featuredCapacity"),
+    saving: t("featuredSaving"),
+    year: t("featuredYear"),
+    owner: t("featuredOwner"),
+    desc: t("featuredDesc"),
+    image: `${CDN}/carport-wide-1_30e3af4c.jpeg`,
+    highlights: [t("featuredHighlight1"), t("featuredHighlight2"), t("featuredHighlight3"), t("featuredHighlight4")],
+  };
+
+  const projects = [
+    {
+      title: t("proj1Title"), location: t("proj1Location"), type: "Rooftop Solar",
+      capacity: "Solar Farm", saving: t("proj1Saving"), year: "2025",
+      desc: t("proj1Desc"),
+      image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/solar-farm-nan-construction-QGr9YXP2AW2qpMnWCVJjj3.webp",
+      tag: "rooftop", isRendering: true,
+    },
+    {
+      title: t("proj2Title"), location: t("proj2Location"), type: "Floating Solar",
+      capacity: "2.5 MW", saving: t("proj2Saving"), year: "2024",
+      desc: t("proj2Desc"),
+      image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/floating-solar-reservoir-BHro9zmCAKLtycFVXgfe9G.webp",
+      tag: "floating", isRendering: true,
+    },
+    {
+      title: t("proj3Title"), location: t("proj3Location"), type: "Solar Carport + BESS",
+      capacity: "Solar Carport", saving: t("proj3Saving"), year: "2024",
+      desc: t("proj3Desc"),
+      image: `${CDN}/carport-structure-2_f0ab2f56.jpeg`,
+      tag: "carport",
+    },
+    {
+      title: t("proj4Title"), location: t("proj4Location"), type: "Rooftop + BESS",
+      capacity: "500 kW", saving: t("proj4Saving"), year: "2023",
+      desc: t("proj4Desc"),
+      image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/resort-rooftop-solar-Q4vG7VqDnaYmRWdsyKtp7H.webp",
+      tag: "bess", isRendering: true,
+    },
+    {
+      title: t("proj5Title"), location: t("proj5Location"), type: "Rooftop Solar",
+      capacity: "3 MW", saving: t("proj5Saving"), year: "2025",
+      desc: t("proj5Desc"),
+      image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/warehouse-rooftop-solar-eGvaQedufCt28G4VBAahMs.webp",
+      tag: "rooftop", isRendering: true,
+    },
+    {
+      title: t("proj6Title"), location: t("proj6Location"), type: "Solar + BESS",
+      capacity: "350 kW", saving: t("proj6Saving"), year: "2024",
+      desc: t("proj6Desc"),
+      image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/farm-solar-bess-VwUa48BekdDzTkGLwkeJJX.webp",
+      tag: "bess", isRendering: true,
+    },
+  ];
+
   const filtered = filter === "all" ? projects : projects.filter((p) => p.tag === filter);
+
+  const stats = [
+    { value: t("stat1Value"), label: t("stat1Label") },
+    { value: t("stat2Value"), label: t("stat2Label") },
+    { value: t("stat3Value"), label: t("stat3Label") },
+    { value: t("stat4Value"), label: t("stat4Label") },
+  ];
 
   return (
     <div>
@@ -154,13 +130,11 @@ export default function Projects() {
       <section className="py-24 lg:py-32 bg-background">
         <div className="container">
           <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0} className="mb-10">
-            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">Portfolio</span>
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("sectionLabel")}</span>
             <h1 className="font-display text-3xl lg:text-5xl font-bold text-foreground mb-3">
-              ผลงาน<span className="text-gradient-accent">ที่พิสูจน์ได้</span>
+              {t("pageTitle")}<span className="text-gradient-accent">{t("pageTitleAccent")}</span>
             </h1>
-            <p className="text-text-secondary max-w-xl">
-              โครงการจริงที่ SIRINX ออกแบบ ติดตั้ง และดูแลรักษา — พร้อมผลลัพธ์ทางธุรกิจที่วัดได้
-            </p>
+            <p className="text-text-secondary max-w-xl">{t("pageDesc")}</p>
           </motion.div>
 
           {/* Featured Card */}
@@ -170,14 +144,10 @@ export default function Projects() {
           >
             <div className="grid lg:grid-cols-2">
               <div className="relative aspect-[4/3] lg:aspect-auto overflow-hidden">
-                <img
-                  src={featured.image}
-                  alt={featured.title}
-                  className="w-full h-full object-cover"
-                />
+                <img src={featured.image} alt={featured.title} className="w-full h-full object-cover" />
                 <div className="absolute top-4 left-4">
                   <span className="px-3 py-1.5 text-xs font-bold bg-accent-primary text-text-inverse rounded-lg">
-                    Featured Project
+                    {t("featuredBadge")}
                   </span>
                 </div>
               </div>
@@ -187,12 +157,8 @@ export default function Projects() {
                   <span className="mx-1">·</span>
                   <Calendar className="w-3 h-3" /> {featured.year}
                 </div>
-                <h2 className="font-display text-xl lg:text-2xl font-bold text-foreground mb-3">
-                  {featured.title}
-                </h2>
-                <p className="text-sm text-text-secondary leading-relaxed mb-4">
-                  {featured.desc}
-                </p>
+                <h2 className="font-display text-xl lg:text-2xl font-bold text-foreground mb-3">{featured.title}</h2>
+                <p className="text-sm text-text-secondary leading-relaxed mb-4">{featured.desc}</p>
                 <div className="flex flex-wrap gap-2 mb-5">
                   {featured.highlights.map((h) => (
                     <span key={h} className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-accent-primary bg-accent-glow rounded-full border border-border-accent">
@@ -217,12 +183,7 @@ export default function Projects() {
       <section className="py-10 section-alt border-y border-border-subtle">
         <div className="container">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { value: "2", label: "Solar Farm Node" },
-              { value: "6+", label: "ประเภทโซลูชัน" },
-              { value: "24/7", label: "AI Monitoring" },
-              { value: "25+ ปี", label: "อายุการใช้งาน" },
-            ].map((stat, i) => (
+            {stats.map((stat, i) => (
               <motion.div key={stat.label} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i} className="text-center">
                 <div className="font-display text-xl lg:text-2xl font-bold text-gradient-accent">{stat.value}</div>
                 <div className="text-xs text-text-muted">{stat.label}</div>
@@ -248,12 +209,12 @@ export default function Projects() {
                     : "border-border-subtle text-text-muted hover:text-foreground hover:border-border-accent"
                 }`}
               >
-                {opt.label}
+                {opt.key ? t(opt.key) : opt.label}
               </button>
             ))}
           </div>
 
-          {/* Grid — 2 columns on desktop for larger cards */}
+          {/* Grid */}
           <div className="grid md:grid-cols-2 gap-5">
             <AnimatePresence mode="popLayout">
               {filtered.map((project, i) => (
@@ -267,22 +228,18 @@ export default function Projects() {
                 >
                   <div className="grid sm:grid-cols-[240px_1fr]">
                     <div className="relative h-48 sm:h-full overflow-hidden">
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
+                      <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div className="absolute top-3 left-3 flex flex-col gap-1">
                         <span className="px-2 py-0.5 text-[10px] font-medium bg-accent-primary/90 text-text-inverse rounded-md">
                           {project.type}
                         </span>
                         {project.isRendering ? (
                           <span className="px-2 py-0.5 text-[10px] font-medium bg-amber-500/90 text-white rounded-md">
-                            ภาพจำลอง
+                            {t("badgeRendering")}
                           </span>
                         ) : (
                           <span className="px-2 py-0.5 text-[10px] font-medium bg-emerald-500/90 text-white rounded-md">
-                            ผลงานจริง
+                            {t("badgeReal")}
                           </span>
                         )}
                       </div>
@@ -316,15 +273,11 @@ export default function Projects() {
             className="glass-card rounded-2xl p-6 lg:p-8 flex flex-col lg:flex-row items-center gap-5"
           >
             <div className="flex-1">
-              <h3 className="font-display text-base lg:text-lg font-bold text-foreground mb-1">
-                ต้องการ Solar Carport สำหรับธุรกิจของคุณ?
-              </h3>
-              <p className="text-text-secondary text-xs">
-                ดูรายละเอียดเพิ่มเติมเกี่ยวกับ Solar Carport — โซลูชันที่ลูกค้าเลือกมากที่สุด
-              </p>
+              <h3 className="font-display text-base lg:text-lg font-bold text-foreground mb-1">{t("ctaMidTitle")}</h3>
+              <p className="text-text-secondary text-xs">{t("ctaMidDesc")}</p>
             </div>
             <Link href="/solar-carport" className="inline-flex items-center gap-2 px-5 py-2.5 font-display font-semibold btn-accent rounded-lg text-sm whitespace-nowrap shrink-0">
-              <Car className="w-4 h-4" /> ดู Solar Carport <ArrowRight className="w-4 h-4" />
+              <Car className="w-4 h-4" /> {t("ctaMidBtn")} <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>
         </div>
@@ -334,10 +287,9 @@ export default function Projects() {
       <section className="py-16 lg:py-24 section-alt">
         <div className="container">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-8">
-            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">Gallery</span>
-            <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground">ภาพหน้างานจริง</h2>
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("galleryLabel")}</span>
+            <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground">{t("galleryTitle")}</h2>
           </motion.div>
-          {/* 3-column masonry-like grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {galleryPhotos.map((src, i) => (
               <motion.button
@@ -359,9 +311,7 @@ export default function Projects() {
       <AnimatePresence>
         {lightboxIdx !== null && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
             onClick={() => setLightboxIdx(null)}
           >
@@ -382,9 +332,7 @@ export default function Projects() {
             </button>
             <motion.img
               key={lightboxIdx}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }}
               src={galleryPhotos[lightboxIdx]}
               alt={`SIRINX project photo ${lightboxIdx + 1}`}
               className="max-w-full max-h-[85vh] object-contain rounded-lg"
@@ -402,18 +350,14 @@ export default function Projects() {
         <div className="absolute inset-0 bg-gradient-to-br from-accent-glow to-transparent" />
         <div className="container relative text-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
-            <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
-              ต้องการผลลัพธ์แบบนี้สำหรับธุรกิจคุณ?
-            </h2>
-            <p className="text-text-secondary text-sm mb-7 max-w-lg mx-auto">
-              นัดสำรวจหน้างานฟรี ไม่มีข้อผูกมัด — ทีมวิศวกรของเราพร้อมออกแบบโซลูชันเฉพาะสำหรับธุรกิจของคุณ
-            </p>
+            <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">{t("ctaFinalTitle")}</h2>
+            <p className="text-text-secondary text-sm mb-7 max-w-lg mx-auto">{t("ctaFinalDesc")}</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/contact" className="inline-flex items-center gap-2 px-6 py-3.5 font-display font-semibold btn-accent rounded-lg">
-                นัดสำรวจหน้างานฟรี <ArrowRight className="w-4 h-4" />
+                {t("ctaFinalBtn1")} <ArrowRight className="w-4 h-4" />
               </Link>
               <Link href="/assessment" className="inline-flex items-center gap-2 px-6 py-3.5 font-display font-semibold btn-accent-outline rounded-lg">
-                ประเมินความคุ้มค่า
+                {t("ctaFinalBtn2")}
               </Link>
             </div>
           </motion.div>

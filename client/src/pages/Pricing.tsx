@@ -2,6 +2,7 @@
  * SIRINX Pricing Page — Solar Carport Package Pricing
  * Size S / M / L + Custom tier
  * Highlights: EV readiness, government incentives, ROI, tax benefits
+ * Full i18n support via usePageTranslation
  */
 import { useState, useMemo } from "react";
 import { Link } from "wouter";
@@ -22,6 +23,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { usePageTranslation } from "@/i18n";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -32,224 +34,49 @@ const fadeUp = {
   }),
 };
 
-/* ─── Package Data ─────────────────────────────────────────────── */
-const packages = [
+/* ─── Package Static Config (non-translatable parts) ─── */
+const packageConfigs = [
   {
     id: "size-s",
     name: "Size S",
-    subtitle: "ธุรกิจขนาดเล็ก",
     capacity: "10 – 30 kWp",
-    priceRange: "เริ่มต้น ~300,000 บาท",
-    priceNote: "ราคาขึ้นอยู่กับพื้นที่และรูปแบบโครงสร้าง",
     color: "from-emerald-500/20 to-emerald-600/5",
     borderColor: "border-emerald-500/30 hover:border-emerald-500/60",
     accentColor: "text-emerald-500",
     bgAccent: "bg-emerald-500/10",
     popular: false,
-    idealFor: ["ร้านค้า / ร้านอาหาร", "ออฟฟิศขนาดเล็ก", "คลินิก / สำนักงาน", "ที่จอดรถ 5-15 คัน"],
-    specs: {
-      panels: "20-60 แผง (Tier-1 Mono PERC)",
-      area: "~60-180 ตร.ม.",
-      parking: "5-15 คัน",
-      evCharger: "1-2 จุดชาร์จ",
-      savings: "5,000-15,000 บาท/เดือน",
-      payback: "4-6 ปี",
-      lifespan: "25+ ปี",
-      warranty: "แผง 25 ปี / Inverter 10 ปี / โครงสร้าง 5 ปี",
-    },
-    includes: [
-      "สำรวจหน้างาน + ออกแบบระบบ",
-      "โครงสร้างเหล็กชุบกัลวาไนซ์",
-      "แผง Tier-1 Mono PERC 550W+",
-      "Inverter Sungrow / Huawei",
-      "ระบบ Monitoring ผ่านแอป",
-      "ติดตั้งโดยทีมวิศวกร",
-      "ขออนุญาต กฟน./กฟภ.",
-      "รับประกันผลงาน 1 ปี",
-    ],
-    evReady: "Pre-wired สำหรับ EV Charger 1-2 จุด",
     image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/pricing-size-s-LaJSUDczcaLtK7isYYPrbR.webp",
   },
   {
     id: "size-m",
     name: "Size M",
-    subtitle: "ธุรกิจขนาดกลาง",
     capacity: "30 – 100 kWp",
-    priceRange: "เริ่มต้น ~840,000 บาท",
-    priceNote: "ราคาลดลงตามขนาดระบบ (economy of scale)",
     color: "from-accent-primary/20 to-accent-primary/5",
     borderColor: "border-accent-primary/40 hover:border-accent-primary/70",
     accentColor: "text-accent-primary",
     bgAccent: "bg-accent-primary/10",
     popular: true,
-    idealFor: ["โรงแรม / รีสอร์ท", "สถานศึกษา", "อาคารพาณิชย์", "ที่จอดรถ 15-50 คัน"],
-    specs: {
-      panels: "60-200 แผง (Tier-1 Mono PERC)",
-      area: "~180-600 ตร.ม.",
-      parking: "15-50 คัน",
-      evCharger: "3-10 จุดชาร์จ",
-      savings: "15,000-50,000 บาท/เดือน",
-      payback: "3-5 ปี",
-      lifespan: "25+ ปี",
-      warranty: "แผง 25 ปี / Inverter 10 ปี / โครงสร้าง 5 ปี",
-    },
-    includes: [
-      "ทุกอย่างใน Size S",
-      "BESS Option (กักเก็บพลังงาน)",
-      "AI Energy Monitoring Dashboard",
-      "EV Charger 3-10 จุด (AC Type 2)",
-      "รายงาน ROI รายเดือน",
-      "O&M ดูแลรักษา 1 ปี",
-      "ประสานงาน BOI / ลดหย่อนภาษี",
-      "ใบรับรอง Carbon Credit",
-    ],
-    evReady: "ติดตั้ง EV Charger พร้อมใช้ 3-10 จุด รองรับ AC Type 2",
     image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/pricing-size-m-96bdqV2qHeFRvREkQ3Suqg.webp",
   },
   {
     id: "size-l",
     name: "Size L",
-    subtitle: "ธุรกิจขนาดใหญ่",
     capacity: "100 – 500 kWp",
-    priceRange: "เริ่มต้น ~2,500,000 บาท",
-    priceNote: "ราคาต่อวัตต์ต่ำสุด ยิ่งใหญ่ยิ่งคุ้ม",
     color: "from-amber-500/20 to-amber-600/5",
     borderColor: "border-amber-500/30 hover:border-amber-500/60",
     accentColor: "text-amber-500",
     bgAccent: "bg-amber-500/10",
     popular: false,
-    idealFor: ["โรงงานอุตสาหกรรม", "ห้างสรรพสินค้า", "คลังสินค้า / โลจิสติกส์", "ที่จอดรถ 50-200+ คัน"],
-    specs: {
-      panels: "200-1,000 แผง (Tier-1 Bifacial)",
-      area: "~600-3,000 ตร.ม.",
-      parking: "50-200+ คัน",
-      evCharger: "10-50 จุดชาร์จ",
-      savings: "50,000-250,000 บาท/เดือน",
-      payback: "3-5 ปี",
-      lifespan: "25+ ปี",
-      warranty: "แผง 25 ปี / Inverter 10 ปี / โครงสร้าง 10 ปี",
-    },
-    includes: [
-      "ทุกอย่างใน Size M",
-      "แผง Bifacial ประสิทธิภาพสูง",
-      "BESS ระบบกักเก็บพลังงาน",
-      "DC Fast Charger (CCS2) Option",
-      "AI Predictive Maintenance",
-      "O&M Contract 3-5 ปี",
-      "ที่ปรึกษา ESG / Carbon Credit",
-      "รายงานผลกระทบสิ่งแวดล้อม",
-    ],
-    evReady: "ติดตั้ง EV Charger ทั้ง AC/DC Fast Charge รองรับ 10-50 จุด",
     image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/pricing-size-l-GYVfyzmEzDPhxpNp3PPD6K.webp",
   },
 ];
 
-/* ─── Government Policy Highlights ─────────────────────────────── */
-const govPolicies = [
-  {
-    icon: BadgePercent,
-    title: "ลดหย่อนภาษี Solar Rooftop",
-    desc: "บุคคลธรรมดาลดหย่อนสูงสุด 200,000 บาท / นิติบุคคลหักค่าใช้จ่าย 1.5 เท่า (พ.ร.ฎ. ฉบับที่ 805)",
-    period: "มี.ค. 2569 - ธ.ค. 2571",
-  },
-  {
-    icon: Car,
-    title: "มาตรการ EV 3.5",
-    desc: "รัฐอุดหนุนรถ EV สูงสุด 50,000 บาท/คัน + ลดภาษีสรรพสามิตเหลือ 2% เป้าหมาย 30% ZEV ภายในปี 2030",
-    period: "2024 - 2027",
-  },
-  {
-    icon: TrendingUp,
-    title: "BOI สนับสนุนพลังงานสะอาด",
-    desc: "สิทธิประโยชน์ BOI สำหรับธุรกิจที่ลงทุนพลังงานทดแทน + EV Charger (ประกาศ ป.8/2568)",
-    period: "ดำเนินการต่อเนื่อง",
-  },
-  {
-    icon: Leaf,
-    title: "เป้าหมาย Carbon Neutrality",
-    desc: "ประเทศไทยตั้งเป้า Carbon Neutrality ปี 2050 / Net Zero ปี 2065 — ธุรกิจที่เริ่มก่อนได้เปรียบ",
-    period: "เป้าหมายระยะยาว",
-  },
-];
-
-/* ─── Solar Carport Advantages ─────────────────────────────────── */
-const advantages = [
-  {
-    icon: Car,
-    title: "รองรับ EV ที่เพิ่มขึ้น",
-    desc: "ยอดจดทะเบียนรถ EV ในไทยเพิ่มขึ้นต่อเนื่องจากมาตรการ EV 3.5 ของรัฐ Solar Carport พร้อม EV Charger ตอบโจทย์ทั้งวันนี้และอนาคต",
-  },
-  {
-    icon: Sun,
-    title: "ผลิตไฟฟ้า + ให้ร่มเงา",
-    desc: "ใช้พื้นที่จอดรถที่มีอยู่แล้วให้เกิดประโยชน์สูงสุด ไม่ต้องใช้พื้นที่เพิ่ม ผลิตไฟฟ้าได้ตลอดทั้งวัน พร้อมปกป้องรถจากแดดและฝน",
-  },
-  {
-    icon: TrendingUp,
-    title: "เพิ่มมูลค่าอสังหาริมทรัพย์",
-    desc: "อาคารที่มี Solar Carport + EV Charger มีมูลค่าเพิ่มขึ้น 5-15% ดึงดูดผู้เช่าและลูกค้าที่ใส่ใจสิ่งแวดล้อม",
-  },
-  {
-    icon: BadgePercent,
-    title: "สิทธิประโยชน์ทางภาษี",
-    desc: "ลดหย่อนภาษีสูงสุด 200,000 บาท (บุคคล) หรือหักค่าใช้จ่าย 1.5 เท่า (นิติบุคคล) + สิทธิ BOI สำหรับพลังงานสะอาด",
-  },
-  {
-    icon: Leaf,
-    title: "Carbon Credit & ESG",
-    desc: "สร้างรายได้เพิ่มจาก Carbon Credit ตอบโจทย์ ESG สำหรับบริษัทจดทะเบียน และพันธมิตรทางธุรกิจที่ต้องการ supply chain สีเขียว",
-  },
-  {
-    icon: BatteryCharging,
-    title: "รายได้จาก EV Charging",
-    desc: "เปิดให้บริการชาร์จ EV สร้างรายได้เพิ่มเติมจากพลังงานที่ผลิตเอง ต้นทุนค่าไฟต่ำกว่าซื้อจากการไฟฟ้า",
-  },
-];
-
-/* ─── FAQ ─────────────────────────────────────────────────────── */
-const faqs = [
-  {
-    q: "Solar Carport ต่างจาก Solar Rooftop อย่างไร?",
-    a: "Solar Carport ติดตั้งบนโครงสร้างที่จอดรถ ไม่ต้องใช้พื้นที่หลังคาอาคาร เหมาะกับธุรกิจที่มีพื้นที่จอดรถมาก นอกจากผลิตไฟฟ้าแล้วยังให้ร่มเงาและรองรับ EV Charger ได้ทันที ส่วน Solar Rooftop ติดตั้งบนหลังคาอาคารที่มีอยู่แล้ว ต้นทุนต่ำกว่าเพราะไม่ต้องสร้างโครงสร้างใหม่",
-  },
-  {
-    q: "ราคาที่แสดงเป็นราคาสุดท้ายหรือไม่?",
-    a: "ราคาที่แสดงเป็นราคาเริ่มต้นโดยประมาณ ราคาจริงขึ้นอยู่กับหลายปัจจัย เช่น พื้นที่ติดตั้ง รูปแบบโครงสร้าง ชนิดแผง ระบบ Inverter และอุปกรณ์เสริม ทีมงานจะสำรวจหน้างานและจัดทำใบเสนอราคาที่แม่นยำให้ฟรี",
-  },
-  {
-    q: "คืนทุนภายในกี่ปี?",
-    a: "โดยเฉลี่ย Solar Carport คืนทุนภายใน 3-6 ปี ขึ้นอยู่กับขนาดระบบ ค่าไฟปัจจุบัน และชั่วโมงแสงแดดในพื้นที่ ระบบมีอายุใช้งาน 25+ ปี หมายความว่าหลังคืนทุนแล้วจะได้ไฟฟ้าฟรีอีก 19-22 ปี",
-  },
-  {
-    q: "รองรับ EV Charger ได้กี่จุด?",
-    a: "ขึ้นอยู่กับขนาดระบบ — Size S รองรับ 1-2 จุด, Size M รองรับ 3-10 จุด, Size L รองรับ 10-50 จุด ทั้ง AC Type 2 และ DC Fast Charge (CCS2) สามารถเพิ่มจุดชาร์จในภายหลังได้",
-  },
-  {
-    q: "ต้องขออนุญาตหน่วยงานใดบ้าง?",
-    a: "ทีมงาน SIRINX ดำเนินการขออนุญาตให้ทั้งหมด ได้แก่ ขออนุญาตเชื่อมต่อ กฟน./กฟภ., ขออนุญาตก่อสร้าง (กรณีโครงสร้างใหม่), และจดทะเบียนผู้ผลิตไฟฟ้า (กรณี Net Metering)",
-  },
-  {
-    q: "มีบริการดูแลหลังติดตั้งไหม?",
-    a: "มีครับ ทุกแพ็คเกจรวมบริการ O&M (Operation & Maintenance) ตั้งแต่ 1-5 ปีตามขนาดระบบ รวมถึง AI Monitoring ตรวจสอบประสิทธิภาพ 24/7 และ Predictive Maintenance ป้องกันปัญหาก่อนเกิด",
-  },
-  {
-    q: "ขนาดใหญ่กว่า 500 kWp ทำได้ไหม?",
-    a: "ได้ครับ สำหรับโครงการขนาดใหญ่กว่า 500 kWp เราจะจัดทีมวิศวกรเข้าสำรวจหน้างานและออกแบบระบบเฉพาะทาง กรุณาติดต่อทีมงานโดยตรงเพื่อประเมินความต้องการ",
-  },
-];
-
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqs.map((f) => ({
-    "@type": "Question",
-    name: f.q,
-    acceptedAnswer: { "@type": "Answer", text: f.a },
-  })),
-};
+const govPolicyIcons = [BadgePercent, Car, TrendingUp, Leaf];
+const advantageIcons = [Car, Sun, TrendingUp, BadgePercent, Leaf, BatteryCharging];
 
 /* ─── Component ────────────────────────────────────────────────── */
 export default function Pricing() {
+  const { t } = usePageTranslation("pricing");
   const [expandedPkg, setExpandedPkg] = useState<string | null>("size-m");
 
   /* ─── ROI Calculator State ─── */
@@ -257,21 +84,13 @@ export default function Pricing() {
   const [parkingSpaces, setParkingSpaces] = useState<number>(20);
 
   const roiCalc = useMemo(() => {
-    // Estimate system size: ~3 kWp per parking space
     const systemKwp = parkingSpaces * 3;
-    // Cost per kWp: ~28,000 baht (average for carport)
     const totalCost = systemKwp * 28000;
-    // Monthly production: ~120 kWh per kWp (Thailand avg)
     const monthlyKwh = systemKwp * 120;
-    // Average electricity cost: ~4.5 baht/kWh
     const monthlySavings = Math.min(monthlyKwh * 4.5, monthlyBill * 0.85);
-    // Payback period in years
     const paybackYears = totalCost / (monthlySavings * 12);
-    // 25-year total savings
     const totalSavings25yr = monthlySavings * 12 * 25 - totalCost;
-    // CO2 reduction: ~0.5 kg per kWh
     const co2ReductionTons = (monthlyKwh * 12 * 0.5) / 1000;
-    // Recommended package
     const recommendedPkg = systemKwp <= 30 ? "Size S" : systemKwp <= 100 ? "Size M" : "Size L";
     return {
       systemKwp,
@@ -284,6 +103,17 @@ export default function Pricing() {
       savingsPercent: Math.min(Math.round((monthlySavings / monthlyBill) * 100), 100),
     };
   }, [monthlyBill, parkingSpaces]);
+
+  /* Build FAQ JSON-LD */
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: Array.from({ length: 7 }, (_, i) => ({
+      "@type": "Question",
+      name: t(`faq.${i}.q`),
+      acceptedAnswer: { "@type": "Answer", text: t(`faq.${i}.a`) },
+    })),
+  };
 
   return (
     <div>
@@ -300,25 +130,24 @@ export default function Pricing() {
             className="max-w-3xl"
           >
             <Badge variant="outline" className="mb-4 border-accent-primary/40 text-accent-primary">
-              <Calculator className="w-3.5 h-3.5 mr-1.5" /> แพ็คเกจราคา Solar Carport
+              <Calculator className="w-3.5 h-3.5 mr-1.5" /> {t("hero.badge")}
             </Badge>
             <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight mb-4">
-              เลือกขนาดที่เหมาะกับธุรกิจ{" "}
-              <span className="text-gradient-accent">คุ้มค่าทุกการลงทุน</span>
+              {t("hero.title")}{" "}
+              <span className="text-gradient-accent">{t("hero.title.accent")}</span>
             </h1>
             <p className="text-lg text-text-secondary leading-relaxed mb-6 max-w-2xl">
-              Solar Carport โดย SIRINX — ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger
-              พร้อมสิทธิประโยชน์ทางภาษีจากมาตรการรัฐ เลือกแพ็คเกจที่ตอบโจทย์ หรือให้ทีมงานออกแบบเฉพาะทาง
+              {t("hero.desc")}
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/contact?interest=solar-carport">
                 <Button size="lg" className="btn-accent font-display">
-                  ขอใบเสนอราคาฟรี <ArrowRight className="w-4 h-4 ml-1" />
+                  {t("hero.cta.quote")} <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
               </Link>
               <Link href="/assessment">
                 <Button size="lg" variant="outline" className="border-border-accent font-display">
-                  <Calculator className="w-4 h-4 mr-1" /> ประเมินความคุ้มค่า
+                  <Calculator className="w-4 h-4 mr-1" /> {t("hero.cta.assess")}
                 </Button>
               </Link>
             </div>
@@ -338,28 +167,26 @@ export default function Pricing() {
               Government Support
             </span>
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
-              ทำไมต้องลงทุน Solar Carport <span className="text-gradient-accent">ตอนนี้</span>
+              {t("gov.title")} <span className="text-gradient-accent">{t("gov.title.accent")}</span>
             </h2>
-            <p className="text-text-secondary">
-              มาตรการรัฐสนับสนุนทั้งพลังงานสะอาดและรถยนต์ไฟฟ้า — ธุรกิจที่เริ่มก่อนได้เปรียบทั้งต้นทุนและภาพลักษณ์
-            </p>
+            <p className="text-text-secondary">{t("gov.desc")}</p>
           </motion.div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {govPolicies.map((policy, i) => (
+            {govPolicyIcons.map((Icon, i) => (
               <motion.div
-                key={policy.title}
+                key={i}
                 initial="hidden" whileInView="visible" viewport={{ once: true }}
                 variants={fadeUp} custom={i}
                 className="p-5 rounded-xl border border-border-subtle bg-surface-elevated hover:border-border-accent transition-colors"
               >
                 <div className="w-10 h-10 rounded-lg bg-accent-glow flex items-center justify-center mb-3">
-                  <policy.icon className="w-5 h-5 text-accent-primary" />
+                  <Icon className="w-5 h-5 text-accent-primary" />
                 </div>
-                <h3 className="font-display font-semibold text-foreground text-sm mb-2">{policy.title}</h3>
-                <p className="text-xs text-text-muted leading-relaxed mb-2">{policy.desc}</p>
+                <h3 className="font-display font-semibold text-foreground text-sm mb-2">{t(`gov.${i}.title`)}</h3>
+                <p className="text-xs text-text-muted leading-relaxed mb-2">{t(`gov.${i}.desc`)}</p>
                 <span className="inline-block text-[10px] font-medium text-accent-secondary bg-accent-secondary/10 px-2 py-0.5 rounded-full">
-                  {policy.period}
+                  {t(`gov.${i}.period`)}
                 </span>
               </motion.div>
             ))}
@@ -379,15 +206,13 @@ export default function Pricing() {
               Packages
             </span>
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
-              แพ็คเกจ Solar Carport <span className="text-gradient-accent">3 ขนาด</span>
+              {t("pkg.title")} <span className="text-gradient-accent">{t("pkg.title.accent")}</span>
             </h2>
-            <p className="text-text-secondary">
-              เลือกขนาดที่เหมาะกับพื้นที่และงบประมาณ — ราคาเริ่มต้นโดยประมาณ ทีมงานจะสำรวจและเสนอราคาจริงให้ฟรี
-            </p>
+            <p className="text-text-secondary">{t("pkg.desc")}</p>
           </motion.div>
 
           <div className="grid lg:grid-cols-3 gap-6 lg:gap-8 mb-10">
-            {packages.map((pkg, i) => (
+            {packageConfigs.map((pkg, i) => (
               <motion.div
                 key={pkg.id}
                 initial="hidden" whileInView="visible" viewport={{ once: true }}
@@ -399,7 +224,7 @@ export default function Pricing() {
                 {pkg.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                     <Badge className="bg-accent-primary text-white font-display shadow-md">
-                      <Sparkles className="w-3 h-3 mr-1" /> แนะนำ
+                      <Sparkles className="w-3 h-3 mr-1" /> {t("pkg.recommended")}
                     </Badge>
                   </div>
                 )}
@@ -418,22 +243,22 @@ export default function Pricing() {
                 <div className="mb-6">
                   <div className="flex items-center gap-2 mb-2">
                     <span className={`font-display text-2xl font-bold ${pkg.accentColor}`}>{pkg.name}</span>
-                    <span className="text-sm text-text-muted">— {pkg.subtitle}</span>
+                    <span className="text-sm text-text-muted">— {t(`pkg.${pkg.id}.subtitle`)}</span>
                   </div>
                   <div className="font-display text-lg font-semibold text-foreground mb-1">
                     {pkg.capacity}
                   </div>
-                  <div className={`text-xl font-bold ${pkg.accentColor} mb-1`}>{pkg.priceRange}</div>
-                  <p className="text-xs text-text-muted">{pkg.priceNote}</p>
+                  <div className={`text-xl font-bold ${pkg.accentColor} mb-1`}>{t(`pkg.${pkg.id}.price`)}</div>
+                  <p className="text-xs text-text-muted">{t(`pkg.${pkg.id}.priceNote`)}</p>
                 </div>
 
                 {/* Ideal For */}
                 <div className="mb-5">
-                  <h4 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">เหมาะสำหรับ</h4>
+                  <h4 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">{t("pkg.idealFor")}</h4>
                   <div className="flex flex-wrap gap-1.5">
-                    {pkg.idealFor.map((item) => (
+                    {t(`pkg.${pkg.id}.idealFor`).split("|").map((item) => (
                       <span key={item} className={`text-xs px-2 py-1 rounded-md ${pkg.bgAccent} ${pkg.accentColor}`}>
-                        {item}
+                        {item.trim()}
                       </span>
                     ))}
                   </div>
@@ -442,24 +267,24 @@ export default function Pricing() {
                 {/* Key Specs */}
                 <div className="space-y-2 mb-5">
                   <div className="flex justify-between text-sm">
-                    <span className="text-text-muted">ที่จอดรถ</span>
-                    <span className="font-medium text-foreground">{pkg.specs.parking}</span>
+                    <span className="text-text-muted">{t("pkg.spec.parking")}</span>
+                    <span className="font-medium text-foreground">{t(`pkg.${pkg.id}.specs.parking`)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-text-muted">EV Charger</span>
-                    <span className="font-medium text-foreground">{pkg.specs.evCharger}</span>
+                    <span className="font-medium text-foreground">{t(`pkg.${pkg.id}.specs.evCharger`)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-text-muted">ประหยัดค่าไฟ</span>
-                    <span className={`font-semibold ${pkg.accentColor}`}>{pkg.specs.savings}</span>
+                    <span className="text-text-muted">{t("pkg.spec.savings")}</span>
+                    <span className={`font-semibold ${pkg.accentColor}`}>{t(`pkg.${pkg.id}.specs.savings`)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-text-muted">คืนทุน</span>
-                    <span className="font-semibold text-foreground">{pkg.specs.payback}</span>
+                    <span className="text-text-muted">{t("pkg.spec.payback")}</span>
+                    <span className="font-semibold text-foreground">{t(`pkg.${pkg.id}.specs.payback`)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-text-muted">อายุใช้งาน</span>
-                    <span className="font-medium text-foreground">{pkg.specs.lifespan}</span>
+                    <span className="text-text-muted">{t("pkg.spec.lifespan")}</span>
+                    <span className="font-medium text-foreground">{t(`pkg.${pkg.id}.specs.lifespan`)}</span>
                   </div>
                 </div>
 
@@ -469,7 +294,7 @@ export default function Pricing() {
                     <Car className={`w-4 h-4 mt-0.5 ${pkg.accentColor} shrink-0`} />
                     <div>
                       <span className={`text-xs font-semibold ${pkg.accentColor}`}>EV Ready</span>
-                      <p className="text-xs text-text-muted mt-0.5">{pkg.evReady}</p>
+                      <p className="text-xs text-text-muted mt-0.5">{t(`pkg.${pkg.id}.evReady`)}</p>
                     </div>
                   </div>
                 </div>
@@ -480,7 +305,7 @@ export default function Pricing() {
                   className="flex items-center gap-1 text-xs font-medium text-text-secondary hover:text-foreground transition-colors mb-3"
                 >
                   {expandedPkg === pkg.id ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                  {expandedPkg === pkg.id ? "ซ่อนรายละเอียด" : "ดูรายละเอียดทั้งหมด"}
+                  {expandedPkg === pkg.id ? t("pkg.hideDetails") : t("pkg.showDetails")}
                 </button>
                 {expandedPkg === pkg.id && (
                   <motion.div
@@ -488,14 +313,14 @@ export default function Pricing() {
                     animate={{ opacity: 1, height: "auto" }}
                     className="space-y-1.5 mb-5"
                   >
-                    {pkg.includes.map((item) => (
+                    {t(`pkg.${pkg.id}.includes`).split("|").map((item) => (
                       <div key={item} className="flex items-start gap-2 text-xs">
                         <CheckCircle2 className={`w-3.5 h-3.5 mt-0.5 ${pkg.accentColor} shrink-0`} />
-                        <span className="text-text-secondary">{item}</span>
+                        <span className="text-text-secondary">{item.trim()}</span>
                       </div>
                     ))}
                     <div className="pt-2 text-xs text-text-muted">
-                      <strong>การรับประกัน:</strong> {pkg.specs.warranty}
+                      <strong>{t("pkg.warranty")}:</strong> {t(`pkg.${pkg.id}.specs.warranty`)}
                     </div>
                   </motion.div>
                 )}
@@ -506,7 +331,7 @@ export default function Pricing() {
                     className={`w-full font-display ${pkg.popular ? "btn-accent" : ""}`}
                     variant={pkg.popular ? "default" : "outline"}
                   >
-                    ขอใบเสนอราคา {pkg.name} <ArrowRight className="w-4 h-4 ml-1" />
+                    {t("pkg.cta")} {pkg.name} <ArrowRight className="w-4 h-4 ml-1" />
                   </Button>
                 </Link>
               </motion.div>
@@ -522,36 +347,26 @@ export default function Pricing() {
             <div className="flex items-center justify-center gap-2 mb-3">
               <Crown className="w-6 h-6 text-accent-primary" />
               <h3 className="font-display text-xl font-bold text-foreground">
-                Custom — โครงการขนาดใหญ่ (500+ kWp)
+                {t("custom.title")}
               </h3>
             </div>
-            <p className="text-text-secondary max-w-2xl mx-auto mb-4">
-              สำหรับโครงการขนาดใหญ่ที่ต้องการออกแบบเฉพาะทาง กรุณาประเมินขนาดกำลังที่ต้องการใช้
-              แล้วส่งข้อมูลให้ทีมงานเข้าประเมินหน้างาน — ฟรีไม่มีค่าใช้จ่าย
-            </p>
+            <p className="text-text-secondary max-w-2xl mx-auto mb-4">{t("custom.desc")}</p>
             <div className="flex flex-wrap justify-center gap-3 mb-6">
-              <span className="text-xs px-3 py-1.5 rounded-full bg-surface-elevated border border-border-subtle text-text-secondary">
-                <Factory className="w-3 h-3 inline mr-1" /> โรงงานขนาดใหญ่
-              </span>
-              <span className="text-xs px-3 py-1.5 rounded-full bg-surface-elevated border border-border-subtle text-text-secondary">
-                <Building2 className="w-3 h-3 inline mr-1" /> นิคมอุตสาหกรรม
-              </span>
-              <span className="text-xs px-3 py-1.5 rounded-full bg-surface-elevated border border-border-subtle text-text-secondary">
-                <Users className="w-3 h-3 inline mr-1" /> หน่วยงานราชการ
-              </span>
-              <span className="text-xs px-3 py-1.5 rounded-full bg-surface-elevated border border-border-subtle text-text-secondary">
-                <Hotel className="w-3 h-3 inline mr-1" /> โครงการอสังหาฯ
-              </span>
+              {[Factory, Building2, Users, Hotel].map((Icon, i) => (
+                <span key={i} className="text-xs px-3 py-1.5 rounded-full bg-surface-elevated border border-border-subtle text-text-secondary">
+                  <Icon className="w-3 h-3 inline mr-1" /> {t(`custom.tag.${i}`)}
+                </span>
+              ))}
             </div>
             <div className="flex flex-col sm:flex-row justify-center gap-3">
               <Link href="/contact?interest=solar-carport&package=custom">
                 <Button size="lg" className="btn-accent font-display">
-                  <Phone className="w-4 h-4 mr-1" /> ติดต่อทีมงานโดยตรง
+                  <Phone className="w-4 h-4 mr-1" /> {t("custom.cta.contact")}
                 </Button>
               </Link>
               <Link href="/assessment">
                 <Button size="lg" variant="outline" className="border-border-accent font-display">
-                  <Calculator className="w-4 h-4 mr-1" /> ประเมินขนาดระบบ
+                  <Calculator className="w-4 h-4 mr-1" /> {t("custom.cta.assess")}
                 </Button>
               </Link>
             </div>
@@ -571,26 +386,24 @@ export default function Pricing() {
               Advantages
             </span>
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
-              ข้อดีของ Solar Carport <span className="text-gradient-accent">ที่ไม่ควรมองข้าม</span>
+              {t("adv.title")} <span className="text-gradient-accent">{t("adv.title.accent")}</span>
             </h2>
-            <p className="text-text-secondary">
-              ไม่ใช่แค่ลดค่าไฟ — Solar Carport คือการลงทุนที่สร้างมูลค่าหลายทาง ทั้งรายได้ ภาพลักษณ์ และความพร้อมรับอนาคต
-            </p>
+            <p className="text-text-secondary">{t("adv.desc")}</p>
           </motion.div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {advantages.map((adv, i) => (
+            {advantageIcons.map((Icon, i) => (
               <motion.div
-                key={adv.title}
+                key={i}
                 initial="hidden" whileInView="visible" viewport={{ once: true }}
                 variants={fadeUp} custom={i}
                 className="p-5 rounded-xl border border-border-subtle bg-surface-elevated hover:border-border-accent transition-colors"
               >
                 <div className="w-10 h-10 rounded-lg bg-accent-glow flex items-center justify-center mb-3">
-                  <adv.icon className="w-5 h-5 text-accent-primary" />
+                  <Icon className="w-5 h-5 text-accent-primary" />
                 </div>
-                <h3 className="font-display font-semibold text-foreground mb-2">{adv.title}</h3>
-                <p className="text-sm text-text-muted leading-relaxed">{adv.desc}</p>
+                <h3 className="font-display font-semibold text-foreground mb-2">{t(`adv.${i}.title`)}</h3>
+                <p className="text-sm text-text-muted leading-relaxed">{t(`adv.${i}.desc`)}</p>
               </motion.div>
             ))}
           </div>
@@ -606,7 +419,7 @@ export default function Pricing() {
             className="text-center max-w-2xl mx-auto mb-10"
           >
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
-              เปรียบเทียบแพ็คเกจ
+              {t("compare.title")}
             </h2>
           </motion.div>
 
@@ -614,41 +427,27 @@ export default function Pricing() {
             <table className="w-full text-sm border-collapse">
               <thead>
                 <tr className="border-b border-border-subtle">
-                  <th className="text-left py-3 px-4 font-display font-semibold text-text-secondary">รายการ</th>
+                  <th className="text-left py-3 px-4 font-display font-semibold text-text-secondary">{t("compare.header.item")}</th>
                   <th className="text-center py-3 px-4 font-display font-semibold text-emerald-500">Size S</th>
                   <th className="text-center py-3 px-4 font-display font-semibold text-accent-primary">
-                    Size M <Badge className="ml-1 bg-accent-primary/20 text-accent-primary text-[10px]">แนะนำ</Badge>
+                    Size M <Badge className="ml-1 bg-accent-primary/20 text-accent-primary text-[10px]">{t("pkg.recommended")}</Badge>
                   </th>
                   <th className="text-center py-3 px-4 font-display font-semibold text-amber-500">Size L</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border-subtle">
-                {[
-                  { label: "กำลังผลิต", s: "10-30 kWp", m: "30-100 kWp", l: "100-500 kWp" },
-                  { label: "ที่จอดรถ", s: "5-15 คัน", m: "15-50 คัน", l: "50-200+ คัน" },
-                  { label: "EV Charger", s: "1-2 จุด", m: "3-10 จุด", l: "10-50 จุด" },
-                  { label: "ประหยัดค่าไฟ/เดือน", s: "5K-15K", m: "15K-50K", l: "50K-250K" },
-                  { label: "คืนทุน", s: "4-6 ปี", m: "3-5 ปี", l: "3-5 ปี" },
-                  { label: "BESS (แบตเตอรี่)", s: "—", m: "Option", l: "รวม" },
-                  { label: "AI Monitoring", s: "แอป", m: "Dashboard", l: "Predictive AI" },
-                  { label: "DC Fast Charge", s: "—", m: "—", l: "Option" },
-                  { label: "O&M Contract", s: "1 ปี", m: "1 ปี", l: "3-5 ปี" },
-                  { label: "Carbon Credit", s: "—", m: "ใบรับรอง", l: "ที่ปรึกษา ESG" },
-                  { label: "ราคาเริ่มต้น", s: "~300K", m: "~840K", l: "~2.5M" },
-                ].map((row) => (
-                  <tr key={row.label} className="hover:bg-accent-glow transition-colors">
-                    <td className="py-2.5 px-4 font-medium text-foreground">{row.label}</td>
-                    <td className="py-2.5 px-4 text-center text-text-secondary">{row.s}</td>
-                    <td className="py-2.5 px-4 text-center text-text-secondary font-medium">{row.m}</td>
-                    <td className="py-2.5 px-4 text-center text-text-secondary">{row.l}</td>
+                {Array.from({ length: 11 }, (_, i) => (
+                  <tr key={i} className="hover:bg-accent-glow transition-colors">
+                    <td className="py-2.5 px-4 font-medium text-foreground">{t(`compare.row.${i}.label`)}</td>
+                    <td className="py-2.5 px-4 text-center text-text-secondary">{t(`compare.row.${i}.s`)}</td>
+                    <td className="py-2.5 px-4 text-center text-text-secondary font-medium">{t(`compare.row.${i}.m`)}</td>
+                    <td className="py-2.5 px-4 text-center text-text-secondary">{t(`compare.row.${i}.l`)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <p className="text-xs text-text-muted text-center mt-4">
-            * ราคาเป็นราคาประมาณการ ราคาจริงขึ้นอยู่กับการสำรวจหน้างาน ติดต่อทีมงานเพื่อรับใบเสนอราคาที่แม่นยำ
-          </p>
+          <p className="text-xs text-text-muted text-center mt-4">{t("compare.note")}</p>
         </div>
       </section>
 
@@ -664,37 +463,26 @@ export default function Pricing() {
               Comparison
             </span>
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
-              Solar Carport vs <span className="text-gradient-accent">ที่จอดรถแบบเดิม</span>
+              Solar Carport vs <span className="text-gradient-accent">{t("vs.title.accent")}</span>
             </h2>
-            <p className="text-text-secondary">
-              เปรียบเทียบข้อแตกต่างระหว่างที่จอดรถทั่วไปกับ Solar Carport ที่สร้างรายได้และมูลค่าเพิ่มให้ธุรกิจ
-            </p>
+            <p className="text-text-secondary">{t("vs.desc")}</p>
           </motion.div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
               <thead>
                 <tr className="border-b border-border-subtle">
-                  <th className="text-left py-3 px-4 font-display font-semibold text-text-secondary">รายการ</th>
-                  <th className="text-center py-3 px-4 font-display font-semibold text-text-muted">ที่จอดรถแบบเดิม</th>
+                  <th className="text-left py-3 px-4 font-display font-semibold text-text-secondary">{t("compare.header.item")}</th>
+                  <th className="text-center py-3 px-4 font-display font-semibold text-text-muted">{t("vs.header.old")}</th>
                   <th className="text-center py-3 px-4 font-display font-semibold text-accent-primary">Solar Carport</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border-subtle">
-                {[
-                  { label: "รายได้จากพื้นที่", old: "ไม่มี — เป็นต้นทุนอย่างเดียว", carport: "ผลิตไฟฟ้าลดค่าไฟ 30-100%", highlight: true },
-                  { label: "ร่มเงา / ป้องกันแดด-ฝน", old: "ไม่มีหลังคา รถโดนแดดและฝนโดยตรง", carport: "หลังคาแผงโซลาร์ปกป้องครบวงจร", highlight: false },
-                  { label: "รองรับ EV Charger", old: "ต้องลงทุนเพิ่มเติม ไม่มีไฟฟ้าสำรอง", carport: "Pre-wired พร้อมใช้งาน ไฟฟ้าจากแสงอาทิตย์", highlight: true },
-                  { label: "มูลค่าอสังหาริมทรัพย์", old: "ไม่เพิ่มมูลค่า", carport: "เพิ่มมูลค่า 5-15% ดึงดูดผู้เช่า Green", highlight: false },
-                  { label: "สิทธิทางภาษี (BOI / ลดหย่อน)", old: "ไม่มีสิทธิลดหย่อน", carport: "ลดหย่อนภาษี 200% + BOI + ค่าเสื่อมเร่ง", highlight: true },
-                  { label: "Carbon Credit / ESG", old: "ไม่ได้", carport: "ได้ Carbon Credit + ตอบโจทย์ ESG", highlight: false },
-                  { label: "ค่าดูแลระยะยาว", old: "ต้นทุนซ่อมบำรุงตลอดอายุการใช้งาน", carport: "O&M + AI Monitoring ตลอด 25 ปี", highlight: false },
-                  { label: "รายได้จาก EV Charging", old: "ไม่มี", carport: "เปิดให้บริการชาร์จ EV สร้างรายได้เพิ่ม", highlight: true },
-                ].map((row) => (
-                  <tr key={row.label} className={`hover:bg-accent-glow transition-colors ${row.highlight ? "bg-accent-primary/5" : ""}`}>
-                    <td className="py-2.5 px-4 font-medium text-foreground">{row.label}</td>
-                    <td className="py-2.5 px-4 text-center text-text-muted">{row.old}</td>
-                    <td className="py-2.5 px-4 text-center text-accent-primary font-medium">{row.carport}</td>
+                {Array.from({ length: 8 }, (_, i) => (
+                  <tr key={i} className={`hover:bg-accent-glow transition-colors ${i % 2 === 0 ? "bg-accent-primary/5" : ""}`}>
+                    <td className="py-2.5 px-4 font-medium text-foreground">{t(`vs.row.${i}.label`)}</td>
+                    <td className="py-2.5 px-4 text-center text-text-muted">{t(`vs.row.${i}.old`)}</td>
+                    <td className="py-2.5 px-4 text-center text-accent-primary font-medium">{t(`vs.row.${i}.carport`)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -712,14 +500,12 @@ export default function Pricing() {
             className="text-center mb-12"
           >
             <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">
-              ROI Calculator
+              {t("roi.label")}
             </span>
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
-              คำนวณความคุ้มค่า <span className="text-gradient-accent">Solar Carport</span>
+              {t("roi.title")} <span className="text-gradient-accent">{t("roi.title.accent")}</span>
             </h2>
-            <p className="text-text-secondary">
-              กรอกข้อมูลค่าไฟและจำนวนที่จอดรถ เพื่อดูผลประหยัดและระยะเวลาคืนทุนโดยประมาณ
-            </p>
+            <p className="text-text-secondary">{t("roi.desc")}</p>
           </motion.div>
 
           <motion.div
@@ -731,7 +517,7 @@ export default function Pricing() {
             <div className="grid sm:grid-cols-2 gap-6 mb-8">
               <div>
                 <label className="block text-sm font-semibold text-foreground mb-2">
-                  ค่าไฟฟ้าต่อเดือน (บาท)
+                  {t("roi.label.bill")}
                 </label>
                 <input
                   type="range"
@@ -745,14 +531,14 @@ export default function Pricing() {
                 <div className="flex justify-between mt-2">
                   <span className="text-xs text-text-muted">5,000</span>
                   <span className="text-lg font-bold text-accent-primary font-display">
-                    {monthlyBill.toLocaleString()} บาท/เดือน
+                    {monthlyBill.toLocaleString()} {t("roi.unit.bahtMonth")}
                   </span>
                   <span className="text-xs text-text-muted">500,000</span>
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-semibold text-foreground mb-2">
-                  จำนวนที่จอดรถ (คัน)
+                  {t("roi.label.parking")}
                 </label>
                 <input
                   type="range"
@@ -764,11 +550,11 @@ export default function Pricing() {
                   className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-accent-primary bg-border-subtle"
                 />
                 <div className="flex justify-between mt-2">
-                  <span className="text-xs text-text-muted">5 คัน</span>
+                  <span className="text-xs text-text-muted">5 {t("roi.unit.vehicles")}</span>
                   <span className="text-lg font-bold text-accent-primary font-display">
-                    {parkingSpaces} คัน
+                    {parkingSpaces} {t("roi.unit.vehicles")}
                   </span>
-                  <span className="text-xs text-text-muted">200 คัน</span>
+                  <span className="text-xs text-text-muted">200 {t("roi.unit.vehicles")}</span>
                 </div>
               </div>
             </div>
@@ -780,35 +566,35 @@ export default function Pricing() {
                 <div className="font-display text-xl lg:text-2xl font-bold text-accent-primary">
                   {Math.round(roiCalc.monthlySavings).toLocaleString()}
                 </div>
-                <div className="text-xs text-text-muted mt-1">ประหยัด/เดือน (บาท)</div>
+                <div className="text-xs text-text-muted mt-1">{t("roi.result.savingsMonth")}</div>
               </div>
               <div className="p-4 rounded-xl bg-accent-glow text-center">
                 <Clock className="w-5 h-5 text-accent-primary mx-auto mb-2" />
                 <div className="font-display text-xl lg:text-2xl font-bold text-accent-primary">
                   {roiCalc.paybackYears.toFixed(1)}
                 </div>
-                <div className="text-xs text-text-muted mt-1">ปีคืนทุน</div>
+                <div className="text-xs text-text-muted mt-1">{t("roi.result.paybackYears")}</div>
               </div>
               <div className="p-4 rounded-xl bg-accent-glow text-center">
                 <Zap className="w-5 h-5 text-accent-primary mx-auto mb-2" />
                 <div className="font-display text-xl lg:text-2xl font-bold text-accent-primary">
                   {(roiCalc.totalSavings25yr / 1000000).toFixed(1)}M
                 </div>
-                <div className="text-xs text-text-muted mt-1">ประหยัดรวม 25 ปี (บาท)</div>
+                <div className="text-xs text-text-muted mt-1">{t("roi.result.totalSavings")}</div>
               </div>
               <div className="p-4 rounded-xl bg-accent-glow text-center">
                 <Leaf className="w-5 h-5 text-emerald-500 mx-auto mb-2" />
                 <div className="font-display text-xl lg:text-2xl font-bold text-emerald-500">
                   {roiCalc.co2ReductionTons.toFixed(0)}
                 </div>
-                <div className="text-xs text-text-muted mt-1">ตัน CO2 ลด/ปี</div>
+                <div className="text-xs text-text-muted mt-1">{t("roi.result.co2")}</div>
               </div>
             </div>
 
             {/* Savings Progress Bar */}
             <div className="mb-6">
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-text-secondary">ลดค่าไฟได้ประมาณ</span>
+                <span className="text-text-secondary">{t("roi.savingsPercent")}</span>
                 <span className="font-bold text-accent-primary">{roiCalc.savingsPercent}%</span>
               </div>
               <div className="w-full h-3 rounded-full bg-border-subtle overflow-hidden">
@@ -828,7 +614,7 @@ export default function Pricing() {
                   <Sun className="w-5 h-5 text-accent-primary" />
                 </div>
                 <div>
-                  <span className="text-sm text-text-secondary">แพ็คเกจแนะนำ:</span>
+                  <span className="text-sm text-text-secondary">{t("roi.recommend")}</span>
                   <span className="ml-2 font-display font-bold text-accent-primary">
                     {roiCalc.recommendedPkg}
                   </span>
@@ -837,14 +623,12 @@ export default function Pricing() {
               </div>
               <Link href={`/contact?interest=solar-carport&package=${roiCalc.recommendedPkg.toLowerCase().replace(" ", "-")}`}>
                 <Button className="btn-accent font-display whitespace-nowrap">
-                  ขอใบเสนอราคา <ArrowRight className="w-4 h-4 ml-1" />
+                  {t("roi.cta")} <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
               </Link>
             </div>
 
-            <p className="text-xs text-text-muted text-center mt-4">
-              * ผลคำนวณเป็นค่าประมาณการเบื้องต้น ผลลัพธ์จริงขึ้นอยู่กับทิศทางแสงแดด พื้นที่ และรูปแบบการใช้ไฟ
-            </p>
+            <p className="text-xs text-text-muted text-center mt-4">{t("roi.note")}</p>
           </motion.div>
         </div>
       </section>
@@ -858,22 +642,22 @@ export default function Pricing() {
             className="text-center mb-10"
           >
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
-              คำถามที่พบบ่อย
+              {t("faq.title")}
             </h2>
           </motion.div>
 
           <Accordion type="single" collapsible className="space-y-3">
-            {faqs.map((faq, i) => (
+            {Array.from({ length: 7 }, (_, i) => (
               <AccordionItem
                 key={i}
                 value={`faq-${i}`}
                 className="border border-border-subtle rounded-xl px-5 bg-surface-elevated"
               >
                 <AccordionTrigger className="font-display font-semibold text-foreground text-left text-sm hover:no-underline">
-                  {faq.q}
+                  {t(`faq.${i}.q`)}
                 </AccordionTrigger>
                 <AccordionContent className="text-sm text-text-secondary leading-relaxed pb-4">
-                  {faq.a}
+                  {t(`faq.${i}.a`)}
                 </AccordionContent>
               </AccordionItem>
             ))}
@@ -890,20 +674,18 @@ export default function Pricing() {
           >
             <Zap className="w-10 h-10 text-accent-primary mx-auto mb-4" />
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
-              พร้อมเริ่มต้นลดค่าไฟ?
+              {t("cta.title")}
             </h2>
-            <p className="text-text-secondary mb-6">
-              ทีมงาน SIRINX พร้อมสำรวจหน้างานและจัดทำใบเสนอราคาให้ฟรี — ไม่มีค่าใช้จ่าย ไม่มีข้อผูกมัด
-            </p>
+            <p className="text-text-secondary mb-6">{t("cta.desc")}</p>
             <div className="flex flex-col sm:flex-row justify-center gap-3">
               <Link href="/contact?interest=solar-carport">
                 <Button size="lg" className="btn-accent font-display">
-                  นัดสำรวจหน้างานฟรี <ArrowRight className="w-4 h-4 ml-1" />
+                  {t("cta.survey")} <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
               </Link>
               <Link href="/solar-carport">
                 <Button size="lg" variant="outline" className="border-border-accent font-display">
-                  ดูรายละเอียด Solar Carport
+                  {t("cta.details")}
                 </Button>
               </Link>
             </div>

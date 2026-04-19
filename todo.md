@@ -224,16 +224,16 @@
 - [x] Create real project photo gallery section (12 photos in SolarCarport + 20 in Projects)
 
 ### 13B: Rebuild i18n System
-- [ ] Rebuild i18n system with per-page translation files (TH/EN/CN)
-- [ ] Convert all hardcoded Thai text in Home.tsx to translation keys
-- [ ] Convert all hardcoded Thai text in Pricing.tsx to translation keys
-- [ ] Convert all hardcoded Thai text in SolarCarport.tsx to translation keys
-- [ ] Convert all hardcoded Thai text in Solutions.tsx to translation keys
-- [ ] Convert all hardcoded Thai text in Industries.tsx to translation keys
+- [x] Rebuild i18n system with per-page translation files (TH/EN/CN)
+- [x] Convert all hardcoded Thai text in Home.tsx to translation keys
+- [x] Convert all hardcoded Thai text in Pricing.tsx to translation keys
+- [x] Convert all hardcoded Thai text in SolarCarport.tsx to translation keys
+- [x] Convert all hardcoded Thai text in Solutions.tsx to translation keys
+- [x] Convert all hardcoded Thai text in Industries.tsx to translation keys
 - [ ] Convert all hardcoded Thai text in InvestmentTaxHub.tsx to translation keys
-- [ ] Convert all hardcoded Thai text in Contact.tsx to translation keys
+- [x] Convert all hardcoded Thai text in Contact.tsx to translation keys
 - [ ] Convert all hardcoded Thai text in About.tsx to translation keys
-- [ ] Convert all hardcoded Thai text in Projects.tsx to translation keys
+- [x] Convert all hardcoded Thai text in Projects.tsx to translation keys
 - [ ] Convert all hardcoded Thai text in Blog.tsx to translation keys
 - [ ] Convert all hardcoded Thai text in Assessment.tsx to translation keys
 - [ ] Test language switching TH→EN→CN on all pages
@@ -274,15 +274,15 @@
 - [ ] Save checkpoint (pending)
 
 ## Phase 16 — Full i18n System (TH/EN/CN) for All Pages
-- [ ] Create i18n infrastructure: translation files per page, LanguageContext, useTranslation hook
-- [ ] Translate Layout (Navbar + Footer) to TH/EN/CN
-- [ ] Translate Home.tsx to TH/EN/CN
-- [ ] Translate SolarCarport.tsx to TH/EN/CN
-- [ ] Translate Solutions.tsx to TH/EN/CN
-- [ ] Translate Industries.tsx to TH/EN/CN
-- [ ] Translate Pricing.tsx to TH/EN/CN
-- [ ] Translate Projects.tsx to TH/EN/CN
-- [ ] Translate Contact.tsx to TH/EN/CN
+- [x] Create i18n infrastructure: translation files per page, LanguageContext, useTranslation hook
+- [x] Translate Layout (Navbar + Footer) to TH/EN/CN (already done in Phase 11C)
+- [x] Translate Home.tsx to TH/EN/CN (+ HeroSlideshow)
+- [x] Translate SolarCarport.tsx to TH/EN/CN
+- [x] Translate Solutions.tsx to TH/EN/CN
+- [x] Translate Industries.tsx to TH/EN/CN
+- [x] Translate Pricing.tsx to TH/EN/CN
+- [x] Translate Projects.tsx to TH/EN/CN
+- [x] Translate Contact.tsx to TH/EN/CN
 - [ ] Translate SolarAssessment.tsx to TH/EN/CN
 - [ ] Translate About.tsx to TH/EN/CN
 - [ ] Translate Blog.tsx to TH/EN/CN
@@ -291,3 +291,15 @@
 - [ ] Translate Partner.tsx to TH/EN/CN
 - [ ] Test language switching TH→EN→CN on all pages
 - [ ] Save checkpoint
+
+## Phase 17 — Product Hero Strategy + Full System Development Plan
+- [x] Audit all current pages and their Product Hero status
+- [x] Analyze which products have dedicated pages vs only mentioned
+- [x] Create Product Hero Strategy document (docs/PRODUCT_HERO_STRATEGY.md)
+- [x] Create Phase Roadmap for full system development (Phase A-E)
+- [x] Identify gaps: 5 products need dedicated pages, 11 pages need i18n
+- [x] Ensure plan doesn't conflict: Product Page Factory pattern, additive only
+
+## SEO Fixes
+- [x] SEO: Reduce homepage keywords from 17 to 7 focused keywords (Solar Carport, โซลาร์เซลล์, BESS, AI Energy, EV Charger, ลดค่าไฟ, SIRINX)
+- [x] SEO: Shorten meta description from 192 to 135 chars + fix 5 other pages exceeding 160 chars

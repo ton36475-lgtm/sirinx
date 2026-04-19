@@ -2,13 +2,15 @@
  * SIRINX Contact Page — Lead Capture & Qualification
  * Dual-theme: semantic CSS vars
  * Features: URL param prefill from Solar Calculator, lead qualification, success state,
- *           tRPC backend integration, LINE OA button
+ *           tRPC backend integration, LINE OA button, i18n (TH/EN/CN)
  */
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useSearch } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { useTrackCTA, useTrackFormSubmit, useTrackLINEClick } from "@/hooks/useAnalytics";
+import { usePageTranslation } from "@/i18n";
+import "@/i18n/pages/contact";
 import {
   ArrowRight, Phone, Mail, MapPin, Clock, Send, CheckCircle2,
   Calculator, Shield, FileText, Users, Zap, MessageCircle, Loader2
@@ -22,28 +24,8 @@ const fadeUp = {
 
 const LINE_OA_URL = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_LINE_OA_URL) || "https://lin.ee/sirinx";
 
-const contactChannels = [
-  { icon: Phone, title: "โทรศัพท์", value: "+66 81 972 3969", sub: "คุณ Pitoon — CEO & Founder", action: "tel:+66819723969" },
-  { icon: Mail, title: "อีเมล", value: "pitoon.sirinx@gmail.com", sub: "ตอบกลับภายใน 24 ชม.", action: "mailto:pitoon.sirinx@gmail.com" },
-  { icon: MapPin, title: "สำนักงาน", value: "600/99 Mittraphap Rd.", sub: "Mueang Phitsanulok 65000", action: "https://maps.google.com/?q=600/99+Mittraphap+Rd+Phitsanulok" },
-  { icon: Clock, title: "เว็บไซต์", value: "www.sirinx.co", sub: "ติดต่อได้ตลอด 24 ชม.", action: "https://www.sirinx.co" },
-];
-
-const interestOptions = [
-  "Solar Carport", "Rooftop Solar", "Floating Solar", "BESS / ESS",
-  "AI Energy Management", "O&M Service", "Co-investment / PPA", "ปรึกษาทั่วไป",
-];
-
-const budgetRanges = [
-  "ยังไม่ได้กำหนด", "ต่ำกว่า 5 ล้านบาท", "5-15 ล้านบาท",
-  "15-50 ล้านบาท", "50-100 ล้านบาท", "มากกว่า 100 ล้านบาท",
-];
-
-const timelineOptions = [
-  "ภายใน 1 เดือน", "1-3 เดือน", "3-6 เดือน", "6-12 เดือน", "กำลังศึกษาข้อมูล",
-];
-
 export default function Contact() {
+  const { t } = usePageTranslation("contact");
   const searchString = useSearch();
   const [submitted, setSubmitted] = useState(false);
   const trackCTA = useTrackCTA();
@@ -55,14 +37,35 @@ export default function Contact() {
     monthlyBill: "", roofArea: "", message: "",
   });
 
+  const contactChannels = [
+    { icon: Phone, title: t("chPhone"), value: "+66 81 972 3969", sub: t("chPhoneSub"), action: "tel:+66819723969" },
+    { icon: Mail, title: t("chEmail"), value: "pitoon.sirinx@gmail.com", sub: t("chEmailSub"), action: "mailto:pitoon.sirinx@gmail.com" },
+    { icon: MapPin, title: t("chOffice"), value: "600/99 Mittraphap Rd.", sub: "Mueang Phitsanulok 65000", action: "https://maps.google.com/?q=600/99+Mittraphap+Rd+Phitsanulok" },
+    { icon: Clock, title: t("chWebsite"), value: "www.sirinx.co", sub: t("chWebsiteSub"), action: "https://www.sirinx.co" },
+  ];
+
+  const interestOptions = [
+    "Solar Carport", "Rooftop Solar", "Floating Solar", "BESS / ESS",
+    "AI Energy Management", "O&M Service", "Co-investment / PPA", t("interestGeneral"),
+  ];
+
+  const budgetRanges = [
+    t("budgetUndefined"), t("budgetUnder5"), t("budget5to15"),
+    t("budget15to50"), t("budget50to100"), t("budgetOver100"),
+  ];
+
+  const timelineOptions = [
+    t("timeline1m"), t("timeline1to3m"), t("timeline3to6m"), t("timeline6to12m"), t("timelineResearch"),
+  ];
+
   const submitLead = trpc.lead.submit.useMutation({
     onSuccess: () => {
       setSubmitted(true);
       trackFormSubmit("contact_form", Object.values(formData).filter(Boolean).length);
-      toast.success("ส่งข้อมูลเรียบร้อย ทีมงานจะติดต่อกลับภายใน 24 ชั่วโมง");
+      toast.success(t("successToast"));
     },
     onError: (err) => {
-      toast.error(err.message || "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
+      toast.error(err.message || t("errorToast"));
     },
   });
 
@@ -76,7 +79,6 @@ export default function Contact() {
     const interest = params.get("interest");
     const pkg = params.get("package");
 
-    // Pricing page prefill
     if (interest || pkg) {
       const interestMap: Record<string, string> = {
         "solar-carport": "Solar Carport",
@@ -84,7 +86,7 @@ export default function Contact() {
         "floating-solar": "Floating Solar",
         "bess": "BESS / ESS",
         "ai-energy": "AI Energy Management",
-        "hospitality": "ปรึกษาทั่วไป",
+        "hospitality": t("interestGeneral"),
       };
       const packageLabels: Record<string, string> = {
         "size-s": "Size S (10-30 kWp)",
@@ -95,22 +97,20 @@ export default function Contact() {
       const mappedInterest = interest ? (interestMap[interest] || "Solar Carport") : "Solar Carport";
       const pkgLabel = pkg ? packageLabels[pkg] : null;
       const msgParts: string[] = [];
-      if (pkgLabel) msgParts.push(`แพ็คเกจที่สนใจ: ${pkgLabel}`);
-      msgParts.push("(ข้อมูลจากหน้าแพ็คเกจราคา)");
+      if (pkgLabel) msgParts.push(`${t("prefillPackage")} ${pkgLabel}`);
+      msgParts.push(t("prefillFromPricing"));
       setFormData(prev => ({
         ...prev,
         interest: mappedInterest,
         message: prev.message || msgParts.join("\n"),
       }));
-    }
-    // Solar Calculator prefill
-    else if (system || type || bill) {
+    } else if (system || type || bill) {
       const parts: string[] = [];
-      if (system) parts.push(`ขนาดระบบที่แนะนำ: ${system}`);
-      if (type) parts.push(`ประเภทธุรกิจ: ${type}`);
-      if (bill) parts.push(`ค่าไฟปัจจุบัน: ${Number(bill).toLocaleString()} บาท/เดือน`);
-      if (bess) parts.push(`ระบบ BESS: ${bess}`);
-      parts.push("\n(ข้อมูลจากเครื่องมือคำนวณ Solar Assessment)");
+      if (system) parts.push(`${t("prefillSystem")} ${system}`);
+      if (type) parts.push(`${t("prefillBizType")} ${type}`);
+      if (bill) parts.push(`${t("prefillBill")} ${Number(bill).toLocaleString()} ${t("prefillBillUnit")}`);
+      if (bess) parts.push(`${t("prefillBESS")} ${bess}`);
+      parts.push(`\n${t("prefillFromCalc")}`);
       setFormData(prev => ({
         ...prev,
         interest: system?.includes("BESS") ? "BESS / ESS" : "Rooftop Solar",
@@ -145,22 +145,18 @@ export default function Contact() {
           <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-6">
             <CheckCircle2 className="w-8 h-8 text-green-500" />
           </div>
-          <h2 className="font-display text-2xl font-bold text-foreground mb-3">ขอบคุณสำหรับข้อมูล</h2>
-          <p className="text-text-secondary mb-6">
-            ทีมวิศวกรของ SIRINX จะตรวจสอบข้อมูลและติดต่อกลับภายใน 24 ชั่วโมง
-            หากต้องการความช่วยเหลือเร่งด่วน กรุณาโทร +66 81 972 3969
-          </p>
+          <h2 className="font-display text-2xl font-bold text-foreground mb-3">{t("successTitle")}</h2>
+          <p className="text-text-secondary mb-6">{t("successDesc")}</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 btn-accent rounded-lg text-sm font-display font-semibold">
-              กลับหน้าหลัก
+              {t("successBtnHome")}
             </Link>
             <Link href="/assessment" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 btn-accent-outline rounded-lg text-sm font-display font-semibold">
-              คำนวณระบบโซลาร์
+              {t("successBtnCalc")}
             </Link>
           </div>
-          {/* LINE OA CTA after submit */}
           <div className="mt-6 p-4 rounded-xl border border-[#06C755]/30 bg-[#06C755]/10">
-            <p className="text-sm text-text-secondary mb-3">ติดตามสถานะผ่าน LINE OA ได้เลย</p>
+            <p className="text-sm text-text-secondary mb-3">{t("successLinePrompt")}</p>
             <a
               href={LINE_OA_URL}
               target="_blank"
@@ -168,7 +164,7 @@ export default function Contact() {
               onClick={() => trackLINEClick("contact_success_cta")}
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#06C755] hover:bg-[#05b34c] text-white rounded-lg text-sm font-semibold transition-colors"
             >
-              <MessageCircle className="w-4 h-4" /> เพิ่มเพื่อน LINE @SIRINX
+              <MessageCircle className="w-4 h-4" /> {t("successLineBtn")}
             </a>
           </div>
         </motion.div>
@@ -184,13 +180,11 @@ export default function Contact() {
       <section className="py-16 lg:py-24 bg-background">
         <div className="container">
           <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0} className="max-w-2xl">
-            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">Contact Us</span>
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("heroLabel")}</span>
             <h1 className="font-display text-3xl lg:text-4xl font-bold text-foreground mb-3">
-              เริ่มต้น<span className="text-gradient-accent">ลดค่าพลังงาน</span>วันนี้
+              {t("heroTitle")}<span className="text-gradient-accent">{t("heroTitleAccent")}</span>{t("heroTitleEnd")}
             </h1>
-            <p className="text-text-secondary leading-relaxed">
-              นัดสำรวจหน้างานฟรี ไม่มีข้อผูกมัด ทีมวิศวกรพร้อมออกแบบระบบที่เหมาะสมกับธุรกิจของคุณ
-            </p>
+            <p className="text-text-secondary leading-relaxed">{t("heroDesc")}</p>
           </motion.div>
         </div>
       </section>
@@ -208,7 +202,6 @@ export default function Contact() {
                 <div className="text-xs text-text-muted mt-1">{ch.sub}</div>
               </motion.a>
             ))}
-            {/* LINE OA Channel Card */}
             <motion.a
               href={LINE_OA_URL}
               target="_blank"
@@ -219,7 +212,7 @@ export default function Contact() {
             >
               <MessageCircle className="w-5 h-5 text-[#06C755] mb-3" />
               <div className="font-display font-semibold text-foreground text-sm group-hover:text-[#06C755] transition-colors">LINE @SIRINX</div>
-              <div className="text-xs text-text-muted mt-1">แชทสดกับทีมงาน</div>
+              <div className="text-xs text-text-muted mt-1">{t("chLineSub")}</div>
             </motion.a>
           </div>
         </div>
@@ -232,67 +225,67 @@ export default function Contact() {
             {/* Form */}
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
               <div className="p-6 lg:p-8 rounded-2xl border border-border-subtle bg-surface-elevated">
-                <h2 className="font-display text-xl font-bold text-foreground mb-1">แบบฟอร์มขอใบเสนอราคา</h2>
-                <p className="text-sm text-text-muted mb-6">กรอกข้อมูลเบื้องต้น ทีมวิศวกรจะวิเคราะห์และติดต่อกลับภายใน 24 ชม.</p>
+                <h2 className="font-display text-xl font-bold text-foreground mb-1">{t("formTitle")}</h2>
+                <p className="text-sm text-text-muted mb-6">{t("formDesc")}</p>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-1.5">ชื่อ-นามสกุล *</label>
-                      <input type="text" required value={formData.name} onChange={(e) => update("name", e.target.value)} className={inputCls} placeholder="ชื่อของคุณ" />
+                      <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelName")}</label>
+                      <input type="text" required value={formData.name} onChange={(e) => update("name", e.target.value)} className={inputCls} placeholder={t("phName")} />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-1.5">บริษัท / องค์กร</label>
-                      <input type="text" value={formData.company} onChange={(e) => update("company", e.target.value)} className={inputCls} placeholder="ชื่อบริษัท" />
+                      <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelCompany")}</label>
+                      <input type="text" value={formData.company} onChange={(e) => update("company", e.target.value)} className={inputCls} placeholder={t("phCompany")} />
                     </div>
                   </div>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-1.5">อีเมล</label>
+                      <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelEmail")}</label>
                       <input type="email" value={formData.email} onChange={(e) => update("email", e.target.value)} className={inputCls} placeholder="email@company.com" />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-1.5">เบอร์โทรศัพท์ *</label>
+                      <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelPhone")}</label>
                       <input type="tel" required value={formData.phone} onChange={(e) => update("phone", e.target.value)} className={inputCls} placeholder="08X-XXX-XXXX" />
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-1.5">โซลูชันที่สนใจ *</label>
+                    <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelInterest")}</label>
                     <select required value={formData.interest} onChange={(e) => update("interest", e.target.value)} className={inputCls}>
-                      <option value="">เลือกโซลูชัน</option>
+                      <option value="">{t("selectSolution")}</option>
                       {interestOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
                     </select>
                   </div>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-1.5">งบประมาณโดยประมาณ</label>
+                      <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelBudget")}</label>
                       <select value={formData.budget} onChange={(e) => update("budget", e.target.value)} className={inputCls}>
-                        <option value="">เลือกช่วงงบประมาณ</option>
+                        <option value="">{t("selectBudget")}</option>
                         {budgetRanges.map((r) => <option key={r} value={r}>{r}</option>)}
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-1.5">ระยะเวลาที่ต้องการ</label>
+                      <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelTimeline")}</label>
                       <select value={formData.timeline} onChange={(e) => update("timeline", e.target.value)} className={inputCls}>
-                        <option value="">เลือกระยะเวลา</option>
-                        {timelineOptions.map((t) => <option key={t} value={t}>{t}</option>)}
+                        <option value="">{t("selectTimeline")}</option>
+                        {timelineOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
                       </select>
                     </div>
                   </div>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-1.5">ค่าไฟฟ้าต่อเดือน (บาท)</label>
-                      <input type="number" min="0" value={formData.monthlyBill} onChange={(e) => update("monthlyBill", e.target.value)} className={inputCls} placeholder="เช่น 300000" />
+                      <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelBill")}</label>
+                      <input type="number" min="0" value={formData.monthlyBill} onChange={(e) => update("monthlyBill", e.target.value)} className={inputCls} placeholder={t("phBill")} />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-1.5">พื้นที่หลังคาโดยประมาณ (ตร.ม.)</label>
-                      <input type="number" min="0" value={formData.roofArea} onChange={(e) => update("roofArea", e.target.value)} className={inputCls} placeholder="เช่น 5000" />
+                      <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelRoof")}</label>
+                      <input type="number" min="0" value={formData.roofArea} onChange={(e) => update("roofArea", e.target.value)} className={inputCls} placeholder={t("phRoof")} />
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-1.5">ข้อความเพิ่มเติม</label>
+                    <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelMessage")}</label>
                     <textarea rows={4} value={formData.message} onChange={(e) => update("message", e.target.value)}
-                      className={`${inputCls} resize-none`} placeholder="รายละเอียดเพิ่มเติมเกี่ยวกับโครงการ หรือคำถามที่ต้องการให้ทีมวิศวกรตอบ" />
+                      className={`${inputCls} resize-none`} placeholder={t("phMessage")} />
                   </div>
                   <button
                     type="submit"
@@ -300,12 +293,12 @@ export default function Contact() {
                     className="w-full flex items-center justify-center gap-2 px-6 py-3.5 btn-accent rounded-lg font-display font-semibold text-base disabled:opacity-60"
                   >
                     {submitLead.isPending ? (
-                      <><Loader2 className="w-4 h-4 animate-spin" /> กำลังส่ง...</>
+                      <><Loader2 className="w-4 h-4 animate-spin" /> {t("btnSubmitting")}</>
                     ) : (
-                      <><Send className="w-4 h-4" /> ส่งข้อมูลขอใบเสนอราคา</>
+                      <><Send className="w-4 h-4" /> {t("btnSubmit")}</>
                     )}
                   </button>
-                  <p className="text-xs text-text-muted text-center">ข้อมูลของคุณจะถูกเก็บเป็นความลับ ใช้เพื่อการติดต่อกลับเท่านั้น</p>
+                  <p className="text-xs text-text-muted text-center">{t("formPrivacy")}</p>
                 </form>
               </div>
             </motion.div>
@@ -316,8 +309,8 @@ export default function Contact() {
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0.5}
                 className="p-6 rounded-xl border border-[#06C755]/30 bg-[#06C755]/10">
                 <MessageCircle className="w-6 h-6 text-[#06C755] mb-3" />
-                <h3 className="font-display font-semibold text-foreground mb-2">แชทกับเราผ่าน LINE</h3>
-                <p className="text-sm text-text-secondary mb-4">สอบถามข้อมูลเบื้องต้น หรือนัดสำรวจหน้างานผ่าน LINE OA ได้ทันที ตอบกลับรวดเร็วภายใน 5 นาที</p>
+                <h3 className="font-display font-semibold text-foreground mb-2">{t("lineTitle")}</h3>
+                <p className="text-sm text-text-secondary mb-4">{t("lineDesc")}</p>
                 <a
                   href={LINE_OA_URL}
                   target="_blank"
@@ -325,29 +318,29 @@ export default function Contact() {
                   onClick={() => trackLINEClick("contact_sidebar_cta")}
                   className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#06C755] hover:bg-[#05b34c] text-white rounded-lg text-sm font-semibold transition-colors w-full justify-center"
                 >
-                  <MessageCircle className="w-4 h-4" /> เพิ่มเพื่อน LINE @SIRINX
+                  <MessageCircle className="w-4 h-4" /> {t("lineBtn")}
                 </a>
               </motion.div>
 
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}
                 className="p-6 rounded-xl border border-border-accent bg-accent-glow">
                 <Calculator className="w-6 h-6 text-accent-primary mb-3" />
-                <h3 className="font-display font-semibold text-foreground mb-2">ยังไม่แน่ใจ?</h3>
-                <p className="text-sm text-text-secondary mb-4">ใช้เครื่องมือคำนวณขั้นสูงของ SIRINX เพื่อประเมินขนาดระบบ ผลตอบแทน และระยะเวลาคืนทุนเบื้องต้น</p>
+                <h3 className="font-display font-semibold text-foreground mb-2">{t("calcTitle")}</h3>
+                <p className="text-sm text-text-secondary mb-4">{t("calcDesc")}</p>
                 <Link href="/assessment" className="inline-flex items-center gap-2 text-sm font-medium text-accent-primary hover:underline">
-                  คำนวณระบบโซลาร์ <ArrowRight className="w-4 h-4" />
+                  {t("calcLink")} <ArrowRight className="w-4 h-4" />
                 </Link>
               </motion.div>
 
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={2}
                 className="p-6 rounded-xl border border-border-subtle bg-surface-elevated">
-                <h3 className="font-display font-semibold text-foreground mb-4">ขั้นตอนหลังส่งแบบฟอร์ม</h3>
+                <h3 className="font-display font-semibold text-foreground mb-4">{t("stepsTitle")}</h3>
                 <div className="space-y-4">
                   {[
-                    { step: "1", title: "ทีมวิศวกรตรวจสอบข้อมูล", time: "ภายใน 24 ชม." },
-                    { step: "2", title: "นัดสำรวจหน้างาน", time: "ภายใน 3-5 วัน" },
-                    { step: "3", title: "ออกแบบระบบ + ประเมิน ROI", time: "ภายใน 7 วัน" },
-                    { step: "4", title: "นำเสนอข้อเสนอ", time: "ภายใน 10 วัน" },
+                    { step: "1", title: t("step1Title"), time: t("step1Time") },
+                    { step: "2", title: t("step2Title"), time: t("step2Time") },
+                    { step: "3", title: t("step3Title"), time: t("step3Time") },
+                    { step: "4", title: t("step4Title"), time: t("step4Time") },
                   ].map((s) => (
                     <div key={s.step} className="flex items-start gap-3">
                       <span className="w-6 h-6 rounded-full bg-accent-glow text-accent-primary text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{s.step}</span>
@@ -362,13 +355,13 @@ export default function Contact() {
 
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={3}
                 className="p-6 rounded-xl border border-border-subtle bg-surface-elevated">
-                <h3 className="font-display font-semibold text-foreground mb-4">ทำไมเลือก SIRINX</h3>
+                <h3 className="font-display font-semibold text-foreground mb-4">{t("whyTitle")}</h3>
                 <div className="space-y-3">
                   {[
-                    { icon: Shield, text: "สำรวจหน้างานฟรี ไม่มีข้อผูกมัด" },
-                    { icon: FileText, text: "ใบเสนอราคาโปร่งใส ไม่มีค่าใช้จ่ายแอบแฝง" },
-                    { icon: Users, text: "ทีมวิศวกรมืออาชีพ" },
-                    { icon: Zap, text: "ดูแลระบบตลอดอายุ 25 ปี" },
+                    { icon: Shield, text: t("why1") },
+                    { icon: FileText, text: t("why2") },
+                    { icon: Users, text: t("why3") },
+                    { icon: Zap, text: t("why4") },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3">
                       <item.icon className="w-4 h-4 text-accent-primary shrink-0" />
@@ -385,14 +378,14 @@ export default function Contact() {
       {/* Final CTA */}
       <section className="py-16 lg:py-20 bg-background">
         <div className="container text-center">
-          <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">ต้องการข้อมูลเพิ่มเติม?</h2>
-          <p className="text-text-secondary mb-6 max-w-lg mx-auto">ศึกษาข้อมูลเพิ่มเติมเกี่ยวกับโซลูชันและผลงานของเรา</p>
+          <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">{t("ctaTitle")}</h2>
+          <p className="text-text-secondary mb-6 max-w-lg mx-auto">{t("ctaDesc")}</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/solutions" className="inline-flex items-center justify-center gap-2 px-6 py-3 btn-accent-outline rounded-lg font-display font-semibold">
-              ดูโซลูชันทั้งหมด <ArrowRight className="w-4 h-4" />
+              {t("ctaBtnSolutions")} <ArrowRight className="w-4 h-4" />
             </Link>
             <Link href="/projects" className="inline-flex items-center justify-center gap-2 px-6 py-3 btn-accent-outline rounded-lg font-display font-semibold">
-              ดูผลงาน <ArrowRight className="w-4 h-4" />
+              {t("ctaBtnProjects")} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>

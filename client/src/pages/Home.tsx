@@ -1,6 +1,6 @@
 /**
  * SIRINX Home Page — Solar Carpark Flagship
- * Second Pass: Carpark-first hero, proof strip, mid-page CTAs, FAQ/AEO
+ * Fully i18n-enabled via usePageTranslation("home")
  */
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -14,6 +14,8 @@ import {
   BatteryCharging, Cpu, Plug
 } from "lucide-react";
 import HeroSlideshow from "@/components/HeroSlideshow";
+import { usePageTranslation } from "@/i18n";
+import "@/i18n/pages/home";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -34,32 +36,18 @@ const IMG_NODE2 = `${CDN}/bess-cabinet-2_54c824b8.jpeg`;
 const IMG_CARPORT_TEAM = `${CDN}/install-team-1_91970553.jpeg`;
 const IMG_CARPORT_UNDER = `${CDN}/carport-underside-2_e70e97e1.jpeg`;
 
-/* ── FAQ Data ── */
-const faqs = [
-  {
-    q: "Solar Carport คืออะไร ต่างจาก Rooftop Solar อย่างไร?",
-    a: "Solar Carport คือโครงสร้างหลังคาที่จอดรถที่ติดตั้งแผงโซลาร์เซลล์ด้านบน ผลิตไฟฟ้าได้เหมือน Rooftop Solar แต่ไม่ต้องใช้พื้นที่หลังคาอาคาร เหมาะกับธุรกิจที่มีลานจอดรถขนาดใหญ่ เช่น โรงงาน ห้างสรรพสินค้า โรงแรม สถานศึกษา และอาคารสำนักงาน นอกจากผลิตไฟฟ้าแล้ว ยังให้ร่มเงาปกป้องรถจากแดดและฝน และรองรับ EV Charger ได้ทันที",
-  },
-  {
-    q: "ติดตั้ง Solar Carport ใช้เวลานานเท่าไหร่?",
-    a: "โดยทั่วไปใช้เวลา 45-90 วัน ขึ้นอยู่กับขนาดโครงการ ตั้งแต่การสำรวจหน้างาน ออกแบบโครงสร้าง ขออนุญาต จนถึงติดตั้งและทดสอบระบบ SIRINX มีทีมวิศวกรมืออาชีพดูแลทุกขั้นตอน",
-  },
-  {
-    q: "Solar Carport คุ้มค่าไหม คืนทุนกี่ปี?",
-    a: "คืนทุนเฉลี่ย 3-5 ปี ขึ้นอยู่กับขนาดระบบ ค่าไฟปัจจุบัน และรูปแบบการลงทุน (ซื้อขาด ผ่อนชำระ หรือ Co-investment) ระบบมีอายุการใช้งาน 25+ ปี หลังคืนทุนจะได้ไฟฟ้าฟรีตลอดอายุที่เหลือ สามารถขอประเมิน ROI เฉพาะโครงการได้ฟรี",
-  },
-  {
-    q: "รองรับ EV Charger ได้เลยไหม?",
-    a: "ได้ครับ โครงสร้าง Solar Carport ของ SIRINX ออกแบบให้รองรับการติดตั้ง EV Charging Station ได้ทันที ทั้ง AC Type 2 และ DC Fast Charger ระบบไฟฟ้าจาก Solar + BESS สามารถจ่ายไฟให้ EV Charger โดยตรง ลดต้นทุนค่าชาร์จ",
-  },
-  {
-    q: "SIRINX ดูแลหลังติดตั้งอย่างไร?",
-    a: "SIRINX มีบริการ O&M (Operation & Maintenance) ตลอดอายุระบบ 25 ปี ด้วยระบบ AI Monitoring ตรวจสอบประสิทธิภาพแบบ real-time ทีมช่างพร้อมออกซ่อมบำรุงภายใน 24-48 ชม. และรายงานผลการผลิตไฟฟ้ารายเดือน",
-  },
-];
-
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const { t } = usePageTranslation("home");
+
+  /* ── FAQ Data (translated) ── */
+  const faqs = [
+    { q: t("home.faq.q1"), a: t("home.faq.a1") },
+    { q: t("home.faq.q2"), a: t("home.faq.a2") },
+    { q: t("home.faq.q3"), a: t("home.faq.a3") },
+    { q: t("home.faq.q4"), a: t("home.faq.a4") },
+    { q: t("home.faq.q5"), a: t("home.faq.a5") },
+  ];
 
   const faqJsonLd = {
     "@context": "https://schema.org",
@@ -89,13 +77,13 @@ export default function Home() {
         <div className="container">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             {[
-              { value: "30-100%", label: "ลดค่าไฟฟ้า", icon: TrendingUp },
-              { value: "3-5 ปี", label: "คืนทุนเฉลี่ย", icon: Clock },
-              { value: "25+ ปี", label: "อายุการใช้งาน", icon: Shield },
+              { value: "30-100%", label: t("home.stat.reduceBill"), icon: TrendingUp },
+              { value: t("home.stat.paybackVal"), label: t("home.stat.payback"), icon: Clock },
+              { value: t("home.stat.lifespanVal"), label: t("home.stat.lifespan"), icon: Shield },
               { value: "99.5%", label: "System Uptime", icon: BarChart3 },
             ].map((item, i) => (
               <motion.div
-                key={item.label}
+                key={i}
                 initial="hidden" whileInView="visible" viewport={{ once: true }}
                 variants={fadeUp} custom={i}
                 className="text-center"
@@ -118,41 +106,41 @@ export default function Home() {
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
-              <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">Flagship Product</span>
-              <h2 className="font-display text-2xl lg:text-4xl font-bold text-foreground mb-4">
-                ทำไม Solar Carport<br />ถึงเป็นทางเลือกที่ดีที่สุด?
+              <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("home.flagship.tag")}</span>
+              <h2 className="font-display text-2xl lg:text-4xl font-bold text-foreground mb-4 whitespace-pre-line">
+                {t("home.flagship.title")}
               </h2>
               <p className="text-text-secondary leading-relaxed mb-6">
-                ธุรกิจที่มีลานจอดรถ 50+ คัน สามารถเปลี่ยนพื้นที่ว่างเปล่าให้เป็นแหล่งผลิตไฟฟ้า ลดค่าพลังงาน เพิ่มมูลค่าอสังหาริมทรัพย์ และเตรียมพร้อมสำหรับ EV ในคราวเดียว
+                {t("home.flagship.desc")}
               </p>
               <ul className="space-y-3 mb-6">
                 {[
-                  "ผลิตไฟฟ้าจากพื้นที่ที่ไม่ได้ใช้ — ไม่ต้องแตะหลังคาอาคาร",
-                  "ให้ร่มเงาปกป้องรถจากแดดและฝน — ลดค่าซ่อมบำรุง",
-                  "รองรับ EV Charging Station — พร้อมสำหรับอนาคต",
-                  "เพิ่มมูลค่าอสังหาริมทรัพย์ — ตอบโจทย์ ESG & Green Building",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-sm text-text-secondary">
+                  t("home.flagship.benefit1"),
+                  t("home.flagship.benefit2"),
+                  t("home.flagship.benefit3"),
+                  t("home.flagship.benefit4"),
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm text-text-secondary">
                     <CheckCircle2 className="w-4 h-4 text-accent-primary shrink-0 mt-0.5" />
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
               <Link href="/solar-carport" className="inline-flex items-center gap-2 px-5 py-2.5 font-display font-semibold btn-accent rounded-lg text-sm">
-                ดูรายละเอียด Solar Carport <ArrowRight className="w-4 h-4" />
+                {t("home.flagship.cta")} <ArrowRight className="w-4 h-4" />
               </Link>
             </motion.div>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1} className="relative">
               <img
                 src={IMG_EV}
-                alt="Solar Carport พร้อม EV Charging Station"
+                alt="Solar Carport + EV Charging Station"
                 className="rounded-2xl w-full aspect-[16/10] object-cover"
               />
               <div className="absolute inset-0 rounded-2xl border border-border-accent" />
               {/* Floating stat card */}
               <div className="absolute -bottom-4 -right-2 lg:-right-6 bg-surface-elevated border border-border-accent rounded-xl p-4 shadow-lg">
-                <div className="font-display text-xl font-bold text-gradient-accent">3-5 ปี</div>
-                <div className="text-xs text-text-muted">คืนทุนเฉลี่ย</div>
+                <div className="font-display text-xl font-bold text-gradient-accent">{t("home.stat.paybackVal")}</div>
+                <div className="text-xs text-text-muted">{t("home.flagship.payback")}</div>
               </div>
             </motion.div>
           </div>
@@ -169,20 +157,20 @@ export default function Home() {
             variants={fadeUp} custom={0}
             className="text-center max-w-2xl mx-auto mb-12"
           >
-            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">Integration</span>
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("home.integration.tag")}</span>
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
-              ระบบนิเวศพลังงานครบวงจร
+              {t("home.integration.title")}
             </h2>
             <p className="text-text-secondary text-sm">
-              Solar Carport ทำงานร่วมกับ BESS, AI Energy Management และ EV Charging เป็นระบบเดียว
+              {t("home.integration.desc")}
             </p>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
-              { icon: Car, title: "Solar Carport", desc: "ผลิตไฟฟ้าจากลานจอดรถ ให้ร่มเงาและพลังงาน", color: "text-accent-primary" },
-              { icon: BatteryCharging, title: "BESS / ESS", desc: "กักเก็บพลังงานส่วนเกิน ใช้ในช่วง peak ลด demand charge", color: "text-accent-secondary" },
-              { icon: Cpu, title: "AI Energy Management", desc: "วิเคราะห์และเพิ่มประสิทธิภาพแบบ real-time ด้วย AI", color: "text-accent-primary" },
-              { icon: Plug, title: "EV Charging", desc: "สถานีชาร์จ EV จ่ายไฟจาก Solar โดยตรง ลดต้นทุน", color: "text-accent-secondary" },
+              { icon: Car, title: "Solar Carport", desc: t("home.integration.carport.desc"), color: "text-accent-primary" },
+              { icon: BatteryCharging, title: "BESS / ESS", desc: t("home.integration.bess.desc"), color: "text-accent-secondary" },
+              { icon: Cpu, title: "AI Energy Management", desc: t("home.integration.ai.desc"), color: "text-accent-primary" },
+              { icon: Plug, title: "EV Charging", desc: t("home.integration.ev.desc"), color: "text-accent-secondary" },
             ].map((item, i) => (
               <motion.div
                 key={item.title}
@@ -211,18 +199,18 @@ export default function Home() {
           >
             <div className="flex-1">
               <h3 className="font-display text-xl lg:text-2xl font-bold text-foreground mb-2">
-                มีลานจอดรถ 50+ คัน?
+                {t("home.midCta.title")}
               </h3>
               <p className="text-text-secondary text-sm">
-                ให้ SIRINX ประเมินศักยภาพพื้นที่ของคุณฟรี — รับข้อเสนอ Solar Carport พร้อม ROI เฉพาะโครงการ
+                {t("home.midCta.desc")}
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 shrink-0">
               <Link href="/contact" className="inline-flex items-center justify-center gap-2 px-5 py-3 font-display font-semibold btn-accent rounded-lg text-sm whitespace-nowrap">
-                นัดสำรวจหน้างานฟรี <ArrowRight className="w-4 h-4" />
+                {t("home.midCta.survey")} <ArrowRight className="w-4 h-4" />
               </Link>
               <Link href="/assessment" className="inline-flex items-center justify-center gap-2 px-5 py-3 font-display font-semibold btn-accent-outline rounded-lg text-sm whitespace-nowrap">
-                ประเมินออนไลน์
+                {t("home.midCta.assess")}
               </Link>
             </div>
           </motion.div>
@@ -239,22 +227,22 @@ export default function Home() {
             variants={fadeUp} custom={0}
             className="max-w-2xl mb-12"
           >
-            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">Solutions</span>
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("home.solutions.tag")}</span>
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
-              โซลูชันพลังงานครบวงจร
+              {t("home.solutions.title")}
             </h2>
             <p className="text-text-secondary text-sm leading-relaxed">
-              Solar Carport เป็นหัวใจของระบบ ทำงานร่วมกับ Rooftop Solar, Floating Solar, BESS และ AI Energy Management
+              {t("home.solutions.desc")}
             </p>
           </motion.div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
-              { icon: Car, title: "Solar Carport", desc: "เปลี่ยนที่จอดรถเป็นโรงไฟฟ้า รองรับ EV Charging", href: "/solar-carport", featured: true },
-              { icon: Sun, title: "Rooftop Solar", desc: "ลดค่าไฟ 30-100% ด้วยระบบโซลาร์บนหลังคา", href: "/solutions#rooftop", featured: false },
-              { icon: Waves, title: "Floating Solar", desc: "ใช้พื้นที่ผิวน้ำให้เกิดประโยชน์สูงสุด", href: "/solutions#floating", featured: false },
-              { icon: Battery, title: "BESS / ESS", desc: "กักเก็บพลังงาน ลดค่า demand charge", href: "/solutions#bess", featured: false },
-              { icon: Brain, title: "AI Energy Management", desc: "วิเคราะห์และเพิ่มประสิทธิภาพแบบ real-time", href: "/solutions#ai-energy", featured: false },
-              { icon: Wrench, title: "O&M ดูแลระบบ", desc: "Predictive maintenance ตลอด 25 ปี", href: "/solutions#ai-om", featured: false },
+              { icon: Car, title: "Solar Carport", desc: t("home.sol.carport.desc"), href: "/solar-carport", featured: true },
+              { icon: Sun, title: "Rooftop Solar", desc: t("home.sol.rooftop.desc"), href: "/solutions#rooftop", featured: false },
+              { icon: Waves, title: "Floating Solar", desc: t("home.sol.floating.desc"), href: "/solutions#floating", featured: false },
+              { icon: Battery, title: "BESS / ESS", desc: t("home.sol.bess.desc"), href: "/solutions#bess", featured: false },
+              { icon: Brain, title: "AI Energy Management", desc: t("home.sol.ai.desc"), href: "/solutions#ai-energy", featured: false },
+              { icon: Wrench, title: t("home.sol.om.title"), desc: t("home.sol.om.desc"), href: "/solutions#ai-om", featured: false },
             ].map((sol, i) => (
               <motion.div
                 key={sol.title}
@@ -300,17 +288,17 @@ export default function Home() {
             variants={fadeUp} custom={0}
             className="text-center max-w-2xl mx-auto mb-12"
           >
-            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">Process</span>
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("home.process.tag")}</span>
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
-              จากสำรวจสู่ติดตั้ง ใน 4 ขั้นตอน
+              {t("home.process.title")}
             </h2>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
-              { step: "01", title: "สำรวจหน้างาน", desc: "วิเคราะห์พื้นที่ ค่าไฟ ความต้องการพลังงาน และประเมิน ROI เบื้องต้น" },
-              { step: "02", title: "ออกแบบระบบ", desc: "ออกแบบเฉพาะทาง เลือกอุปกรณ์ Tier-1 พร้อมแผนการเงิน" },
-              { step: "03", title: "ติดตั้ง", desc: "ทีมวิศวกรมืออาชีพ ติดตั้งตามมาตรฐาน 45-90 วัน" },
-              { step: "04", title: "ดูแลตลอด 25 ปี", desc: "AI Monitoring + O&M ดูแลระบบตลอดอายุการใช้งาน" },
+              { step: "01", title: t("home.process.step1.title"), desc: t("home.process.step1.desc") },
+              { step: "02", title: t("home.process.step2.title"), desc: t("home.process.step2.desc") },
+              { step: "03", title: t("home.process.step3.title"), desc: t("home.process.step3.desc") },
+              { step: "04", title: t("home.process.step4.title"), desc: t("home.process.step4.desc") },
             ].map((step, i) => (
               <motion.div
                 key={step.step}
@@ -341,23 +329,23 @@ export default function Home() {
             variants={fadeUp} custom={0}
             className="max-w-2xl mb-12"
           >
-            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">Industries</span>
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("home.industries.tag")}</span>
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
-              Solar Carport เหมาะกับธุรกิจไหน?
+              {t("home.industries.title")}
             </h2>
             <p className="text-text-secondary text-sm">
-              ทุกธุรกิจที่มีลานจอดรถ สามารถเปลี่ยนพื้นที่ว่างเปล่าเป็นแหล่งรายได้
+              {t("home.industries.desc")}
             </p>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { icon: Factory, title: "โรงงาน", desc: "ลานจอดรถพนักงาน + ลดต้นทุนพลังงานการผลิต" },
-              { icon: Hotel, title: "โรงแรม / รีสอร์ท", desc: "EV Charging สำหรับแขก + Green Hotel Certification" },
-              { icon: Building2, title: "อาคารพาณิชย์", desc: "เพิ่มมูลค่าอาคาร + ลดค่าส่วนกลาง + ESG" },
-              { icon: GraduationCap, title: "สถานศึกษา", desc: "ลดงบค่าไฟ + Living Lab พลังงานสะอาด" },
+              { icon: Factory, title: t("home.ind.factory.title"), desc: t("home.ind.factory.desc") },
+              { icon: Hotel, title: t("home.ind.hotel.title"), desc: t("home.ind.hotel.desc") },
+              { icon: Building2, title: t("home.ind.commercial.title"), desc: t("home.ind.commercial.desc") },
+              { icon: GraduationCap, title: t("home.ind.education.title"), desc: t("home.ind.education.desc") },
             ].map((ind, i) => (
               <motion.div
-                key={ind.title}
+                key={i}
                 initial="hidden" whileInView="visible" viewport={{ once: true }}
                 variants={fadeUp} custom={i}
               >
@@ -376,7 +364,7 @@ export default function Home() {
           </div>
           <div className="mt-8 text-center">
             <Link href="/industries" className="inline-flex items-center gap-2 text-sm font-medium text-accent-primary hover:underline">
-              ดูอุตสาหกรรมทั้งหมด <ArrowRight className="w-4 h-4" />
+              {t("home.industries.viewAll")} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
@@ -388,9 +376,9 @@ export default function Home() {
       <section className="py-16 lg:py-24 bg-background">
         <div className="container">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-10">
-            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">Track Record</span>
-            <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground">โครงการที่ดำเนินการจริง</h2>
-            <p className="text-text-secondary mt-2 max-w-xl mx-auto text-sm">Solar Farm Node โดย SIRINX — ติดตั้งจริง ดูแลจริง วัดผลได้</p>
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("home.projects.tag")}</span>
+            <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground">{t("home.projects.title")}</h2>
+            <p className="text-text-secondary mt-2 max-w-xl mx-auto text-sm">{t("home.projects.desc")}</p>
           </motion.div>
           <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             {/* Node 1 */}
@@ -398,23 +386,23 @@ export default function Home() {
               className="group rounded-2xl overflow-hidden border border-border-subtle hover:border-border-accent transition-all">
               <div className="relative aspect-[16/10] overflow-hidden">
                 <img src={IMG_NODE1}
-                  alt="Solar Farm Node 1 — เรือนแพ Royal Park พิษณุโลก"
+                  alt="Solar Farm Node 1 — Rueanpae Royal Park"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 <div className="absolute top-3 left-3 flex gap-2">
                   <span className="px-2 py-0.5 text-[10px] font-medium bg-accent-primary text-text-inverse rounded-md">Node 1</span>
-                  <span className="px-2 py-0.5 text-[10px] font-medium bg-green-600 text-white rounded-md">ดำเนินการแล้ว</span>
+                  <span className="px-2 py-0.5 text-[10px] font-medium bg-green-600 text-white rounded-md">{t("home.projects.completed")}</span>
                 </div>
                 <div className="absolute bottom-3 left-3 right-3">
-                  <h3 className="font-display text-base font-bold text-white">โรงแรมเรือนแพ รอยัลปาร์ค</h3>
-                  <p className="text-xs text-white/80">พิษณุโลก — Solar + BESS + AI EMS</p>
+                  <h3 className="font-display text-base font-bold text-white">{t("home.projects.node1.name")}</h3>
+                  <p className="text-xs text-white/80">{t("home.projects.node1.location")}</p>
                 </div>
               </div>
               <div className="p-3 bg-surface-elevated">
                 <div className="grid grid-cols-3 gap-2 text-center">
-                  <div><div className="text-xs font-bold text-gradient-accent">Solar + BESS</div><div className="text-[9px] text-text-muted">ระบบครบวงจร</div></div>
-                  <div><div className="text-xs font-bold text-gradient-accent">30-100%</div><div className="text-[9px] text-text-muted">ลดค่าไฟฟ้า</div></div>
-                  <div><div className="text-xs font-bold text-gradient-accent">AI EMS</div><div className="text-[9px] text-text-muted">บริหารพลังงาน</div></div>
+                  <div><div className="text-xs font-bold text-gradient-accent">Solar + BESS</div><div className="text-[9px] text-text-muted">{t("home.projects.node1.system")}</div></div>
+                  <div><div className="text-xs font-bold text-gradient-accent">30-100%</div><div className="text-[9px] text-text-muted">{t("home.projects.node1.reduceBill")}</div></div>
+                  <div><div className="text-xs font-bold text-gradient-accent">AI EMS</div><div className="text-[9px] text-text-muted">{t("home.projects.node1.energyMgmt")}</div></div>
                 </div>
               </div>
             </motion.div>
@@ -423,30 +411,30 @@ export default function Home() {
               className="group rounded-2xl overflow-hidden border border-border-subtle hover:border-border-accent transition-all">
               <div className="relative aspect-[16/10] overflow-hidden">
                 <img src={IMG_NODE2}
-                  alt="Solar Farm Node 2 — โฮลาเทลริมน่าน"
+                  alt="Solar Farm Node 2 — Holatel Rim Nan"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 <div className="absolute top-3 left-3 flex gap-2">
                   <span className="px-2 py-0.5 text-[10px] font-medium bg-accent-primary text-text-inverse rounded-md">Node 2</span>
-                  <span className="px-2 py-0.5 text-[10px] font-medium bg-amber-500 text-white rounded-md">กำลังก่อสร้าง</span>
+                  <span className="px-2 py-0.5 text-[10px] font-medium bg-amber-500 text-white rounded-md">{t("home.projects.underConstruction")}</span>
                 </div>
                 <div className="absolute bottom-3 left-3 right-3">
-                  <h3 className="font-display text-base font-bold text-white">โรงแรมโฮลาเทลริมน่าน</h3>
-                  <p className="text-xs text-white/80">น่าน — Solar + BESS + Smart Hotel System</p>
+                  <h3 className="font-display text-base font-bold text-white">{t("home.projects.node2.name")}</h3>
+                  <p className="text-xs text-white/80">{t("home.projects.node2.location")}</p>
                 </div>
               </div>
               <div className="p-3 bg-surface-elevated">
                 <div className="grid grid-cols-3 gap-2 text-center">
-                  <div><div className="text-xs font-bold text-gradient-accent">Smart Hotel</div><div className="text-[9px] text-text-muted">ระบบอัจฉริยะ</div></div>
-                  <div><div className="text-xs font-bold text-gradient-accent">Net Zero</div><div className="text-[9px] text-text-muted">เป้าหมาย</div></div>
-                  <div><div className="text-xs font-bold text-gradient-accent">2026</div><div className="text-[9px] text-text-muted">เปิดให้บริการ</div></div>
+                  <div><div className="text-xs font-bold text-gradient-accent">Smart Hotel</div><div className="text-[9px] text-text-muted">{t("home.projects.node2.smartHotel")}</div></div>
+                  <div><div className="text-xs font-bold text-gradient-accent">Net Zero</div><div className="text-[9px] text-text-muted">{t("home.projects.node2.target")}</div></div>
+                  <div><div className="text-xs font-bold text-gradient-accent">2026</div><div className="text-[9px] text-text-muted">{t("home.projects.node2.opening")}</div></div>
                 </div>
               </div>
             </motion.div>
           </div>
           <div className="mt-8 text-center">
             <Link href="/projects" className="inline-flex items-center gap-2 text-sm font-medium text-accent-primary hover:underline">
-              ดูโครงการทั้งหมด <ArrowRight className="w-4 h-4" />
+              {t("home.projects.viewAll")} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
@@ -461,24 +449,24 @@ export default function Home() {
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="order-2 lg:order-1">
               <img
                 src={IMG_OM}
-                alt="SIRINX O&M — AI Monitoring และ Drone Inspection"
+                alt="SIRINX O&M — AI Monitoring"
                 className="rounded-2xl w-full aspect-[16/10] object-cover"
               />
             </motion.div>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1} className="order-1 lg:order-2">
-              <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">O&M Service</span>
-              <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-4">
-                ดูแลระบบตลอด 25 ปี<br />ด้วย AI และทีมวิศวกร
+              <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("home.om.tag")}</span>
+              <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-4 whitespace-pre-line">
+                {t("home.om.title")}
               </h2>
               <p className="text-text-secondary text-sm leading-relaxed mb-5">
-                SIRINX ไม่ใช่แค่ติดตั้งแล้วจบ — เราดูแลระบบตลอดอายุการใช้งานด้วย AI Monitoring, Drone Inspection และทีมช่างที่พร้อมออกซ่อมบำรุงภายใน 24-48 ชม.
+                {t("home.om.desc")}
               </p>
               <div className="grid grid-cols-2 gap-3 mb-5">
                 {[
-                  { label: "AI Monitoring", value: "24/7" },
-                  { label: "ตอบสนอง", value: "24-48 ชม." },
-                  { label: "Drone Inspection", value: "รายไตรมาส" },
-                  { label: "รายงานผลผลิต", value: "รายเดือน" },
+                  { label: t("home.om.monitoring"), value: "24/7" },
+                  { label: t("home.om.response"), value: t("home.om.responseVal") },
+                  { label: t("home.om.drone"), value: t("home.om.droneVal") },
+                  { label: t("home.om.report"), value: t("home.om.reportVal") },
                 ].map((item) => (
                   <div key={item.label} className="p-3 rounded-lg border border-border-subtle bg-surface-elevated">
                     <div className="text-sm font-bold text-gradient-accent">{item.value}</div>
@@ -487,7 +475,7 @@ export default function Home() {
                 ))}
               </div>
               <Link href="/solutions#ai-om" className="inline-flex items-center gap-2 text-sm font-medium text-accent-primary hover:underline">
-                ดูบริการ O&M ทั้งหมด <ArrowRight className="w-4 h-4" />
+                {t("home.om.viewAll")} <ArrowRight className="w-4 h-4" />
               </Link>
             </motion.div>
           </div>
@@ -501,28 +489,28 @@ export default function Home() {
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
-              <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">Financing</span>
-              <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-4">
-                ลงทุน Solar Carport<br />ไม่ต้องจ่ายเต็มวันแรก
+              <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("home.invest.tag")}</span>
+              <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-4 whitespace-pre-line">
+                {t("home.invest.title")}
               </h2>
               <p className="text-text-secondary text-sm leading-relaxed mb-5">
-                SIRINX มีรูปแบบการลงทุนที่ยืดหยุ่น — ซื้อขาด ผ่อนชำระ หรือ Co-investment 50:50 ช่วยให้ธุรกิจเข้าถึง Solar Carport ได้ทันที
+                {t("home.invest.desc")}
               </p>
               <ul className="space-y-2.5 mb-6">
                 {[
-                  "ซื้อขาด — คืนทุนเร็ว ผลตอบแทนสูงสุด",
-                  "ผ่อนชำระ — ค่างวดต่ำกว่าค่าไฟที่ประหยัดได้",
-                  "Co-investment 50:50 — แบ่งเบาภาระลงทุน",
-                  "สิทธิประโยชน์ทางภาษี — หักค่าเสื่อม 150%",
-                ].map((item) => (
-                  <li key={item} className="flex items-center gap-2.5 text-sm text-text-secondary">
+                  t("home.invest.option1"),
+                  t("home.invest.option2"),
+                  t("home.invest.option3"),
+                  t("home.invest.option4"),
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-2.5 text-sm text-text-secondary">
                     <CheckCircle2 className="w-3.5 h-3.5 text-accent-primary shrink-0" />
                     {item}
                   </li>
                 ))}
               </ul>
               <Link href="/investment" className="inline-flex items-center gap-2 text-sm font-medium text-accent-primary hover:underline">
-                ศึกษาข้อมูลการลงทุน <ArrowRight className="w-4 h-4" />
+                {t("home.invest.viewMore")} <ArrowRight className="w-4 h-4" />
               </Link>
             </motion.div>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1} className="relative">
@@ -552,7 +540,7 @@ export default function Home() {
               <img src={LOGO_URL} alt="SIRINX" className="w-14 h-14 rounded-full ring-2 ring-brand/30" />
             </div>
             <p className="text-base lg:text-lg text-text-secondary italic leading-relaxed mb-5">
-              "Solar Carport ไม่ใช่แค่แผงโซลาร์บนที่จอดรถ — มันคือโครงสร้างพื้นฐานที่ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV และเพิ่มมูลค่าอสังหาริมทรัพย์ในคราวเดียว SIRINX ผสาน Solar Infrastructure เข้ากับ AI เพื่อสร้างมูลค่าที่ยั่งยืนให้ธุรกิจไทย"
+              "{t("home.ceo.quote")}"
             </p>
             <div>
               <div className="font-display font-semibold text-foreground text-sm">Pitoon Yingyosruangrong</div>
@@ -572,9 +560,9 @@ export default function Home() {
             variants={fadeUp} custom={0}
             className="text-center mb-10"
           >
-            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">FAQ</span>
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("home.faq.tag")}</span>
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground">
-              คำถามที่พบบ่อยเกี่ยวกับ Solar Carport
+              {t("home.faq.title")}
             </h2>
           </motion.div>
           <div className="space-y-3">
@@ -616,17 +604,17 @@ export default function Home() {
         <div className="container relative z-10 text-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
             <h2 className="font-display text-2xl lg:text-4xl font-bold text-foreground mb-3">
-              พร้อมเปลี่ยนที่จอดรถเป็นโรงไฟฟ้า?
+              {t("home.finalCta.title")}
             </h2>
             <p className="text-sm lg:text-base text-text-secondary mb-7 max-w-lg mx-auto">
-              นัดสำรวจหน้างานฟรี ไม่มีข้อผูกมัด รับข้อเสนอ Solar Carport ที่ออกแบบเฉพาะสำหรับธุรกิจของคุณ
+              {t("home.finalCta.desc")}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/contact" className="inline-flex items-center justify-center gap-2 px-7 py-3.5 font-display font-semibold btn-accent rounded-lg">
-                ขอใบเสนอราคา Solar Carport <ArrowRight className="w-4 h-4" />
+                {t("home.finalCta.quote")} <ArrowRight className="w-4 h-4" />
               </Link>
               <Link href="/assessment" className="inline-flex items-center justify-center gap-2 px-7 py-3.5 font-display font-semibold btn-accent-outline rounded-lg">
-                ประเมินความคุ้มค่าฟรี
+                {t("home.finalCta.assess")}
               </Link>
             </div>
           </motion.div>
