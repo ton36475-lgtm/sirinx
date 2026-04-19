@@ -7,9 +7,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { trackSolutionVisit } from "@/components/HeroSlideshow";
 import { usePageTranslation } from "@/i18n";
+import "@/i18n/pages/projects";
 import {
   ArrowRight, MapPin, Zap, Calendar, TrendingUp, Filter,
-  X, ChevronLeft, ChevronRight, CheckCircle2, Car
+  X, ChevronLeft, ChevronRight, CheckCircle2, Car,
+  Sun, Battery, Download, Award, Shield, Gauge
 } from "lucide-react";
 
 const fadeUp = {
@@ -19,8 +21,9 @@ const fadeUp = {
 
 const CDN = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv";
 
-/* ── Curated gallery — real Solar Carport photos from Royal Park + generated photos ── */
+/* ── Curated gallery — real photos from Royal Park installation ── */
 const galleryPhotos = [
+  // Original carport photos
   `${CDN}/carport-wide-1_30e3af4c.jpeg`,
   `${CDN}/carport-structure-1_c0c17293.jpeg`,
   `${CDN}/carport-structure-2_f0ab2f56.jpeg`,
@@ -37,11 +40,32 @@ const galleryPhotos = [
   `${CDN}/carport-structure-4_cc6ef3f6.jpeg`,
   `${CDN}/carport-underside-3_b58d5713.jpeg`,
   `${CDN}/carport-underside-4_297c327b.jpeg`,
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/floating-solar-reservoir-BHro9zmCAKLtycFVXgfe9G.webp",
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/resort-rooftop-solar-Q4vG7VqDnaYmRWdsyKtp7H.webp",
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/warehouse-rooftop-solar-eGvaQedufCt28G4VBAahMs.webp",
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/farm-solar-bess-VwUa48BekdDzTkGLwkeJJX.webp",
+  // New album photos
+  `${CDN}/received_788849360726061_ca92b1c0.jpeg`,
+  `${CDN}/received_838004412130021_0bff9074.jpeg`,
+  `${CDN}/received_860608253106107_74bef87c.jpeg`,
+  `${CDN}/received_953338167167889_69f1f0d1.jpeg`,
+  `${CDN}/received_1275473157247530_e858ce4f.jpeg`,
+  `${CDN}/received_1307276091455018_bfd822e2.jpeg`,
+  `${CDN}/received_1671730360935692_4383b8b5.jpeg`,
+  `${CDN}/received_4483667365251479_64c29bcb.jpeg`,
+  `${CDN}/received_1744928873539515_fbc26c2d.jpeg`,
+  `${CDN}/received_24191309453900004_8591d0d3.jpeg`,
+  `${CDN}/received_968971135787180_c9ab3134.jpeg`,
+  `${CDN}/received_1282589370476708_97781ff2.jpeg`,
+  `${CDN}/received_2009519266306215_3caf5665.jpeg`,
+  `${CDN}/received_1308771534448072_67348e79.jpeg`,
+  `${CDN}/received_1370916548413599_b473b929.jpeg`,
+  `${CDN}/received_1917926608836989_c1380667.jpeg`,
+  // Rendering photos
+  `${CDN}/floating-solar-reservoir-BHro9zmCAKLtycFVXgfe9G.webp`,
+  `${CDN}/resort-rooftop-solar-Q4vG7VqDnaYmRWdsyKtp7H.webp`,
+  `${CDN}/warehouse-rooftop-solar-eGvaQedufCt28G4VBAahMs.webp`,
+  `${CDN}/farm-solar-bess-VwUa48BekdDzTkGLwkeJJX.webp`,
 ];
+
+const DATASHEET_PANEL = `${CDN}/Neostar_1U_Plus_AIKO_A_MAH78Dw_655W_680W_2465x1134_260418_205454_73a93b47.pdf`;
+const DATASHEET_BESS = `${CDN}/GSL_ENERGY_512V_314AH_16kwh_IP65_Ground%26Outdoor_P_260418_205515_847d9d21.pdf`;
 
 const filterOptions = [
   { value: "all", key: "filterAll" },
@@ -75,14 +99,14 @@ export default function Projects() {
       title: t("proj1Title"), location: t("proj1Location"), type: "Rooftop Solar",
       capacity: "Solar Farm", saving: t("proj1Saving"), year: "2025",
       desc: t("proj1Desc"),
-      image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/solar-farm-nan-construction-QGr9YXP2AW2qpMnWCVJjj3.webp",
+      image: `${CDN}/solar-farm-nan-construction-QGr9YXP2AW2qpMnWCVJjj3.webp`,
       tag: "rooftop", isRendering: true,
     },
     {
       title: t("proj2Title"), location: t("proj2Location"), type: "Floating Solar",
       capacity: "2.5 MW", saving: t("proj2Saving"), year: "2024",
       desc: t("proj2Desc"),
-      image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/floating-solar-reservoir-BHro9zmCAKLtycFVXgfe9G.webp",
+      image: `${CDN}/floating-solar-reservoir-BHro9zmCAKLtycFVXgfe9G.webp`,
       tag: "floating", isRendering: true,
     },
     {
@@ -96,21 +120,21 @@ export default function Projects() {
       title: t("proj4Title"), location: t("proj4Location"), type: "Rooftop + BESS",
       capacity: "500 kW", saving: t("proj4Saving"), year: "2023",
       desc: t("proj4Desc"),
-      image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/resort-rooftop-solar-Q4vG7VqDnaYmRWdsyKtp7H.webp",
+      image: `${CDN}/resort-rooftop-solar-Q4vG7VqDnaYmRWdsyKtp7H.webp`,
       tag: "bess", isRendering: true,
     },
     {
       title: t("proj5Title"), location: t("proj5Location"), type: "Rooftop Solar",
       capacity: "3 MW", saving: t("proj5Saving"), year: "2025",
       desc: t("proj5Desc"),
-      image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/warehouse-rooftop-solar-eGvaQedufCt28G4VBAahMs.webp",
+      image: `${CDN}/warehouse-rooftop-solar-eGvaQedufCt28G4VBAahMs.webp`,
       tag: "rooftop", isRendering: true,
     },
     {
       title: t("proj6Title"), location: t("proj6Location"), type: "Solar + BESS",
       capacity: "350 kW", saving: t("proj6Saving"), year: "2024",
       desc: t("proj6Desc"),
-      image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/farm-solar-bess-VwUa48BekdDzTkGLwkeJJX.webp",
+      image: `${CDN}/farm-solar-bess-VwUa48BekdDzTkGLwkeJJX.webp`,
       tag: "bess", isRendering: true,
     },
   ];
@@ -283,13 +307,123 @@ export default function Projects() {
         </div>
       </section>
 
+      {/* ===== EQUIPMENT SECTION ===== */}
+      <section className="py-16 lg:py-24 bg-background">
+        <div className="container">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="max-w-2xl mb-12">
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("equipLabel")}</span>
+            <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">{t("equipTitle")}</h2>
+            <p className="text-text-secondary text-sm leading-relaxed">{t("equipDesc")}</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Solar Panel Card */}
+            <motion.div
+              initial="hidden" whileInView="visible" viewport={{ once: true }}
+              variants={fadeUp} custom={0}
+              className="rounded-xl border border-border-subtle bg-surface-elevated p-6 hover:border-border-accent transition-colors"
+            >
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-11 h-11 rounded-lg bg-accent-glow flex items-center justify-center">
+                  <Sun className="w-5 h-5 text-accent-primary" />
+                </div>
+                <div>
+                  <h3 className="font-display font-semibold text-foreground">{t("equipPanel")}</h3>
+                  <p className="text-xs text-text-muted">{t("equipPanelModel")}</p>
+                </div>
+              </div>
+              <div className="space-y-3 mb-5">
+                <div className="flex items-center gap-2.5 text-sm">
+                  <Zap className="w-4 h-4 text-accent-primary shrink-0" />
+                  <span className="text-foreground font-medium">{t("equipPanelPower")}</span>
+                </div>
+                <div className="flex items-center gap-2.5 text-sm">
+                  <Gauge className="w-4 h-4 text-accent-primary shrink-0" />
+                  <span className="text-text-secondary">{t("equipPanelEff")}</span>
+                </div>
+                <div className="flex items-center gap-2.5 text-sm">
+                  <Shield className="w-4 h-4 text-accent-primary shrink-0" />
+                  <span className="text-text-secondary">{t("equipPanelType")}</span>
+                </div>
+                <div className="flex items-center gap-2.5 text-sm">
+                  <Calendar className="w-4 h-4 text-accent-primary shrink-0" />
+                  <span className="text-text-secondary">{t("equipPanelWarranty")}</span>
+                </div>
+                <div className="flex items-center gap-2.5 text-sm">
+                  <Award className="w-4 h-4 text-amber-500 shrink-0" />
+                  <span className="text-text-secondary">{t("equipPanelAward")}</span>
+                </div>
+              </div>
+              <a
+                href={DATASHEET_PANEL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-medium text-accent-primary border border-border-accent rounded-lg hover:bg-accent-glow transition-colors"
+              >
+                <Download className="w-3.5 h-3.5" /> {t("equipDatasheet")} — AIKO Neostar
+              </a>
+            </motion.div>
+
+            {/* BESS Card */}
+            <motion.div
+              initial="hidden" whileInView="visible" viewport={{ once: true }}
+              variants={fadeUp} custom={1}
+              className="rounded-xl border border-border-subtle bg-surface-elevated p-6 hover:border-border-accent transition-colors"
+            >
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-11 h-11 rounded-lg bg-accent-glow flex items-center justify-center">
+                  <Battery className="w-5 h-5 text-accent-primary" />
+                </div>
+                <div>
+                  <h3 className="font-display font-semibold text-foreground">{t("equipBess")}</h3>
+                  <p className="text-xs text-text-muted">{t("equipBessModel")}</p>
+                </div>
+              </div>
+              <div className="space-y-3 mb-5">
+                <div className="flex items-center gap-2.5 text-sm">
+                  <Shield className="w-4 h-4 text-accent-primary shrink-0" />
+                  <span className="text-foreground font-medium">{t("equipBessChem")}</span>
+                </div>
+                <div className="flex items-center gap-2.5 text-sm">
+                  <TrendingUp className="w-4 h-4 text-accent-primary shrink-0" />
+                  <span className="text-text-secondary">{t("equipBessCycle")}</span>
+                </div>
+                <div className="flex items-center gap-2.5 text-sm">
+                  <Zap className="w-4 h-4 text-accent-primary shrink-0" />
+                  <span className="text-text-secondary">{t("equipBessIp")}</span>
+                </div>
+                <div className="flex items-center gap-2.5 text-sm">
+                  <Calendar className="w-4 h-4 text-accent-primary shrink-0" />
+                  <span className="text-text-secondary">{t("equipBessWarranty")}</span>
+                </div>
+                <div className="flex items-center gap-2.5 text-sm">
+                  <Gauge className="w-4 h-4 text-accent-primary shrink-0" />
+                  <span className="text-text-secondary">{t("equipBessScale")}</span>
+                </div>
+              </div>
+              <a
+                href={DATASHEET_BESS}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-medium text-accent-primary border border-border-accent rounded-lg hover:bg-accent-glow transition-colors"
+              >
+                <Download className="w-3.5 h-3.5" /> {t("equipDatasheet")} — GSL Energy
+              </a>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* ===== PHOTO GALLERY ===== */}
       <section className="py-16 lg:py-24 section-alt">
         <div className="container">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-8">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-3">
             <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("galleryLabel")}</span>
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground">{t("galleryTitle")}</h2>
           </motion.div>
+          <motion.p initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center text-text-secondary text-sm mb-8">
+            {t("gallerySubtitle")}
+          </motion.p>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {galleryPhotos.map((src, i) => (
               <motion.button

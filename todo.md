@@ -340,4 +340,15 @@
 ## Phase 20 — Fix SolarAssessment ReferenceError
 - [x] Fix ReferenceError: t is not defined in SolarAssessment.tsx
 - [x] Verify /assessment page loads without errors — 0 TS errors, 124 tests pass
+- [x] Save checkpoint
+
+## Phase 21 — Royal Park Portfolio / Case Study Page
+- [x] Upload 16 new photos + 2 PDF datasheets to CDN
+- [x] Fix projects.ts i18n registration (registerPageTranslations)
+- [x] Add 16 new photos to gallery section in Projects.tsx (total 36 photos)
+- [x] Add Equipment section with AIKO Neostar 680W panel + GSL BESS 16kWh specs
+- [x] Add PDF datasheet download links (AIKO Neostar + GSL Energy)
+- [x] Rewrite projects.ts i18n with equipment translations (TH/EN/CN)
+- [x] Verify page renders correctly in browser — featured project, cards, equipment, gallery all working
+- [x] 0 TS errors, 124 tests pass
 - [ ] Save checkpoint
