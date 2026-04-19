@@ -6,7 +6,7 @@
 import { ReactNode, useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, Phone, Mail, Moon, Sun, ArrowUpRight, Linkedin, Facebook, MapPin, Globe } from "lucide-react";
+import { Menu, X, ChevronDown, ChevronRight, Phone, Mail, Moon, Sun, ArrowUpRight, Linkedin, Facebook, MapPin, Globe, Zap, Calculator, FileText, Home, Layers, Factory, BarChart3, Users, Sparkles } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage, LANGUAGE_LABELS, type Language } from "@/contexts/LanguageContext";
 
@@ -187,7 +187,7 @@ function Navbar() {
         </div>
 
         {/* Mobile: Language + Theme toggle + Menu */}
-        <div className="flex lg:hidden items-center gap-1">
+        <div className="flex lg:hidden items-center gap-1.5">
           {/* Mobile Language Switcher */}
           <button
             onClick={() => {
@@ -217,56 +217,137 @@ function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu — Full-screen overlay */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-surface-overlay backdrop-blur-xl border-t border-border-subtle"
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ type: "spring", damping: 28, stiffness: 300 }}
+            className="lg:hidden fixed inset-0 top-16 z-40 bg-background/98 backdrop-blur-2xl overflow-y-auto"
           >
-            <div className="container py-4 space-y-1">
-              {navLinksData.map((link) => (
-                <div key={link.href}>
-                  <Link
-                    href={link.href}
-                    className={`block px-4 py-3 text-base font-medium rounded-lg transition-colors ${
-                      location === link.href
-                        ? "text-accent-primary bg-accent-glow"
-                        : "text-text-secondary hover:text-foreground"
-                    }`}
-                  >
-                    {t(link.i18nKey)}
-                  </Link>
-                  {link.children && (
-                    <div className="ml-4 space-y-1">
-                      {link.children.map((child) => (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          className="block px-4 py-2 text-sm text-text-muted hover:text-accent-primary"
-                        >
-                          {t(child.i18nKey)}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
+            <div className="px-5 pt-4 pb-32">
+              {/* === Hero CTA: Solar Assessment === */}
+              <Link
+                href="/assessment"
+                className="group flex items-center gap-3 p-4 mb-4 rounded-2xl bg-gradient-to-r from-accent-primary/15 via-accent-primary/10 to-accent-secondary/10 border border-accent-primary/30 hover:border-accent-primary/50 transition-all"
+              >
+                <div className="w-11 h-11 rounded-xl bg-accent-primary/20 flex items-center justify-center shrink-0">
+                  <Calculator className="w-5 h-5 text-accent-primary" />
                 </div>
-              ))}
-              <div className="pt-4 space-y-2 border-t border-border-subtle">
+                <div className="flex-1">
+                  <div className="font-display font-semibold text-foreground text-sm">{t("nav.assessment")}</div>
+                  <div className="text-xs text-text-muted mt-0.5">{lang === "en" ? "Calculate your savings" : lang === "cn" ? "计算您的节省" : "คำนวณค่าไฟที่ประหยัดได้"}</div>
+                </div>
+                <ChevronRight className="w-4 h-4 text-accent-primary group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+
+              {/* === Primary Navigation === */}
+              <div className="space-y-0.5">
+                {navLinksData.map((link) => {
+                  const isActive = location === link.href || (link.href !== "/" && location.startsWith(link.href));
+                  const isSolutionsDropdown = !!link.children;
+                  const isMobileDropdownOpen = dropdownOpen === `mobile-${link.href}`;
+
+                  return (
+                    <div key={link.href}>
+                      {isSolutionsDropdown ? (
+                        /* Collapsible dropdown for Solutions */
+                        <button
+                          onClick={() => setDropdownOpen(isMobileDropdownOpen ? null : `mobile-${link.href}`)}
+                          className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-[15px] font-medium transition-colors ${
+                            isActive
+                              ? "text-accent-primary bg-accent-glow"
+                              : "text-foreground hover:bg-surface-elevated"
+                          }`}
+                        >
+                          <span className="flex items-center gap-3">
+                            <Layers className="w-4.5 h-4.5 text-text-muted" />
+                            {t(link.i18nKey)}
+                          </span>
+                          <ChevronDown className={`w-4 h-4 text-text-muted transition-transform duration-200 ${isMobileDropdownOpen ? "rotate-180" : ""}`} />
+                        </button>
+                      ) : (
+                        <Link
+                          href={link.href}
+                          className={`flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium transition-colors ${
+                            isActive
+                              ? "text-accent-primary bg-accent-glow"
+                              : link.featured
+                                ? "text-accent-primary font-semibold hover:bg-accent-glow"
+                                : "text-foreground hover:bg-surface-elevated"
+                          }`}
+                        >
+                          {link.href === "/" && <Home className="w-4.5 h-4.5 text-text-muted" />}
+                          {link.href === "/solar-carport" && <Zap className="w-4.5 h-4.5 text-accent-primary" />}
+                          {link.href === "/industries" && <Factory className="w-4.5 h-4.5 text-text-muted" />}
+                          {link.href === "/pricing" && <BarChart3 className="w-4.5 h-4.5 text-text-muted" />}
+                          {link.href === "/projects" && <FileText className="w-4.5 h-4.5 text-text-muted" />}
+                          {link.href === "/investment" && <Sparkles className="w-4.5 h-4.5 text-text-muted" />}
+                          {link.href === "/about" && <Users className="w-4.5 h-4.5 text-text-muted" />}
+                          {t(link.i18nKey)}
+                        </Link>
+                      )}
+
+                      {/* Animated sub-items */}
+                      <AnimatePresence>
+                        {isSolutionsDropdown && isMobileDropdownOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="overflow-hidden"
+                          >
+                            <div className="ml-4 pl-4 border-l-2 border-accent-primary/20 py-1 space-y-0.5">
+                              {link.children!.map((child) => (
+                                <Link
+                                  key={child.href}
+                                  href={child.href}
+                                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-text-secondary hover:text-accent-primary hover:bg-accent-glow/50 transition-colors"
+                                >
+                                  <span className="w-1.5 h-1.5 rounded-full bg-accent-primary/40" />
+                                  {t(child.i18nKey)}
+                                </Link>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* === Bottom CTA Buttons === */}
+              <div className="mt-6 pt-5 border-t border-border-subtle space-y-3">
                 <Link
                   href="/solar-carport"
-                  className="block text-center btn-accent px-4 py-3 text-sm font-semibold rounded-lg"
+                  className="flex items-center justify-center gap-2 w-full btn-accent px-4 py-3.5 text-sm font-display font-semibold rounded-xl"
                 >
+                  <Zap className="w-4 h-4" />
                   Solar Carport — Flagship
                 </Link>
                 <Link
                   href="/contact"
-                  className="block text-center btn-accent-outline px-4 py-3 text-sm font-medium rounded-lg"
+                  className="flex items-center justify-center gap-2 w-full btn-accent-outline px-4 py-3.5 text-sm font-display font-medium rounded-xl"
                 >
-                  ขอใบเสนอราคา
+                  <Phone className="w-4 h-4" />
+                  {t("nav.getQuote")}
                 </Link>
+              </div>
+
+              {/* === Quick Contact Info === */}
+              <div className="mt-6 pt-5 border-t border-border-subtle">
+                <div className="flex items-center gap-3 text-sm text-text-muted">
+                  <Phone className="w-4 h-4 text-accent-primary" />
+                  <a href="tel:+66614195156" className="hover:text-accent-primary transition-colors">061-419-5156</a>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-text-muted mt-2">
+                  <Mail className="w-4 h-4 text-accent-primary" />
+                  <a href="mailto:sirinx.co@gmail.com" className="hover:text-accent-primary transition-colors">sirinx.co@gmail.com</a>
+                </div>
               </div>
             </div>
           </motion.div>

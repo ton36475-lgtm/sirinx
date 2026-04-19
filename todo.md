@@ -318,3 +318,21 @@
 - [x] Update LanguageContext.tsx global pricing title
 - [x] Update Pricing.test.tsx — 124 tests all passing
 - [x] Save checkpoint
+
+## Phase 19 — Mobile Navigation Rebuild + Skill Creation
+
+### 19A: Mobile Navigation Rebuild
+- [x] Redesign mobile hamburger menu — cleaner, more modern layout
+- [x] Make "ประเมินโซลาร์" (Solar Assessment) button prominent and easy to find on mobile
+- [x] Improve mobile nav visual hierarchy — reduce clutter, better spacing
+- [x] Collapse sub-items (โซลูชัน dropdown) more elegantly on mobile
+- [x] Add visual accents and icons to key CTA buttons on mobile
+- [x] Test mobile nav on browser (mobile viewport)
+- [x] Save checkpoint
+
+### 19B: Create Pricing Tier Restructure Skill
+- [x] Create skill using skill-creator workflow
+- [x] Write SKILL.md with reusable pricing restructure process
+- [x] Add reference checklist for all files to update
+- [x] Validate skill
+- [x] Deliver skill to user
