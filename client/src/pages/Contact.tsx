@@ -89,10 +89,9 @@ export default function Contact() {
         "hospitality": t("interestGeneral"),
       };
       const packageLabels: Record<string, string> = {
-        "size-s": "Size S (10-30 kWp)",
-        "size-m": "Size M (30-100 kWp)",
-        "size-l": "Size L (100-500 kWp)",
-        "custom": "Custom (500+ kWp)",
+        "start": "Start (10-30 kWp)",
+        "pro": "Pro (30-100 kWp)",
+        "enterprise": "Enterprise (100-500+ kWp)",
       };
       const mappedInterest = interest ? (interestMap[interest] || "Solar Carport") : "Solar Carport";
       const pkgLabel = pkg ? packageLabels[pkg] : null;

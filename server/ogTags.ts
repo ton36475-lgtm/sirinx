@@ -65,8 +65,8 @@ const routeMetaMap: Record<string, PageMeta> = {
     description: "กรอกข้อมูลค่าไฟรายเดือน รับผลประเมิน ROI ทันที — คำนวณระยะเวลาคืนทุน ค่าไฟที่ลดได้ต่อปี และขนาดระบบ Solar ที่เหมาะกับธุรกิจคุณ ฟรีไม่มีค่าใช้จ่าย",
   },
   "/pricing": {
-    title: "แพ็คเกจราคา Solar Carport | Size S/M/L ลดค่าไฟ+EV Charger คืนทุน 3-5 ปี | SIRINX",
-    description: "เปรียบเทียบแพ็คเกจ Solar Carport 3 ขนาด (10-500 kWp) — ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger พร้อมสิทธิ BOI ลดหย่อนภาษี 200% คืนทุน 3-5 ปี ขอใบเสนอราคาฟรี",
+    title: "แพ็คเกจราคา Solar Carport | Start / Pro / Enterprise ลดค่าไฟ+EV Charger คืนทุน 3-5 ปี | SIRINX",
+    description: "เปรียบเทียบแพ็คเกจ Solar Carport 3 ระดับ Start / Pro / Enterprise (10-500+ kWp) — ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger พร้อมสิทธิ BOI ลดหย่อนภาษี 200% คืนทุน 3-5 ปี ขอใบเสนอราคาฟรี",
   },
 };
 

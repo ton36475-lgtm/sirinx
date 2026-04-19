@@ -303,3 +303,18 @@
 ## SEO Fixes
 - [x] SEO: Reduce homepage keywords from 17 to 7 focused keywords (Solar Carport, โซลาร์เซลล์, BESS, AI Energy, EV Charger, ลดค่าไฟ, SIRINX)
 - [x] SEO: Shorten meta description from 192 to 135 chars + fix 5 other pages exceeding 160 chars
+
+## Phase 18 — Reorder Pricing Tiers: Start / Pro / Enterprise
+- [x] Reorder pricing tiers from Size S / M / L to Start / Pro / Enterprise
+- [x] Fix pricing.ts: add registerPageTranslations + import in Pricing.tsx (was dead code)
+- [x] Update pricing.ts i18n keys to match new tier IDs (start, pro, enterprise)
+- [x] Update Pricing.tsx packageConfigs to Start / Pro / Enterprise with new names, IDs, and content
+- [x] Update comparison table headers and data for new tier names
+- [x] Remove separate Custom/Enterprise CTA section (merged into Enterprise tier)
+- [x] Update ROI calculator recommended package names
+- [x] Verify all translations work correctly (TH/EN/CN)
+- [x] Update ogTags.ts SEO title from Size S/M/L to Start/Pro/Enterprise
+- [x] Update Contact.tsx packageLabels mapping
+- [x] Update LanguageContext.tsx global pricing title
+- [x] Update Pricing.test.tsx — 124 tests all passing
+- [x] Save checkpoint

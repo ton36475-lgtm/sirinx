@@ -1,48 +1,44 @@
 /**
  * Vitest tests for Pricing page data and structure
+ * Updated: Start / Pro / Enterprise tiers
  */
 import { describe, it, expect } from "vitest";
 
 // ─── Pricing page data tests ───────────────────────────────────
 
 describe("Pricing page data validation", () => {
-  it("should have 3 package tiers (S, M, L)", () => {
-    const packages = ["size-s", "size-m", "size-l"];
+  it("should have 3 package tiers (Start, Pro, Enterprise)", () => {
+    const packages = ["start", "pro", "enterprise"];
     expect(packages).toHaveLength(3);
-    expect(packages).toContain("size-s");
-    expect(packages).toContain("size-m");
-    expect(packages).toContain("size-l");
+    expect(packages).toContain("start");
+    expect(packages).toContain("pro");
+    expect(packages).toContain("enterprise");
   });
 
-  it("Size S should be 10-30 kWp range", () => {
-    const sizeS = { capacity: "10 – 30 kWp", minKw: 10, maxKw: 30 };
-    expect(sizeS.minKw).toBe(10);
-    expect(sizeS.maxKw).toBe(30);
-    expect(sizeS.maxKw).toBeGreaterThan(sizeS.minKw);
+  it("Start should be 10-30 kWp range", () => {
+    const start = { capacity: "10 – 30 kWp", minKw: 10, maxKw: 30 };
+    expect(start.minKw).toBe(10);
+    expect(start.maxKw).toBe(30);
+    expect(start.maxKw).toBeGreaterThan(start.minKw);
   });
 
-  it("Size M should be 30-100 kWp range", () => {
-    const sizeM = { capacity: "30 – 100 kWp", minKw: 30, maxKw: 100 };
-    expect(sizeM.minKw).toBe(30);
-    expect(sizeM.maxKw).toBe(100);
+  it("Pro should be 30-100 kWp range", () => {
+    const pro = { capacity: "30 – 100 kWp", minKw: 30, maxKw: 100 };
+    expect(pro.minKw).toBe(30);
+    expect(pro.maxKw).toBe(100);
   });
 
-  it("Size L should be 100-500 kWp range", () => {
-    const sizeL = { capacity: "100 – 500 kWp", minKw: 100, maxKw: 500 };
-    expect(sizeL.minKw).toBe(100);
-    expect(sizeL.maxKw).toBe(500);
-  });
-
-  it("Custom tier should start at 500+ kWp", () => {
-    const custom = { minKw: 500 };
-    expect(custom.minKw).toBeGreaterThanOrEqual(500);
+  it("Enterprise should be 100-500+ kWp range", () => {
+    const enterprise = { capacity: "100 – 500+ kWp", minKw: 100, maxKw: 500 };
+    expect(enterprise.minKw).toBe(100);
+    expect(enterprise.maxKw).toBeGreaterThanOrEqual(500);
   });
 
   it("payback period should be 3-6 years across all packages", () => {
     const paybacks = [
-      { pkg: "S", min: 4, max: 6 },
-      { pkg: "M", min: 3, max: 5 },
-      { pkg: "L", min: 3, max: 5 },
+      { pkg: "Start", min: 4, max: 6 },
+      { pkg: "Pro", min: 3, max: 5 },
+      { pkg: "Enterprise", min: 3, max: 5 },
     ];
     for (const p of paybacks) {
       expect(p.min).toBeGreaterThanOrEqual(3);
@@ -52,9 +48,9 @@ describe("Pricing page data validation", () => {
 
   it("all packages should have EV charger support", () => {
     const evChargers = [
-      { pkg: "S", min: 1 },
-      { pkg: "M", min: 3 },
-      { pkg: "L", min: 10 },
+      { pkg: "Start", min: 1 },
+      { pkg: "Pro", min: 3 },
+      { pkg: "Enterprise", min: 10 },
     ];
     for (const ev of evChargers) {
       expect(ev.min).toBeGreaterThan(0);
@@ -63,25 +59,20 @@ describe("Pricing page data validation", () => {
 });
 
 describe("Pricing CTA query params", () => {
-  it("should generate correct contact URL for Size S", () => {
-    const url = "/contact?interest=solar-carport&package=size-s";
+  it("should generate correct contact URL for Start", () => {
+    const url = "/contact?interest=solar-carport&package=start";
     expect(url).toContain("interest=solar-carport");
-    expect(url).toContain("package=size-s");
+    expect(url).toContain("package=start");
   });
 
-  it("should generate correct contact URL for Size M", () => {
-    const url = "/contact?interest=solar-carport&package=size-m";
-    expect(url).toContain("package=size-m");
+  it("should generate correct contact URL for Pro", () => {
+    const url = "/contact?interest=solar-carport&package=pro";
+    expect(url).toContain("package=pro");
   });
 
-  it("should generate correct contact URL for Size L", () => {
-    const url = "/contact?interest=solar-carport&package=size-l";
-    expect(url).toContain("package=size-l");
-  });
-
-  it("should generate correct contact URL for Custom", () => {
-    const url = "/contact?interest=solar-carport&package=custom";
-    expect(url).toContain("package=custom");
+  it("should generate correct contact URL for Enterprise", () => {
+    const url = "/contact?interest=solar-carport&package=enterprise";
+    expect(url).toContain("package=enterprise");
   });
 });
 
@@ -95,10 +86,9 @@ describe("Contact page package param mapping", () => {
   };
 
   const packageLabels: Record<string, string> = {
-    "size-s": "Size S (10-30 kWp)",
-    "size-m": "Size M (30-100 kWp)",
-    "size-l": "Size L (100-500 kWp)",
-    "custom": "Custom (500+ kWp)",
+    "start": "Start (10-30 kWp)",
+    "pro": "Pro (30-100 kWp)",
+    "enterprise": "Enterprise (100-500+ kWp)",
   };
 
   it("should map solar-carport interest to Solar Carport", () => {
@@ -106,11 +96,10 @@ describe("Contact page package param mapping", () => {
   });
 
   it("should map all package IDs to labels", () => {
-    expect(Object.keys(packageLabels)).toHaveLength(4);
-    expect(packageLabels["size-s"]).toContain("10-30 kWp");
-    expect(packageLabels["size-m"]).toContain("30-100 kWp");
-    expect(packageLabels["size-l"]).toContain("100-500 kWp");
-    expect(packageLabels["custom"]).toContain("500+");
+    expect(Object.keys(packageLabels)).toHaveLength(3);
+    expect(packageLabels["start"]).toContain("10-30 kWp");
+    expect(packageLabels["pro"]).toContain("30-100 kWp");
+    expect(packageLabels["enterprise"]).toContain("100-500+");
   });
 
   it("should default to Solar Carport for unknown interest", () => {
@@ -178,15 +167,38 @@ describe("Pricing FAQ JSON-LD schema", () => {
 });
 
 describe("OG tags for pricing route", () => {
-  it("should have pricing route in OG metadata", () => {
+  it("should have pricing route in OG metadata with Start/Pro/Enterprise", () => {
     const routeMetaMap: Record<string, { title: string; description: string }> = {
       "/pricing": {
-        title: "แพ็คเกจราคา Solar Carport | Size S/M/L ลดค่าไฟ+EV Charger คืนทุน 3-5 ปี | SIRINX",
-        description: "เปรียบเทียบแพ็คเกจ Solar Carport 3 ขนาด (10-500 kWp)",
+        title: "แพ็คเกจราคา Solar Carport | Start / Pro / Enterprise ลดค่าไฟ+EV Charger คืนทุน 3-5 ปี | SIRINX",
+        description: "เปรียบเทียบแพ็คเกจ Solar Carport 3 ระดับ Start / Pro / Enterprise (10-500+ kWp)",
       },
     };
     expect(routeMetaMap["/pricing"]).toBeDefined();
     expect(routeMetaMap["/pricing"].title).toContain("Solar Carport");
     expect(routeMetaMap["/pricing"].title).toContain("SIRINX");
+    expect(routeMetaMap["/pricing"].title).toContain("Start");
+    expect(routeMetaMap["/pricing"].title).toContain("Pro");
+    expect(routeMetaMap["/pricing"].title).toContain("Enterprise");
+  });
+});
+
+describe("ROI Calculator recommendations", () => {
+  it("should recommend Start for small systems (<=30 kWp)", () => {
+    const systemKwp = 15;
+    const recommended = systemKwp <= 30 ? "Start" : systemKwp <= 100 ? "Pro" : "Enterprise";
+    expect(recommended).toBe("Start");
+  });
+
+  it("should recommend Pro for medium systems (31-100 kWp)", () => {
+    const systemKwp = 60;
+    const recommended = systemKwp <= 30 ? "Start" : systemKwp <= 100 ? "Pro" : "Enterprise";
+    expect(recommended).toBe("Pro");
+  });
+
+  it("should recommend Enterprise for large systems (>100 kWp)", () => {
+    const systemKwp = 150;
+    const recommended = systemKwp <= 30 ? "Start" : systemKwp <= 100 ? "Pro" : "Enterprise";
+    expect(recommended).toBe("Enterprise");
   });
 });

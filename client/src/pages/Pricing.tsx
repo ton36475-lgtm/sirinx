@@ -1,6 +1,6 @@
 /**
  * SIRINX Pricing Page — Solar Carport Package Pricing
- * Size S / M / L + Custom tier
+ * Start / Pro / Enterprise tiers
  * Highlights: EV readiness, government incentives, ROI, tax benefits
  * Full i18n support via usePageTranslation
  */
@@ -9,11 +9,10 @@ import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import {
-  Car, Zap, Sun, Shield, TrendingUp, Clock,
-  CheckCircle2, ArrowRight, Building2, Factory,
-  Hotel, GraduationCap, Phone, Calculator,
-  Leaf, BatteryCharging, BadgePercent, Crown,
-  ChevronDown, ChevronUp, Sparkles, Users
+  Car, Zap, Sun, TrendingUp, Clock,
+  CheckCircle2, ArrowRight, Calculator,
+  Leaf, BatteryCharging, BadgePercent,
+  ChevronDown, ChevronUp, Sparkles
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -24,6 +23,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { usePageTranslation } from "@/i18n";
+import "@/i18n/pages/pricing";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -37,8 +37,8 @@ const fadeUp = {
 /* ─── Package Static Config (non-translatable parts) ─── */
 const packageConfigs = [
   {
-    id: "size-s",
-    name: "Size S",
+    id: "start",
+    name: "Start",
     capacity: "10 – 30 kWp",
     color: "from-emerald-500/20 to-emerald-600/5",
     borderColor: "border-emerald-500/30 hover:border-emerald-500/60",
@@ -48,8 +48,8 @@ const packageConfigs = [
     image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/pricing-size-s-LaJSUDczcaLtK7isYYPrbR.webp",
   },
   {
-    id: "size-m",
-    name: "Size M",
+    id: "pro",
+    name: "Pro",
     capacity: "30 – 100 kWp",
     color: "from-accent-primary/20 to-accent-primary/5",
     borderColor: "border-accent-primary/40 hover:border-accent-primary/70",
@@ -59,9 +59,9 @@ const packageConfigs = [
     image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/pricing-size-m-96bdqV2qHeFRvREkQ3Suqg.webp",
   },
   {
-    id: "size-l",
-    name: "Size L",
-    capacity: "100 – 500 kWp",
+    id: "enterprise",
+    name: "Enterprise",
+    capacity: "100 – 500+ kWp",
     color: "from-amber-500/20 to-amber-600/5",
     borderColor: "border-amber-500/30 hover:border-amber-500/60",
     accentColor: "text-amber-500",
@@ -77,7 +77,7 @@ const advantageIcons = [Car, Sun, TrendingUp, BadgePercent, Leaf, BatteryChargin
 /* ─── Component ────────────────────────────────────────────────── */
 export default function Pricing() {
   const { t } = usePageTranslation("pricing");
-  const [expandedPkg, setExpandedPkg] = useState<string | null>("size-m");
+  const [expandedPkg, setExpandedPkg] = useState<string | null>("pro");
 
   /* ─── ROI Calculator State ─── */
   const [monthlyBill, setMonthlyBill] = useState<number>(30000);
@@ -91,7 +91,7 @@ export default function Pricing() {
     const paybackYears = totalCost / (monthlySavings * 12);
     const totalSavings25yr = monthlySavings * 12 * 25 - totalCost;
     const co2ReductionTons = (monthlyKwh * 12 * 0.5) / 1000;
-    const recommendedPkg = systemKwp <= 30 ? "Size S" : systemKwp <= 100 ? "Size M" : "Size L";
+    const recommendedPkg = systemKwp <= 30 ? "Start" : systemKwp <= 100 ? "Pro" : "Enterprise";
     return {
       systemKwp,
       totalCost,
@@ -337,40 +337,6 @@ export default function Pricing() {
               </motion.div>
             ))}
           </div>
-
-          {/* Custom / Enterprise */}
-          <motion.div
-            initial="hidden" whileInView="visible" viewport={{ once: true }}
-            variants={fadeUp} custom={0}
-            className="rounded-2xl border-2 border-dashed border-border-accent p-6 lg:p-8 text-center bg-accent-glow"
-          >
-            <div className="flex items-center justify-center gap-2 mb-3">
-              <Crown className="w-6 h-6 text-accent-primary" />
-              <h3 className="font-display text-xl font-bold text-foreground">
-                {t("custom.title")}
-              </h3>
-            </div>
-            <p className="text-text-secondary max-w-2xl mx-auto mb-4">{t("custom.desc")}</p>
-            <div className="flex flex-wrap justify-center gap-3 mb-6">
-              {[Factory, Building2, Users, Hotel].map((Icon, i) => (
-                <span key={i} className="text-xs px-3 py-1.5 rounded-full bg-surface-elevated border border-border-subtle text-text-secondary">
-                  <Icon className="w-3 h-3 inline mr-1" /> {t(`custom.tag.${i}`)}
-                </span>
-              ))}
-            </div>
-            <div className="flex flex-col sm:flex-row justify-center gap-3">
-              <Link href="/contact?interest=solar-carport&package=custom">
-                <Button size="lg" className="btn-accent font-display">
-                  <Phone className="w-4 h-4 mr-1" /> {t("custom.cta.contact")}
-                </Button>
-              </Link>
-              <Link href="/assessment">
-                <Button size="lg" variant="outline" className="border-border-accent font-display">
-                  <Calculator className="w-4 h-4 mr-1" /> {t("custom.cta.assess")}
-                </Button>
-              </Link>
-            </div>
-          </motion.div>
         </div>
       </section>
 
@@ -428,11 +394,11 @@ export default function Pricing() {
               <thead>
                 <tr className="border-b border-border-subtle">
                   <th className="text-left py-3 px-4 font-display font-semibold text-text-secondary">{t("compare.header.item")}</th>
-                  <th className="text-center py-3 px-4 font-display font-semibold text-emerald-500">Size S</th>
+                  <th className="text-center py-3 px-4 font-display font-semibold text-emerald-500">Start</th>
                   <th className="text-center py-3 px-4 font-display font-semibold text-accent-primary">
-                    Size M <Badge className="ml-1 bg-accent-primary/20 text-accent-primary text-[10px]">{t("pkg.recommended")}</Badge>
+                    Pro <Badge className="ml-1 bg-accent-primary/20 text-accent-primary text-[10px]">{t("pkg.recommended")}</Badge>
                   </th>
-                  <th className="text-center py-3 px-4 font-display font-semibold text-amber-500">Size L</th>
+                  <th className="text-center py-3 px-4 font-display font-semibold text-amber-500">Enterprise</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border-subtle">
@@ -621,7 +587,7 @@ export default function Pricing() {
                   <span className="ml-2 text-sm text-text-muted">({roiCalc.systemKwp} kWp)</span>
                 </div>
               </div>
-              <Link href={`/contact?interest=solar-carport&package=${roiCalc.recommendedPkg.toLowerCase().replace(" ", "-")}`}>
+              <Link href={`/contact?interest=solar-carport&package=${roiCalc.recommendedPkg.toLowerCase()}`}>
                 <Button className="btn-accent font-display whitespace-nowrap">
                   {t("roi.cta")} <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>

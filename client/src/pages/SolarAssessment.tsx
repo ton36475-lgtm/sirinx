@@ -86,65 +86,65 @@ const SOLAR_HOURLY_PROFILE = [0,0,0,0,0,0,0.02,0.06,0.10,0.14,0.16,0.17,0.16,0.1
 
 const BUSINESS_TYPES: Record<string, BusinessProfile> = {
   factory: {
-    name: "โรงงานอุตสาหกรรม",
+    nameKey: "sa.biz.factory",
     icon: <Factory className="w-5 h-5" />,
     daytimeRatio: 0.70, avgRate: 4.2, peakRate: 5.3, offPeakRate: 2.6,
     costPerKwp: 28000, typicalBill: "200,000 - 5,000,000+",
-    operatingHours: "8-24 ชม./วัน", peakDemandHours: "09:00-22:00",
+    operatingHoursKey: "sa.biz.hours.8_24", peakDemandHours: "09:00-22:00",
     nightUsageRatio: 0.30, demandCharge: 132.93,
     monthlyHourlyProfile: FACTORY_PROFILE,
   },
   commercial: {
-    name: "อาคารพาณิชย์ / สำนักงาน",
+    nameKey: "sa.biz.commercial",
     icon: <Building2 className="w-5 h-5" />,
     daytimeRatio: 0.65, avgRate: 4.5, peakRate: 5.5, offPeakRate: 2.8,
     costPerKwp: 30000, typicalBill: "50,000 - 500,000",
-    operatingHours: "8-12 ชม./วัน", peakDemandHours: "08:00-18:00",
+    operatingHoursKey: "sa.biz.hours.8_12", peakDemandHours: "08:00-18:00",
     nightUsageRatio: 0.15, demandCharge: 210.00,
     monthlyHourlyProfile: OFFICE_PROFILE,
   },
   warehouse: {
-    name: "คลังสินค้า / ห้างสรรพสินค้า",
+    nameKey: "sa.biz.warehouse",
     icon: <Warehouse className="w-5 h-5" />,
     daytimeRatio: 0.60, avgRate: 4.3, peakRate: 5.2, offPeakRate: 2.7,
     costPerKwp: 28000, typicalBill: "100,000 - 2,000,000",
-    operatingHours: "10-18 ชม./วัน", peakDemandHours: "10:00-21:00",
+    operatingHoursKey: "sa.biz.hours.10_18", peakDemandHours: "10:00-21:00",
     nightUsageRatio: 0.25, demandCharge: 132.93,
     monthlyHourlyProfile: FACTORY_PROFILE,
   },
   hotel: {
-    name: "โรงแรม / รีสอร์ท",
+    nameKey: "sa.biz.hotel",
     icon: <Hotel className="w-5 h-5" />,
     daytimeRatio: 0.50, avgRate: 4.3, peakRate: 5.3, offPeakRate: 2.7,
     costPerKwp: 32000, typicalBill: "100,000 - 1,000,000",
-    operatingHours: "24 ชม./วัน", peakDemandHours: "06:00-23:00",
+    operatingHoursKey: "sa.biz.hours.24", peakDemandHours: "06:00-23:00",
     nightUsageRatio: 0.40, demandCharge: 210.00,
     monthlyHourlyProfile: HOTEL_PROFILE,
   },
   education: {
-    name: "สถานศึกษา",
+    nameKey: "sa.biz.education",
     icon: <GraduationCap className="w-5 h-5" />,
     daytimeRatio: 0.75, avgRate: 4.0, peakRate: 5.0, offPeakRate: 2.5,
     costPerKwp: 30000, typicalBill: "30,000 - 300,000",
-    operatingHours: "8-10 ชม./วัน", peakDemandHours: "07:00-17:00",
+    operatingHoursKey: "sa.biz.hours.8_10", peakDemandHours: "07:00-17:00",
     nightUsageRatio: 0.10, demandCharge: 132.93,
     monthlyHourlyProfile: OFFICE_PROFILE,
   },
   agriculture: {
-    name: "เกษตรกรรม / ฟาร์ม",
+    nameKey: "sa.biz.agriculture",
     icon: <Leaf className="w-5 h-5" />,
     daytimeRatio: 0.80, avgRate: 3.8, peakRate: 4.8, offPeakRate: 2.4,
     costPerKwp: 28000, typicalBill: "20,000 - 200,000",
-    operatingHours: "8-14 ชม./วัน", peakDemandHours: "06:00-18:00",
+    operatingHoursKey: "sa.biz.hours.8_14", peakDemandHours: "06:00-18:00",
     nightUsageRatio: 0.15, demandCharge: 0,
     monthlyHourlyProfile: FACTORY_PROFILE,
   },
   government: {
-    name: "หน่วยงานภาครัฐ",
+    nameKey: "sa.biz.government",
     icon: <Landmark className="w-5 h-5" />,
     daytimeRatio: 0.70, avgRate: 4.0, peakRate: 5.0, offPeakRate: 2.5,
     costPerKwp: 30000, typicalBill: "50,000 - 500,000",
-    operatingHours: "8-10 ชม./วัน", peakDemandHours: "08:00-17:00",
+    operatingHoursKey: "sa.biz.hours.8_10", peakDemandHours: "08:00-17:00",
     nightUsageRatio: 0.10, demandCharge: 132.93,
     monthlyHourlyProfile: OFFICE_PROFILE,
   },
@@ -173,7 +173,7 @@ const ELECTRICITY_ESCALATION = 0.03; // 3% annual increase
 
 // ── Monthly Solar Production Factors (Thailand) ──
 const MONTHLY_PRODUCTION_FACTORS = [0.95, 1.00, 1.05, 1.08, 0.98, 0.90, 0.88, 0.85, 0.88, 0.95, 1.00, 0.98];
-const MONTH_NAMES = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+const MONTH_NAMES = ["sa.month.jan", "sa.month.feb", "sa.month.mar", "sa.month.apr", "sa.month.may", "sa.month.jun", "sa.month.jul", "sa.month.aug", "sa.month.sep", "sa.month.oct", "sa.month.nov", "sa.month.dec"];
 
 // ── Calculation Engine ──────────────────────────
 interface CalcInput {
@@ -584,7 +584,7 @@ function WarningBox({ warnings }: { warnings: string[] }) {
     <div className="p-4 rounded-xl border border-accent-secondary/30 bg-accent-secondary/10">
       <div className="flex items-center gap-2 mb-2">
         <AlertTriangle className="w-5 h-5 text-accent-secondary" />
-        <span className="font-display font-semibold text-foreground text-sm">ข้อควรระวัง</span>
+        <span className="font-display font-semibold text-foreground text-sm">{t("sa.r.warnings")}</span>
       </div>
       <ul className="space-y-1.5">
         {warnings.map((w, i) => (
@@ -729,7 +729,7 @@ export default function SolarAssessment() {
   // Generate summary text for CTA
   const getResultSummary = () => {
     if (!result) return "";
-    return `ระบบ Solar ${result.actualKwp} kWp${result.bessCapacityKwh > 0 ? ` + BESS ${result.bessCapacityKwh} kWh` : ""} | ค่าไฟ ${input.monthlyBill.toLocaleString()} บาท/เดือน | ประหยัด ${result.monthlySavings.toLocaleString()} บาท/เดือน | คืนทุน ${result.simplePayback} ปี | พื้นที่ ${input.roofArea} ตร.ม. | ${selectedBiz?.name || ""}`;
+    return `ระบบ Solar ${result.actualKwp} kWp${result.bessCapacityKwh > 0 ? ` + BESS ${result.bessCapacityKwh} kWh` : ""} | ค่าไฟ ${input.monthlyBill.toLocaleString()} บาท/เดือน | ${t("sa.summary.savings")} ${result.monthlySavings.toLocaleString()} ${t("sa.summary.perMonth")} | คืนทุน ${result.simplePayback} ปี | พื้นที่ ${input.roofArea} ตร.ม. | ${selectedBiz?.name || ""}`;
   };
 
   return (
@@ -746,11 +746,11 @@ export default function SolarAssessment() {
               <div className="p-2 rounded-lg bg-accent-glow border border-border-accent">
                 <Calculator className="w-5 h-5 text-accent-primary" />
               </div>
-              <span className="text-xs font-medium text-accent-primary tracking-widest uppercase">Solar + BESS Engineering Calculator v3.0</span>
+              <span className="text-xs font-medium text-accent-primary tracking-widest uppercase">{t("sa.hero.badge")}</span>
             </div>
             <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 leading-tight">
               คำนวณระบบโซลาร์เซลล์<br />
-              <span className="text-gradient-accent">และแบตเตอรี่สำรอง</span>
+              <span className="text-gradient-accent">{t("sa.hero.title2")}</span>
             </h1>
             <p className="text-base lg:text-lg text-text-secondary max-w-2xl mb-6">
               เครื่องมือวิเคราะห์ระดับวิศวกรรม — คำนวณขนาดระบบ Solar PV + BESS ที่เหมาะสมกับธุรกิจของคุณ
@@ -817,8 +817,8 @@ export default function SolarAssessment() {
                 {/* ── Step 0: Business Type ── */}
                 {step === 0 && (
                   <motion.div key="step0" variants={slideIn} initial="hidden" animate="visible" exit="exit">
-                    <h2 className="font-display text-xl font-bold text-foreground mb-2">เลือกประเภทธุรกิจ</h2>
-                    <p className="text-sm text-text-muted mb-6">ระบบจะปรับค่าพารามิเตอร์ให้เหมาะสมกับรูปแบบการใช้ไฟของธุรกิจคุณ</p>
+                    <h2 className="font-display text-xl font-bold text-foreground mb-2">{t("sa.s0.title")}</h2>
+                    <p className="text-sm text-text-muted mb-6">{t("sa.s0.desc")}</p>
                     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
                       {Object.entries(BUSINESS_TYPES).map(([key, biz]) => (
                         <button key={key} onClick={() => updateInput("businessType", key)}
@@ -861,8 +861,8 @@ export default function SolarAssessment() {
                 {/* ── Step 1: Energy Data ── */}
                 {step === 1 && (
                   <motion.div key="step1" variants={slideIn} initial="hidden" animate="visible" exit="exit">
-                    <h2 className="font-display text-xl font-bold text-foreground mb-2">ข้อมูลการใช้พลังงาน</h2>
-                    <p className="text-sm text-text-muted mb-4">กรอกค่าไฟหรือปริมาณการใช้ไฟฟ้า — ระบบจะคำนวณให้อัตโนมัติ</p>
+                    <h2 className="font-display text-xl font-bold text-foreground mb-2">{t("sa.s1.title")}</h2>
+                    <p className="text-sm text-text-muted mb-4">{t("sa.s1.desc")}</p>
 
                     {/* Input mode toggle */}
                     <div className="flex gap-2 mb-6">
@@ -880,39 +880,39 @@ export default function SolarAssessment() {
                       {input.inputMode === "bill" ? (
                         <InputField label="ค่าไฟฟ้าเฉลี่ยต่อเดือน *" unit="บาท" value={input.monthlyBill || ""}
                           onChange={(v) => updateInput("monthlyBill", parseFloat(v) || 0)}
-                          placeholder="เช่น 150000" helpText={selectedBiz ? `ค่าไฟทั่วไปสำหรับ${selectedBiz.name}: ${selectedBiz.typicalBill} บาท/เดือน` : undefined} />
+                          placeholder={t("sa.s1.placeholderBill")} helpText={selectedBiz ? `ค่าไฟทั่วไปสำหรับ${selectedBiz.name}: ${selectedBiz.typicalBill} บาท/เดือน` : undefined} />
                       ) : (
                         <InputField label="ปริมาณการใช้ไฟฟ้าเฉลี่ยต่อเดือน *" unit="kWh" value={input.monthlyKwh || ""}
                           onChange={(v) => updateInput("monthlyKwh", parseFloat(v) || 0)}
-                          placeholder="เช่น 35000" helpText="ดูจากใบแจ้งค่าไฟ หรือ smart meter" />
+                          placeholder={t("sa.s1.placeholderKwh")} helpText="ดูจากใบแจ้งค่าไฟ หรือ smart meter" />
                       )}
 
                       {((input.inputMode === "bill" && input.monthlyBill > 0) || (input.inputMode === "kwh" && input.monthlyKwh > 0)) && selectedBiz && (
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                           className="p-4 rounded-xl bg-surface-overlay border border-border-subtle">
-                          <h3 className="text-xs font-semibold text-foreground mb-3">การวิเคราะห์ Load Profile</h3>
+                          <h3 className="text-xs font-semibold text-foreground mb-3">{t("sa.s1.loadProfile")}</h3>
                           <div className="grid sm:grid-cols-4 gap-3 text-center mb-4">
                             {(() => {
                               const mc = input.inputMode === "kwh" ? input.monthlyKwh : input.monthlyBill / selectedBiz.avgRate;
                               return (
                                 <>
                                   <div>
-                                    <div className="text-xs text-text-muted mb-1">ใช้ไฟทั้งหมด</div>
+                                    <div className="text-xs text-text-muted mb-1">{t("sa.s1.totalUsage")}</div>
                                     <div className="font-display text-lg font-bold text-foreground">{Math.round(mc).toLocaleString()}</div>
-                                    <div className="text-xs text-text-muted">kWh/เดือน</div>
+                                    <div className="text-xs text-text-muted">{t("sa.s1.kwhMonth")}</div>
                                   </div>
                                   <div>
-                                    <div className="text-xs text-text-muted mb-1">ใช้ช่วงกลางวัน</div>
+                                    <div className="text-xs text-text-muted mb-1">{t("sa.s1.daytimeUsage")}</div>
                                     <div className="font-display text-lg font-bold text-accent-primary">{Math.round(mc * selectedBiz.daytimeRatio).toLocaleString()}</div>
-                                    <div className="text-xs text-text-muted">kWh/เดือน</div>
+                                    <div className="text-xs text-text-muted">{t("sa.s1.kwhMonth")}</div>
                                   </div>
                                   <div>
-                                    <div className="text-xs text-text-muted mb-1">ใช้ช่วงกลางคืน</div>
+                                    <div className="text-xs text-text-muted mb-1">{t("sa.s1.nightUsage")}</div>
                                     <div className="font-display text-lg font-bold text-accent-secondary">{Math.round(mc * selectedBiz.nightUsageRatio).toLocaleString()}</div>
-                                    <div className="text-xs text-text-muted">kWh/เดือน</div>
+                                    <div className="text-xs text-text-muted">{t("sa.s1.kwhMonth")}</div>
                                   </div>
                                   <div>
-                                    <div className="text-xs text-text-muted mb-1">Peak Demand (est.)</div>
+                                    <div className="text-xs text-text-muted mb-1">{t("sa.s1.peakDemand")}</div>
                                     <div className="font-display text-lg font-bold text-foreground">{Math.round(mc / (30 * 8))}</div>
                                     <div className="text-xs text-text-muted">kW</div>
                                   </div>
@@ -932,7 +932,7 @@ export default function SolarAssessment() {
                                 labels={Array.from({ length: 24 }, (_, i) => i % 3 === 0 ? `${i}` : "")}
                                 height={80}
                               />
-                              <p className="text-[10px] text-text-muted mt-1 text-center">รูปแบบการใช้ไฟรายชั่วโมง (ค่าเฉลี่ย {selectedBiz.name})</p>
+                              <p className="text-[10px] text-text-muted mt-1 text-center">{t("sa.s1.hourlyPattern")} {selectedBiz.name})</p>
                             </motion.div>
                           )}
                         </motion.div>
@@ -944,15 +944,15 @@ export default function SolarAssessment() {
                 {/* ── Step 2: Location & Roof ── */}
                 {step === 2 && (
                   <motion.div key="step2" variants={slideIn} initial="hidden" animate="visible" exit="exit">
-                    <h2 className="font-display text-xl font-bold text-foreground mb-2">พื้นที่ติดตั้งและทำเลที่ตั้ง</h2>
-                    <p className="text-sm text-text-muted mb-6">ข้อมูลนี้ส่งผลต่อปริมาณแสงอาทิตย์และขนาดระบบสูงสุดที่ติดตั้งได้</p>
+                    <h2 className="font-display text-xl font-bold text-foreground mb-2">{t("sa.s2.title")}</h2>
+                    <p className="text-sm text-text-muted mb-6">{t("sa.s2.desc")}</p>
                     <div className="space-y-5">
                       <InputField label="พื้นที่หลังคาทั้งหมด *" unit="ตร.ม." value={input.roofArea || ""}
                         onChange={(v) => updateInput("roofArea", parseFloat(v) || 0)}
-                        placeholder="เช่น 3000" helpText="วัดพื้นที่หลังคาทั้งหมด (ระบบจะคำนวณพื้นที่ใช้งานได้จริงตามประเภทหลังคา)" />
+                        placeholder={t("sa.s2.roofAreaPlaceholder")} helpText="วัดพื้นที่หลังคาทั้งหมด (ระบบจะคำนวณพื้นที่ใช้งานได้จริงตามประเภทหลังคา)" />
 
                       <div>
-                        <label className="block text-sm font-medium text-foreground mb-2">ภูมิภาค *</label>
+                        <label className="block text-sm font-medium text-foreground mb-2">{t("sa.s2.region")}</label>
                         <div className="grid sm:grid-cols-2 gap-2">
                           {Object.entries(REGIONS).map(([key, r]) => (
                             <button key={key} onClick={() => updateInput("region", key)}
@@ -971,7 +971,7 @@ export default function SolarAssessment() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-foreground mb-2">ประเภทหลังคา</label>
+                        <label className="block text-sm font-medium text-foreground mb-2">{t("sa.s2.roofType")}</label>
                         <div className="grid sm:grid-cols-2 gap-2">
                           {Object.entries(ROOF_TYPES).map(([key, r]) => (
                             <button key={key} onClick={() => updateInput("roofType", key)}
@@ -988,7 +988,7 @@ export default function SolarAssessment() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-foreground mb-2">ทิศทางหลังคา</label>
+                        <label className="block text-sm font-medium text-foreground mb-2">{t("sa.s2.orientation")}</label>
                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
                           {Object.entries(ORIENTATIONS).map(([key, o]) => (
                             <button key={key} onClick={() => updateInput("orientation", key)}
@@ -1014,9 +1014,9 @@ export default function SolarAssessment() {
                           onChange={(e) => updateInput("shading", parseInt(e.target.value))}
                           className="w-full accent-[var(--accent-primary)]" />
                         <div className="flex justify-between text-xs text-text-muted mt-1">
-                          <span>0% (ไม่มีเงา)</span>
+                          <span>{t("sa.s2.shadingNone")}</span>
                           <span>15%</span>
-                          <span>30% (เงาบังมาก)</span>
+                          <span>{t("sa.s2.shadingHigh")}</span>
                         </div>
                       </div>
 
@@ -1026,19 +1026,19 @@ export default function SolarAssessment() {
                           className="p-4 rounded-xl bg-surface-overlay border border-border-subtle">
                           <div className="grid grid-cols-3 gap-3 text-center text-xs">
                             <div>
-                              <div className="text-text-muted mb-1">พื้นที่ทั้งหมด</div>
+                              <div className="text-text-muted mb-1">{t("sa.s2.totalArea")}</div>
                               <div className="font-display text-lg font-bold text-foreground">{input.roofArea.toLocaleString()}</div>
-                              <div className="text-text-muted">ตร.ม.</div>
+                              <div className="text-text-muted">{t("sa.s2.roofAreaUnit")}</div>
                             </div>
                             <div>
-                              <div className="text-text-muted mb-1">ใช้ได้จริง</div>
+                              <div className="text-text-muted mb-1">{t("sa.s2.usableArea")}</div>
                               <div className="font-display text-lg font-bold text-accent-primary">
                                 {Math.round(input.roofArea * (ROOF_TYPES[input.roofType]?.usableRatio || 0.65)).toLocaleString()}
                               </div>
-                              <div className="text-text-muted">ตร.ม.</div>
+                              <div className="text-text-muted">{t("sa.s2.roofAreaUnit")}</div>
                             </div>
                             <div>
-                              <div className="text-text-muted mb-1">ติดตั้งได้สูงสุด</div>
+                              <div className="text-text-muted mb-1">{t("sa.s2.maxInstall")}</div>
                               <div className="font-display text-lg font-bold text-accent-secondary">
                                 {Math.round(input.roofArea * (ROOF_TYPES[input.roofType]?.usableRatio || 0.65) / AREA_PER_KWP * 10) / 10}
                               </div>
@@ -1054,7 +1054,7 @@ export default function SolarAssessment() {
                 {/* ── Step 3: System Sizing ── */}
                 {step === 3 && (
                   <motion.div key="step3" variants={slideIn} initial="hidden" animate="visible" exit="exit">
-                    <h2 className="font-display text-xl font-bold text-foreground mb-2">กำหนดขนาดระบบ</h2>
+                    <h2 className="font-display text-xl font-bold text-foreground mb-2">{t("sa.s3.title")}</h2>
                     <p className="text-sm text-text-muted mb-6">
                       ระบบแนะนำขนาดที่เหมาะสม — คุณสามารถปรับขนาดเองได้ ระบบจะตรวจสอบความสมเหตุสมผลให้
                     </p>
@@ -1064,7 +1064,7 @@ export default function SolarAssessment() {
                       <div className="mb-6 p-4 rounded-xl bg-accent-glow/50 border border-border-accent">
                         <div className="flex items-center gap-2 mb-3">
                           <Lightbulb className="w-5 h-5 text-accent-primary" />
-                          <span className="font-display font-semibold text-foreground">ขนาดแนะนำจากระบบ</span>
+                          <span className="font-display font-semibold text-foreground">{t("sa.s3.recommended")}</span>
                         </div>
                         <div className="grid sm:grid-cols-3 gap-4 text-center">
                           {(() => {
@@ -1079,12 +1079,12 @@ export default function SolarAssessment() {
                             return (
                               <>
                                 <div>
-                                  <div className="text-xs text-text-muted mb-1">ขนาดแนะนำ</div>
+                                  <div className="text-xs text-text-muted mb-1">{t("sa.s3.recSize")}</div>
                                   <div className="font-display text-2xl font-bold text-accent-primary">{rec}</div>
                                   <div className="text-xs text-text-muted">kWp</div>
                                 </div>
                                 <div>
-                                  <div className="text-xs text-text-muted mb-1">ติดตั้งได้สูงสุด (หลังคา)</div>
+                                  <div className="text-xs text-text-muted mb-1">{t("sa.s3.maxRoof")}</div>
                                   <div className="font-display text-2xl font-bold text-foreground">
                                     {Math.round(input.roofArea * (ROOF_TYPES[input.roofType]?.usableRatio || 0.65) / AREA_PER_KWP * 10) / 10}
                                   </div>
@@ -1108,7 +1108,7 @@ export default function SolarAssessment() {
                       <InputField label="ขนาดระบบที่ต้องการ (เว้นว่างเพื่อใช้ค่าแนะนำ)" unit="kWp"
                         value={input.desiredKwp || ""}
                         onChange={(v) => updateInput("desiredKwp", parseFloat(v) || 0)}
-                        placeholder="เช่น 200" helpText="ใส่ 0 หรือเว้นว่าง = ใช้ขนาดแนะนำจากระบบ" />
+                        placeholder={t("sa.s3.desiredPlaceholder")} helpText="ใส่ 0 หรือเว้นว่าง = ใช้ขนาดแนะนำจากระบบ" />
 
                       {/* Grid export toggle */}
                       <div className="flex items-center gap-3 p-3 rounded-lg border border-border-subtle">
@@ -1117,8 +1117,8 @@ export default function SolarAssessment() {
                           <div className={`w-4 h-4 rounded-full bg-white shadow-sm transition-transform ${input.gridExportAllowed ? "translate-x-5" : "translate-x-0.5"}`} />
                         </button>
                         <div>
-                          <span className="text-sm font-medium text-foreground">อนุญาตขายไฟคืนกริด (Net Metering)</span>
-                          <p className="text-xs text-text-muted">หากเปิด ระบบจะคำนวณ self-consumption ratio ต่ำลง</p>
+                          <span className="text-sm font-medium text-foreground">{t("sa.s3.netMetering")}</span>
+                          <p className="text-xs text-text-muted">{t("sa.s3.netMeteringHelp")}</p>
                         </div>
                       </div>
 
@@ -1138,19 +1138,19 @@ export default function SolarAssessment() {
                             helpText="10-20° เหมาะสมที่สุดสำหรับประเทศไทย (ละติจูด 5-20°N)" />
                           <div className="grid sm:grid-cols-2 gap-3 text-xs">
                             <div className="p-3 rounded-lg bg-surface-elevated border border-border-subtle">
-                              <span className="text-text-muted">ประสิทธิภาพแผง:</span>
+                              <span className="text-text-muted">{t("sa.s3.panelEff")}</span>
                               <span className="text-foreground font-semibold ml-2">{PANEL_EFFICIENCY * 100}% (TOPCon {PANEL_WATT}W)</span>
                             </div>
                             <div className="p-3 rounded-lg bg-surface-elevated border border-border-subtle">
-                              <span className="text-text-muted">Performance Ratio:</span>
+                              <span className="text-text-muted">{t("sa.s3.perfRatio")}</span>
                               <span className="text-foreground font-semibold ml-2">{PERFORMANCE_RATIO * 100}%</span>
                             </div>
                             <div className="p-3 rounded-lg bg-surface-elevated border border-border-subtle">
-                              <span className="text-text-muted">พื้นที่ต่อ kWp:</span>
+                              <span className="text-text-muted">{t("sa.s3.areaPerKwp")}</span>
                               <span className="text-foreground font-semibold ml-2">{AREA_PER_KWP} ตร.ม. (รวมระยะห่าง)</span>
                             </div>
                             <div className="p-3 rounded-lg bg-surface-elevated border border-border-subtle">
-                              <span className="text-text-muted">Degradation:</span>
+                              <span className="text-text-muted">{t("sa.s3.degradation")}</span>
                               <span className="text-foreground font-semibold ml-2">ปีแรก {YEAR1_DEGRADATION * 100}%, หลังจากนั้น {ANNUAL_DEGRADATION * 100}%/ปี</span>
                             </div>
                           </div>
@@ -1161,7 +1161,7 @@ export default function SolarAssessment() {
                       {input.desiredKwp > 0 && selectedBiz && (
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                           className="p-4 rounded-xl border border-border-subtle bg-surface-overlay">
-                          <h3 className="font-display font-semibold text-sm text-foreground mb-3">ตรวจสอบขนาดเบื้องต้น</h3>
+                          <h3 className="font-display font-semibold text-sm text-foreground mb-3">{t("sa.s3.sizeCheck")}</h3>
                           {(() => {
                             const maxKwp = Math.round(input.roofArea * (ROOF_TYPES[input.roofType]?.usableRatio || 0.65) / AREA_PER_KWP * 10) / 10;
                             const region = REGIONS[input.region] || REGIONS.central;
@@ -1178,15 +1178,15 @@ export default function SolarAssessment() {
                             return (
                               <div className="space-y-2 text-sm">
                                 <div className="flex items-center justify-between">
-                                  <span className="text-text-muted">ขนาดที่ต้องการ vs แนะนำ</span>
+                                  <span className="text-text-muted">{t("sa.s3.desiredVsRec")}</span>
                                   <span className={`font-semibold ${ratio >= 0.7 && ratio <= 1.3 ? "text-green-500" : ratio > 1.5 ? "text-red-400" : "text-accent-secondary"}`}>
                                     {input.desiredKwp} / {recKwp} kWp ({Math.round(ratio * 100)}%)
                                   </span>
                                 </div>
                                 <div className="flex items-center justify-between">
-                                  <span className="text-text-muted">พื้นที่หลังคารองรับ</span>
+                                  <span className="text-text-muted">{t("sa.s3.roofCapacity")}</span>
                                   <span className={`font-semibold ${fitsRoof ? "text-green-500" : "text-red-400"}`}>
-                                    {fitsRoof ? "เพียงพอ" : `ไม่เพียงพอ (สูงสุด ${maxKwp} kWp)`}
+                                    {fitsRoof ? "เพียงพอ" : `{t("sa.s3.insufficient")} ${maxKwp} kWp)`}
                                   </span>
                                 </div>
                                 <div className="h-2 bg-surface-elevated rounded-full overflow-hidden mt-2">
@@ -1197,7 +1197,7 @@ export default function SolarAssessment() {
                                 </div>
                                 <div className="flex justify-between text-xs text-text-muted">
                                   <span>0%</span>
-                                  <span>แนะนำ (100%)</span>
+                                  <span>{t("sa.s3.recommended100")}</span>
                                   <span>200%</span>
                                 </div>
                               </div>
@@ -1212,7 +1212,7 @@ export default function SolarAssessment() {
                 {/* ── Step 4: BESS ── */}
                 {step === 4 && (
                   <motion.div key="step4" variants={slideIn} initial="hidden" animate="visible" exit="exit">
-                    <h2 className="font-display text-xl font-bold text-foreground mb-2">ระบบแบตเตอรี่สำรอง (BESS)</h2>
+                    <h2 className="font-display text-xl font-bold text-foreground mb-2">{t("sa.s4.title")}</h2>
                     <p className="text-sm text-text-muted mb-6">
                       เพิ่มแบตเตอรี่เพื่อเก็บพลังงานส่วนเกินใช้ตอนกลางคืน, สำรองไฟฉุกเฉิน, และลด demand charge
                     </p>
@@ -1227,7 +1227,7 @@ export default function SolarAssessment() {
                           <div className="flex items-center gap-3">
                             <BatteryCharging className={`w-6 h-6 ${input.wantBess ? "text-accent-primary" : "text-text-muted"}`} />
                             <div>
-                              <div className="font-display font-semibold text-foreground">เพิ่มระบบ BESS</div>
+                              <div className="font-display font-semibold text-foreground">{t("sa.s4.addBess")}</div>
                               <div className="text-xs text-text-muted mt-0.5">Battery Energy Storage System — LFP {BESS_CYCLE_LIFE} cycles</div>
                             </div>
                           </div>
@@ -1242,7 +1242,7 @@ export default function SolarAssessment() {
                       <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="space-y-5">
                         {/* BESS Mode Selection */}
                         <div>
-                          <label className="block text-sm font-medium text-foreground mb-2">โหมดการใช้งาน BESS</label>
+                          <label className="block text-sm font-medium text-foreground mb-2">{t("sa.s4.modeLabel")}</label>
                           <div className="grid sm:grid-cols-2 gap-2">
                             {[
                               { key: "hybrid", icon: Layers, title: "Hybrid (แนะนำ)", desc: "รวมทุกโหมด — ระบบเลือกขนาดที่เหมาะสมที่สุด" },
@@ -1277,9 +1277,9 @@ export default function SolarAssessment() {
                             onChange={(e) => updateInput("nightCoverage", parseInt(e.target.value))}
                             className="w-full accent-[var(--accent-primary)]" />
                           <div className="flex justify-between text-xs text-text-muted mt-1">
-                            <span>0% (ไม่ cover กลางคืน)</span>
+                            <span>{t("sa.s4.nightNone")}</span>
                             <span>50%</span>
-                            <span>100% (cover ทั้งหมด)</span>
+                            <span>{t("sa.s4.nightFull")}</span>
                           </div>
                         </div>
 
@@ -1287,7 +1287,7 @@ export default function SolarAssessment() {
                         {selectedBiz && ((input.inputMode === "bill" && input.monthlyBill > 0) || (input.inputMode === "kwh" && input.monthlyKwh > 0)) && (
                           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                             className="p-4 rounded-xl bg-surface-overlay border border-border-subtle">
-                            <h3 className="font-display font-semibold text-sm text-foreground mb-3">ประมาณการ BESS เบื้องต้น</h3>
+                            <h3 className="font-display font-semibold text-sm text-foreground mb-3">{t("sa.s4.preview")}</h3>
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-xs">
                               {(() => {
                                 const mc = input.inputMode === "kwh" ? input.monthlyKwh : input.monthlyBill / selectedBiz.avgRate;
@@ -1300,22 +1300,22 @@ export default function SolarAssessment() {
                                 return (
                                   <>
                                     <div>
-                                      <div className="text-text-muted mb-1">ความจุแนะนำ</div>
+                                      <div className="text-text-muted mb-1">{t("sa.s4.recCapacity")}</div>
                                       <div className="font-display text-lg font-bold text-accent-primary">{cap}</div>
                                       <div className="text-text-muted">kWh</div>
                                     </div>
                                     <div>
-                                      <div className="text-text-muted mb-1">กำลังจ่าย</div>
+                                      <div className="text-text-muted mb-1">{t("sa.s4.power")}</div>
                                       <div className="font-display text-lg font-bold text-foreground">{Math.round(cap / input.backupHours * 10) / 10}</div>
                                       <div className="text-text-muted">kW</div>
                                     </div>
                                     <div>
-                                      <div className="text-text-muted mb-1">ต้นทุนประมาณ</div>
+                                      <div className="text-text-muted mb-1">{t("sa.s4.estCost")}</div>
                                       <div className="font-display text-lg font-bold text-foreground">{(cost / 1000000).toFixed(2)}</div>
                                       <div className="text-text-muted">ล้านบาท</div>
                                     </div>
                                     <div>
-                                      <div className="text-text-muted mb-1">อายุใช้งาน</div>
+                                      <div className="text-text-muted mb-1">{t("sa.s4.lifetime")}</div>
                                       <div className="font-display text-lg font-bold text-accent-secondary">{BESS_CYCLE_LIFE}</div>
                                       <div className="text-text-muted">รอบ (~15 ปี)</div>
                                     </div>
@@ -1329,12 +1329,12 @@ export default function SolarAssessment() {
                         {/* BESS specs */}
                         <div className="p-3 rounded-lg bg-surface-elevated border border-border-subtle">
                           <div className="text-xs text-text-muted space-y-1">
-                            <div className="flex justify-between"><span>เทคโนโลยี:</span><span className="text-foreground">LFP (Lithium Iron Phosphate)</span></div>
-                            <div className="flex justify-between"><span>Round-trip Efficiency:</span><span className="text-foreground">{BESS_ROUND_TRIP_EFF * 100}%</span></div>
-                            <div className="flex justify-between"><span>Depth of Discharge:</span><span className="text-foreground">{BESS_DOD * 100}%</span></div>
-                            <div className="flex justify-between"><span>Cycle Life:</span><span className="text-foreground">{BESS_CYCLE_LIFE.toLocaleString()} cycles</span></div>
-                            <div className="flex justify-between"><span>Degradation:</span><span className="text-foreground">{BESS_DEGRADATION_YEAR * 100}%/ปี</span></div>
-                            <div className="flex justify-between"><span>ต้นทุนอ้างอิง:</span><span className="text-foreground">{BESS_COST_PER_KWH.toLocaleString()} บาท/kWh</span></div>
+                            <div className="flex justify-between"><span>{t("sa.s4.technology")}</span><span className="text-foreground">LFP (Lithium Iron Phosphate)</span></div>
+                            <div className="flex justify-between"><span>{t("sa.s4.roundTrip")}</span><span className="text-foreground">{BESS_ROUND_TRIP_EFF * 100}%</span></div>
+                            <div className="flex justify-between"><span>{t("sa.s4.dod")}</span><span className="text-foreground">{BESS_DOD * 100}%</span></div>
+                            <div className="flex justify-between"><span>{t("sa.s4.cycleLife")}</span><span className="text-foreground">{BESS_CYCLE_LIFE.toLocaleString()} cycles</span></div>
+                            <div className="flex justify-between"><span>{t("sa.s3.degradation")}</span><span className="text-foreground">{BESS_DEGRADATION_YEAR * 100}%/ปี</span></div>
+                            <div className="flex justify-between"><span>{t("sa.s4.refCost")}</span><span className="text-foreground">{BESS_COST_PER_KWH.toLocaleString()} บาท/kWh</span></div>
                           </div>
                         </div>
                       </motion.div>
@@ -1343,7 +1343,7 @@ export default function SolarAssessment() {
                     {!input.wantBess && (
                       <div className="p-4 rounded-xl bg-surface-overlay border border-border-subtle text-center">
                         <Battery className="w-8 h-8 text-text-muted mx-auto mb-2" />
-                        <p className="text-sm text-text-muted">ข้ามขั้นตอนนี้ได้ — สามารถเพิ่ม BESS ภายหลังได้</p>
+                        <p className="text-sm text-text-muted">{t("sa.s4.skip")}</p>
                       </div>
                     )}
                   </motion.div>
@@ -1359,7 +1359,7 @@ export default function SolarAssessment() {
                           <BarChart3 className="w-5 h-5 text-accent-primary" />
                         </div>
                         <div>
-                          <h2 className="font-display text-xl font-bold text-foreground">ผลวิเคราะห์ระบบ</h2>
+                          <h2 className="font-display text-xl font-bold text-foreground">{t("sa.r.title")}</h2>
                           <p className="text-xs text-text-muted">Solar {result.actualKwp} kWp{result.bessCapacityKwh > 0 ? ` + BESS ${result.bessCapacityKwh} kWh` : ""}</p>
                         </div>
                       </div>
@@ -1380,10 +1380,10 @@ export default function SolarAssessment() {
                          result.sizeVerdict === "roof_limited" ? <AlertTriangle className="w-5 h-5 text-accent-secondary" /> :
                          <AlertTriangle className="w-5 h-5 text-red-400" />}
                         <span className="font-display font-semibold text-foreground">
-                          {result.sizeVerdict === "optimal" ? "ขนาดระบบเหมาะสม — พร้อมดำเนินการ" :
-                           result.sizeVerdict === "roof_limited" ? "ปรับลดตามพื้นที่หลังคา" :
-                           result.sizeVerdict === "undersized" ? "ขนาดเล็กกว่าแนะนำ" :
-                           result.sizeVerdict === "oversized" ? "ขนาดใหญ่กว่าแนะนำ" : "ขนาดไม่สมเหตุสมผล"}
+                          {result.sizeVerdict === "optimal" ? t("sa.r.optimal") :
+                           result.sizeVerdict === "roof_limited" ? t("sa.r.roofLimited") :
+                           result.sizeVerdict === "undersized" ? t("sa.r.undersized") :
+                           result.sizeVerdict === "oversized" ? t("sa.r.oversized") : t("sa.r.unreasonable")}
                         </span>
                       </div>
                     </div>
@@ -1410,14 +1410,14 @@ export default function SolarAssessment() {
                       <div className="space-y-6">
                         {/* Size Comparison Table */}
                         <div className="overflow-x-auto">
-                          <h3 className="font-display font-semibold text-sm text-foreground mb-3">ตารางเปรียบเทียบขนาดระบบ</h3>
+                          <h3 className="font-display font-semibold text-sm text-foreground mb-3">{t("sa.r.sizeComparison")}</h3>
                           <table className="w-full text-sm border-collapse">
                             <thead>
                               <tr className="border-b border-border-subtle">
-                                <th className="text-left py-2 px-3 text-text-muted font-medium">รายการ</th>
-                                <th className="text-right py-2 px-3 text-text-muted font-medium">ขนาดแนะนำ</th>
-                                <th className="text-right py-2 px-3 text-text-muted font-medium">ขนาดที่เลือก</th>
-                                <th className="text-right py-2 px-3 text-text-muted font-medium">สูงสุด (หลังคา)</th>
+                                <th className="text-left py-2 px-3 text-text-muted font-medium">{t("sa.r.item")}</th>
+                                <th className="text-right py-2 px-3 text-text-muted font-medium">{t("sa.s3.recSize")}</th>
+                                <th className="text-right py-2 px-3 text-text-muted font-medium">{t("sa.r.selectedSize")}</th>
+                                <th className="text-right py-2 px-3 text-text-muted font-medium">{t("sa.r.maxRoof")}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -1442,7 +1442,7 @@ export default function SolarAssessment() {
 
                         {/* Key Metrics Grid */}
                         <div>
-                          <h3 className="font-display font-semibold text-sm text-foreground mb-3">ผลลัพธ์หลัก</h3>
+                          <h3 className="font-display font-semibold text-sm text-foreground mb-3">{t("sa.r.keyMetrics")}</h3>
                           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                             <MetricCard label="ประหยัดต่อเดือน" value={result.monthlySavings.toLocaleString()} unit="บาท" icon={DollarSign} accent />
                             <MetricCard label="คืนทุน" value={result.simplePayback} unit="ปี" icon={Clock} accent
@@ -1456,7 +1456,7 @@ export default function SolarAssessment() {
                         {/* BESS Results */}
                         {result.bessCapacityKwh > 0 && (
                           <div>
-                            <h3 className="font-display font-semibold text-sm text-foreground mb-3">ระบบแบตเตอรี่ (BESS)</h3>
+                            <h3 className="font-display font-semibold text-sm text-foreground mb-3">{t("sa.r.bessTitle")}</h3>
                             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                               <MetricCard label="ความจุ BESS" value={result.bessCapacityKwh} unit="kWh" icon={Battery} accent />
                               <MetricCard label="กำลังจ่าย" value={result.bessCapacityKw} unit="kW" icon={BatteryCharging} />
@@ -1514,7 +1514,7 @@ export default function SolarAssessment() {
 
                         {/* Cost Breakdown */}
                         <div className="p-4 rounded-xl border border-border-subtle bg-surface-overlay">
-                          <h3 className="font-display font-semibold text-sm text-foreground mb-3">โครงสร้างต้นทุน</h3>
+                          <h3 className="font-display font-semibold text-sm text-foreground mb-3">{t("sa.r.costBreakdown")}</h3>
                           <table className="w-full text-sm">
                             <tbody>
                               {[
@@ -1530,7 +1530,7 @@ export default function SolarAssessment() {
                                 </tr>
                               ))}
                               <tr className="font-semibold">
-                                <td className="py-2 text-accent-primary">รวมเงินลงทุน</td>
+                                <td className="py-2 text-accent-primary">{t("sa.r.totalInvestmentLabel")}</td>
                                 <td className="py-2 text-right text-accent-primary">{(result.totalCost / 1000000).toFixed(2)} ล้านบาท</td>
                                 <td></td>
                               </tr>
@@ -1540,21 +1540,21 @@ export default function SolarAssessment() {
 
                         {/* Savings Breakdown */}
                         <div className="p-4 rounded-xl border border-border-subtle bg-surface-overlay">
-                          <h3 className="font-display font-semibold text-sm text-foreground mb-3">โครงสร้างการประหยัด (ปีแรก)</h3>
+                          <h3 className="font-display font-semibold text-sm text-foreground mb-3">{t("sa.r.savingsBreakdown")}</h3>
                           <table className="w-full text-sm">
                             <tbody>
                               <tr className="border-b border-border-subtle/30">
-                                <td className="py-2 text-foreground">ค่าไฟที่ประหยัดจาก Solar</td>
+                                <td className="py-2 text-foreground">{t("sa.r.solarSavings")}</td>
                                 <td className="py-2 text-right font-semibold text-accent-primary">{result.annualSavings.toLocaleString()} บาท/ปี</td>
                               </tr>
                               {result.bessAnnualSavings > 0 && (
                                 <tr className="border-b border-border-subtle/30">
-                                  <td className="py-2 text-foreground">ค่าไฟที่ประหยัดจาก BESS</td>
+                                  <td className="py-2 text-foreground">{t("sa.r.bessSavings")}</td>
                                   <td className="py-2 text-right font-semibold text-accent-secondary">{result.bessAnnualSavings.toLocaleString()} บาท/ปี</td>
                                 </tr>
                               )}
                               <tr className="font-semibold">
-                                <td className="py-2 text-accent-primary">รวมประหยัดต่อปี</td>
+                                <td className="py-2 text-accent-primary">{t("sa.r.totalSavingsYear")}</td>
                                 <td className="py-2 text-right text-accent-primary">{result.totalAnnualSavings.toLocaleString()} บาท/ปี</td>
                               </tr>
                             </tbody>
@@ -1571,13 +1571,13 @@ export default function SolarAssessment() {
                       <div className="space-y-6">
                         {/* Production Details */}
                         <div className="overflow-x-auto">
-                          <h3 className="font-display font-semibold text-sm text-foreground mb-3">รายละเอียดการผลิตไฟฟ้า</h3>
+                          <h3 className="font-display font-semibold text-sm text-foreground mb-3">{t("sa.r.prodDetails")}</h3>
                           <table className="w-full text-sm border-collapse">
                             <thead>
                               <tr className="border-b border-border-subtle">
-                                <th className="text-left py-2 px-3 text-text-muted font-medium">พารามิเตอร์</th>
-                                <th className="text-right py-2 px-3 text-text-muted font-medium">ค่า</th>
-                                <th className="text-left py-2 px-3 text-text-muted font-medium">หมายเหตุ</th>
+                                <th className="text-left py-2 px-3 text-text-muted font-medium">{t("sa.r.parameter")}</th>
+                                <th className="text-right py-2 px-3 text-text-muted font-medium">{t("sa.r.value")}</th>
+                                <th className="text-left py-2 px-3 text-text-muted font-medium">{t("sa.r.note")}</th>
                               </tr>
                             </thead>
                             <tbody className="text-foreground">
@@ -1604,7 +1604,7 @@ export default function SolarAssessment() {
 
                         {/* Monthly Production Chart */}
                         <div>
-                          <h3 className="font-display font-semibold text-sm text-foreground mb-3">ผลผลิตรายเดือน (kWh)</h3>
+                          <h3 className="font-display font-semibold text-sm text-foreground mb-3">{t("sa.r.monthlyProdChart")}</h3>
                           <MiniBarChart
                             data={result.monthlyProductionProfile}
                             labels={MONTH_NAMES}
@@ -1614,9 +1614,9 @@ export default function SolarAssessment() {
 
                         {/* Hourly Production vs Consumption */}
                         <div>
-                          <h3 className="font-display font-semibold text-sm text-foreground mb-3">เปรียบเทียบผลิตไฟ vs ใช้ไฟ (รายชั่วโมง)</h3>
+                          <h3 className="font-display font-semibold text-sm text-foreground mb-3">{t("sa.r.hourlyComparison")}</h3>
                           <HourlyOverlayChart solar={result.hourlyProductionProfile} consumption={result.hourlyConsumptionProfile} />
-                          <p className="text-xs text-text-muted mt-2">* แสดงค่าเฉลี่ยรายวัน — พื้นที่ทับซ้อนคือช่วงที่โซลาร์ผลิตไฟได้ตรงกับการใช้งาน (self-consumption)</p>
+                          <p className="text-xs text-text-muted mt-2">{t("sa.r.hourlyNote")}</p>
                         </div>
 
                         {/* Recommendations */}
@@ -1624,7 +1624,7 @@ export default function SolarAssessment() {
                           <div className="p-4 rounded-xl bg-accent-glow/50 border border-border-accent">
                             <div className="flex items-center gap-2 mb-2">
                               <Lightbulb className="w-5 h-5 text-accent-primary" />
-                              <span className="font-display font-semibold text-foreground text-sm">คำแนะนำ</span>
+                              <span className="font-display font-semibold text-foreground text-sm">{t("sa.r.recommendations")}</span>
                             </div>
                             <ul className="space-y-1.5">
                               {result.recommendations.map((r, i) => (
@@ -1643,7 +1643,7 @@ export default function SolarAssessment() {
                     {resultTab === "projection" && (
                       <div className="space-y-6">
                         <div className="flex items-center justify-between mb-2">
-                          <h3 className="font-display font-semibold text-sm text-foreground">ประมาณการ 25 ปี</h3>
+                          <h3 className="font-display font-semibold text-sm text-foreground">{t("sa.hero.feat4")}</h3>
                           <button onClick={() => setShowProjection(!showProjection)}
                             className="text-xs text-accent-primary hover:underline flex items-center gap-1">
                             {showProjection ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
@@ -1653,7 +1653,7 @@ export default function SolarAssessment() {
 
                         {/* Cumulative Cash Flow Chart */}
                         <div>
-                          <h4 className="text-xs text-text-muted mb-2">กระแสเงินสดสะสม (ล้านบาท)</h4>
+                          <h4 className="text-xs text-text-muted mb-2">{t("sa.r.cashFlowChart")}</h4>
                           <div className="flex items-end gap-0.5" style={{ height: 140 }}>
                             {result.yearlyProjection.map((y, i) => {
                               const maxAbs = Math.max(
@@ -1729,13 +1729,13 @@ export default function SolarAssessment() {
                             <table className="w-full text-xs border-collapse">
                               <thead>
                                 <tr className="border-b border-border-subtle">
-                                  <th className="py-2 px-2 text-left text-text-muted">ปี</th>
-                                  <th className="py-2 px-2 text-right text-text-muted">ผลิตไฟ (kWh)</th>
-                                  <th className="py-2 px-2 text-right text-text-muted">ค่าไฟ (บาท/kWh)</th>
-                                  <th className="py-2 px-2 text-right text-text-muted">ประหยัด (บาท)</th>
-                                  <th className="py-2 px-2 text-right text-text-muted">ค่าบำรุง (บาท)</th>
-                                  <th className="py-2 px-2 text-right text-text-muted">กำไรสุทธิ (บาท)</th>
-                                  <th className="py-2 px-2 text-right text-text-muted">สะสม (บาท)</th>
+                                  <th className="py-2 px-2 text-left text-text-muted">{t("sa.r.tblYear")}</th>
+                                  <th className="py-2 px-2 text-right text-text-muted">{t("sa.r.tblProd")}</th>
+                                  <th className="py-2 px-2 text-right text-text-muted">{t("sa.r.tblRate")}</th>
+                                  <th className="py-2 px-2 text-right text-text-muted">{t("sa.r.tblSavings")}</th>
+                                  <th className="py-2 px-2 text-right text-text-muted">{t("sa.r.tblMaint")}</th>
+                                  <th className="py-2 px-2 text-right text-text-muted">{t("sa.r.tblNetProfit")}</th>
+                                  <th className="py-2 px-2 text-right text-text-muted">{t("sa.r.tblCumulative")}</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -1776,7 +1776,7 @@ export default function SolarAssessment() {
                           const text = getResultSummary();
                           if (navigator.clipboard) {
                             navigator.clipboard.writeText(text);
-                            toast.success("คัดลอกผลวิเคราะห์แล้ว");
+                            toast.success(t("sa.cta.copied"));
                           }
                         }}
                           className="flex items-center justify-center gap-2 btn-accent-outline px-6 py-4 rounded-xl text-base font-semibold">
@@ -1822,10 +1822,10 @@ export default function SolarAssessment() {
             <div className="flex items-start gap-3">
               <Info className="w-5 h-5 text-text-muted mt-0.5 shrink-0" />
               <div className="text-xs text-text-muted space-y-2">
-                <p className="font-semibold text-foreground text-sm">ข้อจำกัดความรับผิดชอบ</p>
-                <p>ผลการคำนวณเป็นการประมาณการเบื้องต้นจากข้อมูลที่กรอก ไม่ถือเป็นข้อเสนอทางการค้าหรือการรับประกันผลตอบแทน ตัวเลขจริงขึ้นอยู่กับสภาพหน้างาน คุณภาพอุปกรณ์ สภาพอากาศ และปัจจัยอื่น</p>
-                <p>ค่า Solar Irradiance อ้างอิงจาก Global Solar Atlas (World Bank) สำหรับประเทศไทย ค่าไฟฟ้าอ้างอิงจากอัตราค่าไฟ กกพ. ปี 2567-2568 ราคาอุปกรณ์เป็นราคาตลาดเฉลี่ย Q1/2569</p>
-                <p>ควรให้วิศวกรผู้เชี่ยวชาญสำรวจหน้างานจริงก่อนตัดสินใจลงทุน SIRINX ให้บริการสำรวจหน้างานฟรีสำหรับโครงการ 100 kWp ขึ้นไป</p>
+                <p className="font-semibold text-foreground text-sm">{t("sa.disclaimer.title")}</p>
+                <p>{t("sa.disclaimer.p1")}</p>
+                <p>{t("sa.disclaimer.p2")}</p>
+                <p>{t("sa.disclaimer.p3")}</p>
               </div>
             </div>
           </div>
@@ -1839,7 +1839,7 @@ export default function SolarAssessment() {
             พร้อมเริ่มต้นโครงการโซลาร์เซลล์?
           </h2>
           <p className="text-text-secondary mb-8 max-w-xl mx-auto">
-            ทีมวิศวกร SIRINX พร้อมสำรวจหน้างานและออกแบบระบบที่เหมาะสมที่สุดสำหรับธุรกิจของคุณ
+            {t("sa.final.desc")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/contact" className="btn-accent px-8 py-4 rounded-xl text-base font-semibold inline-flex items-center justify-center gap-2">

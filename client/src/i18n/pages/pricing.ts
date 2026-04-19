@@ -1,16 +1,16 @@
-import type { TranslationDict } from "../index";
+import { registerPageTranslations, type TranslationDict } from "../index";
 
-export const pricingTranslations: TranslationDict = {
+const dict: TranslationDict = {
   /* ─── Hero ─── */
   "hero.badge": {
     th: "แพ็คเกจราคา Solar Carport",
     en: "Solar Carport Pricing Packages",
     cn: "太阳能车棚价格套餐",
   },
-  "hero.title.line1": {
-    th: "เลือกขนาดที่เหมาะกับธุรกิจ",
-    en: "Choose the Right Size for Your Business",
-    cn: "选择适合您业务的规模",
+  "hero.title": {
+    th: "เลือกแพ็คเกจที่เหมาะกับธุรกิจ",
+    en: "Choose the Right Package for Your Business",
+    cn: "选择适合您业务的套餐",
   },
   "hero.title.accent": {
     th: "คุ้มค่าทุกการลงทุน",
@@ -34,11 +34,6 @@ export const pricingTranslations: TranslationDict = {
   },
 
   /* ─── Government Policy Section ─── */
-  "gov.label": {
-    th: "Government Support",
-    en: "Government Support",
-    cn: "政府支持",
-  },
   "gov.title": {
     th: "ทำไมต้องลงทุน Solar Carport",
     en: "Why Invest in Solar Carport",
@@ -54,91 +49,84 @@ export const pricingTranslations: TranslationDict = {
     en: "Government policies support both clean energy and EVs — early adopters gain advantages in both cost savings and brand image.",
     cn: "政府政策支持清洁能源和电动车 — 先行者在成本节约和品牌形象方面都占优势。",
   },
-
-  /* ─── Gov Policies ─── */
-  "gov.policy.0.title": {
+  "gov.0.title": {
     th: "ลดหย่อนภาษี Solar Rooftop",
     en: "Solar Rooftop Tax Deduction",
     cn: "太阳能屋顶税收减免",
   },
-  "gov.policy.0.desc": {
+  "gov.0.desc": {
     th: "บุคคลธรรมดาลดหย่อนสูงสุด 200,000 บาท / นิติบุคคลหักค่าใช้จ่าย 1.5 เท่า (พ.ร.ฎ. ฉบับที่ 805)",
     en: "Individuals deduct up to 200,000 THB / Corporations deduct 1.5x expenses (Royal Decree No. 805)",
     cn: "个人最高减免200,000泰铢 / 法人1.5倍费用扣除（皇家法令第805号）",
   },
-  "gov.policy.0.period": {
+  "gov.0.period": {
     th: "มี.ค. 2569 - ธ.ค. 2571",
     en: "Mar 2026 - Dec 2028",
     cn: "2026年3月 - 2028年12月",
   },
-  "gov.policy.1.title": {
+  "gov.1.title": {
     th: "มาตรการ EV 3.5",
     en: "EV 3.5 Policy",
     cn: "EV 3.5政策",
   },
-  "gov.policy.1.desc": {
+  "gov.1.desc": {
     th: "รัฐอุดหนุนรถ EV สูงสุด 50,000 บาท/คัน + ลดภาษีสรรพสามิตเหลือ 2% เป้าหมาย 30% ZEV ภายในปี 2030",
     en: "Government subsidizes EVs up to 50,000 THB/vehicle + excise tax reduced to 2%. Target: 30% ZEV by 2030",
     cn: "政府补贴电动车每辆最高50,000泰铢 + 消费税降至2%。目标：2030年30% ZEV",
   },
-  "gov.policy.1.period": {
+  "gov.1.period": {
     th: "2024 - 2027",
     en: "2024 - 2027",
     cn: "2024 - 2027",
   },
-  "gov.policy.2.title": {
+  "gov.2.title": {
     th: "BOI สนับสนุนพลังงานสะอาด",
     en: "BOI Clean Energy Support",
     cn: "BOI清洁能源支持",
   },
-  "gov.policy.2.desc": {
+  "gov.2.desc": {
     th: "สิทธิประโยชน์ BOI สำหรับธุรกิจที่ลงทุนพลังงานทดแทน + EV Charger (ประกาศ ป.8/2568)",
     en: "BOI privileges for businesses investing in renewable energy + EV Chargers (Announcement P.8/2025)",
     cn: "BOI为投资可再生能源+电动车充电器的企业提供优惠（公告P.8/2025）",
   },
-  "gov.policy.2.period": {
+  "gov.2.period": {
     th: "ดำเนินการต่อเนื่อง",
     en: "Ongoing",
     cn: "持续进行中",
   },
-  "gov.policy.3.title": {
+  "gov.3.title": {
     th: "เป้าหมาย Carbon Neutrality",
     en: "Carbon Neutrality Goal",
     cn: "碳中和目标",
   },
-  "gov.policy.3.desc": {
+  "gov.3.desc": {
     th: "ประเทศไทยตั้งเป้า Carbon Neutrality ปี 2050 / Net Zero ปี 2065 — ธุรกิจที่เริ่มก่อนได้เปรียบ",
     en: "Thailand targets Carbon Neutrality by 2050 / Net Zero by 2065 — early movers gain competitive advantage.",
     cn: "泰国目标2050年碳中和 / 2065年净零排放 — 先行者获得竞争优势。",
   },
-  "gov.policy.3.period": {
+  "gov.3.period": {
     th: "เป้าหมายระยะยาว",
     en: "Long-term Target",
     cn: "长期目标",
   },
 
   /* ─── Packages Section ─── */
-  "pkg.label": {
-    th: "Packages",
-    en: "Packages",
-    cn: "套餐",
-  },
   "pkg.title": {
     th: "แพ็คเกจ Solar Carport",
     en: "Solar Carport Packages",
     cn: "太阳能车棚套餐",
   },
   "pkg.title.accent": {
-    th: "3 ขนาด",
-    en: "3 Sizes",
-    cn: "3种规格",
+    th: "3 ระดับ",
+    en: "3 Tiers",
+    cn: "3个级别",
   },
   "pkg.desc": {
-    th: "เลือกขนาดที่เหมาะกับพื้นที่และงบประมาณ — ราคาเริ่มต้นโดยประมาณ ทีมงานจะสำรวจและเสนอราคาจริงให้ฟรี",
-    en: "Choose the size that fits your space and budget — starting prices are estimates. Our team will survey and provide an accurate quote for free.",
-    cn: "选择适合您空间和预算的规格 — 起步价为估算价。我们的团队将免费勘察并提供准确报价。",
+    th: "เลือกแพ็คเกจที่เหมาะกับขนาดธุรกิจและงบประมาณ — ราคาเริ่มต้นโดยประมาณ ทีมงานจะสำรวจและเสนอราคาจริงให้ฟรี",
+    en: "Choose the package that fits your business size and budget — starting prices are estimates. Our team will survey and provide an accurate quote for free.",
+    cn: "选择适合您企业规模和预算的套餐 — 起步价为估算价。我们的团队将免费勘察并提供准确报价。",
   },
-  "pkg.recommend": {
+  "pkg.recommended": {
     th: "แนะนำ",
     en: "Recommended",
     cn: "推荐",
@@ -148,35 +136,30 @@ export const pricingTranslations: TranslationDict = {
     en: "Ideal For",
     cn: "适合",
   },
-  "pkg.parking": {
+  "pkg.spec.parking": {
     th: "ที่จอดรถ",
     en: "Parking Spaces",
     cn: "停车位",
   },
-  "pkg.evCharger": {
-    th: "EV Charger",
-    en: "EV Charger",
-    cn: "电动车充电器",
-  },
-  "pkg.savings": {
+  "pkg.spec.savings": {
     th: "ประหยัดค่าไฟ",
     en: "Electricity Savings",
     cn: "电费节省",
   },
-  "pkg.payback": {
+  "pkg.spec.payback": {
     th: "คืนทุน",
     en: "Payback Period",
     cn: "回本周期",
   },
-  "pkg.lifespan": {
+  "pkg.spec.lifespan": {
     th: "อายุใช้งาน",
     en: "Lifespan",
     cn: "使用寿命",
   },
   "pkg.warranty": {
-    th: "การรับประกัน:",
-    en: "Warranty:",
-    cn: "保修：",
+    th: "การรับประกัน",
+    en: "Warranty",
+    cn: "保修",
   },
   "pkg.showDetails": {
     th: "ดูรายละเอียดทั้งหมด",
@@ -194,144 +177,109 @@ export const pricingTranslations: TranslationDict = {
     cn: "获取报价",
   },
 
-  /* ─── Package S ─── */
-  "pkg.s.subtitle": {
+  /* ─── Package: Start ─── */
+  "pkg.start.subtitle": {
     th: "ธุรกิจขนาดเล็ก",
     en: "Small Business",
     cn: "小型企业",
   },
-  "pkg.s.priceRange": {
+  "pkg.start.price": {
     th: "เริ่มต้น ~300,000 บาท",
     en: "Starting from ~300,000 THB",
     cn: "起价约300,000泰铢",
   },
-  "pkg.s.priceNote": {
+  "pkg.start.priceNote": {
     th: "ราคาขึ้นอยู่กับพื้นที่และรูปแบบโครงสร้าง",
     en: "Price depends on area and structural design",
     cn: "价格取决于面积和结构设计",
   },
-  "pkg.s.idealFor.0": { th: "ร้านค้า / ร้านอาหาร", en: "Shops / Restaurants", cn: "商店/餐厅" },
-  "pkg.s.idealFor.1": { th: "ออฟฟิศขนาดเล็ก", en: "Small Offices", cn: "小型办公室" },
-  "pkg.s.idealFor.2": { th: "คลินิก / สำนักงาน", en: "Clinics / Offices", cn: "诊所/办公室" },
-  "pkg.s.idealFor.3": { th: "ที่จอดรถ 5-15 คัน", en: "5-15 Parking Spaces", cn: "5-15个停车位" },
-  "pkg.s.specs.panels": { th: "20-60 แผง (Tier-1 Mono PERC)", en: "20-60 Panels (Tier-1 Mono PERC)", cn: "20-60块板（Tier-1 Mono PERC）" },
-  "pkg.s.specs.area": { th: "~60-180 ตร.ม.", en: "~60-180 sq.m.", cn: "约60-180平方米" },
-  "pkg.s.specs.parking": { th: "5-15 คัน", en: "5-15 vehicles", cn: "5-15辆" },
-  "pkg.s.specs.evCharger": { th: "1-2 จุดชาร์จ", en: "1-2 charging points", cn: "1-2个充电点" },
-  "pkg.s.specs.savings": { th: "5,000-15,000 บาท/เดือน", en: "5,000-15,000 THB/month", cn: "5,000-15,000泰铢/月" },
-  "pkg.s.specs.payback": { th: "4-6 ปี", en: "4-6 years", cn: "4-6年" },
-  "pkg.s.specs.lifespan": { th: "25+ ปี", en: "25+ years", cn: "25年以上" },
-  "pkg.s.specs.warranty": { th: "แผง 25 ปี / Inverter 10 ปี / โครงสร้าง 5 ปี", en: "Panels 25 yrs / Inverter 10 yrs / Structure 5 yrs", cn: "面板25年/逆变器10年/结构5年" },
-  "pkg.s.includes.0": { th: "สำรวจหน้างาน + ออกแบบระบบ", en: "Site survey + system design", cn: "现场勘察+系统设计" },
-  "pkg.s.includes.1": { th: "โครงสร้างเหล็กชุบกัลวาไนซ์", en: "Galvanized steel structure", cn: "镀锌钢结构" },
-  "pkg.s.includes.2": { th: "แผง Tier-1 Mono PERC 550W+", en: "Tier-1 Mono PERC 550W+ panels", cn: "Tier-1 Mono PERC 550W+面板" },
-  "pkg.s.includes.3": { th: "Inverter Sungrow / Huawei", en: "Sungrow / Huawei Inverter", cn: "Sungrow/华为逆变器" },
-  "pkg.s.includes.4": { th: "ระบบ Monitoring ผ่านแอป", en: "App-based monitoring system", cn: "应用监控系统" },
-  "pkg.s.includes.5": { th: "ติดตั้งโดยทีมวิศวกร", en: "Installation by engineering team", cn: "工程团队安装" },
-  "pkg.s.includes.6": { th: "ขออนุญาต กฟน./กฟภ.", en: "MEA/PEA permit processing", cn: "MEA/PEA许可办理" },
-  "pkg.s.includes.7": { th: "รับประกันผลงาน 1 ปี", en: "1-year workmanship warranty", cn: "1年施工保修" },
-  "pkg.s.evReady": { th: "Pre-wired สำหรับ EV Charger 1-2 จุด", en: "Pre-wired for 1-2 EV Charger points", cn: "预布线1-2个电动车充电点" },
+  "pkg.start.idealFor": {
+    th: "ร้านค้า / ร้านอาหาร|ออฟฟิศขนาดเล็ก|คลินิก / สำนักงาน|ที่จอดรถ 5-15 คัน",
+    en: "Shops / Restaurants|Small Offices|Clinics / Offices|5-15 Parking Spaces",
+    cn: "商店/餐厅|小型办公室|诊所/办公室|5-15个停车位",
+  },
+  "pkg.start.specs.parking": { th: "5-15 คัน", en: "5-15 vehicles", cn: "5-15辆" },
+  "pkg.start.specs.evCharger": { th: "1-2 จุดชาร์จ", en: "1-2 charging points", cn: "1-2个充电点" },
+  "pkg.start.specs.savings": { th: "5,000-15,000 บาท/เดือน", en: "5,000-15,000 THB/month", cn: "5,000-15,000泰铢/月" },
+  "pkg.start.specs.payback": { th: "4-6 ปี", en: "4-6 years", cn: "4-6年" },
+  "pkg.start.specs.lifespan": { th: "25+ ปี", en: "25+ years", cn: "25年以上" },
+  "pkg.start.specs.warranty": { th: "แผง 25 ปี / Inverter 10 ปี / โครงสร้าง 5 ปี", en: "Panels 25 yrs / Inverter 10 yrs / Structure 5 yrs", cn: "面板25年/逆变器10年/结构5年" },
+  "pkg.start.includes": {
+    th: "สำรวจหน้างาน + ออกแบบระบบ|โครงสร้างเหล็กชุบกัลวาไนซ์|แผง Tier-1 Mono PERC 550W+|Inverter Sungrow / Huawei|ระบบ Monitoring ผ่านแอป|ติดตั้งโดยทีมวิศวกร|ขออนุญาต กฟน./กฟภ.|รับประกันผลงาน 1 ปี",
+    en: "Site survey + system design|Galvanized steel structure|Tier-1 Mono PERC 550W+ panels|Sungrow / Huawei Inverter|App-based monitoring system|Installation by engineering team|MEA/PEA permit processing|1-year workmanship warranty",
+    cn: "现场勘察+系统设计|镀锌钢结构|Tier-1 Mono PERC 550W+面板|Sungrow/华为逆变器|应用监控系统|工程团队安装|MEA/PEA许可办理|1年施工保修",
+  },
+  "pkg.start.evReady": { th: "Pre-wired สำหรับ EV Charger 1-2 จุด", en: "Pre-wired for 1-2 EV Charger points", cn: "预布线1-2个电动车充电点" },
 
-  /* ─── Package M ─── */
-  "pkg.m.subtitle": {
+  /* ─── Package: Pro ─── */
+  "pkg.pro.subtitle": {
     th: "ธุรกิจขนาดกลาง",
     en: "Medium Business",
     cn: "中型企业",
   },
-  "pkg.m.priceRange": {
+  "pkg.pro.price": {
     th: "เริ่มต้น ~840,000 บาท",
     en: "Starting from ~840,000 THB",
     cn: "起价约840,000泰铢",
   },
-  "pkg.m.priceNote": {
+  "pkg.pro.priceNote": {
     th: "ราคาลดลงตามขนาดระบบ (economy of scale)",
     en: "Price decreases with system size (economy of scale)",
     cn: "价格随系统规模降低（规模经济）",
   },
-  "pkg.m.idealFor.0": { th: "โรงแรม / รีสอร์ท", en: "Hotels / Resorts", cn: "酒店/度假村" },
-  "pkg.m.idealFor.1": { th: "สถานศึกษา", en: "Educational Institutions", cn: "教育机构" },
-  "pkg.m.idealFor.2": { th: "อาคารพาณิชย์", en: "Commercial Buildings", cn: "商业建筑" },
-  "pkg.m.idealFor.3": { th: "ที่จอดรถ 15-50 คัน", en: "15-50 Parking Spaces", cn: "15-50个停车位" },
-  "pkg.m.specs.panels": { th: "60-200 แผง (Tier-1 Mono PERC)", en: "60-200 Panels (Tier-1 Mono PERC)", cn: "60-200块板（Tier-1 Mono PERC）" },
-  "pkg.m.specs.area": { th: "~180-600 ตร.ม.", en: "~180-600 sq.m.", cn: "约180-600平方米" },
-  "pkg.m.specs.parking": { th: "15-50 คัน", en: "15-50 vehicles", cn: "15-50辆" },
-  "pkg.m.specs.evCharger": { th: "3-10 จุดชาร์จ", en: "3-10 charging points", cn: "3-10个充电点" },
-  "pkg.m.specs.savings": { th: "15,000-50,000 บาท/เดือน", en: "15,000-50,000 THB/month", cn: "15,000-50,000泰铢/月" },
-  "pkg.m.specs.payback": { th: "3-5 ปี", en: "3-5 years", cn: "3-5年" },
-  "pkg.m.specs.lifespan": { th: "25+ ปี", en: "25+ years", cn: "25年以上" },
-  "pkg.m.specs.warranty": { th: "แผง 25 ปี / Inverter 10 ปี / โครงสร้าง 5 ปี", en: "Panels 25 yrs / Inverter 10 yrs / Structure 5 yrs", cn: "面板25年/逆变器10年/结构5年" },
-  "pkg.m.includes.0": { th: "ทุกอย่างใน Size S", en: "Everything in Size S", cn: "Size S的所有内容" },
-  "pkg.m.includes.1": { th: "BESS Option (กักเก็บพลังงาน)", en: "BESS Option (energy storage)", cn: "BESS选项（储能）" },
-  "pkg.m.includes.2": { th: "AI Energy Monitoring Dashboard", en: "AI Energy Monitoring Dashboard", cn: "AI能源监控仪表板" },
-  "pkg.m.includes.3": { th: "EV Charger 3-10 จุด (AC Type 2)", en: "EV Charger 3-10 points (AC Type 2)", cn: "电动车充电器3-10点（AC Type 2）" },
-  "pkg.m.includes.4": { th: "รายงาน ROI รายเดือน", en: "Monthly ROI reports", cn: "月度ROI报告" },
-  "pkg.m.includes.5": { th: "O&M ดูแลรักษา 1 ปี", en: "1-year O&M service", cn: "1年运维服务" },
-  "pkg.m.includes.6": { th: "ประสานงาน BOI / ลดหย่อนภาษี", en: "BOI / tax deduction coordination", cn: "BOI/税收减免协调" },
-  "pkg.m.includes.7": { th: "ใบรับรอง Carbon Credit", en: "Carbon Credit certificate", cn: "碳信用证书" },
-  "pkg.m.evReady": { th: "ติดตั้ง EV Charger พร้อมใช้ 3-10 จุด รองรับ AC Type 2", en: "EV Charger installed, 3-10 points ready, AC Type 2 compatible", cn: "安装电动车充电器，3-10点就绪，兼容AC Type 2" },
-
-  /* ─── Package L ─── */
-  "pkg.l.subtitle": {
-    th: "ธุรกิจขนาดใหญ่",
-    en: "Large Enterprise",
-    cn: "大型企业",
+  "pkg.pro.idealFor": {
+    th: "โรงแรม / รีสอร์ท|สถานศึกษา|อาคารพาณิชย์|ที่จอดรถ 15-50 คัน",
+    en: "Hotels / Resorts|Educational Institutions|Commercial Buildings|15-50 Parking Spaces",
+    cn: "酒店/度假村|教育机构|商业建筑|15-50个停车位",
   },
-  "pkg.l.priceRange": {
+  "pkg.pro.specs.parking": { th: "15-50 คัน", en: "15-50 vehicles", cn: "15-50辆" },
+  "pkg.pro.specs.evCharger": { th: "3-10 จุดชาร์จ", en: "3-10 charging points", cn: "3-10个充电点" },
+  "pkg.pro.specs.savings": { th: "15,000-50,000 บาท/เดือน", en: "15,000-50,000 THB/month", cn: "15,000-50,000泰铢/月" },
+  "pkg.pro.specs.payback": { th: "3-5 ปี", en: "3-5 years", cn: "3-5年" },
+  "pkg.pro.specs.lifespan": { th: "25+ ปี", en: "25+ years", cn: "25年以上" },
+  "pkg.pro.specs.warranty": { th: "แผง 25 ปี / Inverter 10 ปี / โครงสร้าง 5 ปี", en: "Panels 25 yrs / Inverter 10 yrs / Structure 5 yrs", cn: "面板25年/逆变器10年/结构5年" },
+  "pkg.pro.includes": {
+    th: "ทุกอย่างใน Start|BESS Option (กักเก็บพลังงาน)|AI Energy Monitoring Dashboard|EV Charger 3-10 จุด (AC Type 2)|รายงาน ROI รายเดือน|O&M ดูแลรักษา 1 ปี|ประสานงาน BOI / ลดหย่อนภาษี|ใบรับรอง Carbon Credit",
+    en: "Everything in Start|BESS Option (energy storage)|AI Energy Monitoring Dashboard|EV Charger 3-10 points (AC Type 2)|Monthly ROI reports|1-year O&M service|BOI / tax deduction coordination|Carbon Credit certificate",
+    cn: "Start的所有内容|BESS选项（储能）|AI能源监控仪表板|电动车充电器3-10点（AC Type 2）|月度ROI报告|1年运维服务|BOI/税收减免协调|碳信用证书",
+  },
+  "pkg.pro.evReady": { th: "ติดตั้ง EV Charger พร้อมใช้ 3-10 จุด รองรับ AC Type 2", en: "EV Charger installed, 3-10 points ready, AC Type 2 compatible", cn: "安装电动车充电器，3-10点就绪，兼容AC Type 2" },
+
+  /* ─── Package: Enterprise ─── */
+  "pkg.enterprise.subtitle": {
+    th: "ธุรกิจขนาดใหญ่ / โครงการพิเศษ",
+    en: "Large Enterprise / Custom Projects",
+    cn: "大型企业/定制项目",
+  },
+  "pkg.enterprise.price": {
     th: "เริ่มต้น ~2,500,000 บาท",
     en: "Starting from ~2,500,000 THB",
     cn: "起价约2,500,000泰铢",
   },
-  "pkg.l.priceNote": {
-    th: "ราคาต่อวัตต์ต่ำสุด ยิ่งใหญ่ยิ่งคุ้ม",
-    en: "Lowest cost per watt — bigger means better value",
-    cn: "每瓦成本最低 — 越大越划算",
+  "pkg.enterprise.priceNote": {
+    th: "ราคาต่อวัตต์ต่ำสุด ยิ่งใหญ่ยิ่งคุ้ม — รองรับ 500+ kWp",
+    en: "Lowest cost per watt — bigger means better value — supports 500+ kWp",
+    cn: "每瓦成本最低 — 越大越划算 — 支持500+ kWp",
   },
-  "pkg.l.idealFor.0": { th: "โรงงานอุตสาหกรรม", en: "Industrial Factories", cn: "工业工厂" },
-  "pkg.l.idealFor.1": { th: "ห้างสรรพสินค้า", en: "Shopping Malls", cn: "购物中心" },
-  "pkg.l.idealFor.2": { th: "คลังสินค้า / โลจิสติกส์", en: "Warehouses / Logistics", cn: "仓库/物流" },
-  "pkg.l.idealFor.3": { th: "ที่จอดรถ 50-200+ คัน", en: "50-200+ Parking Spaces", cn: "50-200+个停车位" },
-  "pkg.l.specs.panels": { th: "200-1,000 แผง (Tier-1 Bifacial)", en: "200-1,000 Panels (Tier-1 Bifacial)", cn: "200-1,000块板（Tier-1双面）" },
-  "pkg.l.specs.area": { th: "~600-3,000 ตร.ม.", en: "~600-3,000 sq.m.", cn: "约600-3,000平方米" },
-  "pkg.l.specs.parking": { th: "50-200+ คัน", en: "50-200+ vehicles", cn: "50-200+辆" },
-  "pkg.l.specs.evCharger": { th: "10-50 จุดชาร์จ", en: "10-50 charging points", cn: "10-50个充电点" },
-  "pkg.l.specs.savings": { th: "50,000-250,000 บาท/เดือน", en: "50,000-250,000 THB/month", cn: "50,000-250,000泰铢/月" },
-  "pkg.l.specs.payback": { th: "3-5 ปี", en: "3-5 years", cn: "3-5年" },
-  "pkg.l.specs.lifespan": { th: "25+ ปี", en: "25+ years", cn: "25年以上" },
-  "pkg.l.specs.warranty": { th: "แผง 25 ปี / Inverter 10 ปี / โครงสร้าง 10 ปี", en: "Panels 25 yrs / Inverter 10 yrs / Structure 10 yrs", cn: "面板25年/逆变器10年/结构10年" },
-  "pkg.l.includes.0": { th: "ทุกอย่างใน Size M", en: "Everything in Size M", cn: "Size M的所有内容" },
-  "pkg.l.includes.1": { th: "แผง Bifacial ประสิทธิภาพสูง", en: "High-efficiency Bifacial panels", cn: "高效双面面板" },
-  "pkg.l.includes.2": { th: "BESS ระบบกักเก็บพลังงาน", en: "BESS energy storage system", cn: "BESS储能系统" },
-  "pkg.l.includes.3": { th: "DC Fast Charger (CCS2) Option", en: "DC Fast Charger (CCS2) Option", cn: "DC快充（CCS2）选项" },
-  "pkg.l.includes.4": { th: "AI Predictive Maintenance", en: "AI Predictive Maintenance", cn: "AI预测性维护" },
-  "pkg.l.includes.5": { th: "O&M Contract 3-5 ปี", en: "3-5 year O&M Contract", cn: "3-5年运维合同" },
-  "pkg.l.includes.6": { th: "ที่ปรึกษา ESG / Carbon Credit", en: "ESG / Carbon Credit consulting", cn: "ESG/碳信用咨询" },
-  "pkg.l.includes.7": { th: "รายงานผลกระทบสิ่งแวดล้อม", en: "Environmental impact report", cn: "环境影响报告" },
-  "pkg.l.evReady": { th: "ติดตั้ง EV Charger ทั้ง AC/DC Fast Charge รองรับ 10-50 จุด", en: "EV Charger installed, AC/DC Fast Charge, 10-50 points", cn: "安装电动车充电器，AC/DC快充，10-50点" },
-
-  /* ─── Custom Tier ─── */
-  "custom.title": {
-    th: "Custom — โครงการขนาดใหญ่ (500+ kWp)",
-    en: "Custom — Large Projects (500+ kWp)",
-    cn: "定制 — 大型项目（500+ kWp）",
+  "pkg.enterprise.idealFor": {
+    th: "โรงงานอุตสาหกรรม|ห้างสรรพสินค้า|คลังสินค้า / โลจิสติกส์|นิคมอุตสาหกรรม|หน่วยงานราชการ|ที่จอดรถ 50-200+ คัน",
+    en: "Industrial Factories|Shopping Malls|Warehouses / Logistics|Industrial Estates|Government Agencies|50-200+ Parking Spaces",
+    cn: "工业工厂|购物中心|仓库/物流|工业园区|政府机构|50-200+个停车位",
   },
-  "custom.desc": {
-    th: "สำหรับโครงการขนาดใหญ่ที่ต้องการออกแบบเฉพาะทาง กรุณาประเมินขนาดกำลังที่ต้องการใช้ แล้วส่งข้อมูลให้ทีมงานเข้าประเมินหน้างาน — ฟรีไม่มีค่าใช้จ่าย",
-    en: "For large projects requiring custom design. Estimate your power needs and send the information to our team for a free on-site assessment.",
-    cn: "适用于需要定制设计的大型项目。估算您的电力需求并将信息发送给我们的团队进行免费现场评估。",
+  "pkg.enterprise.specs.parking": { th: "50-200+ คัน", en: "50-200+ vehicles", cn: "50-200+辆" },
+  "pkg.enterprise.specs.evCharger": { th: "10-50 จุดชาร์จ", en: "10-50 charging points", cn: "10-50个充电点" },
+  "pkg.enterprise.specs.savings": { th: "50,000-250,000+ บาท/เดือน", en: "50,000-250,000+ THB/month", cn: "50,000-250,000+泰铢/月" },
+  "pkg.enterprise.specs.payback": { th: "3-5 ปี", en: "3-5 years", cn: "3-5年" },
+  "pkg.enterprise.specs.lifespan": { th: "25+ ปี", en: "25+ years", cn: "25年以上" },
+  "pkg.enterprise.specs.warranty": { th: "แผง 25 ปี / Inverter 10 ปี / โครงสร้าง 10 ปี", en: "Panels 25 yrs / Inverter 10 yrs / Structure 10 yrs", cn: "面板25年/逆变器10年/结构10年" },
+  "pkg.enterprise.includes": {
+    th: "ทุกอย่างใน Pro|แผง Bifacial ประสิทธิภาพสูง|BESS ระบบกักเก็บพลังงาน|DC Fast Charger (CCS2) Option|AI Predictive Maintenance|O&M Contract 3-5 ปี|ที่ปรึกษา ESG / Carbon Credit|รายงานผลกระทบสิ่งแวดล้อม|ออกแบบระบบเฉพาะทาง (Custom Engineering)",
+    en: "Everything in Pro|High-efficiency Bifacial panels|BESS energy storage system|DC Fast Charger (CCS2) Option|AI Predictive Maintenance|3-5 year O&M Contract|ESG / Carbon Credit consulting|Environmental impact report|Custom engineering design",
+    cn: "Pro的所有内容|高效双面面板|BESS储能系统|DC快充（CCS2）选项|AI预测性维护|3-5年运维合同|ESG/碳信用咨询|环境影响报告|定制工程设计",
   },
-  "custom.tag.factory": { th: "โรงงานขนาดใหญ่", en: "Large Factories", cn: "大型工厂" },
-  "custom.tag.industrial": { th: "นิคมอุตสาหกรรม", en: "Industrial Estates", cn: "工业园区" },
-  "custom.tag.gov": { th: "หน่วยงานราชการ", en: "Government Agencies", cn: "政府机构" },
-  "custom.tag.realestate": { th: "โครงการอสังหาฯ", en: "Real Estate Projects", cn: "房地产项目" },
-  "custom.cta.contact": { th: "ติดต่อทีมงานโดยตรง", en: "Contact Our Team Directly", cn: "直接联系我们的团队" },
-  "custom.cta.assess": { th: "ประเมินขนาดระบบ", en: "Assess System Size", cn: "评估系统规模" },
+  "pkg.enterprise.evReady": { th: "ติดตั้ง EV Charger ทั้ง AC/DC Fast Charge รองรับ 10-50 จุด", en: "EV Charger installed, AC/DC Fast Charge, 10-50 points", cn: "安装电动车充电器，AC/DC快充，10-50点" },
 
   /* ─── Advantages ─── */
-  "adv.label": {
-    th: "Advantages",
-    en: "Advantages",
-    cn: "优势",
-  },
   "adv.title": {
     th: "ข้อดีของ Solar Carport",
     en: "Advantages of Solar Carport",
@@ -366,35 +314,51 @@ export const pricingTranslations: TranslationDict = {
     en: "Compare Packages",
     cn: "套餐对比",
   },
-  "compare.col.item": { th: "รายการ", en: "Item", cn: "项目" },
-  "compare.row.capacity": { th: "กำลังผลิต", en: "Capacity", cn: "发电容量" },
-  "compare.row.parking": { th: "ที่จอดรถ", en: "Parking", cn: "停车位" },
-  "compare.row.evCharger": { th: "EV Charger", en: "EV Charger", cn: "电动车充电器" },
-  "compare.row.savingsMonth": { th: "ประหยัดค่าไฟ/เดือน", en: "Monthly Savings", cn: "月节省" },
-  "compare.row.payback": { th: "คืนทุน", en: "Payback", cn: "回本" },
-  "compare.row.bess": { th: "BESS (แบตเตอรี่)", en: "BESS (Battery)", cn: "BESS（电池）" },
-  "compare.row.aiMonitor": { th: "AI Monitoring", en: "AI Monitoring", cn: "AI监控" },
-  "compare.row.dcFast": { th: "DC Fast Charge", en: "DC Fast Charge", cn: "DC快充" },
-  "compare.row.om": { th: "O&M Contract", en: "O&M Contract", cn: "运维合同" },
-  "compare.row.carbon": { th: "Carbon Credit", en: "Carbon Credit", cn: "碳信用" },
-  "compare.row.price": { th: "ราคาเริ่มต้น", en: "Starting Price", cn: "起步价" },
-  "compare.s.parking": { th: "5-15 คัน", en: "5-15 vehicles", cn: "5-15辆" },
-  "compare.s.evCharger": { th: "1-2 จุด", en: "1-2 points", cn: "1-2点" },
-  "compare.m.parking": { th: "15-50 คัน", en: "15-50 vehicles", cn: "15-50辆" },
-  "compare.m.evCharger": { th: "3-10 จุด", en: "3-10 points", cn: "3-10点" },
-  "compare.l.parking": { th: "50-200+ คัน", en: "50-200+ vehicles", cn: "50-200+辆" },
-  "compare.l.evCharger": { th: "10-50 จุด", en: "10-50 points", cn: "10-50点" },
-  "compare.bess.no": { th: "—", en: "—", cn: "—" },
-  "compare.bess.option": { th: "Option", en: "Option", cn: "可选" },
-  "compare.bess.included": { th: "รวม", en: "Included", cn: "包含" },
-  "compare.ai.app": { th: "แอป", en: "App", cn: "应用" },
-  "compare.ai.dashboard": { th: "Dashboard", en: "Dashboard", cn: "仪表板" },
-  "compare.ai.predictive": { th: "Predictive AI", en: "Predictive AI", cn: "预测AI" },
-  "compare.om.1yr": { th: "1 ปี", en: "1 year", cn: "1年" },
-  "compare.om.35yr": { th: "3-5 ปี", en: "3-5 years", cn: "3-5年" },
-  "compare.carbon.no": { th: "—", en: "—", cn: "—" },
-  "compare.carbon.cert": { th: "ใบรับรอง", en: "Certificate", cn: "证书" },
-  "compare.carbon.esg": { th: "ที่ปรึกษา ESG", en: "ESG Consulting", cn: "ESG咨询" },
+  "compare.header.item": { th: "รายการ", en: "Item", cn: "项目" },
+  "compare.row.0.label": { th: "กำลังผลิต", en: "Capacity", cn: "发电容量" },
+  "compare.row.0.s": { th: "10-30 kWp", en: "10-30 kWp", cn: "10-30 kWp" },
+  "compare.row.0.m": { th: "30-100 kWp", en: "30-100 kWp", cn: "30-100 kWp" },
+  "compare.row.0.l": { th: "100-500+ kWp", en: "100-500+ kWp", cn: "100-500+ kWp" },
+  "compare.row.1.label": { th: "ที่จอดรถ", en: "Parking", cn: "停车位" },
+  "compare.row.1.s": { th: "5-15 คัน", en: "5-15 vehicles", cn: "5-15辆" },
+  "compare.row.1.m": { th: "15-50 คัน", en: "15-50 vehicles", cn: "15-50辆" },
+  "compare.row.1.l": { th: "50-200+ คัน", en: "50-200+ vehicles", cn: "50-200+辆" },
+  "compare.row.2.label": { th: "EV Charger", en: "EV Charger", cn: "电动车充电器" },
+  "compare.row.2.s": { th: "1-2 จุด", en: "1-2 points", cn: "1-2点" },
+  "compare.row.2.m": { th: "3-10 จุด", en: "3-10 points", cn: "3-10点" },
+  "compare.row.2.l": { th: "10-50 จุด", en: "10-50 points", cn: "10-50点" },
+  "compare.row.3.label": { th: "ประหยัดค่าไฟ/เดือน", en: "Monthly Savings", cn: "月节省" },
+  "compare.row.3.s": { th: "5,000-15,000 บาท", en: "5,000-15,000 THB", cn: "5,000-15,000泰铢" },
+  "compare.row.3.m": { th: "15,000-50,000 บาท", en: "15,000-50,000 THB", cn: "15,000-50,000泰铢" },
+  "compare.row.3.l": { th: "50,000-250,000+ บาท", en: "50,000-250,000+ THB", cn: "50,000-250,000+泰铢" },
+  "compare.row.4.label": { th: "คืนทุน", en: "Payback", cn: "回本" },
+  "compare.row.4.s": { th: "4-6 ปี", en: "4-6 years", cn: "4-6年" },
+  "compare.row.4.m": { th: "3-5 ปี", en: "3-5 years", cn: "3-5年" },
+  "compare.row.4.l": { th: "3-5 ปี", en: "3-5 years", cn: "3-5年" },
+  "compare.row.5.label": { th: "BESS (แบตเตอรี่)", en: "BESS (Battery)", cn: "BESS（电池）" },
+  "compare.row.5.s": { th: "—", en: "—", cn: "—" },
+  "compare.row.5.m": { th: "Option", en: "Option", cn: "可选" },
+  "compare.row.5.l": { th: "รวม", en: "Included", cn: "包含" },
+  "compare.row.6.label": { th: "AI Monitoring", en: "AI Monitoring", cn: "AI监控" },
+  "compare.row.6.s": { th: "แอป", en: "App", cn: "应用" },
+  "compare.row.6.m": { th: "Dashboard", en: "Dashboard", cn: "仪表板" },
+  "compare.row.6.l": { th: "Predictive AI", en: "Predictive AI", cn: "预测AI" },
+  "compare.row.7.label": { th: "DC Fast Charge", en: "DC Fast Charge", cn: "DC快充" },
+  "compare.row.7.s": { th: "—", en: "—", cn: "—" },
+  "compare.row.7.m": { th: "—", en: "—", cn: "—" },
+  "compare.row.7.l": { th: "Option (CCS2)", en: "Option (CCS2)", cn: "可选（CCS2）" },
+  "compare.row.8.label": { th: "O&M Contract", en: "O&M Contract", cn: "运维合同" },
+  "compare.row.8.s": { th: "1 ปี", en: "1 year", cn: "1年" },
+  "compare.row.8.m": { th: "1 ปี", en: "1 year", cn: "1年" },
+  "compare.row.8.l": { th: "3-5 ปี", en: "3-5 years", cn: "3-5年" },
+  "compare.row.9.label": { th: "Carbon Credit", en: "Carbon Credit", cn: "碳信用" },
+  "compare.row.9.s": { th: "—", en: "—", cn: "—" },
+  "compare.row.9.m": { th: "ใบรับรอง", en: "Certificate", cn: "证书" },
+  "compare.row.9.l": { th: "ที่ปรึกษา ESG", en: "ESG Consulting", cn: "ESG咨询" },
+  "compare.row.10.label": { th: "ราคาเริ่มต้น", en: "Starting Price", cn: "起步价" },
+  "compare.row.10.s": { th: "~300,000 บาท", en: "~300,000 THB", cn: "约300,000泰铢" },
+  "compare.row.10.m": { th: "~840,000 บาท", en: "~840,000 THB", cn: "约840,000泰铢" },
+  "compare.row.10.l": { th: "~2,500,000 บาท", en: "~2,500,000 THB", cn: "约2,500,000泰铢" },
   "compare.note": {
     th: "* ราคาเป็นราคาประมาณการ ราคาจริงขึ้นอยู่กับการสำรวจหน้างาน ติดต่อทีมงานเพื่อรับใบเสนอราคาที่แม่นยำ",
     en: "* Prices are estimates. Actual prices depend on site survey. Contact our team for an accurate quote.",
@@ -402,17 +366,13 @@ export const pricingTranslations: TranslationDict = {
   },
 
   /* ─── Solar Carport vs Traditional ─── */
-  "vs.label": { th: "Comparison", en: "Comparison", cn: "对比" },
-  "vs.title": { th: "Solar Carport vs", en: "Solar Carport vs", cn: "太阳能车棚 vs" },
   "vs.title.accent": { th: "ที่จอดรถแบบเดิม", en: "Traditional Parking", cn: "传统停车场" },
   "vs.desc": {
     th: "เปรียบเทียบข้อแตกต่างระหว่างที่จอดรถทั่วไปกับ Solar Carport ที่สร้างรายได้และมูลค่าเพิ่มให้ธุรกิจ",
     en: "Compare the differences between traditional parking and Solar Carport that generates revenue and added value for your business.",
     cn: "比较传统停车场与为您的业务创造收入和附加价值的太阳能车棚之间的差异。",
   },
-  "vs.col.item": { th: "รายการ", en: "Item", cn: "项目" },
-  "vs.col.old": { th: "ที่จอดรถแบบเดิม", en: "Traditional Parking", cn: "传统停车场" },
-  "vs.col.carport": { th: "Solar Carport", en: "Solar Carport", cn: "太阳能车棚" },
+  "vs.header.old": { th: "ที่จอดรถแบบเดิม", en: "Traditional Parking", cn: "传统停车场" },
   "vs.row.0.label": { th: "รายได้จากพื้นที่", en: "Revenue from Space", cn: "空间收入" },
   "vs.row.0.old": { th: "ไม่มี — เป็นต้นทุนอย่างเดียว", en: "None — cost only", cn: "无 — 仅有成本" },
   "vs.row.0.carport": { th: "ผลิตไฟฟ้าลดค่าไฟ 30-100%", en: "Generate electricity, reduce bills 30-100%", cn: "发电，减少30-100%电费" },
@@ -473,13 +433,13 @@ export const pricingTranslations: TranslationDict = {
   "faq.2.q": { th: "คืนทุนภายในกี่ปี?", en: "How many years to payback?", cn: "几年可以回本？" },
   "faq.2.a": { th: "โดยเฉลี่ย Solar Carport คืนทุนภายใน 3-6 ปี ขึ้นอยู่กับขนาดระบบ ค่าไฟปัจจุบัน และชั่วโมงแสงแดดในพื้นที่ ระบบมีอายุใช้งาน 25+ ปี หมายความว่าหลังคืนทุนแล้วจะได้ไฟฟ้าฟรีอีก 19-22 ปี", en: "On average, Solar Carport pays back within 3-6 years depending on system size, current electricity costs, and sunlight hours. The system lasts 25+ years, meaning free electricity for 19-22 years after payback.", cn: "平均而言，太阳能车棚在3-6年内回本，取决于系统规模、当前电费和日照时数。系统使用寿命25年以上，意味着回本后还有19-22年的免费电力。" },
   "faq.3.q": { th: "รองรับ EV Charger ได้กี่จุด?", en: "How many EV Charger points are supported?", cn: "支持多少个电动车充电点？" },
-  "faq.3.a": { th: "ขึ้นอยู่กับขนาดระบบ — Size S รองรับ 1-2 จุด, Size M รองรับ 3-10 จุด, Size L รองรับ 10-50 จุด ทั้ง AC Type 2 และ DC Fast Charge (CCS2) สามารถเพิ่มจุดชาร์จในภายหลังได้", en: "Depends on system size — Size S supports 1-2 points, Size M supports 3-10 points, Size L supports 10-50 points. Both AC Type 2 and DC Fast Charge (CCS2). Additional points can be added later.", cn: "取决于系统规模 — Size S支持1-2点，Size M支持3-10点，Size L支持10-50点。支持AC Type 2和DC快充（CCS2）。可以后续增加充电点。" },
+  "faq.3.a": { th: "ขึ้นอยู่กับขนาดระบบ — Start รองรับ 1-2 จุด, Pro รองรับ 3-10 จุด, Enterprise รองรับ 10-50 จุด ทั้ง AC Type 2 และ DC Fast Charge (CCS2) สามารถเพิ่มจุดชาร์จในภายหลังได้", en: "Depends on system size — Start supports 1-2 points, Pro supports 3-10 points, Enterprise supports 10-50 points. Both AC Type 2 and DC Fast Charge (CCS2). Additional points can be added later.", cn: "取决于系统规模 — Start支持1-2点，Pro支持3-10点，Enterprise支持10-50点。支持AC Type 2和DC快充（CCS2）。可以后续增加充电点。" },
   "faq.4.q": { th: "ต้องขออนุญาตหน่วยงานใดบ้าง?", en: "Which agencies require permits?", cn: "需要哪些机构的许可？" },
   "faq.4.a": { th: "ทีมงาน SIRINX ดำเนินการขออนุญาตให้ทั้งหมด ได้แก่ ขออนุญาตเชื่อมต่อ กฟน./กฟภ., ขออนุญาตก่อสร้าง (กรณีโครงสร้างใหม่), และจดทะเบียนผู้ผลิตไฟฟ้า (กรณี Net Metering)", en: "SIRINX team handles all permits: MEA/PEA connection permits, construction permits (for new structures), and power producer registration (for Net Metering).", cn: "SIRINX团队处理所有许可：MEA/PEA连接许可、建筑许可（新结构）和发电商注册（净计量）。" },
   "faq.5.q": { th: "มีบริการดูแลหลังติดตั้งไหม?", en: "Is there post-installation service?", cn: "有安装后服务吗？" },
   "faq.5.a": { th: "มีครับ ทุกแพ็คเกจรวมบริการ O&M (Operation & Maintenance) ตั้งแต่ 1-5 ปีตามขนาดระบบ รวมถึง AI Monitoring ตรวจสอบประสิทธิภาพ 24/7 และ Predictive Maintenance ป้องกันปัญหาก่อนเกิด", en: "Yes, all packages include O&M (Operation & Maintenance) service from 1-5 years depending on system size, including 24/7 AI Monitoring and Predictive Maintenance to prevent issues before they occur.", cn: "是的，所有套餐包含1-5年的运维服务（取决于系统规模），包括24/7 AI监控和预测性维护，在问题发生前预防。" },
   "faq.6.q": { th: "ขนาดใหญ่กว่า 500 kWp ทำได้ไหม?", en: "Can you handle projects larger than 500 kWp?", cn: "能做500 kWp以上的项目吗？" },
-  "faq.6.a": { th: "ได้ครับ สำหรับโครงการขนาดใหญ่กว่า 500 kWp เราจะจัดทีมวิศวกรเข้าสำรวจหน้างานและออกแบบระบบเฉพาะทาง กรุณาติดต่อทีมงานโดยตรงเพื่อประเมินความต้องการ", en: "Yes, for projects larger than 500 kWp, we assign an engineering team for on-site survey and custom system design. Please contact our team directly to assess your requirements.", cn: "可以，对于500 kWp以上的项目，我们将派工程团队进行现场勘察和定制系统设计。请直接联系我们的团队评估您的需求。" },
+  "faq.6.a": { th: "ได้ครับ แพ็คเกจ Enterprise รองรับโครงการขนาดใหญ่ตั้งแต่ 100 kWp ขึ้นไป สำหรับโครงการที่ใหญ่กว่า 500 kWp เราจะจัดทีมวิศวกรเข้าสำรวจหน้างานและออกแบบระบบเฉพาะทาง กรุณาติดต่อทีมงานโดยตรง", en: "Yes, the Enterprise package supports large projects from 100 kWp and above. For projects larger than 500 kWp, we assign an engineering team for on-site survey and custom system design. Please contact our team directly.", cn: "可以，Enterprise套餐支持100 kWp以上的大型项目。对于500 kWp以上的项目，我们将派工程团队进行现场勘察和定制系统设计。请直接联系我们的团队。" },
 
   /* ─── Final CTA ─── */
   "cta.title": { th: "พร้อมเริ่มต้นลดค่าไฟ?", en: "Ready to Start Saving?", cn: "准备好开始省电了吗？" },
@@ -491,3 +451,6 @@ export const pricingTranslations: TranslationDict = {
   "cta.survey": { th: "นัดสำรวจหน้างานฟรี", en: "Schedule Free Site Survey", cn: "预约免费现场勘察" },
   "cta.details": { th: "ดูรายละเอียด Solar Carport", en: "View Solar Carport Details", cn: "查看太阳能车棚详情" },
 };
+
+registerPageTranslations("pricing", dict);
+export default dict;

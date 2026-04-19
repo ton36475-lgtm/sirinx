@@ -84,7 +84,7 @@ const translations: Record<string, Record<Language, string>> = {
   },
 
   // Pricing page
-  "pricing.title": { th: "เลือกขนาดที่เหมาะกับธุรกิจ", en: "Choose the Right Size for Your Business", cn: "选择适合您业务的规模" },
+  "pricing.title": { th: "เลือกแพ็คเกจที่เหมาะกับธุรกิจ", en: "Choose the Right Package for Your Business", cn: "选择适合您业务的套餐" },
   "pricing.subtitle": { th: "คุ้มค่าทุกการลงทุน", en: "Every Investment Pays Off", cn: "每笔投资都有回报" },
   "pricing.desc": {
     th: "Solar Carport โดย SIRINX — ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger พร้อมสิทธิประโยชน์ทางภาษีจากมาตรการรัฐ",
