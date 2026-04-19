@@ -10,6 +10,8 @@ import {
   RefreshCw, Eye, Layers, Target, PieChart, Calendar
 } from "lucide-react";
 import { toast } from "sonner";
+import { usePageTranslation } from "@/i18n";
+import "../i18n/pages/solarAssessment";
 
 /* ================================================================
    SIRINX Solar + BESS Engineering Calculator v3.0
@@ -61,7 +63,7 @@ const ORIENTATIONS: Record<string, { name: string; factor: number; note: string 
 };
 
 interface BusinessProfile {
-  name: string;
+  nameKey: string;
   icon: React.ReactNode;
   daytimeRatio: number;
   avgRate: number;
@@ -69,7 +71,7 @@ interface BusinessProfile {
   offPeakRate: number;
   costPerKwp: number;
   typicalBill: string;
-  operatingHours: string;
+  operatingHoursKey: string;
   peakDemandHours: string;
   nightUsageRatio: number;
   demandCharge: number; // THB/kW
@@ -584,7 +586,7 @@ function WarningBox({ warnings }: { warnings: string[] }) {
     <div className="p-4 rounded-xl border border-accent-secondary/30 bg-accent-secondary/10">
       <div className="flex items-center gap-2 mb-2">
         <AlertTriangle className="w-5 h-5 text-accent-secondary" />
-        <span className="font-display font-semibold text-foreground text-sm">{t("sa.r.warnings")}</span>
+        <span className="font-display font-semibold text-foreground text-sm">คำเตือน</span>
       </div>
       <ul className="space-y-1.5">
         {warnings.map((w, i) => (
@@ -667,6 +669,7 @@ function HourlyOverlayChart({ solar, consumption }: { solar: number[]; consumpti
 
 // ── Main Component ──
 export default function SolarAssessment() {
+  const { t } = usePageTranslation("solarAssessment");
   const [step, setStep] = useState(0);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showProjection, setShowProjection] = useState(false);
@@ -729,7 +732,7 @@ export default function SolarAssessment() {
   // Generate summary text for CTA
   const getResultSummary = () => {
     if (!result) return "";
-    return `ระบบ Solar ${result.actualKwp} kWp${result.bessCapacityKwh > 0 ? ` + BESS ${result.bessCapacityKwh} kWh` : ""} | ค่าไฟ ${input.monthlyBill.toLocaleString()} บาท/เดือน | ${t("sa.summary.savings")} ${result.monthlySavings.toLocaleString()} ${t("sa.summary.perMonth")} | คืนทุน ${result.simplePayback} ปี | พื้นที่ ${input.roofArea} ตร.ม. | ${selectedBiz?.name || ""}`;
+    return `ระบบ Solar ${result.actualKwp} kWp${result.bessCapacityKwh > 0 ? ` + BESS ${result.bessCapacityKwh} kWh` : ""} | ค่าไฟ ${input.monthlyBill.toLocaleString()} บาท/เดือน | ${t("sa.summary.savings")} ${result.monthlySavings.toLocaleString()} ${t("sa.summary.perMonth")} | คืนทุน ${result.simplePayback} ปี | พื้นที่ ${input.roofArea} ตร.ม. | ${selectedBiz ? t(selectedBiz.nameKey) : ""}`;
   };
 
   return (
@@ -831,11 +834,11 @@ export default function SolarAssessment() {
                             <div className={`p-2 rounded-lg ${input.businessType === key ? "bg-accent-primary/20 text-accent-primary" : "bg-surface-elevated text-text-muted group-hover:text-accent-primary"}`}>
                               {biz.icon}
                             </div>
-                            <span className="font-display font-semibold text-sm text-foreground">{biz.name}</span>
+                            <span className="font-display font-semibold text-sm text-foreground">{t(biz.nameKey)}</span>
                           </div>
                           <div className="text-xs text-text-muted space-y-0.5">
                             <div>ค่าไฟทั่วไป: {biz.typicalBill} บาท/เดือน</div>
-                            <div>เปิดทำการ: {biz.operatingHours}</div>
+                            <div>เปิดทำการ: {t(biz.operatingHoursKey)}</div>
                           </div>
                         </button>
                       ))}
@@ -845,7 +848,7 @@ export default function SolarAssessment() {
                         className="mt-4 p-4 rounded-xl bg-accent-glow/50 border border-border-accent">
                         <div className="flex items-center gap-2 mb-2">
                           <Info className="w-4 h-4 text-accent-primary" />
-                          <span className="text-sm font-semibold text-foreground">โปรไฟล์การใช้ไฟ: {selectedBiz.name}</span>
+                          <span className="text-sm font-semibold text-foreground">โปรไฟล์การใช้ไฟ: {t(selectedBiz.nameKey)}</span>
                         </div>
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
                           <div><span className="text-text-muted">ใช้ไฟกลางวัน:</span> <span className="text-foreground font-semibold">{selectedBiz.daytimeRatio * 100}%</span></div>
@@ -880,7 +883,7 @@ export default function SolarAssessment() {
                       {input.inputMode === "bill" ? (
                         <InputField label="ค่าไฟฟ้าเฉลี่ยต่อเดือน *" unit="บาท" value={input.monthlyBill || ""}
                           onChange={(v) => updateInput("monthlyBill", parseFloat(v) || 0)}
-                          placeholder={t("sa.s1.placeholderBill")} helpText={selectedBiz ? `ค่าไฟทั่วไปสำหรับ${selectedBiz.name}: ${selectedBiz.typicalBill} บาท/เดือน` : undefined} />
+                          placeholder={t("sa.s1.placeholderBill")} helpText={selectedBiz ? `ค่าไฟทั่วไปสำหรับ${t(selectedBiz.nameKey)}: ${selectedBiz.typicalBill} บาท/เดือน` : undefined} />
                       ) : (
                         <InputField label="ปริมาณการใช้ไฟฟ้าเฉลี่ยต่อเดือน *" unit="kWh" value={input.monthlyKwh || ""}
                           onChange={(v) => updateInput("monthlyKwh", parseFloat(v) || 0)}
@@ -932,7 +935,7 @@ export default function SolarAssessment() {
                                 labels={Array.from({ length: 24 }, (_, i) => i % 3 === 0 ? `${i}` : "")}
                                 height={80}
                               />
-                              <p className="text-[10px] text-text-muted mt-1 text-center">{t("sa.s1.hourlyPattern")} {selectedBiz.name})</p>
+                              <p className="text-[10px] text-text-muted mt-1 text-center">{t("sa.s1.hourlyPattern")} {t(selectedBiz.nameKey)})</p>
                             </motion.div>
                           )}
                         </motion.div>

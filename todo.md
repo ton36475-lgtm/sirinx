@@ -336,3 +336,8 @@
 - [x] Add reference checklist for all files to update
 - [x] Validate skill
 - [x] Deliver skill to user
+
+## Phase 20 — Fix SolarAssessment ReferenceError
+- [x] Fix ReferenceError: t is not defined in SolarAssessment.tsx
+- [x] Verify /assessment page loads without errors — 0 TS errors, 124 tests pass
+- [ ] Save checkpoint
