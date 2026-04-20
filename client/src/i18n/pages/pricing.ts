@@ -441,6 +441,23 @@ const dict: TranslationDict = {
   "faq.6.q": { th: "ขนาดใหญ่กว่า 500 kWp ทำได้ไหม?", en: "Can you handle projects larger than 500 kWp?", cn: "能做500 kWp以上的项目吗？" },
   "faq.6.a": { th: "ได้ครับ แพ็คเกจ Enterprise รองรับโครงการขนาดใหญ่ตั้งแต่ 100 kWp ขึ้นไป สำหรับโครงการที่ใหญ่กว่า 500 kWp เราจะจัดทีมวิศวกรเข้าสำรวจหน้างานและออกแบบระบบเฉพาะทาง กรุณาติดต่อทีมงานโดยตรง", en: "Yes, the Enterprise package supports large projects from 100 kWp and above. For projects larger than 500 kWp, we assign an engineering team for on-site survey and custom system design. Please contact our team directly.", cn: "可以，Enterprise套餐支持100 kWp以上的大型项目。对于500 kWp以上的项目，我们将派工程团队进行现场勘察和定制系统设计。请直接联系我们的团队。" },
 
+  /* ─── Brochure Downloads Section ─── */
+  "brochure.badge": { th: "ดาวน์โหลดโบรชัวร์", en: "Download Brochures", cn: "下载宣传册" },
+  "brochure.title": { th: "โบรชัวร์เสนอราคาและวิดีโอ", en: "Quotation Brochures & Video", cn: "报价宣传册和视频" },
+  "brochure.title.accent": { th: "สำหรับทีมขายและลูกค้า", en: "For Sales Team & Customers", cn: "面向销售团队和客户" },
+  "brochure.desc": { th: "ดาวน์โหลดโบรชัวร์เสนอราคาแพ็คเกจ Start และ Pro พร้อมสเปคอุปกรณ์ครบถ้วน สำหรับนำเสนอลูกค้าหรือแชร์ผ่าน LINE / Facebook", en: "Download quotation brochures for Start and Pro packages with complete equipment specs. Perfect for customer presentations or sharing via LINE / Facebook.", cn: "下载Start和Pro套餐的报价宣传册，包含完整设备规格。适合客户演示或通过LINE/Facebook分享。" },
+  "brochure.start.title": { th: "Start Package", en: "Start Package", cn: "Start套餐" },
+  "brochure.start.price": { th: "125,000 THB", en: "125,000 THB", cn: "125,000泰铢" },
+  "brochure.pro.title": { th: "Pro Package", en: "Pro Package", cn: "Pro套餐" },
+  "brochure.pro.price": { th: "310,500 THB", en: "310,500 THB", cn: "310,500泰铢" },
+  "brochure.bilingual.title": { th: "ภาษาอังกฤษ-ไทย", en: "English-Thai", cn: "英泰双语" },
+  "brochure.engineer.title": { th: "ฉบับวิศวกร", en: "Engineer Edition", cn: "工程师版" },
+  "brochure.english.title": { th: "English Only", en: "English Only", cn: "纯英文版" },
+  "brochure.video.title": { th: "วิดีโอแนะนำ SIRINX", en: "SIRINX Introduction Video", cn: "SIRINX介绍视频" },
+  "brochure.video.desc": { th: "วิดีโอ 20 วินาที แนะนำระบบโซลาร์เซลล์ครบวงจร พร้อมเสียงบรรยายภาษาไทย", en: "20-second video introducing the complete solar system with Thai narration.", cn: "20秒视频介绍完整的太阳能系统，配有泰语旁白。" },
+  "brochure.download": { th: "ดาวน์โหลด", en: "Download", cn: "下载" },
+  "brochure.play": { th: "เล่นวิดีโอ", en: "Play Video", cn: "播放视频" },
+
   /* ─── Final CTA ─── */
   "cta.title": { th: "พร้อมเริ่มต้นลดค่าไฟ?", en: "Ready to Start Saving?", cn: "准备好开始省电了吗？" },
   "cta.desc": {

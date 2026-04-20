@@ -351,4 +351,55 @@
 - [x] Rewrite projects.ts i18n with equipment translations (TH/EN/CN)
 - [x] Verify page renders correctly in browser — featured project, cards, equipment, gallery all working
 - [x] 0 TS errors, 124 tests pass
+- [x] Save checkpoint
+
+## Phase 22 — Professional Brochure/Quotation Images + AI Video + Website Integration
+
+### 22A: Professional Brochure Images (Google Flow Layout Style)
+- [x] Generate quotation brochure — Start Package (125,000 THB) with product images + specs
+- [x] Generate quotation brochure — Pro Package (310,500 THB) with product images + specs
+- [x] Generate product datasheet — AIKO Neostar 1U+ 680W Solar Panel
+- [x] Generate product datasheet — GSL Energy 16.08kWh LiFePO4 BESS
+- [x] Generate product datasheet — Solis SOLARATOR S6-EH3P Hybrid Inverter
+- [x] Generate product datasheet — Lisiner R261L1 Liquid-Cooled ESS
+- [x] Generate overview brochure — SIRINX Solar Solutions (all 4 products)
+
+### 22B: AI Marketing Video
+- [x] Generate reference images for video (engineer character + solar house scene)
+- [x] Generate AI video clips for SIRINX solar marketing (3 clips: engineer intro, equipment close-up, aerial drone)
+- [x] Add narration audio (Thai) — male voice, professional tone
+- [x] Combine clips with BGM into final video (20s, 12MB, crossfade transitions)
+
+### 22C: Website Integration
+- [x] Upload all brochure images to CDN (5 brochures + 1 video to CDN)
+- [x] Create Brochure/Downloads section on Pricing page (between FAQ and CTA)
+- [x] Add brochure image gallery with download links + video player
+- [x] Ensure all equipment specs match product_specs.md exactly
+- [x] Run tests — 124 tests passing, 0 TS errors
+- [ ] Save checkpoint
+
+## Phase 23 — Custom Domain Binding (sirinx.co)
+- [ ] Save checkpoint for publish
+- [ ] Publish website
+- [ ] Bind sirinx.co custom domain via Management UI
+- [ ] Configure DNS at Squarespace to point to Manus hosting
+
+## Phase 24 — Custom Notifications + Stripe Payment Integration
+
+### 24A: Custom Notification System
+- [ ] Set up notification settings in Management UI (Settings > Notifications)
+- [ ] Create notification triggers for key events (new lead, contact form, assessment completion)
+- [ ] Add in-app notification UI for admin dashboard (bell icon + notification panel)
+- [ ] Integrate with notifyOwner() for real-time owner alerts
+- [ ] Write vitest tests for notification system
+
+### 24B: Stripe Payment Integration
+- [ ] Add Stripe feature using webdev_add_feature
+- [ ] Configure Stripe API keys via webdev_request_secrets
+- [ ] Create product/service catalog (Solar Carport packages: Start, Pro, Enterprise deposits)
+- [ ] Build payment page with Stripe Checkout integration
+- [ ] Create payment success/cancel pages
+- [ ] Add payment history to admin dashboard
+- [ ] Create tRPC procedures for payment management
+- [ ] Write vitest tests for Stripe integration
 - [ ] Save checkpoint
