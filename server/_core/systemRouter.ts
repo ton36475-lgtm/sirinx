@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { getIntegrationHealth } from "./integration-health";
 import { notifyOwner } from "./notification";
 import { adminProcedure, publicProcedure, router } from "./trpc";
 
@@ -12,6 +13,8 @@ export const systemRouter = router({
     .query(() => ({
       ok: true,
     })),
+
+  integrationHealth: publicProcedure.query(() => getIntegrationHealth()),
 
   notifyOwner: adminProcedure
     .input(

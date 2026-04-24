@@ -3,9 +3,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, Loader2, MessageCircle, Zap, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Streamdown } from "streamdown";
 import { trpc } from "@/lib/trpc";
 import { useEventTracking } from "@/hooks/useAnalytics";
+import LightMarkdown from "./LightMarkdown";
 
 // ===== LINE SVG Icon =====
 const LINEIcon = ({ className }: { className?: string }) => (
@@ -305,7 +305,7 @@ export default function FloatingChatWidget() {
                       >
                         {msg.role === "assistant" ? (
                           <div className="prose prose-sm prose-invert max-w-none prose-p:my-1 prose-li:my-0.5">
-                            <Streamdown>{msg.content}</Streamdown>
+                            <LightMarkdown>{msg.content}</LightMarkdown>
                           </div>
                         ) : (
                           <p className="whitespace-pre-wrap">{msg.content}</p>

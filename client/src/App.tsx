@@ -1,34 +1,78 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
+import { Suspense, lazy, useEffect, useState } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import Layout from "./components/Layout";
-import DashboardLayout from "./components/DashboardLayout";
 import { usePageViewTracking } from "@/hooks/useAnalytics";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Solutions from "./pages/Solutions";
-import Industries from "./pages/Industries";
-import InvestmentTaxHub from "./pages/InvestmentTaxHub";
-import Projects from "./pages/Projects";
-import Blog from "./pages/Blog";
-import BlogPost from "./pages/BlogPost";
-import Contact from "./pages/Contact";
-import SolarAssessment from "./pages/SolarAssessment";
-import Partner from "./pages/Partner";
-import Strategy from "./pages/Strategy";
-import SolarCarport from "./pages/SolarCarport";
-import Pricing from "./pages/Pricing";
-import AdminDashboard from "./pages/admin/Dashboard";
-import AdminLeads from "./pages/admin/Leads";
-import AdminBlogCMS from "./pages/admin/BlogCMS";
-import AdminContactSubmissions from "./pages/admin/ContactSubmissions";
-import AdminAnalytics from "./pages/admin/Analytics";
-import FloatingChatWidget from "./components/FloatingChatWidget";
 import AntiCopy from "./components/AntiCopy";
+
+const NotFound = lazy(() => import("@/pages/NotFound"));
+const Home = lazy(() => import("./pages/Home"));
+const About = lazy(() => import("./pages/About"));
+const Solutions = lazy(() => import("./pages/Solutions"));
+const Industries = lazy(() => import("./pages/Industries"));
+const InvestmentTaxHub = lazy(() => import("./pages/InvestmentTaxHub"));
+const Projects = lazy(() => import("./pages/Projects"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
+const Contact = lazy(() => import("./pages/Contact"));
+const SolarAssessment = lazy(() => import("./pages/SolarAssessment"));
+const Partner = lazy(() => import("./pages/Partner"));
+const Strategy = lazy(() => import("./pages/Strategy"));
+const SolarCarport = lazy(() => import("./pages/SolarCarport"));
+const Pricing = lazy(() => import("./pages/Pricing"));
+const DashboardLayout = lazy(() => import("./components/DashboardLayout"));
+const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
+const AdminLeads = lazy(() => import("./pages/admin/Leads"));
+const AdminBlogCMS = lazy(() => import("./pages/admin/BlogCMS"));
+const AdminContactSubmissions = lazy(() => import("./pages/admin/ContactSubmissions"));
+const AdminAnalytics = lazy(() => import("./pages/admin/Analytics"));
+const AdminAgentMonitor = lazy(() => import("./pages/admin/AgentMonitor"));
+const FloatingChatWidget = lazy(() => import("./components/FloatingChatWidget"));
+
+function RouteFallback() {
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      <div className="container flex min-h-[60vh] items-center justify-center">
+        <div className="h-10 w-10 rounded-full border-2 border-accent-primary/30 border-t-accent-primary animate-spin" />
+      </div>
+    </div>
+  );
+}
+
+function DeferredFloatingChatWidget() {
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  useEffect(() => {
+    if (shouldLoad) return;
+
+    const reveal = () => setShouldLoad(true);
+    const timeout = window.setTimeout(reveal, 1800);
+    const events: Array<keyof WindowEventMap> = ["pointerdown", "keydown", "touchstart"];
+
+    for (const event of events) {
+      window.addEventListener(event, reveal, { once: true, passive: true });
+    }
+
+    return () => {
+      window.clearTimeout(timeout);
+      for (const event of events) {
+        window.removeEventListener(event, reveal);
+      }
+    };
+  }, [shouldLoad]);
+
+  if (!shouldLoad) return null;
+
+  return (
+    <Suspense fallback={null}>
+      <FloatingChatWidget />
+    </Suspense>
+  );
+}
 
 function PublicRouter() {
   return (
@@ -64,6 +108,7 @@ function AdminRouter() {
         <Route path="/admin/blog" component={AdminBlogCMS} />
         <Route path="/admin/contacts" component={AdminContactSubmissions} />
         <Route path="/admin/analytics" component={AdminAnalytics} />
+        <Route path="/admin/agent-monitor" component={AdminAgentMonitor} />
         <Route component={NotFound} />
       </Switch>
     </DashboardLayout>
@@ -96,8 +141,10 @@ function App() {
           <Toaster />
           <PageViewTracker />
           <AntiCopy enabled={import.meta.env.PROD} />
-          <Router />
-          <FloatingChatWidget />
+          <Suspense fallback={<RouteFallback />}>
+            <Router />
+          </Suspense>
+          <DeferredFloatingChatWidget />
         </TooltipProvider>
       </ThemeProvider>
       </LanguageProvider>

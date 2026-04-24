@@ -3,17 +3,20 @@ import fs from "fs";
 import { type Server } from "http";
 import { nanoid } from "nanoid";
 import path from "path";
-import { createServer as createViteServer } from "vite";
-import viteConfig from "../../vite.config";
 import { injectOgTags } from "../ogTags";
 
 function getBaseUrl(req: express.Request): string {
   const proto = req.headers["x-forwarded-proto"] || req.protocol || "https";
-  const host = req.headers["x-forwarded-host"] || req.headers.host || "sirinxsolar-dfabnh7l.manus.space";
+  const host = req.headers["x-forwarded-host"] || req.headers.host || "sirinx.co";
   return `${proto}://${host}`;
 }
 
 export async function setupVite(app: Express, server: Server) {
+  const viteModuleName = "vite";
+  const viteConfigModule = "../../vite.config";
+  const [{ createServer: createViteServer }, { default: viteConfig }] =
+    await Promise.all([import(viteModuleName), import(viteConfigModule)]);
+
   const serverOptions = {
     middlewareMode: true,
     hmr: { server },

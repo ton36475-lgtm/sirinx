@@ -1,6 +1,10 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
+import fs from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
+import * as db from "./db";
 
 // ==================== MOCK DB ====================
 
@@ -162,6 +166,27 @@ describe("lead.submit", () => {
       message: "ต้องการข้อมูลเพิ่มเติม",
     });
     expect(result.success).toBe(true);
+  });
+
+  it("queues public leads locally when database is unavailable", async () => {
+    const queueDir = await fs.mkdtemp(path.join(os.tmpdir(), "sirinx-router-leads-"));
+    process.env.SIRINX_LOCAL_QUEUE_DIR = queueDir;
+    vi.mocked(db.createLead).mockRejectedValueOnce(new Error("Database not available"));
+
+    const caller = appRouter.createCaller(createPublicContext());
+    const result = await caller.lead.submit({
+      source: "contact",
+      name: "Queued Lead",
+      phone: "0812345678",
+    });
+
+    expect(result.success).toBe(true);
+    expect(result).toHaveProperty("queued", true);
+
+    const queuedContent = await fs.readFile(path.join(queueDir, "leads.jsonl"), "utf-8");
+    expect(queuedContent).toContain("Queued Lead");
+
+    delete process.env.SIRINX_LOCAL_QUEUE_DIR;
   });
 });
 
@@ -555,6 +580,7 @@ describe("chatbot.chat (public)", () => {
     });
     expect(result).toHaveProperty("reply");
     expect(result.reply).toContain("LINE");
+    expect(result.reply).not.toContain("ระบบขัดข้อง");
   });
 
   it("is accessible without authentication", async () => {

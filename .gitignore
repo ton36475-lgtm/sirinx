@@ -41,6 +41,10 @@ lerna-debug.log*
 
 # Runtime data
 pids
+runtime-output/
+artifacts/
+secrets/*
+!secrets/.gitignore
 *.pid
 *.seed
 *.pid.lock
@@ -49,6 +53,8 @@ pids
 # Coverage directory used by tools like istanbul
 coverage/
 *.lcov
+__pycache__/
+*.pyc
 
 # nyc test coverage
 .nyc_output
@@ -100,6 +106,7 @@ jspm_packages/
 # Temporary folders
 tmp/
 temp/
+_tmp_*
 
 # Database
 *.db

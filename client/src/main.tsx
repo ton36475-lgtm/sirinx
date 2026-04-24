@@ -8,6 +8,7 @@ import superjson from "superjson";
 import App from "./App";
 import { getLoginUrl } from "./const";
 import "./index.css";
+import { installAnalyticsScript } from "./lib/analytics-loader";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +52,11 @@ const trpcClient = trpc.createClient({
       },
     }),
   ],
+});
+
+installAnalyticsScript(document, {
+  endpoint: import.meta.env.VITE_ANALYTICS_ENDPOINT,
+  websiteId: import.meta.env.VITE_ANALYTICS_WEBSITE_ID,
 });
 
 createRoot(document.getElementById("root")!).render(
