@@ -232,7 +232,7 @@
 - [x] Convert all hardcoded Thai text in Industries.tsx to translation keys
 - [ ] Convert all hardcoded Thai text in InvestmentTaxHub.tsx to translation keys
 - [x] Convert all hardcoded Thai text in Contact.tsx to translation keys
-- [ ] Convert all hardcoded Thai text in About.tsx to translation keys
+- [x] Convert all hardcoded Thai text in About.tsx to translation keys
 - [x] Convert all hardcoded Thai text in Projects.tsx to translation keys
 - [ ] Convert all hardcoded Thai text in Blog.tsx to translation keys
 - [ ] Convert all hardcoded Thai text in Assessment.tsx to translation keys
@@ -242,8 +242,8 @@
 ## Phase 14 — Anti-Copy Protection + White-Label Architecture
 
 ### 14A: Anti-Copy Coding Protection System
-- [ ] Research anti-copy techniques: code obfuscation, right-click disable, DevTools detection, watermarking
-- [ ] Implement client-side copy protection (disable right-click, text selection, keyboard shortcuts)
+- [x] Research anti-copy techniques: code obfuscation, right-click disable, DevTools detection, watermarking
+- [x] Implement client-side copy protection (disable right-click, text selection, keyboard shortcuts)
 - [ ] Implement DevTools detection and warning system
 - [ ] Add JavaScript code obfuscation to production build
 - [ ] Add dynamic watermarking system (invisible + visible options)
