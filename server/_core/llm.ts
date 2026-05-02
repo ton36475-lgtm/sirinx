@@ -56,6 +56,7 @@ export type ToolChoice =
   | ToolChoiceExplicit;
 
 export type InvokeParams = {
+  model?: string;
   messages: Message[];
   tools?: Tool[];
   toolChoice?: ToolChoice;
@@ -266,67 +267,99 @@ const normalizeResponseFormat = ({
 };
 
 export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
-  assertApiKey();
+  const models = [
+    params.model || "gemini-2.5-flash",
+    "claude-3-5-sonnet-20241022",
+    "gpt-4o",
+    "ollama/llama3",
+    "local-llm"
+  ];
 
-  const {
-    messages,
-    tools,
-    toolChoice,
-    tool_choice,
-    outputSchema,
-    output_schema,
-    responseFormat,
-    response_format,
-  } = params;
+  let lastError: any = null;
 
-  const payload: Record<string, unknown> = {
-    model: "gemini-2.5-flash",
-    messages: messages.map(normalizeMessage),
-  };
+  for (const model of models) {
+    try {
+      assertApiKey();
 
-  if (tools && tools.length > 0) {
-    payload.tools = tools;
+      const {
+        messages,
+        tools,
+        toolChoice,
+        tool_choice,
+        outputSchema,
+        output_schema,
+        responseFormat,
+        response_format,
+      } = params;
+
+      const payload: Record<string, unknown> = {
+        model: model,
+        messages: messages.map(normalizeMessage),
+      };
+
+      if (tools && tools.length > 0) {
+        payload.tools = tools;
+      }
+
+      const normalizedToolChoice = normalizeToolChoice(
+        toolChoice || tool_choice,
+        tools
+      );
+      if (normalizedToolChoice) {
+        payload.tool_choice = normalizedToolChoice;
+      }
+
+      payload.max_tokens = 32768;
+      if (model.includes("gemini")) {
+        payload.thinking = {
+          "budget_tokens": 128
+        };
+      }
+
+      const normalizedResponseFormat = normalizeResponseFormat({
+        responseFormat,
+        response_format,
+        outputSchema,
+        output_schema,
+      });
+
+      if (normalizedResponseFormat) {
+        payload.response_format = normalizedResponseFormat;
+      }
+
+      const apiUrl = model.startsWith("ollama/") 
+        ? "http://localhost:11434/v1/chat/completions"
+        : model === "local-llm"
+        ? "http://localhost:8080/v1/chat/completions"
+        : resolveApiUrl();
+
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${ENV.forgeApiKey}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        if (response.status === 429 || response.status >= 500) {
+          console.warn(`Model ${model} failed with ${response.status}. Retrying with next model...`);
+          continue;
+        }
+        throw new Error(
+          `LLM invoke failed: ${response.status} ${response.statusText} – ${errorText}`
+        );
+      }
+
+      return (await response.json()) as InvokeResult;
+    } catch (e) {
+      lastError = e;
+      console.error(`Error invoking model ${model}:`, e);
+      continue;
+    }
   }
 
-  const normalizedToolChoice = normalizeToolChoice(
-    toolChoice || tool_choice,
-    tools
-  );
-  if (normalizedToolChoice) {
-    payload.tool_choice = normalizedToolChoice;
-  }
-
-  payload.max_tokens = 32768
-  payload.thinking = {
-    "budget_tokens": 128
-  }
-
-  const normalizedResponseFormat = normalizeResponseFormat({
-    responseFormat,
-    response_format,
-    outputSchema,
-    output_schema,
-  });
-
-  if (normalizedResponseFormat) {
-    payload.response_format = normalizedResponseFormat;
-  }
-
-  const response = await fetch(resolveApiUrl(), {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      authorization: `Bearer ${ENV.forgeApiKey}`,
-    },
-    body: JSON.stringify(payload),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(
-      `LLM invoke failed: ${response.status} ${response.statusText} – ${errorText}`
-    );
-  }
-
-  return (await response.json()) as InvokeResult;
+  throw lastError || new Error("All models failed to respond");
 }
