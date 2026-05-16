@@ -100,7 +100,7 @@ describe("injectOgTags", () => {
   const sampleHtml = `<!doctype html>
 <html lang="th">
   <head>
-    <title>SIRINX | ติดตั้งโซลาร์เซลล์ ลดค่าไฟ 30-100% คืนทุน 3-5 ปี — Solar, BESS, AI Energy</title>
+    <title>SIRINX | Solar Carport วางแผนลดค่าไฟองค์กร พร้อม EV Charger, BESS & AI Energy</title>
     <meta name="description" content="default desc" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="default title" />
@@ -116,42 +116,104 @@ describe("injectOgTags", () => {
 </html>`;
 
   it("injects promotional title for /contact", () => {
-    const result = injectOgTags(sampleHtml, "/contact", "https://sirinxsolar-dfabnh7l.manus.space");
+    const result = injectOgTags(
+      sampleHtml,
+      "/contact",
+      "https://sirinxsolar-dfabnh7l.manus.space"
+    );
     expect(result).toContain("<title>นัดสำรวจหน้างานฟรี");
   });
 
   it("injects og:title with SEO keywords for /contact", () => {
-    const result = injectOgTags(sampleHtml, "/contact", "https://sirinxsolar-dfabnh7l.manus.space");
+    const result = injectOgTags(
+      sampleHtml,
+      "/contact",
+      "https://sirinxsolar-dfabnh7l.manus.space"
+    );
     expect(result).toContain('og:title" content="นัดสำรวจหน้างานฟรี');
   });
 
   it("injects og:description with promotional copy for /contact", () => {
-    const result = injectOgTags(sampleHtml, "/contact", "https://sirinxsolar-dfabnh7l.manus.space");
+    const result = injectOgTags(
+      sampleHtml,
+      "/contact",
+      "https://sirinxsolar-dfabnh7l.manus.space"
+    );
     expect(result).toContain('og:description" content="ปรึกษาฟรี');
   });
 
   it("injects og:url with full URL", () => {
-    const result = injectOgTags(sampleHtml, "/contact", "https://sirinxsolar-dfabnh7l.manus.space");
-    expect(result).toContain('og:url" content="https://sirinxsolar-dfabnh7l.manus.space/contact"');
+    const result = injectOgTags(
+      sampleHtml,
+      "/contact",
+      "https://sirinxsolar-dfabnh7l.manus.space"
+    );
+    expect(result).toContain(
+      'og:url" content="https://sirinxsolar-dfabnh7l.manus.space/contact"'
+    );
   });
 
   it("injects og:image with CDN URL", () => {
-    const result = injectOgTags(sampleHtml, "/", "https://sirinxsolar-dfabnh7l.manus.space");
-    expect(result).toContain('og:image" content="https://d2xsxph8kpxj0f.cloudfront.net');
+    const result = injectOgTags(
+      sampleHtml,
+      "/",
+      "https://sirinxsolar-dfabnh7l.manus.space"
+    );
+    expect(result).toContain(
+      'og:image" content="https://d2xsxph8kpxj0f.cloudfront.net'
+    );
   });
 
   it("injects twitter:title for /solutions", () => {
-    const result = injectOgTags(sampleHtml, "/solutions", "https://sirinxsolar-dfabnh7l.manus.space");
-    expect(result).toContain('twitter:title" content="โซลูชันโซลาร์เซลล์ครบวงจร');
+    const result = injectOgTags(
+      sampleHtml,
+      "/solutions",
+      "https://sirinxsolar-dfabnh7l.manus.space"
+    );
+    expect(result).toContain(
+      'twitter:title" content="โซลูชันโซลาร์เซลล์ครบวงจร'
+    );
   });
 
   it("injects canonical URL", () => {
-    const result = injectOgTags(sampleHtml, "/blog", "https://sirinxsolar-dfabnh7l.manus.space");
-    expect(result).toContain('canonical" href="https://sirinxsolar-dfabnh7l.manus.space/blog"');
+    const result = injectOgTags(
+      sampleHtml,
+      "/blog",
+      "https://sirinxsolar-dfabnh7l.manus.space"
+    );
+    expect(result).toContain(
+      'canonical" href="https://sirinxsolar-dfabnh7l.manus.space/blog"'
+    );
   });
 
   it("handles homepage URL without trailing slash", () => {
-    const result = injectOgTags(sampleHtml, "/", "https://sirinxsolar-dfabnh7l.manus.space");
-    expect(result).toContain('og:url" content="https://sirinxsolar-dfabnh7l.manus.space"');
+    const result = injectOgTags(
+      sampleHtml,
+      "/",
+      "https://sirinxsolar-dfabnh7l.manus.space"
+    );
+    expect(result).toContain(
+      'og:url" content="https://sirinxsolar-dfabnh7l.manus.space"'
+    );
+  });
+
+  it("does not inject unsupported guaranteed savings or fixed payback claims", () => {
+    const publicRoutes = [
+      "/",
+      "/solar-carport",
+      "/investment",
+      "/assessment",
+      "/pricing",
+      "/unknown-page",
+    ];
+
+    for (const route of publicRoutes) {
+      const meta = getPageMeta(route);
+      expect(`${meta.title} ${meta.description}`).not.toContain("30-100%");
+      expect(`${meta.title} ${meta.description}`).not.toContain("3-5 ปี");
+      expect(`${meta.title} ${meta.description}`).not.toContain(
+        "BOI ลดหย่อนภาษี 200%"
+      );
+    }
   });
 });

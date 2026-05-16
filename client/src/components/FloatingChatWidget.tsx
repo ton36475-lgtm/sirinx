@@ -5,6 +5,12 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { trpc } from "@/lib/trpc";
 import { useEventTracking } from "@/hooks/useAnalytics";
+import {
+  CHATBOT_QUICK_REPLIES,
+  analyzeChatbotConversation,
+  createSmartChatbotReply,
+  type ChatbotMessage,
+} from "@shared/chatbotIntelligence";
 import LightMarkdown from "./LightMarkdown";
 
 // ===== LINE SVG Icon =====
@@ -21,48 +27,9 @@ const BotAvatar = () => (
   </div>
 );
 
-type ChatMessage = {
-  role: "user" | "assistant" | "system";
-  content: string;
-};
-
-const QUICK_REPLIES = [
-  { label: "ขอใบเสนอราคา", message: "ต้องการขอใบเสนอราคาติดตั้งโซลาร์เซลล์" },
-  { label: "นัดสำรวจหน้างาน", message: "ต้องการนัดทีมวิศวกรมาสำรวจหน้างาน" },
-  { label: "สอบถามราคา Solar", message: "ราคาติดตั้งโซลาร์เซลล์ประมาณเท่าไหร่?" },
-  { label: "BESS แบตเตอรี่", message: "อยากทราบเกี่ยวกับระบบแบตเตอรี่กักเก็บพลังงาน BESS" },
-];
+type ChatMessage = ChatbotMessage;
 
 const LINE_OA_URL_DEFAULT = "https://line.me/R/ti/p/@sirinx";
-
-const CONTACT_CTA =
-  "หากต้องการประเมินจริง แนะนำส่งบิลค่าไฟ 3-12 เดือนและรูปพื้นที่ให้ทีม SIRINX ทาง LINE @sirinx เพื่อคัดขนาดระบบและนัดสำรวจ";
-
-const createClientFallbackReply = (messages: ChatMessage[]) => {
-  const latestMessage = messages
-    .filter((message) => message.role === "user")
-    .at(-1)
-    ?.content.trim()
-    .toLowerCase() ?? "";
-
-  if (["ราคา", "ค่าไฟ", "คืนทุน", "roi", "payback", "ภาษี", "boi"].some((keyword) => latestMessage.includes(keyword))) {
-    return `ประเมินเบื้องต้นต้องใช้ค่าไฟรายเดือน, load profile, พื้นที่ติดตั้ง และเงื่อนไขบัญชีภาษีขององค์กรครับ SIRINX สามารถช่วยทำ ROI, LCOE และทางเลือก Solar Carport/Rooftop ให้เทียบเป็นฉากทัศน์ได้ โดยตัวเลขภาษีหรือสิทธิประโยชน์ต้องตรวจตามเงื่อนไขล่าสุดก่อนเสนอจริง ${CONTACT_CTA}`;
-  }
-
-  if (["carport", "ที่จอด", "ev", "charger"].some((keyword) => latestMessage.includes(keyword))) {
-    return `Solar Carport เหมาะกับองค์กรที่ต้องการเปลี่ยนพื้นที่จอดรถเป็นสินทรัพย์พลังงาน: ได้ร่มเงา, รองรับ EV Charger และต่อยอด BESS/AI Energy Management ได้ ผลตอบแทนต้องคำนวณจากพื้นที่และพฤติกรรมใช้ไฟจริง ${CONTACT_CTA}`;
-  }
-
-  if (["bess", "battery", "แบต", "demand"].some((keyword) => latestMessage.includes(keyword))) {
-    return `BESS เหมาะเมื่อมี demand charge สูง, โหลดพีกชัด หรืออยากเพิ่ม resilience ให้ระบบพลังงาน จุดคุ้มทุนขึ้นกับ tariff, profile การใช้ไฟ และขนาดแบตที่เหมาะสม SIRINX ควรเริ่มจากวิเคราะห์บิลและกราฟโหลดก่อนออกแบบ ${CONTACT_CTA}`;
-  }
-
-  if (["หลังคา", "rooftop", "ติดตั้ง", "แผง"].some((keyword) => latestMessage.includes(keyword))) {
-    return `Rooftop Solar ควรเริ่มจากตรวจพื้นที่หลังคา, โครงสร้าง, เงาบัง, ทิศทางแดด และค่าไฟย้อนหลัง จากนั้นค่อยเทียบขนาดระบบกับ Solar Carport หรือ BESS เพื่อเลือกแพ็กเกจที่คุ้มที่สุดแบบไม่ฟันธงเกินข้อมูลจริง ${CONTACT_CTA}`;
-  }
-
-  return `SIRINX ช่วยองค์กรวางแผนพลังงานแสงอาทิตย์ครบวงจร ตั้งแต่ Solar Carport, Rooftop Solar, BESS, AI Energy Management ไปจนถึง O&M คำตอบนี้เป็นโหมด fallback เมื่อระบบ AI เชิงลึกยังไม่เชื่อมต่อ จึงให้คำแนะนำเบื้องต้นและไม่แทนการประเมินหน้างานครับ ${CONTACT_CTA}`;
-};
 
 export default function FloatingChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -73,23 +40,28 @@ export default function FloatingChatWidget() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { trackEvent } = useEventTracking();
+  const leadAnalysis = analyzeChatbotConversation(messages);
 
-  const lineOaUrl = (typeof window !== "undefined" && (window as any).__ENV__?.VITE_LINE_OA_URL) || import.meta.env.VITE_LINE_OA_URL || LINE_OA_URL_DEFAULT;
+  const lineOaUrl =
+    (typeof window !== "undefined" &&
+      (window as any).__ENV__?.VITE_LINE_OA_URL) ||
+    import.meta.env.VITE_LINE_OA_URL ||
+    LINE_OA_URL_DEFAULT;
 
   // AI Chat mutation
   const chatMutation = trpc.chatbot.chat.useMutation({
-    onSuccess: (response) => {
-      setMessages((prev) => [
+    onSuccess: response => {
+      setMessages(prev => [
         ...prev,
         { role: "assistant", content: response.reply },
       ]);
     },
     onError: (_error, request) => {
-      setMessages((prev) => [
+      setMessages(prev => [
         ...prev,
         {
           role: "assistant",
-          content: createClientFallbackReply(request.messages as ChatMessage[]),
+          content: createSmartChatbotReply(request.messages as ChatMessage[]),
         },
       ]);
     },
@@ -142,7 +114,7 @@ export default function FloatingChatWidget() {
       trackEvent("chatbot", "message_sent", { label: msg.substring(0, 50) });
 
       chatMutation.mutate({
-        messages: newMessages.map((m) => ({
+        messages: newMessages.map(m => ({
           role: m.role,
           content: m.content,
         })),
@@ -163,7 +135,7 @@ export default function FloatingChatWidget() {
     window.open(lineOaUrl, "_blank");
   }, [lineOaUrl, trackEvent]);
 
-  const displayMessages = messages.filter((m) => m.role !== "system");
+  const displayMessages = messages.filter(m => m.role !== "system");
 
   return (
     <>
@@ -189,7 +161,7 @@ export default function FloatingChatWidget() {
                   onClick={handleOpen}
                 >
                   <button
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation();
                       setBubbleDismissed(true);
                       setShowBubble(false);
@@ -199,7 +171,7 @@ export default function FloatingChatWidget() {
                     <X className="w-3 h-3" />
                   </button>
                   <p className="text-sm text-gray-800 dark:text-gray-200 font-medium leading-snug">
-                    สนใจโซลาร์เซลล์ไหมครับ? 
+                    สนใจโซลาร์เซลล์ไหมครับ?
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     พิมพ์ถามได้เลย หรือแอดไลน์คุยกัน
@@ -217,7 +189,8 @@ export default function FloatingChatWidget() {
               whileTap={{ scale: 0.95 }}
               className="relative w-16 h-16 rounded-full shadow-2xl flex items-center justify-center overflow-hidden group"
               style={{
-                background: "linear-gradient(135deg, #06b6d4 0%, #0d9488 50%, #00C300 100%)",
+                background:
+                  "linear-gradient(135deg, #06b6d4 0%, #0d9488 50%, #00C300 100%)",
               }}
             >
               {/* Pulse ring */}
@@ -260,8 +233,12 @@ export default function FloatingChatWidget() {
                     <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-green-500 border-2 border-[#0f1729]" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-white text-sm">SIRINX Assistant</h3>
-                    <p className="text-xs text-cyan-400/80">ออนไลน์ พร้อมให้บริการ</p>
+                    <h3 className="font-semibold text-white text-sm">
+                      SIRINX Assistant
+                    </h3>
+                    <p className="text-xs text-cyan-400/80">
+                      ออนไลน์ พร้อมให้บริการ
+                    </p>
                   </div>
                 </div>
                 <button
@@ -274,7 +251,10 @@ export default function FloatingChatWidget() {
             </div>
 
             {/* Messages Area */}
-            <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-4 scrollbar-thin">
+            <div
+              ref={scrollRef}
+              className="flex-1 overflow-y-auto px-4 py-4 space-y-4 scrollbar-thin"
+            >
               {displayMessages.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full gap-5 px-2">
                   <div className="text-center">
@@ -285,13 +265,14 @@ export default function FloatingChatWidget() {
                       สวัสดีครับ! ยินดีให้บริการ
                     </h4>
                     <p className="text-xs text-slate-400 leading-relaxed">
-                      สอบถามเรื่องโซลาร์เซลล์ BESS แบตเตอรี่ หรือนัดสำรวจหน้างานได้เลยครับ
+                      สอบถามเรื่องโซลาร์เซลล์ BESS แบตเตอรี่
+                      หรือนัดสำรวจหน้างานได้เลยครับ
                     </p>
                   </div>
 
                   {/* Quick Replies */}
                   <div className="w-full space-y-2">
-                    {QUICK_REPLIES.map((qr) => (
+                    {CHATBOT_QUICK_REPLIES.map(qr => (
                       <button
                         key={qr.label}
                         onClick={() => handleSend(qr.message)}
@@ -348,9 +329,18 @@ export default function FloatingChatWidget() {
                       <BotAvatar />
                       <div className="bg-slate-800 rounded-2xl rounded-bl-md px-4 py-3 border border-slate-700/50">
                         <div className="flex gap-1.5">
-                          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce" style={{ animationDelay: "0ms" }} />
-                          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce" style={{ animationDelay: "150ms" }} />
-                          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce" style={{ animationDelay: "300ms" }} />
+                          <span
+                            className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce"
+                            style={{ animationDelay: "0ms" }}
+                          />
+                          <span
+                            className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce"
+                            style={{ animationDelay: "150ms" }}
+                          />
+                          <span
+                            className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce"
+                            style={{ animationDelay: "300ms" }}
+                          />
                         </div>
                       </div>
                     </div>
@@ -359,6 +349,13 @@ export default function FloatingChatWidget() {
                   {/* Quick action after conversation */}
                   {displayMessages.length > 0 && !chatMutation.isPending && (
                     <div className="flex gap-2 flex-wrap pt-1">
+                      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-cyan-400/20 bg-cyan-400/5 text-cyan-200 text-xs font-medium">
+                        <Zap className="w-3.5 h-3.5" />
+                        <span>
+                          ข้อมูลประเมิน {leadAnalysis.knownFields.length}/
+                          {leadAnalysis.fieldCount}
+                        </span>
+                      </div>
                       <button
                         onClick={handleLineClick}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#00C300]/10 border border-[#00C300]/30 text-[#00C300] text-xs font-medium hover:bg-[#00C300]/20 transition-colors"
@@ -375,7 +372,7 @@ export default function FloatingChatWidget() {
             {/* Input Area */}
             <div className="px-4 py-3 border-t border-slate-700/50 bg-[#0a1628]/80 backdrop-blur-sm">
               <form
-                onSubmit={(e) => {
+                onSubmit={e => {
                   e.preventDefault();
                   handleSend();
                 }}
@@ -384,7 +381,7 @@ export default function FloatingChatWidget() {
                 <textarea
                   ref={inputRef}
                   value={input}
-                  onChange={(e) => setInput(e.target.value)}
+                  onChange={e => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="พิมพ์ข้อความ..."
                   rows={1}

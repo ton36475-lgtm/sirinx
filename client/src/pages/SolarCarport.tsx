@@ -11,18 +11,43 @@ import { trackSolutionVisit } from "@/components/HeroSlideshow";
 import { usePageTranslation } from "@/i18n";
 import "@/i18n/pages/solarCarport";
 import {
-  Car, Sun, Battery, Brain, Plug, Shield, Clock, TrendingUp,
-  ArrowRight, CheckCircle2, ChevronDown, ChevronUp,
-  Zap, BarChart3, Wrench, Leaf, Building2, Factory, Hotel, GraduationCap,
-  X, ChevronLeft, ChevronRight, Camera
+  Car,
+  Sun,
+  Battery,
+  Brain,
+  Plug,
+  Shield,
+  Clock,
+  TrendingUp,
+  ArrowRight,
+  CheckCircle2,
+  ChevronDown,
+  ChevronUp,
+  Zap,
+  BarChart3,
+  Wrench,
+  Leaf,
+  Building2,
+  Factory,
+  Hotel,
+  GraduationCap,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Camera,
 } from "lucide-react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.08, duration: 0.5 } }),
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.08, duration: 0.5 },
+  }),
 };
 
-const CDN = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv";
+const CDN =
+  "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv";
 const HERO_CARPARK = `${CDN}/carport-wide-1_30e3af4c.jpeg`;
 const IMG_EV = `${CDN}/carport-structure-1_c0c17293.jpeg`;
 const IMG_AI = `${CDN}/bess-cabinet-2_54c824b8.jpeg`;
@@ -54,7 +79,14 @@ const specKeys = [
   { key: "sc.spec.install" },
 ];
 
-const faqKeys = ["sc.faq1", "sc.faq2", "sc.faq3", "sc.faq4", "sc.faq5", "sc.faq6"];
+const faqKeys = [
+  "sc.faq1",
+  "sc.faq2",
+  "sc.faq3",
+  "sc.faq4",
+  "sc.faq5",
+  "sc.faq6",
+];
 
 export default function SolarCarport() {
   const { t } = usePageTranslation("solarCarport");
@@ -69,12 +101,12 @@ export default function SolarCarport() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const faqs = faqKeys.map((k) => ({ q: t(`${k}.q`), a: t(`${k}.a`) }));
+  const faqs = faqKeys.map(k => ({ q: t(`${k}.q`), a: t(`${k}.a`) }));
 
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: faqs.map((faq) => ({
+    mainEntity: faqs.map(faq => ({
       "@type": "Question",
       name: faq.q,
       acceptedAnswer: { "@type": "Answer", text: faq.a },
@@ -90,54 +122,88 @@ export default function SolarCarport() {
       {/* ===== HERO ===== */}
       <section className="relative min-h-[85vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src={HERO_CARPARK} alt="Solar Carport by SIRINX" className="w-full h-full object-cover" />
+          <img
+            src={HERO_CARPARK}
+            alt="Solar Carport by SIRINX"
+            className="w-full h-full object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/80 to-background/30" />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
         </div>
         <div className="container relative z-10 pt-24 pb-12">
           <div className="max-w-3xl">
-            <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0}>
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={fadeUp}
+              custom={0}
+            >
               <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-accent-primary bg-accent-glow border border-border-accent rounded-full mb-5">
                 <Car className="w-3.5 h-3.5" /> {t("sc.badge")}
               </span>
             </motion.div>
             <motion.h1
-              initial="hidden" animate="visible" variants={fadeUp} custom={1}
+              initial="hidden"
+              animate="visible"
+              variants={fadeUp}
+              custom={1}
               className="font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground leading-[1.12] mb-5"
             >
-              {t("sc.hero.title1")}<br />
-              <span className="text-gradient-accent">{t("sc.hero.title2")}</span>
+              {t("sc.hero.title1")}
+              <br />
+              <span className="text-gradient-accent">
+                {t("sc.hero.title2")}
+              </span>
             </motion.h1>
             <motion.p
-              initial="hidden" animate="visible" variants={fadeUp} custom={2}
+              initial="hidden"
+              animate="visible"
+              variants={fadeUp}
+              custom={2}
               className="text-base sm:text-lg text-text-secondary leading-relaxed mb-7 max-w-xl"
             >
               {t("sc.hero.desc")}
             </motion.p>
             <motion.div
-              initial="hidden" animate="visible" variants={fadeUp} custom={3}
+              initial="hidden"
+              animate="visible"
+              variants={fadeUp}
+              custom={3}
               className="flex flex-col sm:flex-row gap-3 mb-8"
             >
-              <Link href="/contact" className="inline-flex items-center justify-center gap-2 px-6 py-3.5 font-display font-semibold btn-accent rounded-lg">
+              <Link
+                href="/contact"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 font-display font-semibold btn-accent rounded-lg"
+              >
                 {t("sc.hero.cta1")} <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link href="/assessment" className="inline-flex items-center justify-center gap-2 px-6 py-3.5 font-display font-semibold btn-accent-outline rounded-lg">
+              <Link
+                href="/assessment"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 font-display font-semibold btn-accent-outline rounded-lg"
+              >
                 {t("sc.hero.cta2")}
               </Link>
             </motion.div>
             <motion.div
-              initial="hidden" animate="visible" variants={fadeUp} custom={4}
+              initial="hidden"
+              animate="visible"
+              variants={fadeUp}
+              custom={4}
               className="flex flex-wrap gap-6"
             >
               {[
-                { value: "30-100%", labelKey: "sc.hero.stat.bill" },
-                { value: "3-5", labelKey: "sc.hero.stat.roi" },
+                { value: "รายไซต์", labelKey: "sc.hero.stat.bill" },
+                { value: "ROI", labelKey: "sc.hero.stat.roi" },
                 { value: "25+", labelKey: "sc.hero.stat.life" },
                 { value: "24/7", labelKey: "sc.hero.stat.bill" },
               ].map((item, i) => (
                 <div key={i} className="text-center">
-                  <div className="font-display text-lg font-bold text-gradient-accent">{item.value}</div>
-                  <div className="text-[10px] text-text-muted">{i === 3 ? "AI Monitor" : t(item.labelKey)}</div>
+                  <div className="font-display text-lg font-bold text-gradient-accent">
+                    {item.value}
+                  </div>
+                  <div className="text-[10px] text-text-muted">
+                    {i === 3 ? "AI Monitor" : t(item.labelKey)}
+                  </div>
                 </div>
               ))}
             </motion.div>
@@ -149,15 +215,22 @@ export default function SolarCarport() {
       <section className="py-16 lg:py-24 bg-background">
         <div className="container">
           <motion.div
-            initial="hidden" whileInView="visible" viewport={{ once: true }}
-            variants={fadeUp} custom={0}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={0}
             className="text-center max-w-2xl mx-auto mb-12"
           >
-            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("sc.benefits.label")}</span>
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">
+              {t("sc.benefits.label")}
+            </span>
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
               {t("sc.benefits.title")}
             </h2>
-            <p className="text-text-secondary text-sm">{t("sc.benefits.desc")}</p>
+            <p className="text-text-secondary text-sm">
+              {t("sc.benefits.desc")}
+            </p>
           </motion.div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {benefitKeys.map((bk, i) => {
@@ -165,13 +238,20 @@ export default function SolarCarport() {
               return (
                 <motion.div
                   key={bk}
-                  initial="hidden" whileInView="visible" viewport={{ once: true }}
-                  variants={fadeUp} custom={i}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  variants={fadeUp}
+                  custom={i}
                   className="p-5 rounded-xl border border-border-subtle bg-surface-elevated hover:border-border-accent transition-colors"
                 >
                   <Icon className="w-8 h-8 text-accent-primary mb-3" />
-                  <h3 className="font-display font-semibold text-foreground mb-1.5 text-sm">{t(`${bk}.title`)}</h3>
-                  <p className="text-xs text-text-muted leading-relaxed">{t(`${bk}.desc`)}</p>
+                  <h3 className="font-display font-semibold text-foreground mb-1.5 text-sm">
+                    {t(`${bk}.title`)}
+                  </h3>
+                  <p className="text-xs text-text-muted leading-relaxed">
+                    {t(`${bk}.desc`)}
+                  </p>
                 </motion.div>
               );
             })}
@@ -183,27 +263,51 @@ export default function SolarCarport() {
       <section className="py-16 lg:py-24 section-alt">
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
-              <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("sc.integration.label")}</span>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={0}
+            >
+              <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">
+                {t("sc.integration.label")}
+              </span>
               <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-4">
-                {t("sc.integration.title")}<br />{t("sc.integration.title2")}
+                {t("sc.integration.title")}
+                <br />
+                {t("sc.integration.title2")}
               </h2>
               <p className="text-text-secondary text-sm leading-relaxed mb-5">
                 {t("sc.integration.desc")}
               </p>
               <div className="space-y-3">
-                {[1, 2, 3, 4].map((n) => (
+                {[1, 2, 3, 4].map(n => (
                   <div key={n} className="flex items-center gap-3">
                     <div className="w-6 h-6 rounded-full bg-accent-primary/20 flex items-center justify-center shrink-0">
-                      <span className="text-[10px] font-bold text-accent-primary">{n}</span>
+                      <span className="text-[10px] font-bold text-accent-primary">
+                        {n}
+                      </span>
                     </div>
-                    <span className="text-sm text-text-secondary">{t(`sc.integration.step${n}`)}</span>
+                    <span className="text-sm text-text-secondary">
+                      {t(`sc.integration.step${n}`)}
+                    </span>
                   </div>
                 ))}
               </div>
             </motion.div>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}>
-              <img src={IMG_AI} alt="AI Energy Management Dashboard" className="rounded-2xl w-full aspect-[16/10] object-cover" />
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={1}
+            >
+              <img
+                src={IMG_AI}
+                alt="AI Energy Management Dashboard"
+                className="rounded-2xl w-full aspect-[16/10] object-cover"
+              />
             </motion.div>
           </div>
         </div>
@@ -213,17 +317,25 @@ export default function SolarCarport() {
       <section className="py-10 lg:py-14 bg-background">
         <div className="container">
           <motion.div
-            initial="hidden" whileInView="visible" viewport={{ once: true }}
-            variants={fadeUp} custom={0}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={0}
             className="glass-card rounded-2xl p-7 lg:p-9 flex flex-col lg:flex-row items-center gap-6 lg:gap-10"
           >
             <div className="flex-1">
               <h3 className="font-display text-lg lg:text-xl font-bold text-foreground mb-2">
                 {t("sc.midCta.title")}
               </h3>
-              <p className="text-text-secondary text-sm">{t("sc.midCta.desc")}</p>
+              <p className="text-text-secondary text-sm">
+                {t("sc.midCta.desc")}
+              </p>
             </div>
-            <Link href="/contact" className="inline-flex items-center justify-center gap-2 px-5 py-3 font-display font-semibold btn-accent rounded-lg text-sm whitespace-nowrap shrink-0">
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 font-display font-semibold btn-accent rounded-lg text-sm whitespace-nowrap shrink-0"
+            >
               {t("sc.midCta.btn")} <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>
@@ -234,27 +346,44 @@ export default function SolarCarport() {
       <section className="py-16 lg:py-24 section-alt">
         <div className="container max-w-4xl">
           <motion.div
-            initial="hidden" whileInView="visible" viewport={{ once: true }}
-            variants={fadeUp} custom={0}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={0}
             className="text-center mb-10"
           >
-            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("sc.specs.label")}</span>
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">
+              {t("sc.specs.label")}
+            </span>
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground">
               {t("sc.specs.title")}
             </h2>
           </motion.div>
           <motion.div
-            initial="hidden" whileInView="visible" viewport={{ once: true }}
-            variants={fadeUp} custom={1}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={1}
             className="rounded-xl border border-border-subtle overflow-hidden"
           >
             <div className="divide-y divide-border-subtle">
-              {specKeys.map((spec) => (
-                <div key={spec.key} className="flex items-center justify-between p-4 bg-surface-elevated hover:bg-accent-glow/30 transition-colors">
-                  <div className="font-medium text-foreground text-sm">{t(`${spec.key}.label`)}</div>
+              {specKeys.map(spec => (
+                <div
+                  key={spec.key}
+                  className="flex items-center justify-between p-4 bg-surface-elevated hover:bg-accent-glow/30 transition-colors"
+                >
+                  <div className="font-medium text-foreground text-sm">
+                    {t(`${spec.key}.label`)}
+                  </div>
                   <div className="text-right">
-                    <div className="font-display font-semibold text-accent-primary text-sm">{spec.value || t(`${spec.key}.value`)}</div>
-                    <div className="text-[10px] text-text-muted">{t(`${spec.key}.note`)}</div>
+                    <div className="font-display font-semibold text-accent-primary text-sm">
+                      {spec.value || t(`${spec.key}.value`)}
+                    </div>
+                    <div className="text-[10px] text-text-muted">
+                      {t(`${spec.key}.note`)}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -267,11 +396,16 @@ export default function SolarCarport() {
       <section className="py-16 lg:py-24 bg-background">
         <div className="container">
           <motion.div
-            initial="hidden" whileInView="visible" viewport={{ once: true }}
-            variants={fadeUp} custom={0}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={0}
             className="text-center max-w-2xl mx-auto mb-12"
           >
-            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("sc.ind.label")}</span>
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">
+              {t("sc.ind.label")}
+            </span>
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
               {t("sc.ind.title")}
             </h2>
@@ -285,13 +419,20 @@ export default function SolarCarport() {
             ].map((ind, i) => (
               <motion.div
                 key={ind.key}
-                initial="hidden" whileInView="visible" viewport={{ once: true }}
-                variants={fadeUp} custom={i}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                custom={i}
                 className="p-5 rounded-xl border border-border-subtle bg-surface-elevated hover:border-border-accent transition-colors"
               >
                 <ind.icon className="w-7 h-7 text-accent-secondary mb-3" />
-                <h3 className="font-display font-semibold text-foreground mb-1 text-sm">{t(`${ind.key}.title`)}</h3>
-                <p className="text-xs text-text-muted leading-relaxed mb-2">{t(`${ind.key}.desc`)}</p>
+                <h3 className="font-display font-semibold text-foreground mb-1 text-sm">
+                  {t(`${ind.key}.title`)}
+                </h3>
+                <p className="text-xs text-text-muted leading-relaxed mb-2">
+                  {t(`${ind.key}.desc`)}
+                </p>
                 <span className="inline-flex items-center gap-1 text-[10px] font-medium text-accent-primary">
                   <Car className="w-3 h-3" /> {t(`${ind.key}.parking`)}
                 </span>
@@ -305,29 +446,70 @@ export default function SolarCarport() {
       <section className="py-16 lg:py-24 section-alt">
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="order-2 lg:order-1">
-              <img src={IMG_OM} alt="SIRINX O&M Service" className="rounded-2xl w-full aspect-[16/10] object-cover" />
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={0}
+              className="order-2 lg:order-1"
+            >
+              <img
+                src={IMG_OM}
+                alt="SIRINX O&M Service"
+                className="rounded-2xl w-full aspect-[16/10] object-cover"
+              />
             </motion.div>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1} className="order-1 lg:order-2">
-              <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("sc.om.label")}</span>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={1}
+              className="order-1 lg:order-2"
+            >
+              <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">
+                {t("sc.om.label")}
+              </span>
               <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-4">
-                {t("sc.om.title1")}<br />{t("sc.om.title2")}
+                {t("sc.om.title1")}
+                <br />
+                {t("sc.om.title2")}
               </h2>
               <p className="text-text-secondary text-sm leading-relaxed mb-5">
                 {t("sc.om.desc")}
               </p>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { icon: BarChart3, labelKey: "sc.om.monitoring", value: "24/7" },
-                  { icon: Wrench, labelKey: "sc.om.response", valueKey: "sc.om.response.value" },
-                  { icon: Shield, labelKey: "sc.om.warranty", valueKey: "sc.om.warranty.value" },
+                  {
+                    icon: BarChart3,
+                    labelKey: "sc.om.monitoring",
+                    value: "24/7",
+                  },
+                  {
+                    icon: Wrench,
+                    labelKey: "sc.om.response",
+                    valueKey: "sc.om.response.value",
+                  },
+                  {
+                    icon: Shield,
+                    labelKey: "sc.om.warranty",
+                    valueKey: "sc.om.warranty.value",
+                  },
                   { icon: Zap, labelKey: "sc.om.monitoring", value: "99.5%" },
                 ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3 p-3 rounded-lg border border-border-subtle bg-surface-elevated">
+                  <div
+                    key={i}
+                    className="flex items-center gap-3 p-3 rounded-lg border border-border-subtle bg-surface-elevated"
+                  >
                     <item.icon className="w-5 h-5 text-accent-primary shrink-0" />
                     <div>
-                      <div className="text-xs font-bold text-gradient-accent">{item.value || t(item.valueKey!)}</div>
-                      <div className="text-[10px] text-text-muted">{t(item.labelKey)}</div>
+                      <div className="text-xs font-bold text-gradient-accent">
+                        {item.value || t(item.valueKey!)}
+                      </div>
+                      <div className="text-[10px] text-text-muted">
+                        {t(item.labelKey)}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -341,11 +523,16 @@ export default function SolarCarport() {
       <section className="py-16 lg:py-24 bg-background">
         <div className="container max-w-4xl">
           <motion.div
-            initial="hidden" whileInView="visible" viewport={{ once: true }}
-            variants={fadeUp} custom={0}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={0}
             className="text-center mb-10"
           >
-            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("sc.fin.label")}</span>
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">
+              {t("sc.fin.label")}
+            </span>
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
               {t("sc.fin.title")}
             </h2>
@@ -353,22 +540,51 @@ export default function SolarCarport() {
           </motion.div>
           <div className="grid md:grid-cols-3 gap-5">
             {[
-              { key: "sc.fin.buy", features: ["sc.fin.buy.f1", "sc.fin.buy.f2", "sc.fin.buy.f3"] },
-              { key: "sc.fin.installment", features: ["sc.fin.installment.f1", "sc.fin.installment.f2", "sc.fin.installment.f3"] },
-              { key: "sc.fin.coinvest", features: ["sc.fin.coinvest.f1", "sc.fin.coinvest.f2", "sc.fin.coinvest.f3"] },
+              {
+                key: "sc.fin.buy",
+                features: ["sc.fin.buy.f1", "sc.fin.buy.f2", "sc.fin.buy.f3"],
+              },
+              {
+                key: "sc.fin.installment",
+                features: [
+                  "sc.fin.installment.f1",
+                  "sc.fin.installment.f2",
+                  "sc.fin.installment.f3",
+                ],
+              },
+              {
+                key: "sc.fin.coinvest",
+                features: [
+                  "sc.fin.coinvest.f1",
+                  "sc.fin.coinvest.f2",
+                  "sc.fin.coinvest.f3",
+                ],
+              },
             ].map((plan, i) => (
               <motion.div
                 key={plan.key}
-                initial="hidden" whileInView="visible" viewport={{ once: true }}
-                variants={fadeUp} custom={i}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                custom={i}
                 className="p-5 rounded-xl border border-border-subtle bg-surface-elevated hover:border-border-accent transition-colors"
               >
-                <h3 className="font-display font-semibold text-foreground mb-2">{t(`${plan.key}.title`)}</h3>
-                <div className="text-sm font-bold text-gradient-accent mb-2">{t(`${plan.key}.highlight`)}</div>
-                <p className="text-xs text-text-muted leading-relaxed mb-4">{t(`${plan.key}.desc`)}</p>
+                <h3 className="font-display font-semibold text-foreground mb-2">
+                  {t(`${plan.key}.title`)}
+                </h3>
+                <div className="text-sm font-bold text-gradient-accent mb-2">
+                  {t(`${plan.key}.highlight`)}
+                </div>
+                <p className="text-xs text-text-muted leading-relaxed mb-4">
+                  {t(`${plan.key}.desc`)}
+                </p>
                 <ul className="space-y-1.5">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-xs text-text-secondary">
+                  {plan.features.map(f => (
+                    <li
+                      key={f}
+                      className="flex items-center gap-2 text-xs text-text-secondary"
+                    >
                       <CheckCircle2 className="w-3 h-3 text-accent-primary shrink-0" />
                       {t(f)}
                     </li>
@@ -378,7 +594,10 @@ export default function SolarCarport() {
             ))}
           </div>
           <div className="mt-8 text-center">
-            <Link href="/investment" className="inline-flex items-center gap-2 text-sm font-medium text-accent-primary hover:underline">
+            <Link
+              href="/investment"
+              className="inline-flex items-center gap-2 text-sm font-medium text-accent-primary hover:underline"
+            >
               {t("sc.fin.moreInfo")} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -389,8 +608,11 @@ export default function SolarCarport() {
       <section className="py-16 lg:py-24 bg-background">
         <div className="container">
           <motion.div
-            initial="hidden" whileInView="visible" viewport={{ once: true }}
-            variants={fadeUp} custom={0}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={0}
             className="text-center max-w-2xl mx-auto mb-10"
           >
             <span className="inline-flex items-center gap-2 text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3">
@@ -399,14 +621,19 @@ export default function SolarCarport() {
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
               {t("sc.gallery.title")}
             </h2>
-            <p className="text-text-secondary text-sm">{t("sc.gallery.desc")}</p>
+            <p className="text-text-secondary text-sm">
+              {t("sc.gallery.desc")}
+            </p>
           </motion.div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {IMG_CARPORT_GALLERY.map((src, i) => (
               <motion.div
                 key={i}
-                initial="hidden" whileInView="visible" viewport={{ once: true }}
-                variants={fadeUp} custom={i % 4}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                custom={i % 4}
                 className="cursor-pointer group"
                 onClick={() => setLightboxIdx(i)}
               >
@@ -422,7 +649,10 @@ export default function SolarCarport() {
             ))}
           </div>
           <div className="mt-8 text-center">
-            <Link href="/projects" className="inline-flex items-center gap-2 text-sm font-medium text-accent-primary hover:underline">
+            <Link
+              href="/projects"
+              className="inline-flex items-center gap-2 text-sm font-medium text-accent-primary hover:underline"
+            >
               {t("sc.gallery.viewAll")} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -431,19 +661,34 @@ export default function SolarCarport() {
 
       {/* Lightbox */}
       {lightboxIdx !== null && (
-        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center" onClick={() => setLightboxIdx(null)}>
-          <button className="absolute top-4 right-4 text-white/70 hover:text-white z-50" onClick={() => setLightboxIdx(null)}>
+        <div
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
+          onClick={() => setLightboxIdx(null)}
+        >
+          <button
+            className="absolute top-4 right-4 text-white/70 hover:text-white z-50"
+            onClick={() => setLightboxIdx(null)}
+          >
             <X className="w-8 h-8" />
           </button>
           <button
             className="absolute left-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white z-50"
-            onClick={(e) => { e.stopPropagation(); setLightboxIdx((lightboxIdx - 1 + IMG_CARPORT_GALLERY.length) % IMG_CARPORT_GALLERY.length); }}
+            onClick={e => {
+              e.stopPropagation();
+              setLightboxIdx(
+                (lightboxIdx - 1 + IMG_CARPORT_GALLERY.length) %
+                  IMG_CARPORT_GALLERY.length
+              );
+            }}
           >
             <ChevronLeft className="w-10 h-10" />
           </button>
           <button
             className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white z-50"
-            onClick={(e) => { e.stopPropagation(); setLightboxIdx((lightboxIdx + 1) % IMG_CARPORT_GALLERY.length); }}
+            onClick={e => {
+              e.stopPropagation();
+              setLightboxIdx((lightboxIdx + 1) % IMG_CARPORT_GALLERY.length);
+            }}
           >
             <ChevronRight className="w-10 h-10" />
           </button>
@@ -451,7 +696,7 @@ export default function SolarCarport() {
             src={IMG_CARPORT_GALLERY[lightboxIdx]}
             alt={`Solar Carport ${lightboxIdx + 1}`}
             className="max-h-[85vh] max-w-[90vw] object-contain rounded-lg"
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
           />
           <div className="absolute bottom-4 text-white/60 text-sm">
             {lightboxIdx + 1} / {IMG_CARPORT_GALLERY.length}
@@ -463,11 +708,16 @@ export default function SolarCarport() {
       <section className="py-16 lg:py-24 section-alt">
         <div className="container max-w-3xl">
           <motion.div
-            initial="hidden" whileInView="visible" viewport={{ once: true }}
-            variants={fadeUp} custom={0}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={0}
             className="text-center mb-10"
           >
-            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">{t("sc.faq.label")}</span>
+            <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">
+              {t("sc.faq.label")}
+            </span>
             <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground">
               {t("sc.faq.title")}
             </h2>
@@ -476,15 +726,20 @@ export default function SolarCarport() {
             {faqs.map((faq, i) => (
               <motion.div
                 key={i}
-                initial="hidden" whileInView="visible" viewport={{ once: true }}
-                variants={fadeUp} custom={i}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                custom={i}
                 className="rounded-xl border border-border-subtle bg-surface-elevated overflow-hidden"
               >
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full flex items-center justify-between p-4 lg:p-5 text-left"
                 >
-                  <span className="font-display font-semibold text-foreground text-sm pr-4">{faq.q}</span>
+                  <span className="font-display font-semibold text-foreground text-sm pr-4">
+                    {faq.q}
+                  </span>
                   {openFaq === i ? (
                     <ChevronUp className="w-4 h-4 text-accent-primary shrink-0" />
                   ) : (
@@ -493,7 +748,9 @@ export default function SolarCarport() {
                 </button>
                 {openFaq === i && (
                   <div className="px-4 lg:px-5 pb-4 lg:pb-5">
-                    <p className="text-sm text-text-secondary leading-relaxed">{faq.a}</p>
+                    <p className="text-sm text-text-secondary leading-relaxed">
+                      {faq.a}
+                    </p>
                   </div>
                 )}
               </motion.div>
@@ -505,15 +762,24 @@ export default function SolarCarport() {
       {/* ===== STICKY MOBILE CTA ===== */}
       <div
         className={`fixed bottom-0 left-0 right-0 z-40 lg:hidden transition-all duration-300 ${
-          showStickyCta ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
+          showStickyCta
+            ? "translate-y-0 opacity-100"
+            : "translate-y-full opacity-0"
         }`}
       >
         <div className="bg-background/95 backdrop-blur-md border-t border-border-subtle px-4 py-3 flex items-center gap-3">
           <div className="flex-1 min-w-0">
-            <div className="font-display font-semibold text-foreground text-xs truncate">Solar Carport</div>
-            <div className="text-[10px] text-text-muted">{t("sc.sticky.label")}</div>
+            <div className="font-display font-semibold text-foreground text-xs truncate">
+              Solar Carport
+            </div>
+            <div className="text-[10px] text-text-muted">
+              {t("sc.sticky.label")}
+            </div>
           </div>
-          <Link href="/contact" className="inline-flex items-center gap-1.5 px-4 py-2.5 font-display font-semibold btn-accent rounded-lg text-xs whitespace-nowrap shrink-0">
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 font-display font-semibold btn-accent rounded-lg text-xs whitespace-nowrap shrink-0"
+          >
             {t("sc.sticky.btn")} <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
@@ -523,7 +789,13 @@ export default function SolarCarport() {
       <section className="py-16 lg:py-24 bg-background relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-accent-glow to-transparent" />
         <div className="container relative z-10 text-center">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={0}
+          >
             <h2 className="font-display text-2xl lg:text-4xl font-bold text-foreground mb-3">
               {t("sc.finalCta.title")}
             </h2>
@@ -531,10 +803,16 @@ export default function SolarCarport() {
               {t("sc.finalCta.desc")}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link href="/contact" className="inline-flex items-center justify-center gap-2 px-7 py-3.5 font-display font-semibold btn-accent rounded-lg">
+              <Link
+                href="/contact"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 font-display font-semibold btn-accent rounded-lg"
+              >
                 {t("sc.finalCta.btn1")} <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link href="/assessment" className="inline-flex items-center justify-center gap-2 px-7 py-3.5 font-display font-semibold btn-accent-outline rounded-lg">
+              <Link
+                href="/assessment"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 font-display font-semibold btn-accent-outline rounded-lg"
+              >
                 {t("sc.finalCta.btn2")}
               </Link>
             </div>

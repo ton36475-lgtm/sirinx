@@ -6,11 +6,14 @@
  * Content strategy: SEO/AEO-focused promotional copy with high-value keywords.
  */
 
-const OG_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/sirinx-og-image-hbNko5JADXArPGo26hmGrN.png";
+const OG_IMAGE =
+  "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/sirinx-og-image-hbNko5JADXArPGo26hmGrN.png";
 
 const SITE_NAME = "SIRINX";
-const DEFAULT_TITLE = "SIRINX | Solar Carport ผลิตไฟฟ้าจากที่จอดรถ ลดค่าไฟ 30-100% คืนทุน 3-5 ปี พร้อม EV Charger & AI Energy";
-const DEFAULT_DESC = "SIRINX Solar Carport ผลิตไฟฟ้าจากที่จอดรถ ลดค่าไฟ 30-100% คืนทุน 3-5 ปี รองรับ EV Charger + BESS + AI Energy ดูแลตลอด 25 ปี นัดสำรวจฟรี";
+const DEFAULT_TITLE =
+  "SIRINX | Solar Carport วางแผนลดค่าไฟองค์กร พร้อม EV Charger, BESS & AI Energy";
+const DEFAULT_DESC =
+  "SIRINX Solar Carport ผลิตไฟฟ้าจากที่จอดรถ รองรับ EV Charger + BESS + AI Energy พร้อมประเมินผลประหยัดและคืนทุนจากข้อมูลไซต์จริง";
 
 // Route-specific metadata map — SEO/AEO promotional copy
 interface PageMeta {
@@ -21,52 +24,71 @@ interface PageMeta {
 
 const routeMetaMap: Record<string, PageMeta> = {
   "/": {
-    title: "SIRINX | Solar Carport ผลิตไฟฟ้าจากที่จอดรถ ลดค่าไฟ 30-100% คืนทุน 3-5 ปี พร้อม EV Charger & AI Energy",
-    description: "SIRINX Solar Carport ผลิตไฟฟ้าจากที่จอดรถ ลดค่าไฟ 30-100% คืนทุน 3-5 ปี รองรับ EV Charger + BESS + AI Energy ดูแลตลอด 25 ปี นัดสำรวจฟรี",
+    title:
+      "SIRINX | Solar Carport วางแผนลดค่าไฟองค์กร พร้อม EV Charger, BESS & AI Energy",
+    description:
+      "SIRINX Solar Carport ผลิตไฟฟ้าจากที่จอดรถ รองรับ EV Charger + BESS + AI Energy พร้อมประเมินผลประหยัดและคืนทุนจากข้อมูลไซต์จริง",
   },
   "/solar-carport": {
-    title: "Solar Carport โดย SIRINX | เปลี่ยนที่จอดรถเป็นโรงไฟฟ้า ผลิตไฟฟ้า+ร่มเงา+EV Charger",
-    description: "Solar Carport ผลิตไฟฟ้าจากที่จอดรถ ให้ร่มเงา รองรับ EV Charging + BESS + AI Energy ลดค่าไฟ 30-100% คืนทุน 3-5 ปี อายุใช้งาน 25+ ปี",
+    title:
+      "Solar Carport โดย SIRINX | เปลี่ยนที่จอดรถเป็นโรงไฟฟ้า ผลิตไฟฟ้า+ร่มเงา+EV Charger",
+    description:
+      "Solar Carport ผลิตไฟฟ้าจากที่จอดรถ ให้ร่มเงา รองรับ EV Charging + BESS + AI Energy และประเมินความคุ้มค่าตามข้อมูลไซต์จริง",
   },
   "/about": {
     title: "SIRINX คือใคร? บริษัทติดตั้งโซลาร์เซลล์ + AI Energy ครบวงจรของไทย",
-    description: "SIRINX ผู้เชี่ยวชาญโซลาร์เซลล์ครบวงจร ออกแบบ ติดตั้ง ดูแลระบบด้วย AI ตลอด 25 ปี ช่วยธุรกิจไทยลดต้นทุนพลังงานด้วยเทคโนโลยีสะอาด",
+    description:
+      "SIRINX ผู้เชี่ยวชาญโซลาร์เซลล์ครบวงจร ออกแบบ ติดตั้ง ดูแลระบบด้วย AI ตลอด 25 ปี ช่วยธุรกิจไทยลดต้นทุนพลังงานด้วยเทคโนโลยีสะอาด",
   },
   "/solutions": {
-    title: "โซลูชันโซลาร์เซลล์ครบวงจร | Rooftop Solar, Floating Solar, BESS, AI Energy",
-    description: "เลือกโซลูชันที่เหมาะกับธุรกิจคุณ — โซลาร์หลังคา, โซลาร์ลอยน้ำ, Solar Carport, แบตเตอรี่กักเก็บพลังงาน BESS และ AI วิเคราะห์การใช้ไฟฟ้าแบบ Real-time ลดค่าไฟทันที",
+    title:
+      "โซลูชันโซลาร์เซลล์ครบวงจร | Rooftop Solar, Floating Solar, BESS, AI Energy",
+    description:
+      "เลือกโซลูชันที่เหมาะกับธุรกิจคุณ — โซลาร์หลังคา, โซลาร์ลอยน้ำ, Solar Carport, แบตเตอรี่กักเก็บพลังงาน BESS และ AI วิเคราะห์การใช้ไฟฟ้าแบบ Real-time ลดค่าไฟทันที",
   },
   "/industries": {
     title: "โซลาร์เซลล์สำหรับโรงงาน โรงแรม เกษตร ภาครัฐ | ลดค่าไฟเฉพาะทาง",
-    description: "โซลูชันโซลาร์เซลล์เฉพาะอุตสาหกรรม — โรงงาน โรงแรม เกษตร สถานศึกษา อาคารพาณิชย์ ภาครัฐ ออกแบบระบบตามรูปแบบการใช้ไฟจริง ลดค่าไฟทันที",
+    description:
+      "โซลูชันโซลาร์เซลล์เฉพาะอุตสาหกรรม — โรงงาน โรงแรม เกษตร สถานศึกษา อาคารพาณิชย์ ภาครัฐ ออกแบบระบบตามรูปแบบการใช้ไฟจริง ลดค่าไฟทันที",
   },
   "/investment": {
-    title: "ลงทุนโซลาร์เซลล์ คุ้มค่าแค่ไหน? ROI, สิทธิ์ BOI, ค่าเสื่อมเร่ง | SIRINX",
-    description: "วิเคราะห์ความคุ้มค่าลงทุนโซลาร์เซลล์ — ซื้อขาด PPA Leasing พร้อมสิทธิ BOI ลดหย่อนภาษี 200% ค่าเสื่อมเร่ง คืนทุนเร็วกว่าที่คิด",
+    title:
+      "ลงทุนโซลาร์เซลล์ คุ้มค่าแค่ไหน? ROI, สิทธิ์ BOI, ค่าเสื่อมเร่ง | SIRINX",
+    description:
+      "วิเคราะห์ความคุ้มค่าลงทุนโซลาร์เซลล์ — ซื้อขาด PPA Leasing พร้อมตรวจสิทธิ BOI ภาษี ค่าเสื่อม และสมมติฐานคืนทุนตามเงื่อนไขล่าสุด",
   },
   "/projects": {
     title: "ผลงานติดตั้ง Solar Carport & โซลาร์เซลล์จริง | ภาพโครงการ | SIRINX",
-    description: "ผลงานจริง SIRINX — Solar Carport, Rooftop Solar, Floating Solar, Solar Farm พร้อมภาพถ่ายจริงจากหน้างานและตัวเลขผลประหยัดค่าไฟ",
+    description:
+      "ผลงานจริง SIRINX — Solar Carport, Rooftop Solar, Floating Solar, Solar Farm พร้อมภาพถ่ายจริงจากหน้างานและตัวเลขผลประหยัดค่าไฟ",
   },
   "/strategy": {
     title: "วางแผนลดค่าไฟระยะยาว | กลยุทธ์ Solar + BESS + AI Energy | SIRINX",
-    description: "วางกลยุทธ์พลังงานสะอาดสำหรับธุรกิจ — เริ่มจาก Solar Rooftop ต่อยอดด้วย BESS กักเก็บพลังงาน และ AI Energy Management ลดค่าไฟได้ทุกปีตลอด 25 ปี",
+    description:
+      "วางกลยุทธ์พลังงานสะอาดสำหรับธุรกิจ — เริ่มจาก Solar Rooftop ต่อยอดด้วย BESS กักเก็บพลังงาน และ AI Energy Management ลดค่าไฟได้ทุกปีตลอด 25 ปี",
   },
   "/blog": {
-    title: "บทความโซลาร์เซลล์ & พลังงานสะอาด | ความรู้ ROI, BESS, AI Energy | SIRINX",
-    description: "อัพเดตความรู้พลังงานสะอาดล่าสุด — วิเคราะห์ ROI โซลาร์เซลล์, เทคโนโลยี BESS แบตเตอรี่, AI Energy Management, แนวโน้มราคาแผงโซลาร์ และสิทธิประโยชน์ทางภาษี",
+    title:
+      "บทความโซลาร์เซลล์ & พลังงานสะอาด | ความรู้ ROI, BESS, AI Energy | SIRINX",
+    description:
+      "อัพเดตความรู้พลังงานสะอาดล่าสุด — วิเคราะห์ ROI โซลาร์เซลล์, เทคโนโลยี BESS แบตเตอรี่, AI Energy Management, แนวโน้มราคาแผงโซลาร์ และสิทธิประโยชน์ทางภาษี",
   },
   "/contact": {
     title: "นัดสำรวจหน้างานฟรี | ขอใบเสนอราคาโซลาร์เซลล์ | SIRINX",
-    description: "ปรึกษาฟรี! นัดทีมวิศวกร SIRINX สำรวจหน้างาน ประเมินค่าไฟ ออกแบบระบบโซลาร์เซลล์เฉพาะอาคารของคุณ พร้อมใบเสนอราคาภายใน 3 วัน โทร, LINE หรือกรอกแบบฟอร์ม",
+    description:
+      "ปรึกษาฟรี! นัดทีมวิศวกร SIRINX สำรวจหน้างาน ประเมินค่าไฟ ออกแบบระบบโซลาร์เซลล์เฉพาะอาคารของคุณ พร้อมใบเสนอราคาภายใน 3 วัน โทร, LINE หรือกรอกแบบฟอร์ม",
   },
   "/assessment": {
-    title: "คำนวณค่าไฟที่ประหยัดได้ | ประเมินความคุ้มค่าโซลาร์เซลล์ฟรี | SIRINX",
-    description: "กรอกข้อมูลค่าไฟรายเดือน รับผลประเมิน ROI ทันที — คำนวณระยะเวลาคืนทุน ค่าไฟที่ลดได้ต่อปี และขนาดระบบ Solar ที่เหมาะกับธุรกิจคุณ ฟรีไม่มีค่าใช้จ่าย",
+    title:
+      "คำนวณค่าไฟที่ประหยัดได้ | ประเมินความคุ้มค่าโซลาร์เซลล์ฟรี | SIRINX",
+    description:
+      "กรอกข้อมูลค่าไฟรายเดือนเพื่อรับผลประเมินเบื้องต้น — คำนวณสมมติฐาน ROI ระยะเวลาคืนทุน และขนาดระบบ Solar ที่เหมาะกับธุรกิจคุณ",
   },
   "/pricing": {
-    title: "แพ็คเกจราคา Solar Carport | Start / Pro / Enterprise ลดค่าไฟ+EV Charger คืนทุน 3-5 ปี | SIRINX",
-    description: "เปรียบเทียบแพ็คเกจ Solar Carport 3 ระดับ Start / Pro / Enterprise (10-500+ kWp) — ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger พร้อมสิทธิ BOI ลดหย่อนภาษี 200% คืนทุน 3-5 ปี ขอใบเสนอราคาฟรี",
+    title:
+      "แพ็คเกจราคา Solar Carport | Start / Pro / Enterprise พร้อม EV Charger | SIRINX",
+    description:
+      "เปรียบเทียบแพ็คเกจ Solar Carport 3 ระดับ Start / Pro / Enterprise (10-500+ kWp) — ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger และประเมินคืนทุนตามไซต์จริง",
   },
 };
 
@@ -76,7 +98,8 @@ const routeMetaMap: Record<string, PageMeta> = {
  */
 export function getPageMeta(urlPath: string): PageMeta {
   // Clean the path
-  const cleanPath = urlPath.split("?")[0].split("#")[0].replace(/\/$/, "") || "/";
+  const cleanPath =
+    urlPath.split("?")[0].split("#")[0].replace(/\/$/, "") || "/";
 
   // Check exact match first
   if (routeMetaMap[cleanPath]) {
@@ -104,16 +127,17 @@ export function getPageMeta(urlPath: string): PageMeta {
  * Inject OG meta tags into HTML template based on the requested URL.
  * Replaces existing meta tags in the template with route-specific values.
  */
-export function injectOgTags(html: string, urlPath: string, baseUrl: string): string {
+export function injectOgTags(
+  html: string,
+  urlPath: string,
+  baseUrl: string
+): string {
   const meta = getPageMeta(urlPath);
   const image = meta.image || OG_IMAGE;
   const fullUrl = `${baseUrl}${urlPath === "/" ? "" : urlPath}`;
 
   // Replace title
-  html = html.replace(
-    /<title>[^<]*<\/title>/,
-    `<title>${meta.title}</title>`
-  );
+  html = html.replace(/<title>[^<]*<\/title>/, `<title>${meta.title}</title>`);
 
   // Replace meta description
   html = html.replace(
