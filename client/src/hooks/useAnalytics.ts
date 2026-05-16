@@ -2,6 +2,8 @@ import { useEffect, useRef, useCallback } from "react";
 import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 
+const API_ANALYTICS_ENABLED = import.meta.env.VITE_ENABLE_API_ANALYTICS === "true";
+
 // ==================== VISITOR & SESSION ID ====================
 
 function generateId(): string {
@@ -63,6 +65,8 @@ export function usePageViewTracking() {
   const lastTrackedPath = useRef<string>("");
 
   useEffect(() => {
+    if (!API_ANALYTICS_ENABLED) return;
+
     // Avoid duplicate tracking for same path
     if (location === lastTrackedPath.current) return;
     lastTrackedPath.current = location;
@@ -97,6 +101,8 @@ export function useEventTracking() {
       action: string,
       opts?: { label?: string; value?: number; metadata?: Record<string, any> }
     ) => {
+      if (!API_ANALYTICS_ENABLED) return;
+
       trackEventMutation.mutate({
         category,
         action,

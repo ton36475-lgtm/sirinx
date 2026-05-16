@@ -315,11 +315,20 @@ const analyticsRouter = router({
     )
     .mutation(async ({ input, ctx }) => {
       const userAgent = ctx.req.headers["user-agent"] || null;
-      return db.recordPageView({
-        ...input,
-        userAgent,
-        referrer: input.referrer || null,
-      });
+      try {
+        return await db.recordPageView({
+          ...input,
+          userAgent,
+          referrer: input.referrer || null,
+        });
+      } catch (error) {
+        if (!isDatabaseUnavailableError(error)) {
+          throw error;
+        }
+
+        console.warn("[Analytics] Database unavailable; skipped public page view tracking");
+        return { success: true, skipped: true as const };
+      }
     }),
 
   /** Public: Record an event (CTA click, form submit, LINE click, etc.) */
@@ -337,7 +346,16 @@ const analyticsRouter = router({
       })
     )
     .mutation(async ({ input }) => {
-      return db.recordEvent(input);
+      try {
+        return await db.recordEvent(input);
+      } catch (error) {
+        if (!isDatabaseUnavailableError(error)) {
+          throw error;
+        }
+
+        console.warn("[Analytics] Database unavailable; skipped public event tracking");
+        return { success: true, skipped: true as const };
+      }
     }),
 
   /** Admin: Get page view analytics */
