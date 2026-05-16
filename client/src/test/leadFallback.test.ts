@@ -52,6 +52,11 @@ describe("lead fallback", () => {
     expect(
       isLeadTransportFallbackError(new Error("Method Not Allowed 405"))
     ).toBe(true);
+    expect(
+      isLeadTransportFallbackError(
+        new Error("Lead database binding is not configured")
+      )
+    ).toBe(true);
     expect(isLeadTransportFallbackError(new Error("validation failed"))).toBe(
       false
     );

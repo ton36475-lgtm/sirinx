@@ -54,7 +54,7 @@ export function isLeadTransportFallbackError(error: unknown) {
       ? String((error as { message?: unknown }).message ?? "")
       : String(error ?? "");
 
-  return /failed to fetch|unexpected end of json|method not allowed|cannot post|status code 405|\\b405\\b/i.test(
+  return /failed to fetch|unexpected end of json|method not allowed|cannot post|service unavailable|database binding|status code 405|status code 503|\b405\b|\b503\b/i.test(
     message
   );
 }
