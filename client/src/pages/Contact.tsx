@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useSearch } from "wouter";
 import { trpc } from "@/lib/trpc";
+import { TrpcProvider } from "@/lib/trpc-provider";
 import { useTrackCTA, useTrackFormSubmit, useTrackLINEClick } from "@/hooks/useAnalytics";
 import { usePageTranslation } from "@/i18n";
 import "@/i18n/pages/contact";
@@ -24,7 +25,7 @@ const fadeUp = {
 
 const LINE_OA_URL = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_LINE_OA_URL) || "https://lin.ee/sirinx";
 
-export default function Contact() {
+function ContactInner() {
   const { t } = usePageTranslation("contact");
   const searchString = useSearch();
   const [submitted, setSubmitted] = useState(false);
@@ -390,5 +391,13 @@ export default function Contact() {
         </div>
       </section>
     </div>
+  );
+}
+
+export default function Contact() {
+  return (
+    <TrpcProvider>
+      <ContactInner />
+    </TrpcProvider>
   );
 }

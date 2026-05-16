@@ -5,7 +5,7 @@
  */
 import { ReactNode, useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "@/lib/static-motion";
 import { Menu, X, ChevronDown, ChevronRight, Phone, Mail, Moon, Sun, ArrowUpRight, Linkedin, Facebook, MapPin, Globe, Zap, Calculator, FileText, Home, Layers, Factory, BarChart3, Users, Sparkles } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage, LANGUAGE_LABELS, type Language } from "@/contexts/LanguageContext";
@@ -72,6 +72,9 @@ function Navbar() {
           <img
             src={LOGO_URL}
             alt="SIRINX Logo"
+            width={44}
+            height={44}
+            decoding="async"
             className="w-10 h-10 lg:w-11 lg:h-11 rounded-full object-cover shadow-lg shadow-brand/20 ring-2 ring-brand/30"
           />
           <div className="flex flex-col">
@@ -408,6 +411,10 @@ function Footer() {
               <img
                 src={LOGO_URL}
                 alt="SIRINX Logo"
+                width={40}
+                height={40}
+                decoding="async"
+                loading="lazy"
                 className="w-10 h-10 rounded-full object-cover shadow-lg shadow-brand/20 ring-2 ring-brand/30"
               />
               <div className="flex flex-col">
@@ -485,7 +492,7 @@ function Footer() {
                 className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-border-subtle hover:border-border-accent transition-all group"
                 title="DBD Registered — กรมพัฒนาธุรกิจการค้า"
               >
-                <img src={DBD_REGISTERED_URL} alt="DBD Registered" className="h-8 object-contain" />
+                <img src={DBD_REGISTERED_URL} alt="DBD Registered" className="h-8 object-contain" loading="lazy" decoding="async" />
               </a>
               {/* DBD Verified */}
               <a
@@ -495,7 +502,7 @@ function Footer() {
                 className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-border-subtle hover:border-border-accent transition-all group"
                 title="DBD Verified"
               >
-                <img src={DBD_VERIFIED_URL} alt="DBD Verified" className="h-8 object-contain" />
+                <img src={DBD_VERIFIED_URL} alt="DBD Verified" className="h-8 object-contain" loading="lazy" decoding="async" />
               </a>
               {/* Thailand Trust Mark */}
               <a
@@ -505,7 +512,7 @@ function Footer() {
                 className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-border-subtle hover:border-border-accent transition-all group"
                 title="Thailand Trust Mark"
               >
-                <img src={THAILAND_TRUST_MARK_URL} alt="Thailand Trust Mark" className="h-10 w-10 rounded-full object-cover" />
+                <img src={THAILAND_TRUST_MARK_URL} alt="Thailand Trust Mark" className="h-10 w-10 rounded-full object-cover" loading="lazy" decoding="async" />
               </a>
               {/* ISO Badge (SVG inline) */}
               <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-border-subtle" title="ISO 9001:2015 Quality Management">

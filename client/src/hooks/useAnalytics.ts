@@ -1,6 +1,5 @@
 import { useEffect, useRef, useCallback } from "react";
 import { useLocation } from "wouter";
-import { trpc } from "@/lib/trpc";
 
 // ==================== VISITOR & SESSION ID ====================
 
@@ -63,7 +62,6 @@ function isTrpcAnalyticsEnabled(): boolean {
  */
 export function usePageViewTracking() {
   const [location] = useLocation();
-  const trackPageView = trpc.analytics.trackPageView.useMutation();
   const lastTrackedPath = useRef<string>("");
 
   useEffect(() => {
@@ -75,15 +73,19 @@ export function usePageViewTracking() {
 
     const utm = getUTMParams();
 
-    trackPageView.mutate({
+    const payload = {
       path: location,
       referrer: document.referrer || undefined,
       visitorId: getVisitorId(),
       sessionId: getSessionId(),
       deviceType: getDeviceType(),
       ...utm,
-    });
-  }, [location, trackPageView]);
+    };
+
+    void import("@/lib/analytics-trpc")
+      .then(({ trackPageView }) => trackPageView(payload))
+      .catch(error => console.error("[Analytics Page View Error]", error));
+  }, [location]);
 }
 
 // ==================== EVENT TRACKING UTILITY ====================
@@ -95,8 +97,6 @@ export function usePageViewTracking() {
  *   trackEvent("cta_click", "hero_cta", { label: "นัดสำรวจหน้างานฟรี" });
  */
 export function useEventTracking() {
-  const trackEventMutation = trpc.analytics.trackEvent.useMutation();
-
   const trackEvent = useCallback(
     (
       category: string,
@@ -105,7 +105,7 @@ export function useEventTracking() {
     ) => {
       if (!isTrpcAnalyticsEnabled()) return;
 
-      trackEventMutation.mutate({
+      const payload = {
         category,
         action,
         label: opts?.label,
@@ -114,9 +114,13 @@ export function useEventTracking() {
         visitorId: getVisitorId(),
         sessionId: getSessionId(),
         metadata: opts?.metadata ? JSON.stringify(opts.metadata) : undefined,
-      });
+      };
+
+      void import("@/lib/analytics-trpc")
+        .then(({ trackEvent }) => trackEvent(payload))
+        .catch(error => console.error("[Analytics Event Error]", error));
     },
-    [trackEventMutation]
+    []
   );
 
   return { trackEvent };

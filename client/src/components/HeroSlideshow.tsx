@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "wouter";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "@/lib/static-motion";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { usePageTranslation } from "@/i18n";
 import "@/i18n/pages/heroSlideshow";
@@ -36,7 +36,7 @@ const ALL_SLIDES: HeroSlide[] = [
     headline: "เปลี่ยนที่จอดรถ",
     highlightLine: "เป็นโรงไฟฟ้าพลังงานแสงอาทิตย์",
     description:
-      "ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger พร้อมประเมินผลประหยัดและคืนทุนจากข้อมูลไซต์จริง",
+      "ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger ลดค่าไฟ 30-100% คืนทุน 3-5 ปีโดยประมาณตามข้อมูลไซต์จริง",
     cta: {
       label: "ขอใบเสนอราคา Solar Carport",
       href: "/contact?interest=solar-carport",
@@ -68,7 +68,7 @@ const ALL_SLIDES: HeroSlide[] = [
     headline: "โซลาร์บนหลังคาโรงงาน",
     highlightLine: "ลดต้นทุนพลังงานการผลิต",
     description:
-      "ใช้พื้นที่หลังคาให้เกิดประโยชน์สูงสุด ลดต้นทุนพลังงานช่วงกลางวันตาม load profile จริง",
+      "ใช้พื้นที่หลังคาให้เกิดประโยชน์สูงสุด ลดค่าไฟ 30-100% โดยประมาณตาม load profile จริง",
     cta: {
       label: "ขอใบเสนอราคา Rooftop Solar",
       href: "/contact?interest=rooftop-solar",
@@ -307,6 +307,8 @@ export default function HeroSlideshow() {
             alt={slide.badge}
             className="w-full h-full object-cover"
             loading={current === 0 ? "eager" : "lazy"}
+            fetchPriority={current === 0 ? "high" : "low"}
+            decoding={current === 0 ? "sync" : "async"}
           />
           {/* Gradient overlays for text readability */}
           <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/75 to-background/30" />

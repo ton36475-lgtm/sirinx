@@ -4,7 +4,7 @@
  */
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { motion } from "framer-motion";
+import { motion } from "@/lib/static-motion";
 import { Link } from "wouter";
 import {
   Car,
@@ -100,7 +100,7 @@ export default function Home() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             {[
               {
-                value: "รายไซต์",
+                value: "30-100%",
                 label: t("home.stat.reduceBill"),
                 icon: TrendingUp,
               },
@@ -193,6 +193,8 @@ export default function Home() {
                 src={IMG_EV}
                 alt="Solar Carport + EV Charging Station"
                 className="rounded-2xl w-full aspect-[16/10] object-cover"
+                loading="lazy"
+                decoding="async"
               />
               <div className="absolute inset-0 rounded-2xl border border-border-accent" />
               {/* Floating stat card */}
@@ -620,6 +622,8 @@ export default function Home() {
                   src={IMG_NODE1}
                   alt="Solar Farm Node 1 — Rueanpae Royal Park"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 <div className="absolute top-3 left-3 flex gap-2">
@@ -682,6 +686,8 @@ export default function Home() {
                   src={IMG_NODE2}
                   alt="Solar Farm Node 2 — Holatel Rim Nan"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 <div className="absolute top-3 left-3 flex gap-2">
@@ -760,6 +766,8 @@ export default function Home() {
                 src={IMG_OM}
                 alt="SIRINX O&M — AI Monitoring"
                 className="rounded-2xl w-full aspect-[16/10] object-cover"
+                loading="lazy"
+                decoding="async"
               />
             </motion.div>
             <motion.div
@@ -870,6 +878,8 @@ export default function Home() {
                 src={IMG_INVESTMENT}
                 alt="Solar Carport Investment — ROI Analysis"
                 className="rounded-2xl w-full aspect-[16/10] object-cover"
+                loading="lazy"
+                decoding="async"
               />
               <div className="absolute inset-0 rounded-2xl border border-border-accent" />
             </motion.div>
@@ -896,6 +906,8 @@ export default function Home() {
                 src={LOGO_URL}
                 alt="SIRINX"
                 className="w-14 h-14 rounded-full ring-2 ring-brand/30"
+                loading="lazy"
+                decoding="async"
               />
             </div>
             <p className="text-base lg:text-lg text-text-secondary italic leading-relaxed mb-5">

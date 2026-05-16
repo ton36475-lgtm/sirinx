@@ -258,7 +258,7 @@ export default function InvestmentTaxHub() {
                   { label: "กำลังผลิตโดยประมาณ", value: "200-300 kW" },
                   { label: "เงินลงทุนโดยประมาณ", value: "8-12 ล้านบาท" },
                   { label: "ประหยัดค่าไฟต่อปี", value: "2-3.5 ล้านบาท" },
-                  { label: "คืนทุนโดยประมาณ", value: "รายไซต์", accent: true },
+                  { label: "คืนทุนโดยประมาณ", value: "3-5 ปี", accent: true },
                   {
                     label: "ผลตอบแทนตลอดอายุ 25 ปี",
                     value: "40-70 ล้านบาท",
@@ -326,7 +326,7 @@ export default function InvestmentTaxHub() {
                 {[
                   { label: "เงินลงทุนโดยประมาณ", value: "12-15 ล้านบาท" },
                   { label: "ประหยัดค่าไฟต่อปี", value: "3-4 ล้านบาท" },
-                  { label: "คืนทุนโดยประมาณ", value: "รายไซต์", accent: true },
+                  { label: "คืนทุนโดยประมาณ", value: "3-5 ปี", accent: true },
                   {
                     label: "ผลตอบแทนตลอดอายุ 25 ปี",
                     value: "60-80 ล้านบาท",

@@ -3,9 +3,9 @@ import { registerPageTranslations, type TranslationDict } from "../index";
 const dict: TranslationDict = {
   // Social Proof Strip
   "home.stat.reduceBill": {
-    th: "ลดค่าไฟฟ้า",
-    en: "Reduce Electricity",
-    cn: "降低电费",
+    th: "ลดค่าไฟฟ้าโดยประมาณ",
+    en: "Estimated Bill Reduction",
+    cn: "预估降低电费",
   },
   "home.stat.payback": {
     th: "คืนทุนเฉลี่ย",
@@ -17,7 +17,7 @@ const dict: TranslationDict = {
     en: "System Lifespan",
     cn: "使用寿命",
   },
-  "home.stat.paybackVal": { th: "รายไซต์", en: "Site-fit", cn: "按项目评估" },
+  "home.stat.paybackVal": { th: "3-5 ปี", en: "3-5 Years", cn: "3-5年" },
   "home.stat.lifespanVal": { th: "25+ ปี", en: "25+ Years", cn: "25+年" },
 
   // Solar Carport Spotlight
@@ -144,9 +144,9 @@ const dict: TranslationDict = {
     cn: "将停车场变成发电站，支持电动车充电",
   },
   "home.sol.rooftop.desc": {
-    th: "ลดต้นทุนพลังงานด้วยระบบโซลาร์บนหลังคาตาม load profile จริง",
-    en: "Reduce energy costs with rooftop solar based on the real load profile.",
-    cn: "根据实际负载曲线通过屋顶太阳能降低能源成本。",
+    th: "ลดค่าไฟได้ประมาณ 30-100% ด้วยระบบโซลาร์บนหลังคา โดยขึ้นอยู่กับ load profile จริง",
+    en: "Estimate 30-100% bill reduction with rooftop solar, depending on the real load profile.",
+    cn: "通过屋顶太阳能预估降低30-100%电费，具体取决于实际负载曲线。",
   },
   "home.sol.floating.desc": {
     th: "ใช้พื้นที่ผิวน้ำให้เกิดประโยชน์สูงสุด",
@@ -465,9 +465,9 @@ const dict: TranslationDict = {
     cn: "太阳能车棚值得投资吗？回本期多长？",
   },
   "home.faq.a3": {
-    th: "ระยะคืนทุนขึ้นอยู่กับขนาดระบบ ค่าไฟปัจจุบัน load profile และรูปแบบการลงทุน (ซื้อขาด ผ่อนชำระ หรือ Co-investment) ระบบมีอายุการใช้งาน 25+ ปี สามารถขอประเมิน ROI เฉพาะโครงการได้ฟรี",
-    en: "Payback depends on system size, current electricity costs, load profile, and investment model (outright purchase, installment, or Co-investment). System lifespan is 25+ years. Free project-specific ROI assessment available.",
-    cn: "回本期取决于系统规模、当前电费、负载曲线和投资模式（买断、分期或共同投资）。系统寿命25年以上，可免费获取项目专属ROI评估。",
+    th: "คืนทุนเฉลี่ย 3-5 ปี ขึ้นอยู่กับขนาดระบบ ค่าไฟปัจจุบัน load profile และรูปแบบการลงทุน (ซื้อขาด ผ่อนชำระ หรือ Co-investment) ระบบมีอายุการใช้งาน 25+ ปี สามารถขอประเมิน ROI เฉพาะโครงการได้ฟรี",
+    en: "Average payback is 3-5 years depending on system size, current electricity costs, load profile, and investment model (outright purchase, installment, or Co-investment). System lifespan is 25+ years. Free project-specific ROI assessment available.",
+    cn: "平均回本期为3-5年，取决于系统规模、当前电费、负载曲线和投资模式（买断、分期或共同投资）。系统寿命25年以上，可免费获取项目专属ROI评估。",
   },
   "home.faq.q4": {
     th: "รองรับ EV Charger ได้เลยไหม?",

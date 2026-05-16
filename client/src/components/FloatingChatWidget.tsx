@@ -4,6 +4,7 @@ import { X, Send, Loader2, MessageCircle, Zap, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { trpc } from "@/lib/trpc";
+import { TrpcProvider } from "@/lib/trpc-provider";
 import { useEventTracking } from "@/hooks/useAnalytics";
 import {
   CHATBOT_QUICK_REPLIES,
@@ -31,7 +32,7 @@ type ChatMessage = ChatbotMessage;
 
 const LINE_OA_URL_DEFAULT = "https://line.me/R/ti/p/@sirinx";
 
-export default function FloatingChatWidget() {
+function FloatingChatWidgetInner() {
   const [isOpen, setIsOpen] = useState(false);
   const [showBubble, setShowBubble] = useState(false);
   const [bubbleDismissed, setBubbleDismissed] = useState(false);
@@ -408,5 +409,13 @@ export default function FloatingChatWidget() {
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+export default function FloatingChatWidget() {
+  return (
+    <TrpcProvider>
+      <FloatingChatWidgetInner />
+    </TrpcProvider>
   );
 }

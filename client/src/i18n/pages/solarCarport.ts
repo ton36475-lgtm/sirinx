@@ -18,9 +18,9 @@ const dict: TranslationDict = {
     cn: "发电 遮阳 支持电动车",
   },
   "sc.hero.desc": {
-    th: "เปลี่ยนลานจอดรถเป็นโรงไฟฟ้าพลังงานแสงอาทิตย์ พร้อมประเมินผลประหยัดและคืนทุนจากข้อมูลไซต์จริง ด้วย AI Energy Management และ O&M ตลอด 25 ปี",
-    en: "Transform your parking lot into a solar power plant with savings and payback assessed from real site data, AI Energy Management, and 25-year O&M service.",
-    cn: "将停车场变为太阳能发电站，并根据现场数据评估节省和回本，配备AI能源管理和25年运维服务。",
+    th: "เปลี่ยนลานจอดรถเป็นโรงไฟฟ้าพลังงานแสงอาทิตย์ ลดค่าไฟ 30-100% คืนทุน 3-5 ปีโดยประมาณ พร้อม AI Energy Management และ O&M ตลอด 25 ปี",
+    en: "Transform your parking lot into a solar power plant with estimated 30-100% bill reduction, 3-5 year payback, AI Energy Management, and 25-year O&M service.",
+    cn: "将停车场变为太阳能发电站，预估降低30-100%电费，3-5年回本，配备AI能源管理和25年运维服务。",
   },
   "sc.hero.cta1": {
     th: "ขอใบเสนอราคา Solar Carport",
@@ -54,9 +54,9 @@ const dict: TranslationDict = {
     cn: "利用闲置空间发电",
   },
   "sc.b1.desc": {
-    th: "เปลี่ยนลานจอดรถที่ไม่สร้างรายได้ให้เป็นแหล่งผลิตไฟฟ้า ลดต้นทุนพลังงานตามข้อมูลไซต์จริงโดยไม่ต้องแตะหลังคาอาคาร",
-    en: "Turn non-revenue parking areas into power generation sources and reduce energy costs based on real site data without touching building roofs.",
-    cn: "将无收益的停车区域变为发电来源，并根据现场数据降低能源成本，无需改动建筑屋顶。",
+    th: "เปลี่ยนลานจอดรถที่ไม่สร้างรายได้ให้เป็นแหล่งผลิตไฟฟ้า ลดค่าไฟ 30-100% โดยประมาณโดยไม่ต้องแตะหลังคาอาคาร",
+    en: "Turn non-revenue parking areas into power generation sources with estimated 30-100% bill reduction without touching building roofs.",
+    cn: "将无收益的停车区域变为发电来源，预估降低30-100%电费，无需改动建筑屋顶。",
   },
   "sc.b2.title": {
     th: "ร่มเงาปกป้องรถยนต์",
@@ -349,9 +349,9 @@ const dict: TranslationDict = {
     cn: "一次性投资，快速回本，25年最大回报。",
   },
   "sc.fin.buy.highlight": {
-    th: "ประเมินคืนทุนรายไซต์",
-    en: "Site-specific ROI",
-    cn: "按项目评估ROI",
+    th: "คืนทุนเฉลี่ย 3-5 ปี",
+    en: "Average payback in 3-5 years",
+    cn: "平均3-5年回本",
   },
   "sc.fin.buy.f1": {
     th: "ผลตอบแทนสูงสุด",
@@ -490,9 +490,9 @@ const dict: TranslationDict = {
     cn: "回本周期和回报率是多少？",
   },
   "sc.faq3.a": {
-    th: "ระยะคืนทุนและผลตอบแทนขึ้นอยู่กับขนาดระบบ ค่าไฟปัจจุบัน load profile พื้นที่ติดตั้ง และรูปแบบการลงทุน ระบบมีอายุการใช้งาน 25+ ปี SIRINX จะประเมิน ROI เฉพาะโครงการก่อนเสนอราคา",
-    en: "Payback and returns depend on system size, current electricity costs, load profile, installation area, and investment model. The system lifespan is 25+ years. SIRINX assesses project-specific ROI before quoting.",
-    cn: "回本期和回报取决于系统规模、当前电费、负载曲线、安装面积和投资模式。系统寿命25年以上，SIRINX会在报价前进行项目专属ROI评估。",
+    th: "คืนทุนเฉลี่ย 3-5 ปี ขึ้นอยู่กับขนาดระบบ ค่าไฟปัจจุบัน load profile พื้นที่ติดตั้ง และรูปแบบการลงทุน ระบบมีอายุการใช้งาน 25+ ปี SIRINX จะประเมิน ROI เฉพาะโครงการก่อนเสนอราคา",
+    en: "Average payback is 3-5 years, depending on system size, current electricity costs, load profile, installation area, and investment model. The system lifespan is 25+ years. SIRINX assesses project-specific ROI before quoting.",
+    cn: "平均3-5年回本，取决于系统规模、当前电费、负载曲线、安装面积和投资模式。系统寿命25年以上，SIRINX会在报价前进行项目专属ROI评估。",
   },
   "sc.faq4.q": {
     th: "ต้องขออนุญาตอะไรบ้าง?",

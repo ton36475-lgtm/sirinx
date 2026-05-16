@@ -1,5 +1,3 @@
-import { Toaster } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { Route, Switch } from "wouter";
 import { Suspense, lazy, useEffect, useState } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -25,6 +23,9 @@ const Strategy = lazy(() => import("./pages/Strategy"));
 const SolarCarport = lazy(() => import("./pages/SolarCarport"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const FloatingChatWidget = lazy(() => import("./components/FloatingChatWidget"));
+const Toaster = lazy(() =>
+  import("@/components/ui/sonner").then(module => ({ default: module.Toaster }))
+);
 
 function RouteFallback() {
   return (
@@ -63,6 +64,37 @@ function DeferredFloatingChatWidget() {
   return (
     <Suspense fallback={null}>
       <FloatingChatWidget />
+    </Suspense>
+  );
+}
+
+function DeferredToaster() {
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  useEffect(() => {
+    if (shouldLoad) return;
+
+    const reveal = () => setShouldLoad(true);
+    const timeout = window.setTimeout(reveal, 1200);
+    const events: Array<keyof WindowEventMap> = ["pointerdown", "keydown", "touchstart"];
+
+    for (const event of events) {
+      window.addEventListener(event, reveal, { once: true, passive: true });
+    }
+
+    return () => {
+      window.clearTimeout(timeout);
+      for (const event of events) {
+        window.removeEventListener(event, reveal);
+      }
+    };
+  }, [shouldLoad]);
+
+  if (!shouldLoad) return null;
+
+  return (
+    <Suspense fallback={null}>
+      <Toaster />
     </Suspense>
   );
 }
@@ -112,15 +144,13 @@ function App() {
     <ErrorBoundary>
       <LanguageProvider>
       <ThemeProvider defaultTheme="dark" switchable>
-        <TooltipProvider>
-          <Toaster />
-          <PageViewTracker />
-          <AntiCopy enabled={import.meta.env.PROD} />
-          <Suspense fallback={<RouteFallback />}>
-            <Router />
-          </Suspense>
-          <DeferredFloatingChatWidget />
-        </TooltipProvider>
+        <DeferredToaster />
+        <PageViewTracker />
+        <AntiCopy enabled={import.meta.env.PROD} />
+        <Suspense fallback={<RouteFallback />}>
+          <Router />
+        </Suspense>
+        <DeferredFloatingChatWidget />
       </ThemeProvider>
       </LanguageProvider>
     </ErrorBoundary>

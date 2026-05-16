@@ -57,14 +57,14 @@ const dict: Record<string, { th: string; en: string; cn: string }> = {
     cn: "教育机构/政府机关",
   },
   "sol.carport.benefit1": {
-    th: "ลดต้นทุนตามไซต์จริง",
-    en: "Site-specific savings",
-    cn: "按项目节省",
+    th: "ลดค่าไฟได้ประมาณ 30-100%",
+    en: "Estimated 30-100% bill reduction",
+    cn: "预估节省30-100%电费",
   },
   "sol.carport.benefit2": {
-    th: "ประเมิน ROI รายโครงการ",
-    en: "Project-specific ROI",
-    cn: "项目专属ROI",
+    th: "คืนทุนเฉลี่ย 3-5 ปี",
+    en: "Average payback in 3-5 years",
+    cn: "平均3-5年回本",
   },
   "sol.carport.benefit3": {
     th: "รองรับ EV Charging",
@@ -124,9 +124,9 @@ const dict: Record<string, { th: string; en: string; cn: string }> = {
     cn: "按负载曲线节省",
   },
   "sol.rooftop.benefit2": {
-    th: "ประเมินคืนทุนรายไซต์",
-    en: "Site-specific payback",
-    cn: "按项目评估回本",
+    th: "คืนทุนเฉลี่ย 3-5 ปี",
+    en: "Average payback in 3-5 years",
+    cn: "平均3-5年回本",
   },
   "sol.rooftop.benefit3": {
     th: "อายุการใช้งาน 25+ ปี",
