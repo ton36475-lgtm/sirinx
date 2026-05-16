@@ -48,6 +48,15 @@ const dict: TranslationDict = {
   successBtnCalc: { th: "คำนวณระบบโซลาร์", en: "Calculate Solar System", cn: "计算太阳能系统" },
   successLinePrompt: { th: "ติดตามสถานะผ่าน LINE OA ได้เลย", en: "Follow up via LINE OA", cn: "通过LINE OA跟进" },
   successLineBtn: { th: "เพิ่มเพื่อน LINE @SIRINX", en: "Add LINE @SIRINX", cn: "添加LINE @SIRINX" },
+  fallbackToast: { th: "ระบบรับข้อมูลอัตโนมัติไม่พร้อม เปิดอีเมลสำรองให้แล้ว", en: "Automatic lead capture is unavailable. Backup email is ready.", cn: "自动线索提交暂不可用，备用邮件已准备好。" },
+  fallbackCopyToast: { th: "คัดลอกข้อมูลสำหรับส่งให้ทีม SIRINX แล้ว", en: "Copied the lead details for the SIRINX team.", cn: "已复制给 SIRINX 团队的线索详情。" },
+  fallbackTitle: { th: "เปิดช่องทางส่งข้อมูลสำรองแล้ว", en: "Backup Submission Ready", cn: "备用提交已准备好" },
+  fallbackDesc: { th: "ระบบบันทึกอัตโนมัติของเว็บยังไม่พร้อมใช้งานในขณะนี้ กรุณากดส่งอีเมลหรือส่งข้อความผ่าน LINE เพื่อให้ทีม SIRINX ได้รับข้อมูลทันที", en: "The website's automatic capture endpoint is not available right now. Send the prepared email or contact us on LINE so the SIRINX team receives the details immediately.", cn: "网站自动提交端点暂不可用。请发送已准备好的邮件或通过 LINE 联系我们，以便 SIRINX 团队立即收到信息。" },
+  fallbackEmailBtn: { th: "ส่งอีเมลให้ทีม SIRINX", en: "Email SIRINX Team", cn: "发送邮件给 SIRINX 团队" },
+  fallbackLineBtn: { th: "ส่งผ่าน LINE", en: "Send via LINE", cn: "通过 LINE 发送" },
+  fallbackCopyBtn: { th: "คัดลอกข้อมูล", en: "Copy Details", cn: "复制详情" },
+  fallbackCopiedBtn: { th: "คัดลอกแล้ว", en: "Copied", cn: "已复制" },
+  fallbackEditBtn: { th: "กลับไปแก้ข้อมูล", en: "Edit Information", cn: "返回编辑信息" },
 
   /* ── Hero Section ── */
   heroLabel: { th: "Contact Us", en: "Contact Us", cn: "联系我们" },

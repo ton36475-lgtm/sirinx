@@ -14,9 +14,15 @@ import { usePageTranslation } from "@/i18n";
 import "@/i18n/pages/contact";
 import {
   ArrowRight, Phone, Mail, MapPin, Clock, Send, CheckCircle2,
-  Calculator, Shield, FileText, Users, Zap, MessageCircle, Loader2
+  Calculator, Shield, FileText, Users, Zap, MessageCircle, Loader2,
+  ClipboardCopy, ExternalLink
 } from "lucide-react";
 import { toast } from "sonner";
+import {
+  buildLeadFallbackMailto,
+  buildLeadFallbackSummary,
+  isLeadTransportFallbackError,
+} from "@/lib/leadFallback";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -29,6 +35,8 @@ function ContactInner() {
   const { t } = usePageTranslation("contact");
   const searchString = useSearch();
   const [submitted, setSubmitted] = useState(false);
+  const [fallbackLead, setFallbackLead] = useState<{ mailtoHref: string; summary: string } | null>(null);
+  const [copiedFallback, setCopiedFallback] = useState(false);
   const trackCTA = useTrackCTA();
   const trackFormSubmit = useTrackFormSubmit();
   const trackLINEClick = useTrackLINEClick();
@@ -61,11 +69,26 @@ function ContactInner() {
 
   const submitLead = trpc.lead.submit.useMutation({
     onSuccess: () => {
+      setFallbackLead(null);
       setSubmitted(true);
       trackFormSubmit("contact_form", Object.values(formData).filter(Boolean).length);
       toast.success(t("successToast"));
     },
     onError: (err) => {
+      if (isLeadTransportFallbackError(err)) {
+        const submittedAt = new Date();
+        const fallback = {
+          mailtoHref: buildLeadFallbackMailto(formData, submittedAt),
+          summary: buildLeadFallbackSummary(formData, submittedAt),
+        };
+        setFallbackLead(fallback);
+        trackFormSubmit("contact_form_email_fallback", Object.values(formData).filter(Boolean).length);
+        toast.error(t("fallbackToast"));
+        window.setTimeout(() => {
+          window.location.href = fallback.mailtoHref;
+        }, 100);
+        return;
+      }
       toast.error(err.message || t("errorToast"));
     },
   });
@@ -122,6 +145,8 @@ function ContactInner() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setFallbackLead(null);
+    setCopiedFallback(false);
     submitLead.mutate({
       source: "contact",
       name: formData.name,
@@ -137,6 +162,13 @@ function ContactInner() {
   };
 
   const update = (field: string, value: string) => setFormData(prev => ({ ...prev, [field]: value }));
+
+  const copyFallbackSummary = async () => {
+    if (!fallbackLead) return;
+    await navigator.clipboard.writeText(fallbackLead.summary);
+    setCopiedFallback(true);
+    toast.success(t("fallbackCopyToast"));
+  };
 
   if (submitted) {
     return (
@@ -166,6 +198,60 @@ function ContactInner() {
             >
               <MessageCircle className="w-4 h-4" /> {t("successLineBtn")}
             </a>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
+  if (fallbackLead) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center px-4 py-12 bg-background">
+        <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="max-w-2xl w-full p-6 lg:p-8 rounded-2xl border border-amber-400/40 bg-surface-elevated">
+          <div className="w-14 h-14 rounded-full bg-amber-400/15 flex items-center justify-center mb-5">
+            <Mail className="w-7 h-7 text-amber-300" />
+          </div>
+          <h2 className="font-display text-2xl font-bold text-foreground mb-3">{t("fallbackTitle")}</h2>
+          <p className="text-text-secondary mb-6">{t("fallbackDesc")}</p>
+          <div className="flex flex-col sm:flex-row gap-3 mb-6">
+            <a
+              href={fallbackLead.mailtoHref}
+              onClick={() => trackCTA("contact_fallback_email", "contact_fallback")}
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 btn-accent rounded-lg text-sm font-display font-semibold"
+            >
+              <Mail className="w-4 h-4" /> {t("fallbackEmailBtn")}
+            </a>
+            <a
+              href={LINE_OA_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackLINEClick("contact_fallback_cta")}
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#06C755] hover:bg-[#05b34c] text-white rounded-lg text-sm font-semibold transition-colors"
+            >
+              <MessageCircle className="w-4 h-4" /> {t("fallbackLineBtn")}
+            </a>
+            <button
+              type="button"
+              onClick={copyFallbackSummary}
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 btn-accent-outline rounded-lg text-sm font-display font-semibold"
+            >
+              <ClipboardCopy className="w-4 h-4" /> {copiedFallback ? t("fallbackCopiedBtn") : t("fallbackCopyBtn")}
+            </button>
+          </div>
+          <div className="rounded-xl border border-border-subtle bg-background p-4 mb-6 max-h-72 overflow-auto">
+            <pre className="text-xs text-text-secondary whitespace-pre-wrap break-words font-sans">{fallbackLead.summary}</pre>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              type="button"
+              onClick={() => setFallbackLead(null)}
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 btn-accent-outline rounded-lg text-sm font-display font-semibold"
+            >
+              {t("fallbackEditBtn")}
+            </button>
+            <Link href="/assessment" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 btn-accent-outline rounded-lg text-sm font-display font-semibold">
+              {t("successBtnCalc")} <ExternalLink className="w-4 h-4" />
+            </Link>
           </div>
         </motion.div>
       </div>
