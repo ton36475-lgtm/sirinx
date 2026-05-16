@@ -30,8 +30,7 @@ const ALL_SLIDES: HeroSlide[] = [
   {
     id: "carport-aerial",
     category: "solar-carport",
-    image:
-      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/solar-carpark-hero-HkuPbSXRuEJEzybRN8Xb7W.webp",
+    image: "/assets/optimized/solar-carport-hero.jpg",
     badge: "Solar Carport",
     headline: "เปลี่ยนที่จอดรถ",
     highlightLine: "เป็นโรงไฟฟ้าพลังงานแสงอาทิตย์",
@@ -305,6 +304,8 @@ export default function HeroSlideshow() {
           <img
             src={slide.image}
             alt={slide.badge}
+            width={1500}
+            height={838}
             className="w-full h-full object-cover"
             loading={current === 0 ? "eager" : "lazy"}
             fetchPriority={current === 0 ? "high" : "low"}
@@ -403,13 +404,18 @@ export default function HeroSlideshow() {
           <button
             key={s.id}
             onClick={() => goTo(i)}
-            className={`transition-all duration-300 rounded-full ${
-              i === current
-                ? "w-8 h-2.5 bg-accent-primary"
-                : "w-2.5 h-2.5 bg-foreground/30 hover:bg-foreground/50"
-            }`}
+            className="flex h-6 w-6 items-center justify-center rounded-full transition-colors hover:bg-foreground/10"
             aria-label={`${t("hero.goToSlide")} ${i + 1}`}
-          />
+            aria-current={i === current ? "true" : undefined}
+          >
+            <span
+              className={`block rounded-full transition-all duration-300 ${
+                i === current
+                  ? "h-2.5 w-5 bg-accent-primary"
+                  : "h-2.5 w-2.5 bg-foreground/40"
+              }`}
+            />
+          </button>
         ))}
       </div>
 

@@ -44,7 +44,7 @@ function DeferredFloatingChatWidget() {
     if (shouldLoad) return;
 
     const reveal = () => setShouldLoad(true);
-    const timeout = window.setTimeout(reveal, 1800);
+    const timeout = window.setTimeout(reveal, 9000);
     const events: Array<keyof WindowEventMap> = ["pointerdown", "keydown", "touchstart"];
 
     for (const event of events) {
@@ -75,7 +75,7 @@ function DeferredToaster() {
     if (shouldLoad) return;
 
     const reveal = () => setShouldLoad(true);
-    const timeout = window.setTimeout(reveal, 1200);
+    const timeout = window.setTimeout(reveal, 9000);
     const events: Array<keyof WindowEventMap> = ["pointerdown", "keydown", "touchstart"];
 
     for (const event of events) {

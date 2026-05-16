@@ -1,4 +1,5 @@
 import {
+  type ButtonHTMLAttributes,
   type HTMLAttributes,
   type ImgHTMLAttributes,
   type ReactNode,
@@ -53,5 +54,8 @@ export const motion = {
   ),
   img: (props: ImgHTMLAttributes<HTMLImageElement> & StaticMotionProps) => (
     <img {...stripMotionProps(props)} />
+  ),
+  button: (props: ButtonHTMLAttributes<HTMLButtonElement> & StaticMotionProps) => (
+    <button {...stripMotionProps(props)} />
   ),
 };

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "@/lib/static-motion";
 import { X, Send, Loader2, MessageCircle, Zap, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -168,6 +168,7 @@ function FloatingChatWidgetInner() {
                       setShowBubble(false);
                     }}
                     className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-gray-400 dark:bg-slate-600 text-white flex items-center justify-center text-xs hover:bg-gray-500 transition-colors"
+                    aria-label="ปิดข้อความแนะนำ"
                   >
                     <X className="w-3 h-3" />
                   </button>
@@ -189,6 +190,7 @@ function FloatingChatWidgetInner() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               className="relative w-16 h-16 rounded-full shadow-2xl flex items-center justify-center overflow-hidden group"
+              aria-label="เปิด SIRINX Assistant"
               style={{
                 background:
                   "linear-gradient(135deg, #06b6d4 0%, #0d9488 50%, #00C300 100%)",
@@ -245,6 +247,7 @@ function FloatingChatWidgetInner() {
                 <button
                   onClick={handleClose}
                   className="w-8 h-8 rounded-full hover:bg-slate-700/50 flex items-center justify-center transition-colors"
+                  aria-label="ปิด SIRINX Assistant"
                 >
                   <X className="w-4 h-4 text-slate-400" />
                 </button>
@@ -360,6 +363,7 @@ function FloatingChatWidgetInner() {
                       <button
                         onClick={handleLineClick}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#00C300]/10 border border-[#00C300]/30 text-[#00C300] text-xs font-medium hover:bg-[#00C300]/20 transition-colors"
+                        aria-label="ต่อสายผ่าน LINE"
                       >
                         <LINEIcon className="w-3.5 h-3.5" />
                         ต่อสายผ่าน LINE
@@ -385,6 +389,7 @@ function FloatingChatWidgetInner() {
                   onChange={e => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="พิมพ์ข้อความ..."
+                  aria-label="พิมพ์ข้อความถึง SIRINX Assistant"
                   rows={1}
                   className="flex-1 bg-slate-800/80 border border-slate-700/50 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/20 resize-none max-h-24 min-h-[38px]"
                 />
@@ -393,6 +398,7 @@ function FloatingChatWidgetInner() {
                   size="icon"
                   disabled={!input.trim() || chatMutation.isPending}
                   className="shrink-0 h-[38px] w-[38px] rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white disabled:opacity-30"
+                  aria-label="ส่งข้อความ"
                 >
                   {chatMutation.isPending ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
