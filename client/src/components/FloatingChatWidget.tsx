@@ -35,6 +35,35 @@ const QUICK_REPLIES = [
 
 const LINE_OA_URL_DEFAULT = "https://line.me/R/ti/p/@sirinx";
 
+const CONTACT_CTA =
+  "หากต้องการประเมินจริง แนะนำส่งบิลค่าไฟ 3-12 เดือนและรูปพื้นที่ให้ทีม SIRINX ทาง LINE @sirinx เพื่อคัดขนาดระบบและนัดสำรวจ";
+
+const createClientFallbackReply = (messages: ChatMessage[]) => {
+  const latestMessage = messages
+    .filter((message) => message.role === "user")
+    .at(-1)
+    ?.content.trim()
+    .toLowerCase() ?? "";
+
+  if (["ราคา", "ค่าไฟ", "คืนทุน", "roi", "payback", "ภาษี", "boi"].some((keyword) => latestMessage.includes(keyword))) {
+    return `ประเมินเบื้องต้นต้องใช้ค่าไฟรายเดือน, load profile, พื้นที่ติดตั้ง และเงื่อนไขบัญชีภาษีขององค์กรครับ SIRINX สามารถช่วยทำ ROI, LCOE และทางเลือก Solar Carport/Rooftop ให้เทียบเป็นฉากทัศน์ได้ โดยตัวเลขภาษีหรือสิทธิประโยชน์ต้องตรวจตามเงื่อนไขล่าสุดก่อนเสนอจริง ${CONTACT_CTA}`;
+  }
+
+  if (["carport", "ที่จอด", "ev", "charger"].some((keyword) => latestMessage.includes(keyword))) {
+    return `Solar Carport เหมาะกับองค์กรที่ต้องการเปลี่ยนพื้นที่จอดรถเป็นสินทรัพย์พลังงาน: ได้ร่มเงา, รองรับ EV Charger และต่อยอด BESS/AI Energy Management ได้ ผลตอบแทนต้องคำนวณจากพื้นที่และพฤติกรรมใช้ไฟจริง ${CONTACT_CTA}`;
+  }
+
+  if (["bess", "battery", "แบต", "demand"].some((keyword) => latestMessage.includes(keyword))) {
+    return `BESS เหมาะเมื่อมี demand charge สูง, โหลดพีกชัด หรืออยากเพิ่ม resilience ให้ระบบพลังงาน จุดคุ้มทุนขึ้นกับ tariff, profile การใช้ไฟ และขนาดแบตที่เหมาะสม SIRINX ควรเริ่มจากวิเคราะห์บิลและกราฟโหลดก่อนออกแบบ ${CONTACT_CTA}`;
+  }
+
+  if (["หลังคา", "rooftop", "ติดตั้ง", "แผง"].some((keyword) => latestMessage.includes(keyword))) {
+    return `Rooftop Solar ควรเริ่มจากตรวจพื้นที่หลังคา, โครงสร้าง, เงาบัง, ทิศทางแดด และค่าไฟย้อนหลัง จากนั้นค่อยเทียบขนาดระบบกับ Solar Carport หรือ BESS เพื่อเลือกแพ็กเกจที่คุ้มที่สุดแบบไม่ฟันธงเกินข้อมูลจริง ${CONTACT_CTA}`;
+  }
+
+  return `SIRINX ช่วยองค์กรวางแผนพลังงานแสงอาทิตย์ครบวงจร ตั้งแต่ Solar Carport, Rooftop Solar, BESS, AI Energy Management ไปจนถึง O&M คำตอบนี้เป็นโหมด fallback เมื่อระบบ AI เชิงลึกยังไม่เชื่อมต่อ จึงให้คำแนะนำเบื้องต้นและไม่แทนการประเมินหน้างานครับ ${CONTACT_CTA}`;
+};
+
 export default function FloatingChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [showBubble, setShowBubble] = useState(false);
@@ -55,12 +84,12 @@ export default function FloatingChatWidget() {
         { role: "assistant", content: response.reply },
       ]);
     },
-    onError: () => {
+    onError: (_error, request) => {
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content: "ขออภัยครับ ระบบขัดข้อง กรุณาลองใหม่อีกครั้ง หรือติดต่อเราผ่าน LINE ได้เลยครับ",
+          content: createClientFallbackReply(request.messages as ChatMessage[]),
         },
       ]);
     },

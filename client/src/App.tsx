@@ -24,13 +24,6 @@ const Partner = lazy(() => import("./pages/Partner"));
 const Strategy = lazy(() => import("./pages/Strategy"));
 const SolarCarport = lazy(() => import("./pages/SolarCarport"));
 const Pricing = lazy(() => import("./pages/Pricing"));
-const DashboardLayout = lazy(() => import("./components/DashboardLayout"));
-const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
-const AdminLeads = lazy(() => import("./pages/admin/Leads"));
-const AdminBlogCMS = lazy(() => import("./pages/admin/BlogCMS"));
-const AdminContactSubmissions = lazy(() => import("./pages/admin/ContactSubmissions"));
-const AdminAnalytics = lazy(() => import("./pages/admin/Analytics"));
-const AdminAgentMonitor = lazy(() => import("./pages/admin/AgentMonitor"));
 const FloatingChatWidget = lazy(() => import("./components/FloatingChatWidget"));
 
 function RouteFallback() {
@@ -99,29 +92,11 @@ function PublicRouter() {
   );
 }
 
-function AdminRouter() {
-  return (
-    <DashboardLayout>
-      <Switch>
-        <Route path="/admin" component={AdminDashboard} />
-        <Route path="/admin/leads" component={AdminLeads} />
-        <Route path="/admin/blog" component={AdminBlogCMS} />
-        <Route path="/admin/contacts" component={AdminContactSubmissions} />
-        <Route path="/admin/analytics" component={AdminAnalytics} />
-        <Route path="/admin/agent-monitor" component={AdminAgentMonitor} />
-        <Route component={NotFound} />
-      </Switch>
-    </DashboardLayout>
-  );
-}
-
 function Router() {
   return (
     <Switch>
-      {/* Admin routes use DashboardLayout */}
-      <Route path="/admin/:rest*" component={AdminRouter} />
-      <Route path="/admin" component={AdminRouter} />
-      {/* Public routes use public Layout */}
+      <Route path="/admin/:rest*" component={NotFound} />
+      <Route path="/admin" component={NotFound} />
       <Route component={PublicRouter} />
     </Switch>
   );
