@@ -1,5 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { getPageMeta, injectOgTags } from "./ogTags";
+import {
+  getPageMeta,
+  getStaticSeoRoutes,
+  getStructuredData,
+  injectOgTags,
+  thaiProvinces,
+} from "./ogTags";
 
 describe("getPageMeta", () => {
   it("returns Solar Carport-focused meta for homepage", () => {
@@ -93,6 +99,21 @@ describe("getPageMeta", () => {
     const meta = getPageMeta("/unknown-page");
     expect(meta.title).toContain("Solar Carport");
     expect(meta.description).toContain("Solar Carport");
+  });
+
+  it("returns province-specific Solar Carport meta for 77 province routes", () => {
+    expect(thaiProvinces).toHaveLength(77);
+    const routes = getStaticSeoRoutes().filter(route =>
+      route.startsWith("/solar-carport/")
+    );
+    expect(routes).toHaveLength(77);
+
+    const meta = getPageMeta("/solar-carport/phitsanulok");
+    expect(meta.title).toContain("พิษณุโลก");
+    expect(meta.description).toContain("Solar Carport");
+    expect(meta.description).toContain("30-100%");
+    expect(meta.description).toContain("3-5 ปี");
+    expect(meta.description).toContain("ตามข้อมูลไซต์จริง");
   });
 });
 
@@ -195,6 +216,32 @@ describe("injectOgTags", () => {
     expect(result).toContain(
       'og:url" content="https://sirinxsolar-dfabnh7l.manus.space"'
     );
+  });
+
+  it("injects province canonical, OG tags, and structured data", () => {
+    const result = injectOgTags(
+      sampleHtml,
+      "/solar-carport/phitsanulok",
+      "https://www.sirinx.co"
+    );
+    expect(result).toContain("Solar Carport พิษณุโลก");
+    expect(result).toContain(
+      'canonical" href="https://www.sirinx.co/solar-carport/phitsanulok"'
+    );
+    expect(result).toContain('data-sirinx-seo="route"');
+    expect(result).toContain("AdministrativeArea");
+  });
+
+  it("builds AEO service schema for province pages", () => {
+    const data = getStructuredData(
+      "/solar-carport/phitsanulok",
+      "https://www.sirinx.co"
+    );
+    const encoded = JSON.stringify(data);
+    expect(encoded).toContain("Solar Carport พิษณุโลก");
+    expect(encoded).toContain("FAQPage");
+    expect(encoded).toContain("Service");
+    expect(encoded).toContain("พิษณุโลก");
   });
 
   it("does not inject unsupported guaranteed savings or fixed payback claims", () => {

@@ -6,10 +6,13 @@
  * Content strategy: SEO/AEO-focused promotional copy with high-value keywords.
  */
 
+import { getProvinceBySlug, thaiProvinces, type ThaiProvince } from "../shared/thaiProvinces";
+
 const OG_IMAGE =
   "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/sirinx-og-image-hbNko5JADXArPGo26hmGrN.png";
 
 const SITE_NAME = "SIRINX";
+const PRODUCTION_BASE_URL = "https://www.sirinx.co";
 const DEFAULT_TITLE =
   "SIRINX | Solar Carport วางแผนลดค่าไฟองค์กร พร้อม EV Charger, BESS & AI Energy";
 const DEFAULT_DESC =
@@ -20,6 +23,17 @@ interface PageMeta {
   title: string;
   description: string;
   image?: string;
+}
+
+export function getProvinceRoute(province: ThaiProvince): string {
+  return `/solar-carport/${province.slug}`;
+}
+
+function getProvinceMeta(province: ThaiProvince): PageMeta {
+  return {
+    title: `ติดตั้ง Solar Carport ${province.nameTh} | โซลาร์ที่จอดรถ EV Charger BESS | SIRINX`,
+    description: `SIRINX รับออกแบบและติดตั้ง Solar Carport ${province.nameTh} สำหรับโรงงาน โรงแรม อาคาร และลานจอดรถองค์กร พร้อม EV Charger, BESS, AI Energy, O&M และประเมินลดค่าไฟ 30-100% คืนทุนเฉลี่ย 3-5 ปีตามข้อมูลไซต์จริง`,
+  };
 }
 
 const routeMetaMap: Record<string, PageMeta> = {
@@ -92,6 +106,11 @@ const routeMetaMap: Record<string, PageMeta> = {
   },
 };
 
+function getProvinceFromPath(cleanPath: string): ThaiProvince | undefined {
+  if (!cleanPath.startsWith("/solar-carport/")) return undefined;
+  return getProvinceBySlug(cleanPath.replace("/solar-carport/", ""));
+}
+
 /**
  * Get metadata for a given URL path.
  * Supports exact matches and blog slug patterns.
@@ -104,6 +123,11 @@ export function getPageMeta(urlPath: string): PageMeta {
   // Check exact match first
   if (routeMetaMap[cleanPath]) {
     return routeMetaMap[cleanPath];
+  }
+
+  const province = getProvinceFromPath(cleanPath);
+  if (province) {
+    return getProvinceMeta(province);
   }
 
   // Blog post pattern: /blog/:slug
@@ -123,6 +147,185 @@ export function getPageMeta(urlPath: string): PageMeta {
   };
 }
 
+function getBreadcrumbItems(urlPath: string, baseUrl: string) {
+  const cleanPath =
+    urlPath.split("?")[0].split("#")[0].replace(/\/$/, "") || "/";
+  const items = [
+    { name: "หน้าแรก", item: baseUrl },
+  ];
+
+  if (cleanPath.startsWith("/solar-carport")) {
+    items.push({ name: "Solar Carport", item: `${baseUrl}/solar-carport` });
+    const province = getProvinceFromPath(cleanPath);
+    if (province) {
+      items.push({
+        name: `Solar Carport ${province.nameTh}`,
+        item: `${baseUrl}${getProvinceRoute(province)}`,
+      });
+    }
+  } else if (cleanPath !== "/") {
+    items.push({
+      name: getPageMeta(cleanPath).title.split("|")[0].trim(),
+      item: `${baseUrl}${cleanPath}`,
+    });
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((entry, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: entry.name,
+      item: entry.item,
+    })),
+  };
+}
+
+export function getStructuredData(urlPath: string, baseUrl: string) {
+  const cleanPath =
+    urlPath.split("?")[0].split("#")[0].replace(/\/$/, "") || "/";
+  const meta = getPageMeta(cleanPath);
+  const province = getProvinceFromPath(cleanPath);
+  const areaServed = province
+    ? { "@type": "AdministrativeArea", name: province.nameTh }
+    : thaiProvinces.slice(0, 12).map(item => ({
+        "@type": "AdministrativeArea",
+        name: item.nameTh,
+      }));
+
+  const graph: Array<Record<string, unknown>> = [
+    {
+      "@type": "Organization",
+      "@id": `${baseUrl}/#organization`,
+      name: SITE_NAME,
+      url: baseUrl,
+      logo: OG_IMAGE,
+      description: DEFAULT_DESC,
+      areaServed: {
+        "@type": "Country",
+        name: "Thailand",
+      },
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "sales",
+        areaServed: "TH",
+        availableLanguage: ["th", "en", "zh"],
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${baseUrl}/#website`,
+      name: SITE_NAME,
+      url: baseUrl,
+      inLanguage: "th-TH",
+      publisher: { "@id": `${baseUrl}/#organization` },
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${baseUrl}${cleanPath === "/" ? "" : cleanPath}#webpage`,
+      url: `${baseUrl}${cleanPath === "/" ? "" : cleanPath}`,
+      name: meta.title,
+      description: meta.description,
+      isPartOf: { "@id": `${baseUrl}/#website` },
+      about: { "@id": `${baseUrl}/solar-carport#service` },
+      inLanguage: "th-TH",
+    },
+    {
+      "@type": "Service",
+      "@id": `${baseUrl}/solar-carport#service`,
+      name: province
+        ? `Solar Carport ${province.nameTh}`
+        : "Solar Carport by SIRINX",
+      serviceType: "Solar Carport design, installation, EV Charger, BESS, AI Energy Management",
+      provider: { "@id": `${baseUrl}/#organization` },
+      areaServed,
+      description: meta.description,
+      offers: {
+        "@type": "Offer",
+        availability: "https://schema.org/InStock",
+        priceSpecification: {
+          "@type": "PriceSpecification",
+          priceCurrency: "THB",
+          description: "Project-specific quotation after site survey and engineering assessment.",
+        },
+      },
+    },
+    getBreadcrumbItems(cleanPath, baseUrl),
+  ];
+
+  if (province) {
+    graph.push({
+      "@type": "FAQPage",
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: `SIRINX รับติดตั้ง Solar Carport ที่${province.nameTh}หรือไม่?`,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: `รับวางแผน ออกแบบ และประสานทีมสำรวจสำหรับโครงการ Solar Carport ใน${province.nameTh} โดยประเมินจากพื้นที่จอดรถ ค่าไฟจริง load profile และเงื่อนไขหน้างานก่อนเสนอราคา`,
+          },
+        },
+        {
+          "@type": "Question",
+          name: `Solar Carport ใน${province.nameTh}เหมาะกับธุรกิจแบบไหน?`,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "เหมาะกับโรงงาน โรงแรม อาคารพาณิชย์ ศูนย์กระจายสินค้า สถานศึกษา หน่วยงาน และธุรกิจที่มีลานจอดรถหรือพื้นที่เปิดโล่งและต้องการลดต้นทุนพลังงานพร้อมรองรับ EV Charger",
+          },
+        },
+      ],
+    });
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": graph,
+  };
+}
+
+function escapeHtmlAttribute(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function injectStructuredData(html: string, data: unknown): string {
+  const payload = JSON.stringify(data).replace(/</g, "\\u003c");
+  const script = `    <script type="application/ld+json" data-sirinx-seo="route">${payload}</script>\n`;
+  if (html.includes("</head>")) {
+    return html.replace("</head>", `${script}  </head>`);
+  }
+  return html;
+}
+
+function replaceMetaByName(html: string, name: string, content: string): string {
+  const pattern = new RegExp(`<meta\\s+name="${name}"[\\s\\S]*?\\/>`);
+  const tag = `<meta name="${name}" content="${content}" />`;
+  if (pattern.test(html)) return html.replace(pattern, tag);
+  return html.replace("</head>", `    ${tag}\n  </head>`);
+}
+
+function replaceMetaByProperty(
+  html: string,
+  property: string,
+  content: string
+): string {
+  const pattern = new RegExp(`<meta\\s+property="${property}"[\\s\\S]*?\\/>`);
+  const tag = `<meta property="${property}" content="${content}" />`;
+  if (pattern.test(html)) return html.replace(pattern, tag);
+  return html.replace("</head>", `    ${tag}\n  </head>`);
+}
+
+function replaceCanonical(html: string, href: string): string {
+  const pattern = /<link\s+rel="canonical"[\s\S]*?\/>/;
+  const tag = `<link rel="canonical" href="${href}" />`;
+  if (pattern.test(html)) return html.replace(pattern, tag);
+  return html.replace("</head>", `    ${tag}\n  </head>`);
+}
+
 /**
  * Inject OG meta tags into HTML template based on the requested URL.
  * Replaces existing meta tags in the template with route-specific values.
@@ -135,62 +338,50 @@ export function injectOgTags(
   const meta = getPageMeta(urlPath);
   const image = meta.image || OG_IMAGE;
   const fullUrl = `${baseUrl}${urlPath === "/" ? "" : urlPath}`;
+  const title = escapeHtmlAttribute(meta.title);
+  const description = escapeHtmlAttribute(meta.description);
+  const imageUrl = escapeHtmlAttribute(image);
+  const canonicalUrl = escapeHtmlAttribute(fullUrl);
 
   // Replace title
-  html = html.replace(/<title>[^<]*<\/title>/, `<title>${meta.title}</title>`);
+  html = html.replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`);
 
   // Replace meta description
-  html = html.replace(
-    /<meta name="description" content="[^"]*" \/>/,
-    `<meta name="description" content="${meta.description}" />`
-  );
+  html = replaceMetaByName(html, "description", description);
 
   // Replace OG tags
-  html = html.replace(
-    /<meta property="og:title" content="[^"]*" \/>/,
-    `<meta property="og:title" content="${meta.title}" />`
-  );
-  html = html.replace(
-    /<meta property="og:description" content="[^"]*" \/>/,
-    `<meta property="og:description" content="${meta.description}" />`
-  );
-  html = html.replace(
-    /<meta property="og:image" content="[^"]*" \/>/,
-    `<meta property="og:image" content="${image}" />`
-  );
+  html = replaceMetaByProperty(html, "og:title", title);
+  html = replaceMetaByProperty(html, "og:description", description);
+  html = replaceMetaByProperty(html, "og:image", imageUrl);
 
   // Add og:url if not present, or replace
   if (html.includes('property="og:url"')) {
     html = html.replace(
       /<meta property="og:url" content="[^"]*" \/>/,
-      `<meta property="og:url" content="${fullUrl}" />`
+      `<meta property="og:url" content="${canonicalUrl}" />`
     );
   } else {
     html = html.replace(
       /<meta property="og:type"/,
-      `<meta property="og:url" content="${fullUrl}" />\n    <meta property="og:type"`
+      `<meta property="og:url" content="${canonicalUrl}" />\n    <meta property="og:type"`
     );
   }
 
   // Replace Twitter tags
-  html = html.replace(
-    /<meta name="twitter:title" content="[^"]*" \/>/,
-    `<meta name="twitter:title" content="${meta.title}" />`
-  );
-  html = html.replace(
-    /<meta name="twitter:description" content="[^"]*" \/>/,
-    `<meta name="twitter:description" content="${meta.description}" />`
-  );
-  html = html.replace(
-    /<meta name="twitter:image" content="[^"]*" \/>/,
-    `<meta name="twitter:image" content="${image}" />`
-  );
+  html = replaceMetaByName(html, "twitter:title", title);
+  html = replaceMetaByName(html, "twitter:description", description);
+  html = replaceMetaByName(html, "twitter:image", imageUrl);
 
   // Replace canonical URL
-  html = html.replace(
-    /<link rel="canonical" href="[^"]*" \/>/,
-    `<link rel="canonical" href="${fullUrl}" />`
-  );
+  html = replaceCanonical(html, canonicalUrl);
 
-  return html;
+  return injectStructuredData(html, getStructuredData(urlPath, baseUrl));
 }
+
+export function getStaticSeoRoutes() {
+  const coreRoutes = Object.keys(routeMetaMap);
+  const provinceRoutes = thaiProvinces.map(getProvinceRoute);
+  return [...coreRoutes, ...provinceRoutes];
+}
+
+export { PRODUCTION_BASE_URL, thaiProvinces };

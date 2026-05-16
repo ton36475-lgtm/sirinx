@@ -31,7 +31,7 @@ const ALL_SLIDES: HeroSlide[] = [
     id: "carport-aerial",
     category: "solar-carport",
     image:
-      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-01-carport-aerial_c002987a.jpg",
+      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/solar-carpark-hero-HkuPbSXRuEJEzybRN8Xb7W.webp",
     badge: "Solar Carport",
     headline: "เปลี่ยนที่จอดรถ",
     highlightLine: "เป็นโรงไฟฟ้าพลังงานแสงอาทิตย์",

@@ -5,11 +5,12 @@
  */
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "wouter";
+import { Link, useParams } from "wouter";
 import { Helmet } from "react-helmet-async";
 import { trackSolutionVisit } from "@/components/HeroSlideshow";
 import { usePageTranslation } from "@/i18n";
 import "@/i18n/pages/solarCarport";
+import { getProvinceBySlug } from "@shared/thaiProvinces";
 import {
   Car,
   Sun,
@@ -90,6 +91,11 @@ const faqKeys = [
 
 export default function SolarCarport() {
   const { t } = usePageTranslation("solarCarport");
+  const params = useParams<{ province?: string }>();
+  const province = params.province ? getProvinceBySlug(params.province) : undefined;
+  const contactHref = province
+    ? `/contact?interest=solar-carport&province=${province.slug}`
+    : "/contact";
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showStickyCta, setShowStickyCta] = useState(false);
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
@@ -149,10 +155,10 @@ export default function SolarCarport() {
               custom={1}
               className="font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground leading-[1.12] mb-5"
             >
-              {t("sc.hero.title1")}
+              {province ? `Solar Carport ${province.nameTh}` : t("sc.hero.title1")}
               <br />
               <span className="text-gradient-accent">
-                {t("sc.hero.title2")}
+                {province ? "ที่จอดรถผลิตไฟฟ้าสำหรับธุรกิจ" : t("sc.hero.title2")}
               </span>
             </motion.h1>
             <motion.p
@@ -172,7 +178,7 @@ export default function SolarCarport() {
               className="flex flex-col sm:flex-row gap-3 mb-8"
             >
               <Link
-                href="/contact"
+                href={contactHref}
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 font-display font-semibold btn-accent rounded-lg"
               >
                 {t("sc.hero.cta1")} <ArrowRight className="w-4 h-4" />
@@ -210,6 +216,47 @@ export default function SolarCarport() {
           </div>
         </div>
       </section>
+
+      {province && (
+        <section className="py-10 lg:py-14 section-alt">
+          <div className="container">
+            <div className="grid gap-6 lg:grid-cols-[1.25fr_0.75fr] items-start">
+              <div className="rounded-2xl border border-border-subtle bg-surface-elevated p-6 lg:p-8">
+                <span className="text-xs font-medium text-accent-secondary tracking-widest uppercase mb-3 block">
+                  Local Solar Carport Planning
+                </span>
+                <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
+                  ออกแบบ Solar Carport สำหรับพื้นที่{province.nameTh}
+                </h2>
+                <p className="text-sm text-text-secondary leading-relaxed">
+                  SIRINX วางแผนระบบ Solar Carport สำหรับโรงงาน โรงแรม อาคารพาณิชย์
+                  ศูนย์กระจายสินค้า สถานศึกษา และองค์กรใน{province.nameTh}
+                  โดยประเมินจากพื้นที่จอดรถ ค่าไฟจริง load profile โครงสร้างหน้างาน
+                  EV Charger, BESS และรูปแบบการลงทุน ก่อนสรุปแบบวิศวกรรมและใบเสนอราคา
+                </p>
+              </div>
+              <div className="rounded-2xl border border-border-accent bg-accent-glow p-6 lg:p-8">
+                <h3 className="font-display text-lg font-bold text-foreground mb-4">
+                  สิ่งที่ประเมินให้ก่อนติดตั้ง
+                </h3>
+                <ul className="space-y-3 text-sm text-text-secondary">
+                  {[
+                    `ศักยภาพพื้นที่จอดรถใน${province.nameTh}`,
+                    "ขนาดระบบ kWp ที่เหมาะกับค่าไฟและ load profile",
+                    "EV Charger, BESS และ AI Energy Management ที่ควรใช้",
+                    "กรอบผลประหยัด 30-100% และคืนทุนเฉลี่ย 3-5 ปีตามข้อมูลไซต์จริง",
+                  ].map(item => (
+                    <li key={item} className="flex gap-3">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent-primary" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ===== BENEFITS GRID ===== */}
       <section className="py-16 lg:py-24 bg-background">

@@ -105,6 +105,7 @@ function PublicRouter() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/about" component={About} />
+        <Route path="/solar-carport/:province" component={SolarCarport} />
         <Route path="/solar-carport" component={SolarCarport} />
         <Route path="/pricing" component={Pricing} />
         <Route path="/solutions" component={Solutions} />
