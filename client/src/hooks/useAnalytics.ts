@@ -51,6 +51,10 @@ function getUTMParams(): { utmSource?: string; utmMedium?: string; utmCampaign?:
   };
 }
 
+function isTrpcAnalyticsEnabled(): boolean {
+  return import.meta.env.VITE_ENABLE_TRPC_ANALYTICS === "true";
+}
+
 // ==================== PAGE VIEW TRACKING HOOK ====================
 
 /**
@@ -63,6 +67,8 @@ export function usePageViewTracking() {
   const lastTrackedPath = useRef<string>("");
 
   useEffect(() => {
+    if (!isTrpcAnalyticsEnabled()) return;
+
     // Avoid duplicate tracking for same path
     if (location === lastTrackedPath.current) return;
     lastTrackedPath.current = location;
@@ -77,7 +83,7 @@ export function usePageViewTracking() {
       deviceType: getDeviceType(),
       ...utm,
     });
-  }, [location]);
+  }, [location, trackPageView]);
 }
 
 // ==================== EVENT TRACKING UTILITY ====================
@@ -97,6 +103,8 @@ export function useEventTracking() {
       action: string,
       opts?: { label?: string; value?: number; metadata?: Record<string, any> }
     ) => {
+      if (!isTrpcAnalyticsEnabled()) return;
+
       trackEventMutation.mutate({
         category,
         action,

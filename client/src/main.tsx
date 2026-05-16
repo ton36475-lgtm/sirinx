@@ -23,10 +23,15 @@ const redirectToLoginIfUnauthorized = (error: unknown) => {
   window.location.href = getLoginUrl();
 };
 
+const isApiTransportUnavailableError = (error: unknown) =>
+  error instanceof TRPCClientError &&
+  /Failed to fetch|Unexpected end of JSON input/i.test(error.message);
+
 queryClient.getQueryCache().subscribe(event => {
   if (event.type === "updated" && event.action.type === "error") {
     const error = event.query.state.error;
     redirectToLoginIfUnauthorized(error);
+    if (isApiTransportUnavailableError(error)) return;
     console.error("[API Query Error]", error);
   }
 });
@@ -35,6 +40,7 @@ queryClient.getMutationCache().subscribe(event => {
   if (event.type === "updated" && event.action.type === "error") {
     const error = event.mutation.state.error;
     redirectToLoginIfUnauthorized(error);
+    if (isApiTransportUnavailableError(error)) return;
     console.error("[API Mutation Error]", error);
   }
 });
