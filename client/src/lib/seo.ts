@@ -26,6 +26,54 @@ const metaByPath: Record<string, SeoMeta> = {
     description:
       "Solar Carport ผลิตไฟฟ้าจากลานจอดรถ ให้ร่มเงา รองรับ EV Charger และ BESS พร้อมประเมิน ROI จากข้อมูลไซต์จริงโดย SIRINX",
   },
+  "/what-is-sirinx": {
+    path: "/what-is-sirinx",
+    title: "SIRINX คืออะไร | Solar Digital Agentic สำหรับธุรกิจไทย",
+    description:
+      "SIRINX คือบริษัท Solar Digital Agentic ที่รวม Solar Carport, Rooftop Solar, BESS, EV Charger, AI Energy Management และ ROI assessment ไว้ในระบบเดียว",
+  },
+  "/sirinx-god-ai": {
+    path: "/sirinx-god-ai",
+    title: "SIRINX GOD AI คืออะไร | AI Energy Management สำหรับโซลาร์",
+    description:
+      "รู้จัก SIRINX GOD AI แนวคิดระบบ AI Energy Management สำหรับติดตามการผลิตไฟ การใช้ไฟ ROI และสัญญาณผิดปกติของระบบโซลาร์",
+  },
+  "/features/ai-load-control": {
+    path: "/features/ai-load-control",
+    title: "AI Load Control คืออะไร | จัดการโหลดไฟฟ้าและ Peak Load",
+    description:
+      "AI Load Control ใช้ข้อมูลและ AI วิเคราะห์โหลดไฟฟ้า ช่วยจัดลำดับการใช้ไฟ เพิ่ม self-consumption และสนับสนุนการใช้ BESS หรือ EV Charger",
+  },
+  "/features/dynamic-roi": {
+    path: "/features/dynamic-roi",
+    title: "Dynamic ROI คืออะไร | คำนวณคืนทุนโซลาร์จากข้อมูลจริง",
+    description:
+      "Dynamic ROI คือการคำนวณคืนทุนของระบบโซลาร์เซลล์จากค่าไฟ การผลิตไฟ การใช้ไฟ tariff และประสิทธิภาพจริงในแต่ละช่วงเวลา",
+  },
+  "/features/predictive-maintenance": {
+    path: "/features/predictive-maintenance",
+    title: "Predictive Maintenance โซลาร์เซลล์ | ลด Downtime ด้วยข้อมูล",
+    description:
+      "Predictive Maintenance ใช้ข้อมูลและ AI วิเคราะห์สัญญาณผิดปกติของระบบโซลาร์เซลล์ล่วงหน้า เพื่อช่วยลด downtime และวางแผน O&M",
+  },
+  "/compare/sirinx-vs-normal-solar-monitoring": {
+    path: "/compare/sirinx-vs-normal-solar-monitoring",
+    title: "SIRINX vs Solar Monitoring ทั่วไป | ต่างกันอย่างไร",
+    description:
+      "เปรียบเทียบ Solar Monitoring ทั่วไปกับ SIRINX ที่เชื่อมข้อมูลโซลาร์กับ ROI, load profile, BESS, EV Charger และ maintenance workflow",
+  },
+  "/faq": {
+    path: "/faq",
+    title: "FAQ | คำถามที่พบบ่อยเกี่ยวกับ SIRINX และ Solar Carport",
+    description:
+      "รวมคำถามที่พบบ่อยเกี่ยวกับ SIRINX, Solar Carport, Rooftop Solar, BESS, EV Charger, AI Energy Management, ROI และการประเมินระบบ",
+  },
+  "/glossary": {
+    path: "/glossary",
+    title: "Glossary | คำศัพท์ Solar และ AI Energy ของ SIRINX",
+    description:
+      "อธิบายคำศัพท์ Solar และ AI Energy เช่น Solar Carport, BESS, Load Profile, Dynamic ROI, Predictive Maintenance, O&M, kWp และ kWh",
+  },
   "/pricing": {
     path: "/pricing",
     title: "แพ็คเกจราคา Solar Carport | Start, Pro, Enterprise | SIRINX",

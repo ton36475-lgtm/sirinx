@@ -192,7 +192,7 @@ export default function SolarCarport() {
               className="flex flex-wrap gap-6"
             >
               {[
-                { value: "รายไซต์", labelKey: "sc.hero.stat.bill" },
+                { value: "30-100%", labelKey: "sc.hero.stat.bill" },
                 { value: "ROI", labelKey: "sc.hero.stat.roi" },
                 { value: "25+", labelKey: "sc.hero.stat.life" },
                 { value: "24/7", labelKey: "sc.hero.stat.bill" },

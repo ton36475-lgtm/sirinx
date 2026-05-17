@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://www.sirinx.co/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://www.sirinx.co/what-is-sirinx</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.sirinx.co/sirinx-god-ai</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://www.sirinx.co/solar-carport</loc><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://www.sirinx.co/features/ai-load-control</loc><changefreq>monthly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://www.sirinx.co/features/dynamic-roi</loc><changefreq>monthly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://www.sirinx.co/features/predictive-maintenance</loc><changefreq>monthly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://www.sirinx.co/compare/sirinx-vs-normal-solar-monitoring</loc><changefreq>monthly</changefreq><priority>0.78</priority></url>
+  <url><loc>https://www.sirinx.co/faq</loc><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://www.sirinx.co/glossary</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.sirinx.co/pricing</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://www.sirinx.co/assessment</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://www.sirinx.co/contact</loc><changefreq>weekly</changefreq><priority>0.85</priority></url>

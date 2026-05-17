@@ -349,9 +349,9 @@ const dict: TranslationDict = {
     cn: "一次性投资，快速回本，25年最大回报。",
   },
   "sc.fin.buy.highlight": {
-    th: "ประเมินคืนทุนรายไซต์",
-    en: "Site-specific ROI",
-    cn: "按项目评估ROI",
+    th: "คืนทุน 3-6 ปี*",
+    en: "3-6 yr ROI*",
+    cn: "约3-6年回本*",
   },
   "sc.fin.buy.f1": {
     th: "ผลตอบแทนสูงสุด",

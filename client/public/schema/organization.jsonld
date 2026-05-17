@@ -1,0 +1,8 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "SIRINX",
+  "url": "https://www.sirinx.co",
+  "logo": "https://www.sirinx.co/logo.png",
+  "description": "SIRINX ออกแบบ ติดตั้ง และบริหารระบบพลังงานสะอาดสำหรับธุรกิจไทย รวม Solar Carport, Rooftop Solar, BESS, EV Charger และ AI Energy Management"
+}

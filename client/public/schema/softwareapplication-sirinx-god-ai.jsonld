@@ -1,0 +1,14 @@
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "SIRINX GOD AI",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "url": "https://www.sirinx.co/sirinx-god-ai",
+  "description": "SIRINX GOD AI คือแนวคิดระบบ AI Energy Management สำหรับติดตามการผลิตไฟ การใช้ไฟ ROI และสัญญาณผิดปกติของระบบโซลาร์",
+  "publisher": {
+    "@type": "Organization",
+    "name": "SIRINX",
+    "url": "https://www.sirinx.co"
+  }
+}

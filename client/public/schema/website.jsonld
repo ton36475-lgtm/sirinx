@@ -1,0 +1,13 @@
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "SIRINX",
+  "url": "https://www.sirinx.co",
+  "inLanguage": "th-TH",
+  "description": "เว็บไซต์ทางการของ SIRINX สำหรับ Solar Carport, Rooftop Solar, BESS, EV Charger, AI Energy Management และการประเมิน ROI สำหรับธุรกิจไทย",
+  "publisher": {
+    "@type": "Organization",
+    "name": "SIRINX",
+    "url": "https://www.sirinx.co"
+  }
+}

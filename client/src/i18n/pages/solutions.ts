@@ -124,9 +124,9 @@ const dict: Record<string, { th: string; en: string; cn: string }> = {
     cn: "按负载曲线节省",
   },
   "sol.rooftop.benefit2": {
-    th: "ประเมินคืนทุนรายไซต์",
-    en: "Site-specific payback",
-    cn: "按项目评估回本",
+    th: "คืนทุน 3-6 ปี*",
+    en: "3-6 yr payback*",
+    cn: "约3-6年回本*",
   },
   "sol.rooftop.benefit3": {
     th: "อายุการใช้งาน 25+ ปี",

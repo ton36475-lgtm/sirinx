@@ -318,7 +318,7 @@ export default function Blog() {
                 {[
                   {
                     label: "ค่าไฟที่ประหยัดได้",
-                    value: "รายไซต์",
+                    value: "30-100%",
                     sub: "Solar + BESS",
                   },
                   {

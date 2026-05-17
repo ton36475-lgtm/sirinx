@@ -9,6 +9,7 @@ import Layout from "./components/Layout";
 import RouteSeo from "./components/RouteSeo";
 import { usePageViewTracking } from "@/hooks/useAnalytics";
 import AntiCopy from "./components/AntiCopy";
+import type { AeoPageId } from "@/lib/aeoContent";
 
 const NotFound = lazy(() => import("@/pages/NotFound"));
 const Home = lazy(() => import("./pages/Home"));
@@ -25,17 +26,26 @@ const Partner = lazy(() => import("./pages/Partner"));
 const Strategy = lazy(() => import("./pages/Strategy"));
 const SolarCarport = lazy(() => import("./pages/SolarCarport"));
 const Pricing = lazy(() => import("./pages/Pricing"));
+const AeoPage = lazy(() => import("./pages/AeoPage"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Cookies = lazy(() => import("./pages/Cookies"));
-const DashboardLayout = lazy(() => import("./components/DashboardLayout"));
-const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
-const AdminLeads = lazy(() => import("./pages/admin/Leads"));
-const AdminBlogCMS = lazy(() => import("./pages/admin/BlogCMS"));
-const AdminContactSubmissions = lazy(() => import("./pages/admin/ContactSubmissions"));
-const AdminAnalytics = lazy(() => import("./pages/admin/Analytics"));
-const AdminAgentMonitor = lazy(() => import("./pages/admin/AgentMonitor"));
 const FloatingChatWidget = lazy(() => import("./components/FloatingChatWidget"));
+
+const INTERNAL_ROUTES_BUILD_ENABLED =
+  import.meta.env.DEV || import.meta.env.VITE_ENABLE_INTERNAL_ROUTES === "true";
+
+const adminModules = INTERNAL_ROUTES_BUILD_ENABLED
+  ? {
+      DashboardLayout: lazy(() => import("./components/DashboardLayout")),
+      AdminDashboard: lazy(() => import("./pages/admin/Dashboard")),
+      AdminLeads: lazy(() => import("./pages/admin/Leads")),
+      AdminBlogCMS: lazy(() => import("./pages/admin/BlogCMS")),
+      AdminContactSubmissions: lazy(() => import("./pages/admin/ContactSubmissions")),
+      AdminAnalytics: lazy(() => import("./pages/admin/Analytics")),
+      AdminAgentMonitor: lazy(() => import("./pages/admin/AgentMonitor")),
+    }
+  : null;
 
 function RouteFallback() {
   return (
@@ -46,6 +56,21 @@ function RouteFallback() {
     </div>
   );
 }
+
+function createAeoRoute(pageId: AeoPageId) {
+  return function AeoRoute() {
+    return <AeoPage pageId={pageId} />;
+  };
+}
+
+const WhatIsSirinxPage = createAeoRoute("what-is-sirinx");
+const SirinxGodAiPage = createAeoRoute("sirinx-god-ai");
+const AiLoadControlPage = createAeoRoute("ai-load-control");
+const DynamicRoiPage = createAeoRoute("dynamic-roi");
+const PredictiveMaintenancePage = createAeoRoute("predictive-maintenance");
+const SirinxComparisonPage = createAeoRoute("sirinx-vs-normal-solar-monitoring");
+const FaqPage = createAeoRoute("faq");
+const GlossaryPage = createAeoRoute("glossary");
 
 function DeferredFloatingChatWidget() {
   const [shouldLoad, setShouldLoad] = useState(false);
@@ -83,8 +108,16 @@ function PublicRouter() {
     <Layout>
       <Switch>
         <Route path="/" component={Home} />
+        <Route path="/what-is-sirinx" component={WhatIsSirinxPage} />
+        <Route path="/sirinx-god-ai" component={SirinxGodAiPage} />
         <Route path="/about" component={About} />
         <Route path="/solar-carport" component={SolarCarport} />
+        <Route path="/features/ai-load-control" component={AiLoadControlPage} />
+        <Route path="/features/dynamic-roi" component={DynamicRoiPage} />
+        <Route path="/features/predictive-maintenance" component={PredictiveMaintenancePage} />
+        <Route path="/compare/sirinx-vs-normal-solar-monitoring" component={SirinxComparisonPage} />
+        <Route path="/faq" component={FaqPage} />
+        <Route path="/glossary" component={GlossaryPage} />
         <Route path="/pricing" component={Pricing} />
         <Route path="/solutions" component={Solutions} />
         <Route path="/industries" component={Industries} />
@@ -107,6 +140,18 @@ function PublicRouter() {
 }
 
 function AdminRouter() {
+  if (!adminModules) return <NotFound />;
+
+  const {
+    DashboardLayout,
+    AdminDashboard,
+    AdminLeads,
+    AdminBlogCMS,
+    AdminContactSubmissions,
+    AdminAnalytics,
+    AdminAgentMonitor,
+  } = adminModules;
+
   return (
     <DashboardLayout>
       <Switch>
@@ -135,7 +180,7 @@ function isInternalHost() {
 }
 
 function Router() {
-  const internalRoutesEnabled = isInternalHost();
+  const internalRoutesEnabled = INTERNAL_ROUTES_BUILD_ENABLED ? isInternalHost() : false;
 
   return (
     <Switch>
