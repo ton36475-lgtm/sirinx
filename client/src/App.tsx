@@ -139,10 +139,10 @@ function Router() {
 
   return (
     <Switch>
-      {/* Admin routes use DashboardLayout */}
       {internalRoutesEnabled ? <Route path="/admin/:rest*" component={AdminRouter} /> : null}
       {internalRoutesEnabled ? <Route path="/admin" component={AdminRouter} /> : null}
-      {/* Public routes use public Layout */}
+      {!internalRoutesEnabled ? <Route path="/admin/:rest*" component={NotFound} /> : null}
+      {!internalRoutesEnabled ? <Route path="/admin" component={NotFound} /> : null}
       <Route component={PublicRouter} />
     </Switch>
   );
@@ -157,18 +157,18 @@ function App() {
   return (
     <ErrorBoundary>
       <LanguageProvider>
-      <ThemeProvider defaultTheme="dark" switchable>
-        <TooltipProvider>
-          <Toaster />
-          <RouteSeo />
-          <PageViewTracker />
-          <AntiCopy enabled={import.meta.env.PROD} />
-          <Suspense fallback={<RouteFallback />}>
-            <Router />
-          </Suspense>
-          <DeferredFloatingChatWidget />
-        </TooltipProvider>
-      </ThemeProvider>
+        <ThemeProvider defaultTheme="dark" switchable>
+          <TooltipProvider>
+            <Toaster />
+            <RouteSeo />
+            <PageViewTracker />
+            <AntiCopy enabled={import.meta.env.PROD} />
+            <Suspense fallback={<RouteFallback />}>
+              <Router />
+            </Suspense>
+            <DeferredFloatingChatWidget />
+          </TooltipProvider>
+        </ThemeProvider>
       </LanguageProvider>
     </ErrorBoundary>
   );

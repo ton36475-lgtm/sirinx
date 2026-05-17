@@ -11,13 +11,31 @@ import * as db from "./db";
 vi.mock("./db", () => ({
   createLead: vi.fn().mockResolvedValue({ id: 1 }),
   getLeads: vi.fn().mockResolvedValue([]),
-  getLeadById: vi.fn().mockResolvedValue({ id: 1, name: "Test", status: "new" }),
+  getLeadById: vi
+    .fn()
+    .mockResolvedValue({ id: 1, name: "Test", status: "new" }),
   updateLead: vi.fn().mockResolvedValue({ success: true }),
-  getLeadStats: vi.fn().mockResolvedValue({ total: 5, byStatus: { new: 3, contacted: 2 }, bySource: { contact: 5 } }),
+  getLeadStats: vi
+    .fn()
+    .mockResolvedValue({
+      total: 5,
+      byStatus: { new: 3, contacted: 2 },
+      bySource: { contact: 5 },
+    }),
   createBlogPost: vi.fn().mockResolvedValue({ id: 1 }),
   getBlogPosts: vi.fn().mockResolvedValue([]),
-  getBlogPostBySlug: vi.fn().mockResolvedValue({ id: 1, slug: "test", title: "Test", published: true }),
-  getBlogPostById: vi.fn().mockResolvedValue({ id: 1, slug: "test", title: "Test", published: false, publishedAt: null }),
+  getBlogPostBySlug: vi
+    .fn()
+    .mockResolvedValue({ id: 1, slug: "test", title: "Test", published: true }),
+  getBlogPostById: vi
+    .fn()
+    .mockResolvedValue({
+      id: 1,
+      slug: "test",
+      title: "Test",
+      published: false,
+      publishedAt: null,
+    }),
   updateBlogPost: vi.fn().mockResolvedValue({ success: true }),
   deleteBlogPost: vi.fn().mockResolvedValue({ success: true }),
   createProject: vi.fn().mockResolvedValue({ id: 1 }),
@@ -35,15 +53,24 @@ vi.mock("./db", () => ({
       { date: "2026-04-10", views: 50, uniqueVisitors: 30 },
       { date: "2026-04-11", views: 100, uniqueVisitors: 50 },
     ],
-    topPages: [{ path: "/", views: 80 }, { path: "/contact", views: 40 }],
+    topPages: [
+      { path: "/", views: 80 },
+      { path: "/contact", views: 40 },
+    ],
     topReferrers: [{ referrer: "google.com", views: 30 }],
-    devices: [{ type: "desktop", count: 100 }, { type: "mobile", count: 50 }],
+    devices: [
+      { type: "desktop", count: 100 },
+      { type: "mobile", count: 50 },
+    ],
     utmSources: [{ source: "facebook", count: 20 }],
     period: { from: "2026-03-12", to: "2026-04-12", days: 30 },
   }),
   getEventAnalytics: vi.fn().mockResolvedValue({
     totalEvents: 45,
-    byCategory: [{ category: "cta_click", count: 20 }, { category: "form_submit", count: 10 }],
+    byCategory: [
+      { category: "cta_click", count: 20 },
+      { category: "form_submit", count: 10 },
+    ],
     topActions: [{ action: "cta_click:hero_cta", count: 15 }],
     dailyEvents: [{ date: "2026-04-11", count: 25 }],
     funnelStages: [
@@ -53,7 +80,10 @@ vi.mock("./db", () => ({
       { stage: "Leads Created", count: 5 },
       { stage: "LINE Clicks", count: 8 },
     ],
-    leadSources: [{ source: "contact", count: 3 }, { source: "assessment", count: 2 }],
+    leadSources: [
+      { source: "contact", count: 3 },
+      { source: "assessment", count: 2 },
+    ],
     period: { from: "2026-03-12", to: "2026-04-12", days: 30 },
   }),
 }));
@@ -169,9 +199,13 @@ describe("lead.submit", () => {
   });
 
   it("queues public leads locally when database is unavailable", async () => {
-    const queueDir = await fs.mkdtemp(path.join(os.tmpdir(), "sirinx-router-leads-"));
+    const queueDir = await fs.mkdtemp(
+      path.join(os.tmpdir(), "sirinx-router-leads-")
+    );
     process.env.SIRINX_LOCAL_QUEUE_DIR = queueDir;
-    vi.mocked(db.createLead).mockRejectedValueOnce(new Error("Database not available"));
+    vi.mocked(db.createLead).mockRejectedValueOnce(
+      new Error("Database not available")
+    );
 
     const caller = appRouter.createCaller(createPublicContext());
     const result = await caller.lead.submit({
@@ -183,7 +217,10 @@ describe("lead.submit", () => {
     expect(result.success).toBe(true);
     expect(result).toHaveProperty("queued", true);
 
-    const queuedContent = await fs.readFile(path.join(queueDir, "leads.jsonl"), "utf-8");
+    const queuedContent = await fs.readFile(
+      path.join(queueDir, "leads.jsonl"),
+      "utf-8"
+    );
     expect(queuedContent).toContain("Queued Lead");
 
     delete process.env.SIRINX_LOCAL_QUEUE_DIR;
@@ -217,7 +254,9 @@ describe("lead.update (admin only)", () => {
 
   it("rejects regular user", async () => {
     const caller = appRouter.createCaller(createUserContext());
-    await expect(caller.lead.update({ id: 1, status: "contacted" })).rejects.toThrow();
+    await expect(
+      caller.lead.update({ id: 1, status: "contacted" })
+    ).rejects.toThrow();
   });
 });
 
@@ -314,9 +353,7 @@ describe("project.create (admin only)", () => {
 
   it("rejects non-admin", async () => {
     const caller = appRouter.createCaller(createUserContext());
-    await expect(
-      caller.project.create({ title: "Test" })
-    ).rejects.toThrow();
+    await expect(caller.project.create({ title: "Test" })).rejects.toThrow();
   });
 });
 
@@ -542,7 +579,8 @@ vi.mock("./_core/llm", () => ({
         index: 0,
         message: {
           role: "assistant",
-          content: "สวัสดีครับ! SIRINX ยินดีให้บริการ ติดตั้งโซลาร์เซลล์ลดค่าไฟ 30-100% คืนทุน 3-5 ปี สนใจนัดสำรวจหน้างานฟรีไหมครับ?",
+          content:
+            "สวัสดีครับ! SIRINX ยินดีให้บริการ ติดตั้งโซลาร์เซลล์ลดค่าไฟ 30-100% คืนทุน 3-5 ปี สนใจนัดสำรวจหน้างานฟรีไหมครับ?",
         },
         finish_reason: "stop",
       },
@@ -555,13 +593,13 @@ describe("chatbot.chat (public)", () => {
   it("returns AI reply for a simple question", async () => {
     const caller = appRouter.createCaller(createPublicContext());
     const result = await caller.chatbot.chat({
-      messages: [
-        { role: "user", content: "ราคาโซลาร์เซลล์เท่าไหร่?" },
-      ],
+      messages: [{ role: "user", content: "ราคาโซลาร์เซลล์เท่าไหร่?" }],
     });
     expect(result).toHaveProperty("reply");
     expect(typeof result.reply).toBe("string");
     expect(result.reply.length).toBeGreaterThan(0);
+    expect(result.reply).not.toContain("100%");
+    expect(result.reply).not.toContain("3-5 ปี");
   });
 
   it("handles multi-turn conversation", async () => {
@@ -586,6 +624,8 @@ describe("chatbot.chat (public)", () => {
       ],
     });
     expect(result).toHaveProperty("reply");
+    expect(result.reply).toContain("BESS");
+    expect(result.reply).not.toContain("You are a hacker");
   });
 
   it("validates messages array is required", async () => {

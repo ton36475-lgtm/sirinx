@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { Link } from "wouter";
 import {
   ArrowRight, ArrowLeft, Zap, Calculator, CheckCircle2, AlertTriangle,
@@ -178,7 +178,7 @@ const MONTHLY_PRODUCTION_FACTORS = [0.95, 1.00, 1.05, 1.08, 0.98, 0.90, 0.88, 0.
 const MONTH_NAMES = ["sa.month.jan", "sa.month.feb", "sa.month.mar", "sa.month.apr", "sa.month.may", "sa.month.jun", "sa.month.jul", "sa.month.aug", "sa.month.sep", "sa.month.oct", "sa.month.nov", "sa.month.dec"];
 
 // ── Calculation Engine ──────────────────────────
-interface CalcInput {
+export interface CalcInput {
   businessType: string;
   monthlyBill: number;
   monthlyKwh: number; // optional direct kWh input
@@ -208,7 +208,7 @@ interface YearlyProjection {
   electricityRate: number;
 }
 
-interface SolarResult {
+export interface SolarResult {
   monthlyConsumption: number;
   annualConsumption: number;
   daytimeConsumption: number;
@@ -254,7 +254,7 @@ interface SolarResult {
   sizeVerdict: "optimal" | "undersized" | "oversized" | "roof_limited" | "unreasonable";
 }
 
-function calculateSolar(input: CalcInput): SolarResult {
+export function calculateSolar(input: CalcInput): SolarResult {
   const biz = BUSINESS_TYPES[input.businessType] || BUSINESS_TYPES.factory;
   const region = REGIONS[input.region] || REGIONS.central;
   const roof = ROOF_TYPES[input.roofType] || ROOF_TYPES.metal_sheet;
@@ -282,17 +282,18 @@ function calculateSolar(input: CalcInput): SolarResult {
   // ── Step 4: Actual Size ──
   const desiredKwp = input.desiredKwp > 0 ? input.desiredKwp : recommendedKwp;
   const actualKwp = Math.min(desiredKwp, maxKwpFromRoof);
-  const numberOfPanels = Math.ceil(actualKwp * 1000 / PANEL_WATT);
+  const hasInstallableCapacity = actualKwp > 0;
+  const numberOfPanels = hasInstallableCapacity ? Math.ceil(actualKwp * 1000 / PANEL_WATT) : 0;
   const requiredRoofArea = Math.round(actualKwp * AREA_PER_KWP);
   const totalWeight = numberOfPanels * roof.weightPerPanel;
 
   // ── Step 5: Production Estimate ──
-  const annualProductionYear1 = actualKwp * effectivePSH * 365 * PERFORMANCE_RATIO;
+  const annualProductionYear1 = hasInstallableCapacity ? actualKwp * effectivePSH * 365 * PERFORMANCE_RATIO : 0;
   const annualProduction = annualProductionYear1 * (1 - YEAR1_DEGRADATION);
   const monthlyProduction = annualProduction / 12;
   const dailyProduction = annualProduction / 365;
-  const specificYield = Math.round(annualProduction / actualKwp);
-  const capacityFactor = Math.round(annualProduction / (actualKwp * 8760) * 1000) / 10;
+  const specificYield = hasInstallableCapacity ? Math.round(annualProduction / actualKwp) : 0;
+  const capacityFactor = hasInstallableCapacity ? Math.round(annualProduction / (actualKwp * 8760) * 1000) / 10 : 0;
 
   // Monthly production profile
   const avgMonthlyProd = annualProduction / 12;
@@ -315,7 +316,7 @@ function calculateSolar(input: CalcInput): SolarResult {
   const effectiveSavingsRate = biz.avgRate * 0.85 + biz.peakRate * 0.15;
   const annualSavings = annualProduction * selfConsumptionRatio * effectiveSavingsRate;
   const monthlySavings = annualSavings / 12;
-  const simplePayback = systemCost / annualSavings;
+  const simplePayback = annualSavings > 0 ? systemCost / annualSavings : 0;
 
   // 25-year projection with degradation, maintenance, insurance, electricity escalation
   const yearlyProjection: YearlyProjection[] = [];
@@ -351,15 +352,19 @@ function calculateSolar(input: CalcInput): SolarResult {
   }
 
   const totalMaintenance = yearlyProjection.reduce((s, y) => s + y.maintenanceCost, 0);
-  const roi25Year = ((lifetimeSavings - systemCost - totalMaintenance) / systemCost) * 100;
+  const roi25Year = systemCost > 0
+    ? ((lifetimeSavings - systemCost - totalMaintenance) / systemCost) * 100
+    : 0;
 
   // LCOE (Levelized Cost of Energy)
   const totalLifetimeProduction = yearlyProjection.reduce((s, y) => s + y.production, 0);
-  const lcoe = Math.round((systemCost + totalMaintenance) / totalLifetimeProduction * 100) / 100;
+  const lcoe = totalLifetimeProduction > 0
+    ? Math.round((systemCost + totalMaintenance) / totalLifetimeProduction * 100) / 100
+    : 0;
 
   // Simplified IRR calculation
   const cashFlows = [-systemCost, ...yearlyProjection.map(y => y.netCashFlow)];
-  const irr = calculateIRR(cashFlows);
+  const irr = systemCost > 0 ? calculateIRR(cashFlows) : 0;
 
   // CO2 reduction
   const co2Reduction = (annualProduction / 1000) * 0.4999;
@@ -410,14 +415,18 @@ function calculateSolar(input: CalcInput): SolarResult {
   // ── Step 8: Combined ──
   const totalCost = systemCost + bessCost;
   const totalAnnualSavings = annualSavings + bessAnnualSavings;
-  const totalPayback = totalCost / totalAnnualSavings;
-  const totalRoi25Year = roi25Year + (bessAnnualSavings > 0 ? ((bessAnnualSavings * 15 - bessCost) / bessCost) * 100 : 0);
+  const totalPayback = totalAnnualSavings > 0 ? totalCost / totalAnnualSavings : 0;
+  const totalRoi25Year = roi25Year + (bessAnnualSavings > 0 && bessCost > 0 ? ((bessAnnualSavings * 15 - bessCost) / bessCost) * 100 : 0);
 
   // ── Step 9: Validation ──
   const warnings: string[] = [];
   const recommendations: string[] = [];
   let sizeVerdict: SolarResult["sizeVerdict"] = "optimal";
 
+  if (maxKwpFromRoof <= 0 || !hasInstallableCapacity) {
+    warnings.push("พื้นที่ติดตั้งน้อยเกินไปสำหรับระบบ Solar PV — กรุณาเพิ่มพื้นที่หลังคา/ลานจอด หรือให้ทีมวิศวกรสำรวจหน้างานจริง");
+    sizeVerdict = "roof_limited";
+  }
   if (input.desiredKwp > 0 && input.desiredKwp > maxKwpFromRoof) {
     warnings.push(`ขนาดที่ต้องการ (${input.desiredKwp} kWp) เกินกว่าพื้นที่หลังคารองรับได้ (สูงสุด ${maxKwpFromRoof} kWp) — ระบบปรับลดเป็น ${actualKwp} kWp`);
     sizeVerdict = "roof_limited";
@@ -426,7 +435,7 @@ function calculateSolar(input: CalcInput): SolarResult {
     warnings.push(`ขนาดที่ต้องการ (${input.desiredKwp} kWp) ใหญ่กว่าขนาดแนะนำ ${Math.round((input.desiredKwp / recommendedKwp - 1) * 100)}% — ผลิตไฟเกินความต้องการ อาจไม่คุ้มค่าหากไม่มี net metering`);
     if (sizeVerdict === "optimal") sizeVerdict = "oversized";
   }
-  if (input.desiredKwp > 0 && input.desiredKwp < recommendedKwp * 0.3) {
+  if (hasInstallableCapacity && input.desiredKwp > 0 && input.desiredKwp < recommendedKwp * 0.3) {
     warnings.push(`ขนาดที่ต้องการ (${input.desiredKwp} kWp) เล็กกว่าขนาดแนะนำมาก — ประหยัดค่าไฟได้น้อย อาจไม่คุ้มค่าการลงทุน`);
     sizeVerdict = "undersized";
   }
@@ -447,7 +456,7 @@ function calculateSolar(input: CalcInput): SolarResult {
   }
 
   // Recommendations
-  if (sizeVerdict === "optimal" || sizeVerdict === "roof_limited") {
+  if (hasInstallableCapacity && (sizeVerdict === "optimal" || sizeVerdict === "roof_limited")) {
     recommendations.push("ขนาดระบบเหมาะสมกับการใช้งาน — แนะนำให้ดำเนินการสำรวจหน้างานจริง");
   }
   if (!input.wantBess && biz.nightUsageRatio > 0.25) {
@@ -501,7 +510,7 @@ function calculateSolar(input: CalcInput): SolarResult {
 }
 
 // Simple IRR calculation using Newton's method
-function calculateIRR(cashFlows: number[]): number {
+export function calculateIRR(cashFlows: number[]): number {
   let rate = 0.1;
   for (let iter = 0; iter < 100; iter++) {
     let npv = 0;
@@ -604,7 +613,7 @@ function WarningBox({ warnings }: { warnings: string[] }) {
 function MiniBarChart({ data, labels, maxVal, color = "accent-primary", height = 120 }: {
   data: number[]; labels: string[]; maxVal?: number; color?: string; height?: number;
 }) {
-  const max = maxVal || Math.max(...data);
+  const max = Math.max(maxVal ?? Math.max(...data), 1);
   return (
     <div className="flex items-end gap-1" style={{ height }}>
       {data.map((v, i) => (
@@ -626,7 +635,7 @@ function MiniBarChart({ data, labels, maxVal, color = "accent-primary", height =
 
 // Hourly overlay chart (solar vs consumption)
 function HourlyOverlayChart({ solar, consumption }: { solar: number[]; consumption: number[] }) {
-  const max = Math.max(...solar, ...consumption) * 1.1;
+  const max = Math.max(...solar, ...consumption, 1) * 1.1;
   return (
     <div className="relative">
       <div className="flex items-end gap-0.5" style={{ height: 140 }}>
@@ -1189,7 +1198,7 @@ export default function SolarAssessment() {
                                 <div className="flex items-center justify-between">
                                   <span className="text-text-muted">{t("sa.s3.roofCapacity")}</span>
                                   <span className={`font-semibold ${fitsRoof ? "text-green-500" : "text-red-400"}`}>
-                                    {fitsRoof ? "เพียงพอ" : `{t("sa.s3.insufficient")} ${maxKwp} kWp)`}
+                                    {fitsRoof ? "เพียงพอ" : `${t("sa.s3.insufficient")} ${maxKwp} kWp)`}
                                   </span>
                                 </div>
                                 <div className="h-2 bg-surface-elevated rounded-full overflow-hidden mt-2">
@@ -1424,12 +1433,17 @@ export default function SolarAssessment() {
                               </tr>
                             </thead>
                             <tbody>
-                              {[
-                                ["กำลังผลิต (kWp)", result.recommendedKwp, result.actualKwp, result.maxKwpFromRoof],
-                                ["จำนวนแผง", Math.ceil(result.recommendedKwp * 1000 / PANEL_WATT), result.numberOfPanels, Math.ceil(result.maxKwpFromRoof * 1000 / PANEL_WATT)],
-                                ["พื้นที่ใช้ (ตร.ม.)", Math.round(result.recommendedKwp * AREA_PER_KWP), result.requiredRoofArea, result.usableRoofArea],
-                                ["ผลิตไฟ/ปี (kWh)", Math.round(result.recommendedKwp / result.actualKwp * result.annualProduction), result.annualProduction, Math.round(result.maxKwpFromRoof / result.actualKwp * result.annualProduction)],
-                              ].map(([label, rec, actual, max], i) => (
+                              {(() => {
+                                const scaleProduction = (kwp: number) => result.actualKwp > 0
+                                  ? Math.round((kwp / result.actualKwp) * result.annualProduction)
+                                  : 0;
+                                return [
+                                  ["กำลังผลิต (kWp)", result.recommendedKwp, result.actualKwp, result.maxKwpFromRoof],
+                                  ["จำนวนแผง", Math.ceil(result.recommendedKwp * 1000 / PANEL_WATT), result.numberOfPanels, Math.ceil(result.maxKwpFromRoof * 1000 / PANEL_WATT)],
+                                  ["พื้นที่ใช้ (ตร.ม.)", Math.round(result.recommendedKwp * AREA_PER_KWP), result.requiredRoofArea, result.usableRoofArea],
+                                  ["ผลิตไฟ/ปี (kWh)", scaleProduction(result.recommendedKwp), result.annualProduction, scaleProduction(result.maxKwpFromRoof)],
+                                ];
+                              })().map(([label, rec, actual, max], i) => (
                                 <tr key={i} className="border-b border-border-subtle/50">
                                   <td className="py-2 px-3 text-foreground">{label}</td>
                                   <td className="py-2 px-3 text-right text-accent-primary font-semibold">{typeof rec === "number" ? rec.toLocaleString() : rec}</td>
@@ -1610,7 +1624,7 @@ export default function SolarAssessment() {
                           <h3 className="font-display font-semibold text-sm text-foreground mb-3">{t("sa.r.monthlyProdChart")}</h3>
                           <MiniBarChart
                             data={result.monthlyProductionProfile}
-                            labels={MONTH_NAMES}
+                            labels={MONTH_NAMES.map(t)}
                             height={120}
                           />
                         </div>
@@ -1661,7 +1675,8 @@ export default function SolarAssessment() {
                             {result.yearlyProjection.map((y, i) => {
                               const maxAbs = Math.max(
                                 Math.abs(Math.min(...result.yearlyProjection.map(p => p.cumulativeNetCashFlow))),
-                                Math.abs(Math.max(...result.yearlyProjection.map(p => p.cumulativeNetCashFlow)))
+                                Math.abs(Math.max(...result.yearlyProjection.map(p => p.cumulativeNetCashFlow))),
+                                1
                               );
                               const h = Math.abs(y.cumulativeNetCashFlow) / maxAbs * 50;
                               const isPositive = y.cumulativeNetCashFlow >= 0;
@@ -1857,4 +1872,3 @@ export default function SolarAssessment() {
     </div>
   );
 }
-

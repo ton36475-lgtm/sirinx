@@ -36,8 +36,11 @@ const ALL_SLIDES: HeroSlide[] = [
     headline: "เปลี่ยนที่จอดรถ",
     highlightLine: "เป็นโรงไฟฟ้าพลังงานแสงอาทิตย์",
     description:
-      "ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger ลดค่าไฟ 30-100% คืนทุน 3-5 ปี",
-    cta: { label: "ขอใบเสนอราคา Solar Carport", href: "/contact?interest=solar-carport" },
+      "ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger พร้อมประเมินผลประหยัดและคืนทุนจากข้อมูลไซต์จริง",
+    cta: {
+      label: "ขอใบเสนอราคา Solar Carport",
+      href: "/contact?interest=solar-carport",
+    },
     secondaryCta: { label: "ดูผลงานจริง", href: "/projects" },
   },
   {
@@ -50,7 +53,10 @@ const ALL_SLIDES: HeroSlide[] = [
     highlightLine: "แผงโซลาร์เซลล์คุณภาพ Tier-1",
     description:
       "ออกแบบเฉพาะทาง รับน้ำหนักลม-ฝน ตามมาตรฐานวิศวกรรม อายุใช้งาน 25+ ปี",
-    cta: { label: "นัดสำรวจหน้างานฟรี", href: "/contact?interest=solar-carport" },
+    cta: {
+      label: "นัดสำรวจหน้างานฟรี",
+      href: "/contact?interest=solar-carport",
+    },
     secondaryCta: { label: "ดูโซลูชันทั้งหมด", href: "/solutions" },
   },
   {
@@ -62,8 +68,11 @@ const ALL_SLIDES: HeroSlide[] = [
     headline: "โซลาร์บนหลังคาโรงงาน",
     highlightLine: "ลดต้นทุนพลังงานการผลิต",
     description:
-      "ใช้พื้นที่หลังคาให้เกิดประโยชน์สูงสุด ลดค่าไฟสูงสุด 100% ในเวลากลางวัน",
-    cta: { label: "ขอใบเสนอราคา Rooftop Solar", href: "/contact?interest=rooftop-solar" },
+      "ใช้พื้นที่หลังคาให้เกิดประโยชน์สูงสุด ลดต้นทุนพลังงานช่วงกลางวันตาม load profile จริง",
+    cta: {
+      label: "ขอใบเสนอราคา Rooftop Solar",
+      href: "/contact?interest=rooftop-solar",
+    },
     secondaryCta: { label: "ดูอุตสาหกรรมที่เหมาะ", href: "/industries" },
   },
   {
@@ -76,7 +85,10 @@ const ALL_SLIDES: HeroSlide[] = [
     highlightLine: "ใช้พื้นที่ผิวน้ำให้เกิดประโยชน์",
     description:
       "เหมาะกับอ่างเก็บน้ำ บ่อน้ำอุตสาหกรรม ลดการระเหยของน้ำ เพิ่มประสิทธิภาพแผง",
-    cta: { label: "ขอใบเสนอราคา Floating Solar", href: "/contact?interest=floating-solar" },
+    cta: {
+      label: "ขอใบเสนอราคา Floating Solar",
+      href: "/contact?interest=floating-solar",
+    },
     secondaryCta: { label: "ดูผลงานจริง", href: "/projects" },
   },
   {
@@ -90,7 +102,10 @@ const ALL_SLIDES: HeroSlide[] = [
     description:
       "รองรับรถยนต์ไฟฟ้าในอนาคต ชาร์จจากพลังงานแสงอาทิตย์โดยตรง ลดต้นทุนพลังงาน",
     cta: { label: "ขอใบเสนอราคา", href: "/contact?interest=solar-carport" },
-    secondaryCta: { label: "ดูรายละเอียด Solar Carport", href: "/solar-carport" },
+    secondaryCta: {
+      label: "ดูรายละเอียด Solar Carport",
+      href: "/solar-carport",
+    },
   },
   {
     id: "bess-realistic",
@@ -115,7 +130,10 @@ const ALL_SLIDES: HeroSlide[] = [
     highlightLine: "สำหรับธุรกิจโรงแรม",
     description:
       "ลดค่าไฟ เสริมภาพลักษณ์ Green Hotel ดึงดูดนักท่องเที่ยวที่ใส่ใจสิ่งแวดล้อม",
-    cta: { label: "ปรึกษาโซลูชันโรงแรม", href: "/contact?interest=hospitality" },
+    cta: {
+      label: "ปรึกษาโซลูชันโรงแรม",
+      href: "/contact?interest=hospitality",
+    },
     secondaryCta: { label: "ดูอุตสาหกรรมทั้งหมด", href: "/industries" },
   },
   {
@@ -155,7 +173,10 @@ const ALL_SLIDES: HeroSlide[] = [
     description:
       "รองรับพื้นที่จอดรถขนาดใหญ่ ผลิตไฟฟ้าได้มากกว่า ลดค่าไฟทั้งอาคาร",
     cta: { label: "ขอใบเสนอราคา", href: "/contact?interest=solar-carport" },
-    secondaryCta: { label: "ดูรายละเอียด Solar Carport", href: "/solar-carport" },
+    secondaryCta: {
+      label: "ดูรายละเอียด Solar Carport",
+      href: "/solar-carport",
+    },
   },
 ];
 
@@ -243,11 +264,11 @@ export default function HeroSlideshow() {
   const { t } = usePageTranslation("heroSlideshow");
 
   const next = useCallback(() => {
-    setCurrent((prev) => (prev + 1) % slides.length);
+    setCurrent(prev => (prev + 1) % slides.length);
   }, [slides.length]);
 
   const prev = useCallback(() => {
-    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
+    setCurrent(prev => (prev - 1 + slides.length) % slides.length);
   }, [slides.length]);
 
   const goTo = useCallback((index: number) => {
@@ -306,20 +327,29 @@ export default function HeroSlideshow() {
             >
               {/* Badge */}
               <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-accent-primary bg-accent-glow border border-border-accent rounded-full mb-6">
-                {t(`hero.${slide.id}.badge`) !== `hero.${slide.id}.badge` ? t(`hero.${slide.id}.badge`) : slide.badge}
+                {t(`hero.${slide.id}.badge`) !== `hero.${slide.id}.badge`
+                  ? t(`hero.${slide.id}.badge`)
+                  : slide.badge}
               </span>
 
               {/* Headline */}
               <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground leading-[1.1] mb-2">
-                {t(`hero.${slide.id}.headline`) !== `hero.${slide.id}.headline` ? t(`hero.${slide.id}.headline`) : slide.headline}
+                {t(`hero.${slide.id}.headline`) !== `hero.${slide.id}.headline`
+                  ? t(`hero.${slide.id}.headline`)
+                  : slide.headline}
               </h1>
               <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gradient-accent leading-[1.1] mb-6">
-                {t(`hero.${slide.id}.highlight`) !== `hero.${slide.id}.highlight` ? t(`hero.${slide.id}.highlight`) : slide.highlightLine}
+                {t(`hero.${slide.id}.highlight`) !==
+                `hero.${slide.id}.highlight`
+                  ? t(`hero.${slide.id}.highlight`)
+                  : slide.highlightLine}
               </h2>
 
               {/* Description */}
               <p className="text-lg sm:text-xl text-text-secondary leading-relaxed mb-8 max-w-xl">
-                {t(`hero.${slide.id}.desc`) !== `hero.${slide.id}.desc` ? t(`hero.${slide.id}.desc`) : slide.description}
+                {t(`hero.${slide.id}.desc`) !== `hero.${slide.id}.desc`
+                  ? t(`hero.${slide.id}.desc`)
+                  : slide.description}
               </p>
 
               {/* CTAs */}
@@ -328,14 +358,19 @@ export default function HeroSlideshow() {
                   href={slide.cta.href}
                   className="inline-flex items-center justify-center gap-2 px-6 py-3.5 font-display font-semibold btn-accent rounded-lg"
                 >
-                  {t(`hero.${slide.id}.cta`) !== `hero.${slide.id}.cta` ? t(`hero.${slide.id}.cta`) : slide.cta.label} <ArrowRight className="w-4 h-4" />
+                  {t(`hero.${slide.id}.cta`) !== `hero.${slide.id}.cta`
+                    ? t(`hero.${slide.id}.cta`)
+                    : slide.cta.label}{" "}
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
                 {slide.secondaryCta && (
                   <Link
                     href={slide.secondaryCta.href}
                     className="inline-flex items-center justify-center gap-2 px-6 py-3.5 font-display font-semibold btn-accent-outline rounded-lg"
                   >
-                    {t(`hero.${slide.id}.cta2`) !== `hero.${slide.id}.cta2` ? t(`hero.${slide.id}.cta2`) : slide.secondaryCta.label}
+                    {t(`hero.${slide.id}.cta2`) !== `hero.${slide.id}.cta2`
+                      ? t(`hero.${slide.id}.cta2`)
+                      : slide.secondaryCta.label}
                   </Link>
                 )}
               </div>
@@ -378,7 +413,8 @@ export default function HeroSlideshow() {
 
       {/* Slide counter */}
       <div className="absolute bottom-8 right-6 z-20 text-xs text-text-muted font-mono hidden sm:block">
-        {String(current + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
+        {String(current + 1).padStart(2, "0")} /{" "}
+        {String(slides.length).padStart(2, "0")}
       </div>
     </section>
   );
