@@ -100,7 +100,7 @@ export default function Home() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             {[
               {
-                value: "รายไซต์",
+                value: "30-100%",
                 label: t("home.stat.reduceBill"),
                 icon: TrendingUp,
               },

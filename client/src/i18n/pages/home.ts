@@ -17,7 +17,7 @@ const dict: TranslationDict = {
     en: "System Lifespan",
     cn: "使用寿命",
   },
-  "home.stat.paybackVal": { th: "รายไซต์", en: "Site-fit", cn: "按项目评估" },
+  "home.stat.paybackVal": { th: "3-6 ปี", en: "3-6 yrs", cn: "3-6年" },
   "home.stat.lifespanVal": { th: "25+ ปี", en: "25+ Years", cn: "25+年" },
 
   // Solar Carport Spotlight
