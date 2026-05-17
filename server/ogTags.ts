@@ -9,8 +9,8 @@
 const OG_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/sirinx-og-image-hbNko5JADXArPGo26hmGrN.png";
 
 const SITE_NAME = "SIRINX";
-const DEFAULT_TITLE = "SIRINX | Solar Carport ผลิตไฟฟ้าจากที่จอดรถ ลดค่าไฟ 30-100% คืนทุน 3-5 ปี พร้อม EV Charger & AI Energy";
-const DEFAULT_DESC = "SIRINX Solar Carport ผลิตไฟฟ้าจากที่จอดรถ ลดค่าไฟ 30-100% คืนทุน 3-5 ปี รองรับ EV Charger + BESS + AI Energy ดูแลตลอด 25 ปี นัดสำรวจฟรี";
+const DEFAULT_TITLE = "SIRINX | Solar Carport ลดค่าไฟองค์กร พร้อม EV Charger, BESS และ AI Energy";
+const DEFAULT_DESC = "SIRINX ออกแบบและติดตั้ง Solar Carport, Rooftop Solar, BESS, EV Charger และ AI Energy Management สำหรับโรงงาน อาคาร โรงแรม และธุรกิจไทย";
 
 // Route-specific metadata map — SEO/AEO promotional copy
 interface PageMeta {
@@ -21,8 +21,8 @@ interface PageMeta {
 
 const routeMetaMap: Record<string, PageMeta> = {
   "/": {
-    title: "SIRINX | Solar Carport ผลิตไฟฟ้าจากที่จอดรถ ลดค่าไฟ 30-100% คืนทุน 3-5 ปี พร้อม EV Charger & AI Energy",
-    description: "SIRINX Solar Carport ผลิตไฟฟ้าจากที่จอดรถ ลดค่าไฟ 30-100% คืนทุน 3-5 ปี รองรับ EV Charger + BESS + AI Energy ดูแลตลอด 25 ปี นัดสำรวจฟรี",
+    title: "SIRINX | Solar Carport ลดค่าไฟองค์กร พร้อม EV Charger, BESS และ AI Energy",
+    description: "SIRINX ออกแบบและติดตั้ง Solar Carport, Rooftop Solar, BESS, EV Charger และ AI Energy Management สำหรับโรงงาน อาคาร โรงแรม และธุรกิจไทย",
   },
   "/solar-carport": {
     title: "Solar Carport โดย SIRINX | เปลี่ยนที่จอดรถเป็นโรงไฟฟ้า ผลิตไฟฟ้า+ร่มเงา+EV Charger",
@@ -67,6 +67,22 @@ const routeMetaMap: Record<string, PageMeta> = {
   "/pricing": {
     title: "แพ็คเกจราคา Solar Carport | Start / Pro / Enterprise ลดค่าไฟ+EV Charger คืนทุน 3-5 ปี | SIRINX",
     description: "เปรียบเทียบแพ็คเกจ Solar Carport 3 ระดับ Start / Pro / Enterprise (10-500+ kWp) — ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger พร้อมสิทธิ BOI ลดหย่อนภาษี 200% คืนทุน 3-5 ปี ขอใบเสนอราคาฟรี",
+  },
+  "/partner": {
+    title: "ร่วมเป็นพันธมิตรพลังงานสะอาดกับ SIRINX",
+    description: "เปิดรับพันธมิตรด้าน EPC, EV Charging, BESS, อสังหาริมทรัพย์ และการลงทุนพลังงานสะอาดกับ SIRINX",
+  },
+  "/privacy": {
+    title: "นโยบายความเป็นส่วนตัว | SIRINX",
+    description: "นโยบายการเก็บ ใช้ และคุ้มครองข้อมูลส่วนบุคคลสำหรับผู้ใช้งานเว็บไซต์ SIRINX และผู้สนใจบริการพลังงานสะอาด",
+  },
+  "/terms": {
+    title: "เงื่อนไขการใช้งาน | SIRINX",
+    description: "เงื่อนไขการใช้งานเว็บไซต์ SIRINX ข้อมูลบริการ ใบเสนอราคา การประเมินระบบ และข้อจำกัดความรับผิดชอบ",
+  },
+  "/cookies": {
+    title: "Cookie Policy | SIRINX",
+    description: "นโยบายคุกกี้ของเว็บไซต์ SIRINX สำหรับการวิเคราะห์การใช้งาน การปรับปรุงประสบการณ์ และการวัดผลบริการออนไลน์",
   },
 };
 

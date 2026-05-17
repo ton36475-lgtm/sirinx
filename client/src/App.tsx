@@ -6,6 +6,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import Layout from "./components/Layout";
+import RouteSeo from "./components/RouteSeo";
 import { usePageViewTracking } from "@/hooks/useAnalytics";
 import AntiCopy from "./components/AntiCopy";
 
@@ -24,6 +25,9 @@ const Partner = lazy(() => import("./pages/Partner"));
 const Strategy = lazy(() => import("./pages/Strategy"));
 const SolarCarport = lazy(() => import("./pages/SolarCarport"));
 const Pricing = lazy(() => import("./pages/Pricing"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Terms = lazy(() => import("./pages/Terms"));
+const Cookies = lazy(() => import("./pages/Cookies"));
 const DashboardLayout = lazy(() => import("./components/DashboardLayout"));
 const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
 const AdminLeads = lazy(() => import("./pages/admin/Leads"));
@@ -92,6 +96,9 @@ function PublicRouter() {
         <Route path="/contact" component={Contact} />
         <Route path="/assessment" component={SolarAssessment} />
         <Route path="/partner" component={Partner} />
+        <Route path="/privacy" component={Privacy} />
+        <Route path="/terms" component={Terms} />
+        <Route path="/cookies" component={Cookies} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
       </Switch>
@@ -115,12 +122,26 @@ function AdminRouter() {
   );
 }
 
+function isInternalHost() {
+  if (typeof window === "undefined") return false;
+
+  const hostname = window.location.hostname.toLowerCase();
+  if (hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1") return true;
+  if (hostname === "dev.sirinx.co") return true;
+  if (/^10\./.test(hostname) || /^192\.168\./.test(hostname)) return true;
+  if (/^172\.(1[6-9]|2\d|3[0-1])\./.test(hostname)) return true;
+
+  return false;
+}
+
 function Router() {
+  const internalRoutesEnabled = isInternalHost();
+
   return (
     <Switch>
       {/* Admin routes use DashboardLayout */}
-      <Route path="/admin/:rest*" component={AdminRouter} />
-      <Route path="/admin" component={AdminRouter} />
+      {internalRoutesEnabled ? <Route path="/admin/:rest*" component={AdminRouter} /> : null}
+      {internalRoutesEnabled ? <Route path="/admin" component={AdminRouter} /> : null}
       {/* Public routes use public Layout */}
       <Route component={PublicRouter} />
     </Switch>
@@ -139,6 +160,7 @@ function App() {
       <ThemeProvider defaultTheme="dark" switchable>
         <TooltipProvider>
           <Toaster />
+          <RouteSeo />
           <PageViewTracker />
           <AntiCopy enabled={import.meta.env.PROD} />
           <Suspense fallback={<RouteFallback />}>
