@@ -37,10 +37,12 @@ export default function FloatingChatWidget() {
   const [bubbleDismissed, setBubbleDismissed] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
+  const [localReplyPending, setLocalReplyPending] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { trackEvent } = useEventTracking();
   const leadAnalysis = analyzeChatbotConversation(messages);
+  const remoteChatEnabled = import.meta.env.VITE_ENABLE_REMOTE_CHAT === "true";
 
   const lineOaUrl =
     (typeof window !== "undefined" &&
@@ -66,6 +68,7 @@ export default function FloatingChatWidget() {
       ]);
     },
   });
+  const isReplyPending = chatMutation.isPending || localReplyPending;
 
   // Show bubble after 5 seconds
   useEffect(() => {
@@ -81,7 +84,7 @@ export default function FloatingChatWidget() {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages, chatMutation.isPending]);
+  }, [messages, isReplyPending]);
 
   // Focus input when opened
   useEffect(() => {
@@ -104,7 +107,7 @@ export default function FloatingChatWidget() {
   const handleSend = useCallback(
     (text?: string) => {
       const msg = (text || input).trim();
-      if (!msg || chatMutation.isPending) return;
+      if (!msg || isReplyPending) return;
 
       const userMsg: ChatMessage = { role: "user", content: msg };
       const newMessages = [...messages, userMsg];
@@ -113,6 +116,18 @@ export default function FloatingChatWidget() {
 
       trackEvent("chatbot", "message_sent", { label: msg.substring(0, 50) });
 
+      if (!remoteChatEnabled) {
+        setLocalReplyPending(true);
+        window.setTimeout(() => {
+          setMessages(prev => [
+            ...prev,
+            { role: "assistant", content: createSmartChatbotReply(newMessages) },
+          ]);
+          setLocalReplyPending(false);
+        }, 350);
+        return;
+      }
+
       chatMutation.mutate({
         messages: newMessages.map(m => ({
           role: m.role,
@@ -120,7 +135,7 @@ export default function FloatingChatWidget() {
         })),
       });
     },
-    [input, messages, chatMutation, trackEvent]
+    [input, messages, isReplyPending, remoteChatEnabled, chatMutation, trackEvent]
   );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -185,6 +200,7 @@ export default function FloatingChatWidget() {
             {/* Main Floating Button */}
             <motion.button
               onClick={handleOpen}
+              aria-label="เปิดแชท SIRINX Solar Assistant"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               className="relative w-16 h-16 rounded-full shadow-2xl flex items-center justify-center overflow-hidden group"
@@ -243,6 +259,7 @@ export default function FloatingChatWidget() {
                 </div>
                 <button
                   onClick={handleClose}
+                  aria-label="ปิดแชท"
                   className="w-8 h-8 rounded-full hover:bg-slate-700/50 flex items-center justify-center transition-colors"
                 >
                   <X className="w-4 h-4 text-slate-400" />
@@ -276,7 +293,7 @@ export default function FloatingChatWidget() {
                       <button
                         key={qr.label}
                         onClick={() => handleSend(qr.message)}
-                        disabled={chatMutation.isPending}
+                        disabled={isReplyPending}
                         className="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-700/60 hover:border-cyan-500/40 hover:bg-cyan-500/5 transition-all text-sm text-slate-300 hover:text-cyan-300 disabled:opacity-50 flex items-center justify-between group"
                       >
                         <span>{qr.label}</span>
@@ -324,7 +341,7 @@ export default function FloatingChatWidget() {
                     </div>
                   ))}
 
-                  {chatMutation.isPending && (
+                  {isReplyPending && (
                     <div className="flex gap-2.5">
                       <BotAvatar />
                       <div className="bg-slate-800 rounded-2xl rounded-bl-md px-4 py-3 border border-slate-700/50">
@@ -347,7 +364,7 @@ export default function FloatingChatWidget() {
                   )}
 
                   {/* Quick action after conversation */}
-                  {displayMessages.length > 0 && !chatMutation.isPending && (
+                  {displayMessages.length > 0 && !isReplyPending && (
                     <div className="flex gap-2 flex-wrap pt-1">
                       <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-cyan-400/20 bg-cyan-400/5 text-cyan-200 text-xs font-medium">
                         <Zap className="w-3.5 h-3.5" />
@@ -383,6 +400,7 @@ export default function FloatingChatWidget() {
                   value={input}
                   onChange={e => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
+                  aria-label="พิมพ์ข้อความถึง SIRINX Assistant"
                   placeholder="พิมพ์ข้อความ..."
                   rows={1}
                   className="flex-1 bg-slate-800/80 border border-slate-700/50 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/20 resize-none max-h-24 min-h-[38px]"
@@ -390,10 +408,11 @@ export default function FloatingChatWidget() {
                 <Button
                   type="submit"
                   size="icon"
-                  disabled={!input.trim() || chatMutation.isPending}
+                  disabled={!input.trim() || isReplyPending}
+                  aria-label="ส่งข้อความ"
                   className="shrink-0 h-[38px] w-[38px] rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white disabled:opacity-30"
                 >
-                  {chatMutation.isPending ? (
+                  {isReplyPending ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
                   ) : (
                     <Send className="w-4 h-4" />
