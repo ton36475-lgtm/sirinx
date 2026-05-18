@@ -28,6 +28,7 @@ const translations: Record<string, Record<Language, string>> = {
     cn: "太阳能车棚",
   },
   "nav.solutions": { th: "โซลูชัน", en: "Solutions", cn: "解决方案" },
+  "nav.homeSolution": { th: "Home Solution", en: "Home Solution", cn: "家庭能源方案" },
   "nav.industries": { th: "อุตสาหกรรม", en: "Industries", cn: "行业" },
   "nav.pricing": { th: "แพ็คเกจราคา", en: "Pricing", cn: "价格方案" },
   "nav.projects": { th: "ผลงาน", en: "Projects", cn: "项目案例" },
@@ -59,6 +60,11 @@ const translations: Record<string, Record<Language, string>> = {
     th: "Solar Carport",
     en: "Solar Carport",
     cn: "太阳能车棚",
+  },
+  "sol.homeSolution": {
+    th: "Home Solution บ้านใหญ่",
+    en: "Large Home Solution",
+    cn: "大型住宅能源方案",
   },
   "sol.bess": { th: "BESS / ESS", en: "BESS / ESS", cn: "储能系统" },
   "sol.aiEnergy": {

@@ -26,7 +26,7 @@ function priorityForRoute(route: string) {
   if (route === "/") return "1.0";
   if (route === "/solar-carport") return "0.95";
   if (route.startsWith("/solar-carport/")) return "0.75";
-  if (["/assessment", "/contact", "/pricing", "/projects"].includes(route)) return "0.85";
+  if (["/assessment", "/contact", "/pricing", "/projects", "/home-solution"].includes(route)) return "0.85";
   return "0.70";
 }
 

@@ -11,6 +11,7 @@ const NotFound = lazy(() => import("@/pages/NotFound"));
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
 const Solutions = lazy(() => import("./pages/Solutions"));
+const HomeSolution = lazy(() => import("./pages/HomeSolution"));
 const Industries = lazy(() => import("./pages/Industries"));
 const InvestmentTaxHub = lazy(() => import("./pages/InvestmentTaxHub"));
 const Projects = lazy(() => import("./pages/Projects"));
@@ -109,6 +110,7 @@ function PublicRouter() {
         <Route path="/solar-carport" component={SolarCarport} />
         <Route path="/pricing" component={Pricing} />
         <Route path="/solutions" component={Solutions} />
+        <Route path="/home-solution" component={HomeSolution} />
         <Route path="/industries" component={Industries} />
         <Route path="/investment" component={InvestmentTaxHub} />
         <Route path="/projects" component={Projects} />

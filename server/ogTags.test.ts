@@ -24,6 +24,15 @@ describe("getPageMeta", () => {
     expect(meta.description).toContain("EV Charging");
   });
 
+  it("returns dedicated meta for /home-solution", () => {
+    const meta = getPageMeta("/home-solution");
+    expect(meta.title).toContain("Home Solar Solution");
+    expect(meta.title).toContain("บ้านใหญ่");
+    expect(meta.description).toContain("โฮมออฟฟิศ");
+    expect(meta.description).toContain("BESS");
+    expect(meta.image).toContain("/assets/home-solution/home-solution-drone-hero.jpg");
+  });
+
   it("returns promotional meta for /contact", () => {
     const meta = getPageMeta("/contact");
     expect(meta.title).toContain("นัดสำรวจหน้างานฟรี");
@@ -244,10 +253,32 @@ describe("injectOgTags", () => {
     expect(encoded).toContain("พิษณุโลก");
   });
 
+  it("builds static AEO service and FAQ schema for /home-solution", () => {
+    const data = getStructuredData("/home-solution", "https://www.sirinx.co");
+    const encoded = JSON.stringify(data);
+    expect(encoded).toContain("SIRINX Home Solar Solution");
+    expect(encoded).toContain("FAQPage");
+    expect(encoded).toContain("บ้านขนาดใหญ่");
+    expect(encoded).toContain("EV Charger");
+    expect(encoded).toContain("Project-specific quotation");
+  });
+
+  it("injects no-JavaScript fallback content for /home-solution", () => {
+    const result = injectOgTags(
+      sampleHtml,
+      "/home-solution",
+      "https://www.sirinx.co"
+    );
+    expect(result).toContain('data-sirinx-static-fallback="home-solution"');
+    expect(result).toContain("Home Solar Solution สำหรับบ้านใหญ่");
+    expect(result).toContain("ไม่ใช่คำรับประกันเหมารวม");
+  });
+
   it("does not inject unsupported guaranteed savings or fixed payback claims", () => {
     const publicRoutes = [
       "/",
       "/solar-carport",
+      "/home-solution",
       "/investment",
       "/assessment",
       "/pricing",

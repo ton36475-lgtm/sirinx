@@ -18,6 +18,29 @@ const DEFAULT_TITLE =
 const DEFAULT_DESC =
   "SIRINX Solar Carport ผลิตไฟฟ้าจากที่จอดรถ รองรับ EV Charger + BESS + AI Energy พร้อมประเมินผลประหยัดและคืนทุนจากข้อมูลไซต์จริง";
 
+const homeSolutionFaqs = [
+  {
+    question: "Home Solution ของ SIRINX เหมาะกับบ้านแบบไหน?",
+    answer:
+      "เหมาะกับบ้านขนาดใหญ่ โฮมออฟฟิศ บ้านพักผู้บริหาร บ้านที่มี EV หลายคัน หรือบ้านที่มีโหลดไฟสูง เช่น แอร์หลายโซน ห้องทำงาน server ห้องประชุม สระว่ายน้ำ และระบบรักษาความปลอดภัย",
+  },
+  {
+    question: "ทำไมไม่ควรซื้อระบบจากราคาต่อกิโลวัตต์อย่างเดียว?",
+    answer:
+      "เพราะบ้านใหญ่มีข้อจำกัดเฉพาะ เช่น เงาบัง ทิศหลังคา MDB เดิม backup load และ EV charging behavior ระบบที่คุ้มจริงต้องออกแบบจากข้อมูลโหลดและหน้างาน ไม่ใช่ใช้ราคาแผงเป็นตัวตัดสินอย่างเดียว",
+  },
+  {
+    question: "SIRINX ช่วยลดความเสี่ยงเรื่องงานติดตั้งไม่ได้มาตรฐานอย่างไร?",
+    answer:
+      "ใช้กระบวนการสำรวจ ออกแบบเอกสารวิศวกรรม BOQ ชัดเจน payment milestone commissioning record และ monitoring หลังส่งมอบ เพื่อให้ลูกค้าตรวจสอบได้ทุกช่วง ไม่ใช่รอเชื่อคำขายอย่างเดียว",
+  },
+  {
+    question: "สามารถใช้ร่วมกับ EV Charger และ Battery ได้หรือไม่?",
+    answer:
+      "ได้ โดยออกแบบเป็นระบบเดียวกันตั้งแต่ต้นเพื่อจัดลำดับการใช้ไฟจาก solar, grid, battery และ EV charger ตามพฤติกรรมของบ้านและข้อจำกัดของอุปกรณ์",
+  },
+];
+
 // Route-specific metadata map — SEO/AEO promotional copy
 interface PageMeta {
   title: string;
@@ -48,6 +71,13 @@ const routeMetaMap: Record<string, PageMeta> = {
       "Solar Carport โดย SIRINX | เปลี่ยนที่จอดรถเป็นโรงไฟฟ้า ผลิตไฟฟ้า+ร่มเงา+EV Charger",
     description:
       "Solar Carport ผลิตไฟฟ้าจากที่จอดรถ ให้ร่มเงา รองรับ EV Charging + BESS + AI Energy และประเมินความคุ้มค่าตามข้อมูลไซต์จริง",
+  },
+  "/home-solution": {
+    title:
+      "Home Solar Solution บ้านใหญ่และโฮมออฟฟิศ | Rooftop Solar, Carport, BESS, EV | SIRINX",
+    description:
+      "SIRINX Home Solar Solution สำหรับบ้านขนาดใหญ่ โฮมออฟฟิศ และโครงการหมู่บ้านพรีเมียมที่ใช้ไฟสูง พร้อม Rooftop Solar, Solar Carport, BESS, EV Charger, AI Energy Monitoring และหลักฐาน commissioning",
+    image: `${PRODUCTION_BASE_URL}/assets/home-solution/home-solution-drone-hero.jpg`,
   },
   "/about": {
     title: "SIRINX คือใคร? บริษัทติดตั้งโซลาร์เซลล์ + AI Energy ครบวงจรของไทย",
@@ -187,6 +217,7 @@ export function getStructuredData(urlPath: string, baseUrl: string) {
     urlPath.split("?")[0].split("#")[0].replace(/\/$/, "") || "/";
   const meta = getPageMeta(cleanPath);
   const province = getProvinceFromPath(cleanPath);
+  const isHomeSolution = cleanPath === "/home-solution";
   const areaServed = province
     ? { "@type": "AdministrativeArea", name: province.nameTh }
     : thaiProvinces.slice(0, 12).map(item => ({
@@ -228,16 +259,26 @@ export function getStructuredData(urlPath: string, baseUrl: string) {
       name: meta.title,
       description: meta.description,
       isPartOf: { "@id": `${baseUrl}/#website` },
-      about: { "@id": `${baseUrl}/solar-carport#service` },
+      about: {
+        "@id": isHomeSolution
+          ? `${baseUrl}/home-solution#service`
+          : `${baseUrl}/solar-carport#service`,
+      },
       inLanguage: "th-TH",
     },
     {
       "@type": "Service",
-      "@id": `${baseUrl}/solar-carport#service`,
-      name: province
-        ? `Solar Carport ${province.nameTh}`
-        : "Solar Carport by SIRINX",
-      serviceType: "Solar Carport design, installation, EV Charger, BESS, AI Energy Management",
+      "@id": isHomeSolution
+        ? `${baseUrl}/home-solution#service`
+        : `${baseUrl}/solar-carport#service`,
+      name: isHomeSolution
+        ? "SIRINX Home Solar Solution"
+        : province
+          ? `Solar Carport ${province.nameTh}`
+          : "Solar Carport by SIRINX",
+      serviceType: isHomeSolution
+        ? "Solar rooftop, solar carport, BESS, EV Charger, and AI energy monitoring for large homes and home offices"
+        : "Solar Carport design, installation, EV Charger, BESS, AI Energy Management",
       provider: { "@id": `${baseUrl}/#organization` },
       areaServed,
       description: meta.description,
@@ -254,7 +295,19 @@ export function getStructuredData(urlPath: string, baseUrl: string) {
     getBreadcrumbItems(cleanPath, baseUrl),
   ];
 
-  if (province) {
+  if (isHomeSolution) {
+    graph.push({
+      "@type": "FAQPage",
+      mainEntity: homeSolutionFaqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.answer,
+        },
+      })),
+    });
+  } else if (province) {
     graph.push({
       "@type": "FAQPage",
       mainEntity: [
@@ -326,6 +379,39 @@ function replaceCanonical(html: string, href: string): string {
   return html.replace("</head>", `    ${tag}\n  </head>`);
 }
 
+function injectNoScriptStaticFallback(html: string, urlPath: string): string {
+  const cleanPath =
+    urlPath.split("?")[0].split("#")[0].replace(/\/$/, "") || "/";
+  if (cleanPath !== "/home-solution" || html.includes("data-sirinx-static-fallback")) {
+    return html;
+  }
+
+  const fallback = `    <noscript data-sirinx-static-fallback="home-solution">
+      <main>
+        <h1>Home Solar Solution สำหรับบ้านใหญ่และโฮมออฟฟิศที่ใช้ไฟสูง</h1>
+        <p>
+          SIRINX ออกแบบระบบโซลาร์บ้านใหญ่ โฮมออฟฟิศ และโครงการหมู่บ้านพรีเมียม
+          พร้อม Rooftop Solar, Solar Carport, EV Charger, BESS, AI Energy Monitoring
+          และกระบวนการ commissioning ที่ตรวจสอบได้
+        </p>
+        <ul>
+          <li>เหมาะกับบ้านที่มีค่าไฟสูง EV หลายคัน ห้องทำงาน server หรือโหลดสำคัญ</li>
+          <li>ออกแบบจากบิลไฟ พฤติกรรมโหลด พื้นที่หลังคา และข้อจำกัดหน้างานจริง</li>
+          <li>ตัวเลขประหยัดและคืนทุนเป็น scenario ตามข้อมูลไซต์ ไม่ใช่คำรับประกันเหมารวม</li>
+        </ul>
+        <p>
+          <a href="/contact?interest=home-solution">นัดประเมินบ้านหรือโฮมออฟฟิศ</a>
+          หรือ <a href="/assessment">ประเมินค่าไฟเบื้องต้น</a>
+        </p>
+      </main>
+    </noscript>`;
+
+  if (html.includes('<div id="root"></div>')) {
+    return html.replace('<div id="root"></div>', `<div id="root"></div>\n${fallback}`);
+  }
+  return html.replace("</body>", `${fallback}\n  </body>`);
+}
+
 /**
  * Inject OG meta tags into HTML template based on the requested URL.
  * Replaces existing meta tags in the template with route-specific values.
@@ -374,6 +460,7 @@ export function injectOgTags(
 
   // Replace canonical URL
   html = replaceCanonical(html, canonicalUrl);
+  html = injectNoScriptStaticFallback(html, urlPath);
 
   return injectStructuredData(html, getStructuredData(urlPath, baseUrl));
 }

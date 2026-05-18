@@ -23,6 +23,7 @@ const navLinksData = [
     i18nKey: "nav.solutions",
     children: [
       { href: "/solar-carport", i18nKey: "sol.solarCarport" },
+      { href: "/home-solution", i18nKey: "sol.homeSolution" },
       { href: "/solutions#rooftop", i18nKey: "sol.rooftopSolar" },
       { href: "/solutions#floating", i18nKey: "sol.floatingSolar" },
       { href: "/solutions#bess", i18nKey: "sol.bess" },
@@ -365,6 +366,7 @@ const footerLinksData = [
     titleKey: "footer.solutions",
     links: [
       { href: "/solar-carport", i18nKey: "sol.solarCarport" },
+      { href: "/home-solution", i18nKey: "sol.homeSolution" },
       { href: "/solutions#rooftop", i18nKey: "sol.rooftopSolar" },
       { href: "/solutions#floating", i18nKey: "sol.floatingSolar" },
       { href: "/solutions#bess", i18nKey: "sol.bess" },
