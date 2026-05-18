@@ -177,6 +177,7 @@ export default function Projects() {
 	                  className="w-full h-full object-cover"
 	                  loading="eager"
 	                  decoding="async"
+	                  fetchPriority="high"
 	                />
                 <div className="absolute top-4 left-4">
                   <span className="px-3 py-1.5 text-xs font-bold bg-accent-primary text-text-inverse rounded-lg">

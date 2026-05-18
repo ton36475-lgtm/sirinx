@@ -409,17 +409,18 @@ function getRouteHeroPreload(urlPath: string) {
       type: "image/jpeg",
     };
   }
-  const heroByPath: Record<string, string> = {
-    "/about": `${ASSET_CDN}/hero-about-3Trik9L6DrdCwCcjCt2KVz.webp`,
-    "/solutions": `${ASSET_CDN}/hero-solutions-AG25WEja6TRJEEzvpx3wZU.webp`,
-    "/industries": `${ASSET_CDN}/sirinx-agrivoltaic-b6XSpaadLj5vpaTu52tenb.webp`,
-    "/investment": `${ASSET_CDN}/hero-investment-fRtcNVseiLRqovGxudgo83.webp`,
-    "/strategy": `${ASSET_CDN}/sirinx-smart-energy-JXCSVMQTKJHxRxSagYajgy.webp`,
+  const heroByPath: Record<string, { src: string; type: string }> = {
+    "/about": { src: `${ASSET_CDN}/hero-about-3Trik9L6DrdCwCcjCt2KVz.webp`, type: "image/webp" },
+    "/solutions": { src: `${ASSET_CDN}/hero-solutions-AG25WEja6TRJEEzvpx3wZU.webp`, type: "image/webp" },
+    "/industries": { src: `${ASSET_CDN}/sirinx-agrivoltaic-b6XSpaadLj5vpaTu52tenb.webp`, type: "image/webp" },
+    "/investment": { src: `${ASSET_CDN}/hero-investment-fRtcNVseiLRqovGxudgo83.webp`, type: "image/webp" },
+    "/projects": { src: `${ASSET_CDN}/carport-wide-1_30e3af4c.jpeg`, type: "image/jpeg" },
+    "/strategy": { src: `${ASSET_CDN}/sirinx-smart-energy-JXCSVMQTKJHxRxSagYajgy.webp`, type: "image/webp" },
   };
   if (heroByPath[cleanPath]) {
     return {
-      href: `${imageResizeBase}/${heroByPath[cleanPath]}`,
-      type: "image/webp",
+      href: `${imageResizeBase}/${heroByPath[cleanPath].src}`,
+      type: heroByPath[cleanPath].type,
     };
   }
   return null;

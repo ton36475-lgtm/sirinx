@@ -259,7 +259,7 @@ export default function Pricing() {
 
                 {/* Ideal For */}
                 <div className="mb-5">
-                  <h4 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">{t("pkg.idealFor")}</h4>
+	                  <div className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">{t("pkg.idealFor")}</div>
                   <div className="flex flex-wrap gap-1.5">
                     {t(`pkg.${pkg.id}.idealFor`).split("|").map((item) => (
                       <span key={item} className={`text-xs px-2 py-1 rounded-md ${pkg.bgAccent} ${pkg.accentColor}`}>
@@ -490,15 +490,16 @@ export default function Pricing() {
                 <label className="block text-sm font-semibold text-foreground mb-2">
                   {t("roi.label.bill")}
                 </label>
-                <input
-                  type="range"
-                  min={5000}
-                  max={500000}
-                  step={5000}
-                  value={monthlyBill}
-                  onChange={(e) => setMonthlyBill(Number(e.target.value))}
-                  className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-accent-primary bg-border-subtle"
-                />
+	                <input
+	                  type="range"
+	                  min={5000}
+	                  max={500000}
+	                  step={5000}
+	                  value={monthlyBill}
+	                  onChange={(e) => setMonthlyBill(Number(e.target.value))}
+	                  aria-label={t("roi.label.bill")}
+	                  className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-accent-primary bg-border-subtle"
+	                />
                 <div className="flex justify-between mt-2">
                   <span className="text-xs text-text-muted">5,000</span>
                   <span className="text-lg font-bold text-accent-primary font-display">
@@ -511,15 +512,16 @@ export default function Pricing() {
                 <label className="block text-sm font-semibold text-foreground mb-2">
                   {t("roi.label.parking")}
                 </label>
-                <input
-                  type="range"
-                  min={5}
-                  max={200}
-                  step={5}
-                  value={parkingSpaces}
-                  onChange={(e) => setParkingSpaces(Number(e.target.value))}
-                  className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-accent-primary bg-border-subtle"
-                />
+	                <input
+	                  type="range"
+	                  min={5}
+	                  max={200}
+	                  step={5}
+	                  value={parkingSpaces}
+	                  onChange={(e) => setParkingSpaces(Number(e.target.value))}
+	                  aria-label={t("roi.label.parking")}
+	                  className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-accent-primary bg-border-subtle"
+	                />
                 <div className="flex justify-between mt-2">
                   <span className="text-xs text-text-muted">5 {t("roi.unit.vehicles")}</span>
                   <span className="text-lg font-bold text-accent-primary font-display">
@@ -712,7 +714,7 @@ export default function Pricing() {
 	                  />
                 </div>
                 <div className="p-3">
-                  <h4 className="font-display font-semibold text-foreground text-xs mb-0.5">{brochure.title}</h4>
+	                  <div className="font-display font-semibold text-foreground text-xs mb-0.5">{brochure.title}</div>
                   <p className="text-[10px] text-text-muted mb-2">{brochure.subtitle}</p>
                   <a
                     href={brochure.original}
@@ -747,10 +749,10 @@ export default function Pricing() {
               </div>
               <div className="p-4 flex items-center justify-between">
                 <div>
-                  <h4 className="font-display font-semibold text-foreground text-sm flex items-center gap-2">
-                    <Video className="w-4 h-4 text-accent-primary" />
-                    {t("brochure.video.title")}
-                  </h4>
+	                  <div className="font-display font-semibold text-foreground text-sm flex items-center gap-2">
+	                    <Video className="w-4 h-4 text-accent-primary" />
+	                    {t("brochure.video.title")}
+	                  </div>
                   <p className="text-xs text-text-muted mt-0.5">{t("brochure.video.desc")}</p>
                 </div>
                 <a
