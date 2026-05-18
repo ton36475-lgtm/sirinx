@@ -418,6 +418,17 @@ describe("analytics.trackPageView (public)", () => {
     });
     expect(result).toEqual({ success: true });
   });
+
+  it("skips public page view tracking when database is unavailable", async () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    vi.mocked(db.recordPageView).mockRejectedValueOnce(new Error("Database not available"));
+
+    const caller = appRouter.createCaller(createPublicContext());
+    const result = await caller.analytics.trackPageView({ path: "/" });
+
+    expect(result).toEqual({ success: true, skipped: true });
+    warnSpy.mockRestore();
+  });
 });
 
 describe("analytics.trackEvent (public)", () => {
@@ -452,6 +463,20 @@ describe("analytics.trackEvent (public)", () => {
       label: "contact_sidebar_cta",
     });
     expect(result).toEqual({ success: true });
+  });
+
+  it("skips public event tracking when database is unavailable", async () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    vi.mocked(db.recordEvent).mockRejectedValueOnce(new Error("Database not available"));
+
+    const caller = appRouter.createCaller(createPublicContext());
+    const result = await caller.analytics.trackEvent({
+      category: "cta_click",
+      action: "hero_cta",
+    });
+
+    expect(result).toEqual({ success: true, skipped: true });
+    warnSpy.mockRestore();
   });
 
   it("validates category is required", async () => {

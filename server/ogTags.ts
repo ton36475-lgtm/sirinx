@@ -137,6 +137,22 @@ const routeMetaMap: Record<string, PageMeta> = {
     description:
       "เปรียบเทียบแพ็คเกจ Solar Carport 3 ระดับ Start / Pro / Enterprise (10-500+ kWp) — ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger และประเมินคืนทุนตามไซต์จริง",
   },
+  "/partner": {
+    title: "ร่วมเป็นพันธมิตรพลังงานสะอาดกับ SIRINX",
+    description: "เปิดรับพันธมิตรด้าน EPC, EV Charging, BESS, อสังหาริมทรัพย์ และการลงทุนพลังงานสะอาดกับ SIRINX",
+  },
+  "/privacy": {
+    title: "นโยบายความเป็นส่วนตัว | SIRINX",
+    description: "นโยบายการเก็บ ใช้ และคุ้มครองข้อมูลส่วนบุคคลสำหรับผู้ใช้งานเว็บไซต์ SIRINX และผู้สนใจบริการพลังงานสะอาด",
+  },
+  "/terms": {
+    title: "เงื่อนไขการใช้งาน | SIRINX",
+    description: "เงื่อนไขการใช้งานเว็บไซต์ SIRINX ข้อมูลบริการ ใบเสนอราคา การประเมินระบบ และข้อจำกัดความรับผิดชอบ",
+  },
+  "/cookies": {
+    title: "Cookie Policy | SIRINX",
+    description: "นโยบายคุกกี้ของเว็บไซต์ SIRINX สำหรับการวิเคราะห์การใช้งาน การปรับปรุงประสบการณ์ และการวัดผลบริการออนไลน์",
+  },
 };
 
 function getProvinceFromPath(cleanPath: string): ThaiProvince | undefined {
