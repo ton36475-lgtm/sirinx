@@ -1,5 +1,3 @@
-import { Toaster } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { Route, Switch } from "wouter";
 import { Suspense, lazy, useEffect, useState } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -14,6 +12,7 @@ const NotFound = lazy(() => import("@/pages/NotFound"));
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
 const Solutions = lazy(() => import("./pages/Solutions"));
+const HomeSolution = lazy(() => import("./pages/HomeSolution"));
 const Industries = lazy(() => import("./pages/Industries"));
 const InvestmentTaxHub = lazy(() => import("./pages/InvestmentTaxHub"));
 const Projects = lazy(() => import("./pages/Projects"));
@@ -36,6 +35,9 @@ const AdminContactSubmissions = lazy(() => import("./pages/admin/ContactSubmissi
 const AdminAnalytics = lazy(() => import("./pages/admin/Analytics"));
 const AdminAgentMonitor = lazy(() => import("./pages/admin/AgentMonitor"));
 const FloatingChatWidget = lazy(() => import("./components/FloatingChatWidget"));
+const Toaster = lazy(() =>
+  import("@/components/ui/sonner").then(module => ({ default: module.Toaster }))
+);
 
 function RouteFallback() {
   return (
@@ -54,7 +56,7 @@ function DeferredFloatingChatWidget() {
     if (shouldLoad) return;
 
     const reveal = () => setShouldLoad(true);
-    const timeout = window.setTimeout(reveal, 1800);
+    const timeout = window.setTimeout(reveal, 9000);
     const events: Array<keyof WindowEventMap> = ["pointerdown", "keydown", "touchstart"];
 
     for (const event of events) {
@@ -78,15 +80,48 @@ function DeferredFloatingChatWidget() {
   );
 }
 
+function DeferredToaster() {
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  useEffect(() => {
+    if (shouldLoad) return;
+
+    const reveal = () => setShouldLoad(true);
+    const timeout = window.setTimeout(reveal, 9000);
+    const events: Array<keyof WindowEventMap> = ["pointerdown", "keydown", "touchstart"];
+
+    for (const event of events) {
+      window.addEventListener(event, reveal, { once: true, passive: true });
+    }
+
+    return () => {
+      window.clearTimeout(timeout);
+      for (const event of events) {
+        window.removeEventListener(event, reveal);
+      }
+    };
+  }, [shouldLoad]);
+
+  if (!shouldLoad) return null;
+
+  return (
+    <Suspense fallback={null}>
+      <Toaster />
+    </Suspense>
+  );
+}
+
 function PublicRouter() {
   return (
     <Layout>
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/about" component={About} />
+        <Route path="/solar-carport/:province" component={SolarCarport} />
         <Route path="/solar-carport" component={SolarCarport} />
         <Route path="/pricing" component={Pricing} />
         <Route path="/solutions" component={Solutions} />
+        <Route path="/home-solution" component={HomeSolution} />
         <Route path="/industries" component={Industries} />
         <Route path="/investment" component={InvestmentTaxHub} />
         <Route path="/projects" component={Projects} />
@@ -158,16 +193,14 @@ function App() {
     <ErrorBoundary>
       <LanguageProvider>
         <ThemeProvider defaultTheme="dark" switchable>
-          <TooltipProvider>
-            <Toaster />
-            <RouteSeo />
-            <PageViewTracker />
-            <AntiCopy enabled={import.meta.env.PROD} />
-            <Suspense fallback={<RouteFallback />}>
-              <Router />
-            </Suspense>
-            <DeferredFloatingChatWidget />
-          </TooltipProvider>
+          <DeferredToaster />
+          <RouteSeo />
+          <PageViewTracker />
+          <AntiCopy enabled={import.meta.env.PROD} />
+          <Suspense fallback={<RouteFallback />}>
+            <Router />
+          </Suspense>
+          <DeferredFloatingChatWidget />
         </ThemeProvider>
       </LanguageProvider>
     </ErrorBoundary>

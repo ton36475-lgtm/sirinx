@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "wouter";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "@/lib/static-motion";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { usePageTranslation } from "@/i18n";
 import "@/i18n/pages/heroSlideshow";
@@ -30,13 +30,12 @@ const ALL_SLIDES: HeroSlide[] = [
   {
     id: "carport-aerial",
     category: "solar-carport",
-    image:
-      "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/hero-slide-01-carport-aerial_c002987a.jpg",
+    image: "/assets/optimized/solar-carport-hero.jpg",
     badge: "Solar Carport",
     headline: "เปลี่ยนที่จอดรถ",
     highlightLine: "เป็นโรงไฟฟ้าพลังงานแสงอาทิตย์",
     description:
-      "ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger พร้อมประเมินผลประหยัดและคืนทุนจากข้อมูลไซต์จริง",
+      "ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger ลดค่าไฟ 30-100% คืนทุน 3-5 ปีโดยประมาณตามข้อมูลไซต์จริง",
     cta: {
       label: "ขอใบเสนอราคา Solar Carport",
       href: "/contact?interest=solar-carport",
@@ -68,7 +67,7 @@ const ALL_SLIDES: HeroSlide[] = [
     headline: "โซลาร์บนหลังคาโรงงาน",
     highlightLine: "ลดต้นทุนพลังงานการผลิต",
     description:
-      "ใช้พื้นที่หลังคาให้เกิดประโยชน์สูงสุด ลดต้นทุนพลังงานช่วงกลางวันตาม load profile จริง",
+      "ใช้พื้นที่หลังคาให้เกิดประโยชน์สูงสุด ลดค่าไฟ 30-100% โดยประมาณตาม load profile จริง",
     cta: {
       label: "ขอใบเสนอราคา Rooftop Solar",
       href: "/contact?interest=rooftop-solar",
@@ -305,8 +304,12 @@ export default function HeroSlideshow() {
           <img
             src={slide.image}
             alt={slide.badge}
+            width={1500}
+            height={838}
             className="w-full h-full object-cover"
             loading={current === 0 ? "eager" : "lazy"}
+            fetchPriority={current === 0 ? "high" : "low"}
+            decoding={current === 0 ? "sync" : "async"}
           />
           {/* Gradient overlays for text readability */}
           <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/75 to-background/30" />
@@ -401,13 +404,18 @@ export default function HeroSlideshow() {
           <button
             key={s.id}
             onClick={() => goTo(i)}
-            className={`transition-all duration-300 rounded-full ${
-              i === current
-                ? "w-8 h-2.5 bg-accent-primary"
-                : "w-2.5 h-2.5 bg-foreground/30 hover:bg-foreground/50"
-            }`}
+            className="flex h-6 w-6 items-center justify-center rounded-full transition-colors hover:bg-foreground/10"
             aria-label={`${t("hero.goToSlide")} ${i + 1}`}
-          />
+            aria-current={i === current ? "true" : undefined}
+          >
+            <span
+              className={`block rounded-full transition-all duration-300 ${
+                i === current
+                  ? "h-2.5 w-5 bg-accent-primary"
+                  : "h-2.5 w-2.5 bg-foreground/40"
+              }`}
+            />
+          </button>
         ))}
       </div>
 

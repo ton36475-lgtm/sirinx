@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "@/lib/static-motion";
 import { X, Send, Loader2, MessageCircle, Zap, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { trpc } from "@/lib/trpc";
+import { TrpcProvider } from "@/lib/trpc-provider";
 import { useEventTracking } from "@/hooks/useAnalytics";
 import {
   CHATBOT_QUICK_REPLIES,
@@ -31,7 +32,7 @@ type ChatMessage = ChatbotMessage;
 
 const LINE_OA_URL_DEFAULT = "https://line.me/R/ti/p/@sirinx";
 
-export default function FloatingChatWidget() {
+function FloatingChatWidgetInner() {
   const [isOpen, setIsOpen] = useState(false);
   const [showBubble, setShowBubble] = useState(false);
   const [bubbleDismissed, setBubbleDismissed] = useState(false);
@@ -182,6 +183,7 @@ export default function FloatingChatWidget() {
                       setShowBubble(false);
                     }}
                     className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-gray-400 dark:bg-slate-600 text-white flex items-center justify-center text-xs hover:bg-gray-500 transition-colors"
+                    aria-label="ปิดข้อความแนะนำ"
                   >
                     <X className="w-3 h-3" />
                   </button>
@@ -259,8 +261,8 @@ export default function FloatingChatWidget() {
                 </div>
                 <button
                   onClick={handleClose}
-                  aria-label="ปิดแชท"
                   className="w-8 h-8 rounded-full hover:bg-slate-700/50 flex items-center justify-center transition-colors"
+                  aria-label="ปิด SIRINX Assistant"
                 >
                   <X className="w-4 h-4 text-slate-400" />
                 </button>
@@ -376,6 +378,7 @@ export default function FloatingChatWidget() {
                       <button
                         onClick={handleLineClick}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#00C300]/10 border border-[#00C300]/30 text-[#00C300] text-xs font-medium hover:bg-[#00C300]/20 transition-colors"
+                        aria-label="ต่อสายผ่าน LINE"
                       >
                         <LINEIcon className="w-3.5 h-3.5" />
                         ต่อสายผ่าน LINE
@@ -427,5 +430,13 @@ export default function FloatingChatWidget() {
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+export default function FloatingChatWidget() {
+  return (
+    <TrpcProvider>
+      <FloatingChatWidgetInner />
+    </TrpcProvider>
   );
 }

@@ -33,9 +33,9 @@ const dict: TranslationDict = {
     cn: "太阳能车棚",
   },
   featuredSaving: {
-    th: "ลดค่าพลังงานตามไซต์จริง",
-    en: "Site-specific Energy Savings",
-    cn: "按项目节省能源",
+    th: "ลดค่าพลังงานได้ประมาณ 30-100%",
+    en: "Estimated 30-100% Energy Savings",
+    cn: "预估节省能源30-100%",
   },
   featuredYear: { th: "2024", en: "2024", cn: "2024" },
   featuredOwner: {
@@ -49,9 +49,9 @@ const dict: TranslationDict = {
     cn: "在彭世洛 Ruenphae Royal Park 酒店实际安装的太阳能车棚。配备 BESS 储能系统、工程钢结构、电缆桥架和完整电气系统，24/7 AI 监控。",
   },
   featuredHighlight1: {
-    th: "ลดค่าพลังงานตามไซต์จริง",
-    en: "Site-specific Energy Savings",
-    cn: "按项目节省能源",
+    th: "ลดค่าพลังงานได้ประมาณ 30-100%",
+    en: "Estimated 30-100% Energy Savings",
+    cn: "预估节省能源30-100%",
   },
   featuredHighlight2: {
     th: "BESS กักเก็บพลังงาน",
@@ -124,9 +124,9 @@ const dict: TranslationDict = {
   },
   proj3Location: { th: "พิษณุโลก", en: "Phitsanulok", cn: "彭世洛" },
   proj3Saving: {
-    th: "ลดค่าไฟตามไซต์จริง",
-    en: "Site-specific Bill Reduction",
-    cn: "按项目减少电费",
+    th: "ลดค่าไฟได้ประมาณ 30-100%",
+    en: "Estimated 30-100% Bill Reduction",
+    cn: "预估减少电费30-100%",
   },
   proj3Desc: {
     th: "Solar Carport ติดตั้งจริงที่โรงแรมเรือนแพ รอยัลปาร์ค พร้อมระบบ BESS กักเก็บพลังงาน และ Cable Tray มาตรฐานวิศวกรรม",

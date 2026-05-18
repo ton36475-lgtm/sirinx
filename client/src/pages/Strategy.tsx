@@ -12,6 +12,7 @@ import {
   PenTool, Video, MessageCircle, Zap, Target,
   TrendingUp, Shield, AlertTriangle, ChevronDown, ChevronUp
 } from "lucide-react";
+import { cfImage, cfImageSrcSet } from "@/lib/cfImage";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -130,13 +131,13 @@ function Lightbox({ images, currentIndex, onClose, onPrev, onNext }: {
       className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
       onClick={onClose}
     >
-      <button onClick={onClose} className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors">
+      <button onClick={onClose} className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors" aria-label="ปิดรูป Toolkit">
         <X className="w-6 h-6" />
       </button>
-      <button onClick={(e) => { e.stopPropagation(); onPrev(); }} className="absolute left-4 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors">
+      <button onClick={(e) => { e.stopPropagation(); onPrev(); }} className="absolute left-4 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors" aria-label="รูป Toolkit ก่อนหน้า">
         <ChevronLeft className="w-6 h-6" />
       </button>
-      <button onClick={(e) => { e.stopPropagation(); onNext(); }} className="absolute right-4 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors">
+      <button onClick={(e) => { e.stopPropagation(); onNext(); }} className="absolute right-4 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors" aria-label="รูป Toolkit ถัดไป">
         <ChevronRight className="w-6 h-6" />
       </button>
       <motion.div
@@ -149,9 +150,10 @@ function Lightbox({ images, currentIndex, onClose, onPrev, onNext }: {
         onClick={(e) => e.stopPropagation()}
       >
         <img
-          src={item.image}
+          src={cfImage(item.image, 1400, { quality: 82 })}
           alt={item.title}
           className="w-full rounded-2xl shadow-2xl"
+          decoding="async"
         />
         <div className="mt-4 text-center">
           <h3 className="text-white font-display text-xl font-bold">{item.title}</h3>
@@ -188,10 +190,12 @@ function SwotCard({ title, items, icon: Icon, gradient, delay }: {
         ))}
       </ul>
       {items.length > 3 && (
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="mt-3 text-xs text-accent-primary flex items-center gap-1 hover:underline"
-        >
+	        <button
+	          onClick={() => setExpanded(!expanded)}
+	          aria-expanded={expanded}
+	          aria-label={expanded ? `ย่อรายการ ${title}` : `ขยายรายการ ${title}`}
+	          className="mt-3 text-xs text-accent-primary flex items-center gap-1 hover:underline"
+	        >
           {expanded ? "แสดงน้อยลง" : `ดูเพิ่มอีก ${items.length - 3} รายการ`}
           {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
         </button>
@@ -218,11 +222,16 @@ export default function Strategy() {
       {/* ===== HERO ===== */}
       <section className="relative min-h-[70vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <img
-            src="https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/sirinx-smart-energy-JXCSVMQTKJHxRxSagYajgy.webp"
-            alt="Smart Energy Strategy"
-            className="w-full h-full object-cover"
-          />
+	          <img
+	            src={cfImage("https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/sirinx-smart-energy-JXCSVMQTKJHxRxSagYajgy.webp", 1280, { quality: 76 })}
+	            srcSet={cfImageSrcSet("https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/sirinx-smart-energy-JXCSVMQTKJHxRxSagYajgy.webp", [640, 960, 1280, 1600], { quality: 76 })}
+	            sizes="100vw"
+	            alt="Smart Energy Strategy"
+	            className="w-full h-full object-cover"
+	            loading="eager"
+	            decoding="async"
+	            fetchPriority="high"
+	          />
           <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/60" />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
         </div>
@@ -280,12 +289,15 @@ export default function Strategy() {
                 <div className="rounded-2xl border border-border-subtle bg-surface-elevated overflow-hidden hover:border-border-accent hover:shadow-lg hover:shadow-accent-glow transition-all">
                   {/* Image Preview */}
                   <div className="relative aspect-square overflow-hidden">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
+	                    <img
+	                      src={cfImage(item.image, 420)}
+	                      srcSet={cfImageSrcSet(item.image, [220, 320, 420, 640])}
+	                      sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+	                      alt={item.title}
+	                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+	                      loading="lazy"
+	                      decoding="async"
+	                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                     <div className="absolute bottom-3 left-3 right-3">
                       <span className="text-white/80 text-xs font-medium">คลิกเพื่อดูเต็ม</span>
@@ -357,11 +369,15 @@ export default function Strategy() {
                 className="relative rounded-2xl overflow-hidden cursor-pointer group"
                 onClick={() => openLightbox(activeToolkit)}
               >
-                <img
-                  src={toolkitItems[activeToolkit].image}
-                  alt={toolkitItems[activeToolkit].title}
-                  className="w-full rounded-2xl group-hover:scale-[1.02] transition-transform duration-500"
-                />
+	                <img
+	                  src={cfImage(toolkitItems[activeToolkit].image, 960)}
+	                  srcSet={cfImageSrcSet(toolkitItems[activeToolkit].image, [480, 720, 960, 1280])}
+	                  sizes="(min-width: 1024px) 50vw, 100vw"
+	                  alt={toolkitItems[activeToolkit].title}
+	                  className="w-full rounded-2xl group-hover:scale-[1.02] transition-transform duration-500"
+	                  loading="lazy"
+	                  decoding="async"
+	                />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-2xl flex items-center justify-center">
                   <span className="opacity-0 group-hover:opacity-100 transition-opacity text-white font-medium text-sm bg-black/50 px-4 py-2 rounded-lg">
                     คลิกเพื่อดูขนาดเต็ม
@@ -387,16 +403,18 @@ export default function Strategy() {
                   {toolkitItems[activeToolkit].desc}
                 </p>
                 <div className="flex gap-3">
-                  <button
-                    onClick={() => setActiveToolkit((activeToolkit - 1 + toolkitItems.length) % toolkitItems.length)}
-                    className="p-2 rounded-lg border border-border-subtle hover:border-border-accent hover:bg-accent-glow transition-colors"
-                  >
+	                  <button
+	                    onClick={() => setActiveToolkit((activeToolkit - 1 + toolkitItems.length) % toolkitItems.length)}
+	                    className="p-2 rounded-lg border border-border-subtle hover:border-border-accent hover:bg-accent-glow transition-colors"
+	                    aria-label="เครื่องมือก่อนหน้า"
+	                  >
                     <ChevronLeft className="w-5 h-5 text-text-secondary" />
                   </button>
-                  <button
-                    onClick={() => setActiveToolkit((activeToolkit + 1) % toolkitItems.length)}
-                    className="p-2 rounded-lg border border-border-subtle hover:border-border-accent hover:bg-accent-glow transition-colors"
-                  >
+	                  <button
+	                    onClick={() => setActiveToolkit((activeToolkit + 1) % toolkitItems.length)}
+	                    className="p-2 rounded-lg border border-border-subtle hover:border-border-accent hover:bg-accent-glow transition-colors"
+	                    aria-label="เครื่องมือถัดไป"
+	                  >
                     <ChevronRight className="w-5 h-5 text-text-secondary" />
                   </button>
                   <span className="flex items-center text-xs text-text-muted ml-2">

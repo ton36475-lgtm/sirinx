@@ -8,6 +8,7 @@ import { Link } from "wouter";
 import { trackSolutionVisit, type SolutionCategory } from "@/components/HeroSlideshow";
 import { usePageTranslation } from "@/i18n";
 import "@/i18n/pages/solutions";
+import { cfImage, cfImageSrcSet } from "@/lib/cfImage";
 import {
   ArrowRight, Sun, Waves, Car, Battery, Brain, Wrench, Handshake,
   CheckCircle2, Zap
@@ -112,7 +113,16 @@ export default function Solutions() {
       {/* ===== HERO ===== */}
       <section className="relative min-h-[45vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src={HERO} alt="SIRINX Solutions" className="w-full h-full object-cover" />
+          <img
+            src={cfImage(HERO, 1280, { quality: 76 })}
+            srcSet={cfImageSrcSet(HERO, [640, 960, 1280, 1600], { quality: 76 })}
+            sizes="100vw"
+            alt="SIRINX Solutions"
+            className="w-full h-full object-cover"
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/50" />
         </div>
         <div className="container relative z-10 pt-20">
@@ -188,7 +198,15 @@ export default function Solutions() {
 
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}>
                 {sol.image && (
-                  <img src={sol.image} alt={t(sol.titleKey)} className="rounded-xl w-full aspect-[16/10] object-cover mb-5" />
+                  <img
+                    src={cfImage(sol.image, 960)}
+                    srcSet={cfImageSrcSet(sol.image, [480, 720, 960, 1280])}
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    alt={t(sol.titleKey)}
+                    className="rounded-xl w-full aspect-[16/10] object-cover mb-5"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 )}
                 <div className="p-5 rounded-xl border border-border-subtle bg-surface-elevated">
                   <h3 className="font-display font-semibold text-foreground text-sm mb-3">{t("sol.label.suitable")}</h3>

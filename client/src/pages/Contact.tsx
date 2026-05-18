@@ -8,14 +8,21 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useSearch } from "wouter";
 import { trpc } from "@/lib/trpc";
+import { TrpcProvider } from "@/lib/trpc-provider";
 import { useTrackCTA, useTrackFormSubmit, useTrackLINEClick } from "@/hooks/useAnalytics";
 import { usePageTranslation } from "@/i18n";
 import "@/i18n/pages/contact";
 import {
   ArrowRight, Phone, Mail, MapPin, Clock, Send, CheckCircle2,
-  Calculator, Shield, FileText, Users, Zap, MessageCircle, Loader2
+  Calculator, Shield, FileText, Users, Zap, MessageCircle, Loader2,
+  ClipboardCopy, ExternalLink
 } from "lucide-react";
 import { toast } from "sonner";
+import {
+  buildLeadFallbackMailto,
+  buildLeadFallbackSummary,
+  isLeadTransportFallbackError,
+} from "@/lib/leadFallback";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -24,10 +31,12 @@ const fadeUp = {
 
 const LINE_OA_URL = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_LINE_OA_URL) || "https://lin.ee/sirinx";
 
-export default function Contact() {
+function ContactInner() {
   const { t } = usePageTranslation("contact");
   const searchString = useSearch();
   const [submitted, setSubmitted] = useState(false);
+  const [fallbackLead, setFallbackLead] = useState<{ mailtoHref: string; summary: string } | null>(null);
+  const [copiedFallback, setCopiedFallback] = useState(false);
   const trackCTA = useTrackCTA();
   const trackFormSubmit = useTrackFormSubmit();
   const trackLINEClick = useTrackLINEClick();
@@ -60,11 +69,26 @@ export default function Contact() {
 
   const submitLead = trpc.lead.submit.useMutation({
     onSuccess: () => {
+      setFallbackLead(null);
       setSubmitted(true);
       trackFormSubmit("contact_form", Object.values(formData).filter(Boolean).length);
       toast.success(t("successToast"));
     },
     onError: (err) => {
+      if (isLeadTransportFallbackError(err)) {
+        const submittedAt = new Date();
+        const fallback = {
+          mailtoHref: buildLeadFallbackMailto(formData, submittedAt),
+          summary: buildLeadFallbackSummary(formData, submittedAt),
+        };
+        setFallbackLead(fallback);
+        trackFormSubmit("contact_form_email_fallback", Object.values(formData).filter(Boolean).length);
+        toast.error(t("fallbackToast"));
+        window.setTimeout(() => {
+          window.location.href = fallback.mailtoHref;
+        }, 100);
+        return;
+      }
       toast.error(err.message || t("errorToast"));
     },
   });
@@ -121,6 +145,8 @@ export default function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setFallbackLead(null);
+    setCopiedFallback(false);
     submitLead.mutate({
       source: "contact",
       name: formData.name,
@@ -136,6 +162,13 @@ export default function Contact() {
   };
 
   const update = (field: string, value: string) => setFormData(prev => ({ ...prev, [field]: value }));
+
+  const copyFallbackSummary = async () => {
+    if (!fallbackLead) return;
+    await navigator.clipboard.writeText(fallbackLead.summary);
+    setCopiedFallback(true);
+    toast.success(t("fallbackCopyToast"));
+  };
 
   if (submitted) {
     return (
@@ -161,10 +194,64 @@ export default function Contact() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackLINEClick("contact_success_cta")}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#06C755] hover:bg-[#05b34c] text-white rounded-lg text-sm font-semibold transition-colors"
+	              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#047A35] hover:bg-[#03662c] text-white rounded-lg text-sm font-semibold transition-colors"
             >
               <MessageCircle className="w-4 h-4" /> {t("successLineBtn")}
             </a>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
+  if (fallbackLead) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center px-4 py-12 bg-background">
+        <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="max-w-2xl w-full p-6 lg:p-8 rounded-2xl border border-amber-400/40 bg-surface-elevated">
+          <div className="w-14 h-14 rounded-full bg-amber-400/15 flex items-center justify-center mb-5">
+            <Mail className="w-7 h-7 text-amber-300" />
+          </div>
+          <h2 className="font-display text-2xl font-bold text-foreground mb-3">{t("fallbackTitle")}</h2>
+          <p className="text-text-secondary mb-6">{t("fallbackDesc")}</p>
+          <div className="flex flex-col sm:flex-row gap-3 mb-6">
+            <a
+              href={fallbackLead.mailtoHref}
+              onClick={() => trackCTA("contact_fallback_email", "contact_fallback")}
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 btn-accent rounded-lg text-sm font-display font-semibold"
+            >
+              <Mail className="w-4 h-4" /> {t("fallbackEmailBtn")}
+            </a>
+            <a
+              href={LINE_OA_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackLINEClick("contact_fallback_cta")}
+	              className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#047A35] hover:bg-[#03662c] text-white rounded-lg text-sm font-semibold transition-colors"
+            >
+              <MessageCircle className="w-4 h-4" /> {t("fallbackLineBtn")}
+            </a>
+            <button
+              type="button"
+              onClick={copyFallbackSummary}
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 btn-accent-outline rounded-lg text-sm font-display font-semibold"
+            >
+              <ClipboardCopy className="w-4 h-4" /> {copiedFallback ? t("fallbackCopiedBtn") : t("fallbackCopyBtn")}
+            </button>
+          </div>
+          <div className="rounded-xl border border-border-subtle bg-background p-4 mb-6 max-h-72 overflow-auto">
+            <pre className="text-xs text-text-secondary whitespace-pre-wrap break-words font-sans">{fallbackLead.summary}</pre>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              type="button"
+              onClick={() => setFallbackLead(null)}
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 btn-accent-outline rounded-lg text-sm font-display font-semibold"
+            >
+              {t("fallbackEditBtn")}
+            </button>
+            <Link href="/assessment" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 btn-accent-outline rounded-lg text-sm font-display font-semibold">
+              {t("successBtnCalc")} <ExternalLink className="w-4 h-4" />
+            </Link>
           </div>
         </motion.div>
       </div>
@@ -231,26 +318,26 @@ export default function Contact() {
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelName")}</label>
-                      <input type="text" required value={formData.name} onChange={(e) => update("name", e.target.value)} className={inputCls} placeholder={t("phName")} />
+	                      <input type="text" required value={formData.name} onChange={(e) => update("name", e.target.value)} className={inputCls} placeholder={t("phName")} aria-label={t("labelName")} />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelCompany")}</label>
-                      <input type="text" value={formData.company} onChange={(e) => update("company", e.target.value)} className={inputCls} placeholder={t("phCompany")} />
+	                      <input type="text" value={formData.company} onChange={(e) => update("company", e.target.value)} className={inputCls} placeholder={t("phCompany")} aria-label={t("labelCompany")} />
                     </div>
                   </div>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelEmail")}</label>
-                      <input type="email" value={formData.email} onChange={(e) => update("email", e.target.value)} className={inputCls} placeholder="email@company.com" />
+	                      <input type="email" value={formData.email} onChange={(e) => update("email", e.target.value)} className={inputCls} placeholder="email@company.com" aria-label={t("labelEmail")} />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelPhone")}</label>
-                      <input type="tel" required value={formData.phone} onChange={(e) => update("phone", e.target.value)} className={inputCls} placeholder="08X-XXX-XXXX" />
+	                      <input type="tel" required value={formData.phone} onChange={(e) => update("phone", e.target.value)} className={inputCls} placeholder="08X-XXX-XXXX" aria-label={t("labelPhone")} />
                     </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelInterest")}</label>
-                    <select required value={formData.interest} onChange={(e) => update("interest", e.target.value)} className={inputCls}>
+	                    <select required value={formData.interest} onChange={(e) => update("interest", e.target.value)} className={inputCls} aria-label={t("labelInterest")}>
                       <option value="">{t("selectSolution")}</option>
                       {interestOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
                     </select>
@@ -258,14 +345,14 @@ export default function Contact() {
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelBudget")}</label>
-                      <select value={formData.budget} onChange={(e) => update("budget", e.target.value)} className={inputCls}>
+	                        <select value={formData.budget} onChange={(e) => update("budget", e.target.value)} className={inputCls} aria-label={t("labelBudget")}>
                         <option value="">{t("selectBudget")}</option>
                         {budgetRanges.map((r) => <option key={r} value={r}>{r}</option>)}
                       </select>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelTimeline")}</label>
-                      <select value={formData.timeline} onChange={(e) => update("timeline", e.target.value)} className={inputCls}>
+	                      <select value={formData.timeline} onChange={(e) => update("timeline", e.target.value)} className={inputCls} aria-label={t("labelTimeline")}>
                         <option value="">{t("selectTimeline")}</option>
                         {timelineOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
                       </select>
@@ -274,17 +361,17 @@ export default function Contact() {
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelBill")}</label>
-                      <input type="number" min="0" value={formData.monthlyBill} onChange={(e) => update("monthlyBill", e.target.value)} className={inputCls} placeholder={t("phBill")} />
+	                      <input type="number" min="0" value={formData.monthlyBill} onChange={(e) => update("monthlyBill", e.target.value)} className={inputCls} placeholder={t("phBill")} aria-label={t("labelBill")} />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelRoof")}</label>
-                      <input type="number" min="0" value={formData.roofArea} onChange={(e) => update("roofArea", e.target.value)} className={inputCls} placeholder={t("phRoof")} />
+	                      <input type="number" min="0" value={formData.roofArea} onChange={(e) => update("roofArea", e.target.value)} className={inputCls} placeholder={t("phRoof")} aria-label={t("labelRoof")} />
                     </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelMessage")}</label>
-                    <textarea rows={4} value={formData.message} onChange={(e) => update("message", e.target.value)}
-                      className={`${inputCls} resize-none`} placeholder={t("phMessage")} />
+	                    <textarea rows={4} value={formData.message} onChange={(e) => update("message", e.target.value)}
+	                      className={`${inputCls} resize-none`} placeholder={t("phMessage")} aria-label={t("labelMessage")} />
                   </div>
                   <button
                     type="submit"
@@ -315,7 +402,7 @@ export default function Contact() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => trackLINEClick("contact_sidebar_cta")}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#06C755] hover:bg-[#05b34c] text-white rounded-lg text-sm font-semibold transition-colors w-full justify-center"
+	                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#047A35] hover:bg-[#03662c] text-white rounded-lg text-sm font-semibold transition-colors w-full justify-center"
                 >
                   <MessageCircle className="w-4 h-4" /> {t("lineBtn")}
                 </a>
@@ -390,5 +477,13 @@ export default function Contact() {
         </div>
       </section>
     </div>
+  );
+}
+
+export default function Contact() {
+  return (
+    <TrpcProvider>
+      <ContactInner />
+    </TrpcProvider>
   );
 }

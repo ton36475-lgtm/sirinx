@@ -4,7 +4,7 @@
  */
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { motion } from "framer-motion";
+import { motion } from "@/lib/static-motion";
 import { Link } from "wouter";
 import {
   Car,
@@ -46,12 +46,12 @@ const fadeUp = {
 const CDN =
   "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv";
 
-const HERO_CARPARK = `${CDN}/solar-carpark-hero-HkuPbSXRuEJEzybRN8Xb7W.webp`;
-const IMG_EV = `${CDN}/solar-carpark-ev-charging-niYjh6gCmDqQNQiCE6oq8M.webp`;
+const HERO_CARPARK = "/assets/optimized/solar-carport-hero.jpg";
+const IMG_EV = "/assets/optimized/solar-carport-ev.jpg";
 const IMG_OM = `${CDN}/install-team-2_23aa9cdf.jpeg`;
 const IMG_AI = `${CDN}/solar-ai-dashboard-CDhHz7V3K98CLU6eGvW8PP.webp`;
 const IMG_INVESTMENT = `${CDN}/hero-investment-fRtcNVseiLRqovGxudgo83.webp`;
-const LOGO_URL = `${CDN}/photo_2026-03-24_06-45-58_293d121c.jpg`;
+const LOGO_URL = "/assets/optimized/sirinx-logo.jpg";
 // Real photos from Royal Park Solar Carport installation
 const IMG_NODE1 = `${CDN}/carport-wide-1_30e3af4c.jpeg`;
 const IMG_NODE2 = `${CDN}/bess-cabinet-2_54c824b8.jpeg`;
@@ -192,7 +192,11 @@ export default function Home() {
               <img
                 src={IMG_EV}
                 alt="Solar Carport + EV Charging Station"
+                width={900}
+                height={502}
                 className="rounded-2xl w-full aspect-[16/10] object-cover"
+                loading="lazy"
+                decoding="async"
               />
               <div className="absolute inset-0 rounded-2xl border border-border-accent" />
               {/* Floating stat card */}
@@ -620,13 +624,15 @@ export default function Home() {
                   src={IMG_NODE1}
                   alt="Solar Farm Node 1 — Rueanpae Royal Park"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 <div className="absolute top-3 left-3 flex gap-2">
                   <span className="px-2 py-0.5 text-[10px] font-medium bg-accent-primary text-text-inverse rounded-md">
                     Node 1
                   </span>
-                  <span className="px-2 py-0.5 text-[10px] font-medium bg-green-600 text-white rounded-md">
+                  <span className="px-2 py-0.5 text-[10px] font-semibold bg-emerald-800 text-white rounded-md">
                     {t("home.projects.completed")}
                   </span>
                 </div>
@@ -682,13 +688,15 @@ export default function Home() {
                   src={IMG_NODE2}
                   alt="Solar Farm Node 2 — Holatel Rim Nan"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 <div className="absolute top-3 left-3 flex gap-2">
                   <span className="px-2 py-0.5 text-[10px] font-medium bg-accent-primary text-text-inverse rounded-md">
                     Node 2
                   </span>
-                  <span className="px-2 py-0.5 text-[10px] font-medium bg-amber-500 text-white rounded-md">
+                  <span className="px-2 py-0.5 text-[10px] font-semibold bg-amber-300 text-slate-950 rounded-md">
                     {t("home.projects.underConstruction")}
                   </span>
                 </div>
@@ -760,6 +768,8 @@ export default function Home() {
                 src={IMG_OM}
                 alt="SIRINX O&M — AI Monitoring"
                 className="rounded-2xl w-full aspect-[16/10] object-cover"
+                loading="lazy"
+                decoding="async"
               />
             </motion.div>
             <motion.div
@@ -870,6 +880,8 @@ export default function Home() {
                 src={IMG_INVESTMENT}
                 alt="Solar Carport Investment — ROI Analysis"
                 className="rounded-2xl w-full aspect-[16/10] object-cover"
+                loading="lazy"
+                decoding="async"
               />
               <div className="absolute inset-0 rounded-2xl border border-border-accent" />
             </motion.div>
@@ -895,7 +907,11 @@ export default function Home() {
               <img
                 src={LOGO_URL}
                 alt="SIRINX"
+                width={56}
+                height={56}
                 className="w-14 h-14 rounded-full ring-2 ring-brand/30"
+                loading="lazy"
+                decoding="async"
               />
             </div>
             <p className="text-base lg:text-lg text-text-secondary italic leading-relaxed mb-5">

@@ -1,5 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { getPageMeta, injectOgTags } from "./ogTags";
+import {
+  getPageMeta,
+  getStaticSeoRoutes,
+  getStructuredData,
+  injectOgTags,
+  thaiProvinces,
+} from "./ogTags";
 
 describe("getPageMeta", () => {
   it("returns Solar Carport-focused meta for homepage", () => {
@@ -16,6 +22,15 @@ describe("getPageMeta", () => {
     expect(meta.title).toContain("SIRINX");
     expect(meta.description).toContain("ผลิตไฟฟ้า");
     expect(meta.description).toContain("EV Charging");
+  });
+
+  it("returns dedicated meta for /home-solution", () => {
+    const meta = getPageMeta("/home-solution");
+    expect(meta.title).toContain("Home Solar Solution");
+    expect(meta.title).toContain("บ้านใหญ่");
+    expect(meta.description).toContain("โฮมออฟฟิศ");
+    expect(meta.description).toContain("BESS");
+    expect(meta.image).toContain("/assets/home-solution/home-solution-drone-hero.jpg");
   });
 
   it("returns promotional meta for /contact", () => {
@@ -94,6 +109,21 @@ describe("getPageMeta", () => {
     expect(meta.title).toContain("Solar Carport");
     expect(meta.description).toContain("Solar Carport");
   });
+
+  it("returns province-specific Solar Carport meta for 77 province routes", () => {
+    expect(thaiProvinces).toHaveLength(77);
+    const routes = getStaticSeoRoutes().filter(route =>
+      route.startsWith("/solar-carport/")
+    );
+    expect(routes).toHaveLength(77);
+
+    const meta = getPageMeta("/solar-carport/phitsanulok");
+    expect(meta.title).toContain("พิษณุโลก");
+    expect(meta.description).toContain("Solar Carport");
+    expect(meta.description).toContain("30-100%");
+    expect(meta.description).toContain("3-5 ปี");
+    expect(meta.description).toContain("ตามข้อมูลไซต์จริง");
+  });
 });
 
 describe("injectOgTags", () => {
@@ -148,10 +178,10 @@ describe("injectOgTags", () => {
       "/contact",
       "https://sirinxsolar-dfabnh7l.manus.space"
     );
-    expect(result).toContain(
-      'og:url" content="https://sirinxsolar-dfabnh7l.manus.space/contact"'
-    );
-  });
+	    expect(result).toContain(
+	      'og:url" content="https://sirinxsolar-dfabnh7l.manus.space/contact/"'
+	    );
+	  });
 
   it("injects og:image with CDN URL", () => {
     const result = injectOgTags(
@@ -181,26 +211,85 @@ describe("injectOgTags", () => {
       "/blog",
       "https://sirinxsolar-dfabnh7l.manus.space"
     );
-    expect(result).toContain(
-      'canonical" href="https://sirinxsolar-dfabnh7l.manus.space/blog"'
-    );
-  });
+	    expect(result).toContain(
+	      'canonical" href="https://sirinxsolar-dfabnh7l.manus.space/blog/"'
+	    );
+	  });
 
-  it("handles homepage URL without trailing slash", () => {
+	  it("handles homepage URL with final trailing slash", () => {
+	    const result = injectOgTags(
+	      sampleHtml,
+	      "/",
+	      "https://sirinxsolar-dfabnh7l.manus.space"
+	    );
+	    expect(result).toContain(
+	      'og:url" content="https://sirinxsolar-dfabnh7l.manus.space/"'
+	    );
+	  });
+
+  it("injects province canonical, OG tags, and structured data", () => {
     const result = injectOgTags(
       sampleHtml,
-      "/",
-      "https://sirinxsolar-dfabnh7l.manus.space"
+      "/solar-carport/phitsanulok",
+      "https://www.sirinx.co"
     );
-    expect(result).toContain(
-      'og:url" content="https://sirinxsolar-dfabnh7l.manus.space"'
+    expect(result).toContain("Solar Carport พิษณุโลก");
+	    expect(result).toContain(
+	      'canonical" href="https://www.sirinx.co/solar-carport/phitsanulok/"'
+	    );
+	    expect(result).toContain('data-sirinx-seo="route"');
+	    expect(result).toContain("AdministrativeArea");
+	  });
+
+	  it("injects route-specific hero image preload", () => {
+	    const result = injectOgTags(
+	      sampleHtml,
+	      "/solar-carport",
+	      "https://www.sirinx.co"
+	    );
+	    expect(result).toContain('rel="preload" as="image"');
+	    expect(result).toContain("/cdn-cgi/image/width=1280");
+	    expect(result).toContain("carport-wide-1_30e3af4c.jpeg");
+	  });
+
+  it("builds AEO service schema for province pages", () => {
+    const data = getStructuredData(
+      "/solar-carport/phitsanulok",
+      "https://www.sirinx.co"
     );
+    const encoded = JSON.stringify(data);
+    expect(encoded).toContain("Solar Carport พิษณุโลก");
+    expect(encoded).toContain("FAQPage");
+    expect(encoded).toContain("Service");
+    expect(encoded).toContain("พิษณุโลก");
+  });
+
+  it("builds static AEO service and FAQ schema for /home-solution", () => {
+    const data = getStructuredData("/home-solution", "https://www.sirinx.co");
+    const encoded = JSON.stringify(data);
+    expect(encoded).toContain("SIRINX Home Solar Solution");
+    expect(encoded).toContain("FAQPage");
+    expect(encoded).toContain("บ้านขนาดใหญ่");
+    expect(encoded).toContain("EV Charger");
+    expect(encoded).toContain("Project-specific quotation");
+  });
+
+  it("injects no-JavaScript fallback content for /home-solution", () => {
+    const result = injectOgTags(
+      sampleHtml,
+      "/home-solution",
+      "https://www.sirinx.co"
+    );
+    expect(result).toContain('data-sirinx-static-fallback="home-solution"');
+    expect(result).toContain("Home Solar Solution สำหรับบ้านใหญ่");
+    expect(result).toContain("ไม่ใช่คำรับประกันเหมารวม");
   });
 
   it("does not inject unsupported guaranteed savings or fixed payback claims", () => {
     const publicRoutes = [
       "/",
       "/solar-carport",
+      "/home-solution",
       "/investment",
       "/assessment",
       "/pricing",

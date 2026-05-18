@@ -28,6 +28,7 @@ const translations: Record<string, Record<Language, string>> = {
     cn: "太阳能车棚",
   },
   "nav.solutions": { th: "โซลูชัน", en: "Solutions", cn: "解决方案" },
+  "nav.homeSolution": { th: "Home Solution", en: "Home Solution", cn: "家庭能源方案" },
   "nav.industries": { th: "อุตสาหกรรม", en: "Industries", cn: "行业" },
   "nav.pricing": { th: "แพ็คเกจราคา", en: "Pricing", cn: "价格方案" },
   "nav.projects": { th: "ผลงาน", en: "Projects", cn: "项目案例" },
@@ -59,6 +60,11 @@ const translations: Record<string, Record<Language, string>> = {
     th: "Solar Carport",
     en: "Solar Carport",
     cn: "太阳能车棚",
+  },
+  "sol.homeSolution": {
+    th: "Home Solution บ้านใหญ่",
+    en: "Large Home Solution",
+    cn: "大型住宅能源方案",
   },
   "sol.bess": { th: "BESS / ESS", en: "BESS / ESS", cn: "储能系统" },
   "sol.aiEnergy": {
@@ -131,9 +137,9 @@ const translations: Record<string, Record<Language, string>> = {
     cn: "变成太阳能发电站",
   },
   "home.heroDesc": {
-    th: "ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger พร้อมประเมินผลประหยัดและคืนทุนจากข้อมูลไซต์จริง",
-    en: "Generate electricity, provide shade, and support EV Charging with savings and payback assessed from real site data.",
-    cn: "发电、遮阳并支持电动车充电，节省和回本需根据现场数据评估。",
+    th: "ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger ลดค่าไฟ 30-100% คืนทุน 3-5 ปีโดยประมาณตามข้อมูลไซต์จริง",
+    en: "Generate electricity, provide shade, and support EV Charging with estimated 30-100% bill reduction and 3-5 year payback based on real site data.",
+    cn: "发电、遮阳并支持电动车充电，根据现场数据预估降低30-100%电费，3-5年回本。",
   },
 
   // Pricing page

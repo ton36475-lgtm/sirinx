@@ -5,12 +5,12 @@
  */
 import { ReactNode, useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "@/lib/static-motion";
 import { Menu, X, ChevronDown, ChevronRight, Phone, Mail, Moon, Sun, ArrowUpRight, Linkedin, Facebook, MapPin, Globe, Zap, Calculator, FileText, Home, Layers, Factory, BarChart3, Users, Sparkles } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage, LANGUAGE_LABELS, type Language } from "@/contexts/LanguageContext";
 
-const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/photo_2026-03-24_06-45-58_293d121c.jpg";
+const LOGO_URL = "/assets/optimized/sirinx-logo.jpg";
 const DBD_REGISTERED_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/DLpAL6PTE5qU_2bde4df9.png";
 const THAILAND_TRUST_MARK_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/yOSTZisxsQLA_fba48286.jpg";
 const DBD_VERIFIED_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/pxcfay2CDun0_9a6a41ea.jpg";
@@ -23,6 +23,7 @@ const navLinksData = [
     i18nKey: "nav.solutions",
     children: [
       { href: "/solar-carport", i18nKey: "sol.solarCarport" },
+      { href: "/home-solution", i18nKey: "sol.homeSolution" },
       { href: "/solutions#rooftop", i18nKey: "sol.rooftopSolar" },
       { href: "/solutions#floating", i18nKey: "sol.floatingSolar" },
       { href: "/solutions#bess", i18nKey: "sol.bess" },
@@ -72,6 +73,9 @@ function Navbar() {
           <img
             src={LOGO_URL}
             alt="SIRINX Logo"
+            width={44}
+            height={44}
+            decoding="async"
             className="w-10 h-10 lg:w-11 lg:h-11 rounded-full object-cover shadow-lg shadow-brand/20 ring-2 ring-brand/30"
           />
           <div className="flex flex-col">
@@ -136,7 +140,7 @@ function Navbar() {
           >
             <button
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-sm font-medium text-text-secondary hover:text-foreground hover:bg-accent-glow transition-colors border border-border-subtle"
-              aria-label="Change language"
+              title="Change language"
             >
               <Globe className="w-4 h-4" />
               <span>{LANGUAGE_LABELS[lang]}</span>
@@ -195,7 +199,7 @@ function Navbar() {
               setLang(languages[(idx + 1) % languages.length]);
             }}
             className="px-2 py-1.5 rounded-lg text-xs font-medium text-text-secondary hover:text-foreground border border-border-subtle transition-colors"
-            aria-label="Change language"
+            title="Change language"
           >
             <Globe className="w-4 h-4 inline mr-0.5" />
             {LANGUAGE_LABELS[lang]}
@@ -362,6 +366,7 @@ const footerLinksData = [
     titleKey: "footer.solutions",
     links: [
       { href: "/solar-carport", i18nKey: "sol.solarCarport" },
+      { href: "/home-solution", i18nKey: "sol.homeSolution" },
       { href: "/solutions#rooftop", i18nKey: "sol.rooftopSolar" },
       { href: "/solutions#floating", i18nKey: "sol.floatingSolar" },
       { href: "/solutions#bess", i18nKey: "sol.bess" },
@@ -408,6 +413,10 @@ function Footer() {
               <img
                 src={LOGO_URL}
                 alt="SIRINX Logo"
+                width={40}
+                height={40}
+                decoding="async"
+                loading="lazy"
                 className="w-10 h-10 rounded-full object-cover shadow-lg shadow-brand/20 ring-2 ring-brand/30"
               />
               <div className="flex flex-col">
@@ -452,9 +461,9 @@ function Footer() {
           {/* Links */}
           {footerLinksData.map((section) => (
             <div key={section.titleKey}>
-              <h4 className="font-display font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">
+              <h2 className="font-display font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">
                 {t(section.titleKey)}
-              </h4>
+              </h2>
               <ul className="space-y-2.5">
                 {section.links.map((link) => (
                   <li key={link.href}>
@@ -485,7 +494,7 @@ function Footer() {
                 className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-border-subtle hover:border-border-accent transition-all group"
                 title="DBD Registered — กรมพัฒนาธุรกิจการค้า"
               >
-                <img src={DBD_REGISTERED_URL} alt="DBD Registered" className="h-8 object-contain" />
+                <img src={DBD_REGISTERED_URL} alt="DBD Registered" width={96} height={32} className="h-8 object-contain" loading="lazy" decoding="async" />
               </a>
               {/* DBD Verified */}
               <a
@@ -495,7 +504,7 @@ function Footer() {
                 className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-border-subtle hover:border-border-accent transition-all group"
                 title="DBD Verified"
               >
-                <img src={DBD_VERIFIED_URL} alt="DBD Verified" className="h-8 object-contain" />
+                <img src={DBD_VERIFIED_URL} alt="DBD Verified" width={96} height={32} className="h-8 object-contain" loading="lazy" decoding="async" />
               </a>
               {/* Thailand Trust Mark */}
               <a
@@ -505,7 +514,7 @@ function Footer() {
                 className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-border-subtle hover:border-border-accent transition-all group"
                 title="Thailand Trust Mark"
               >
-                <img src={THAILAND_TRUST_MARK_URL} alt="Thailand Trust Mark" className="h-10 w-10 rounded-full object-cover" />
+                <img src={THAILAND_TRUST_MARK_URL} alt="Thailand Trust Mark" width={40} height={40} className="h-10 w-10 rounded-full object-cover" loading="lazy" decoding="async" />
               </a>
               {/* ISO Badge (SVG inline) */}
               <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-border-subtle" title="ISO 9001:2015 Quality Management">

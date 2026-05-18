@@ -268,9 +268,9 @@ const dict: TranslationDict = {
     cn: "15,000-50,000泰铢/月",
   },
   "pkg.pro.specs.payback": {
-    th: "ประเมินรายไซต์",
-    en: "Site-specific",
-    cn: "按项目评估",
+    th: "3-5 ปี",
+    en: "3-5 years",
+    cn: "3-5年",
   },
   "pkg.pro.specs.lifespan": { th: "25+ ปี", en: "25+ years", cn: "25年以上" },
   "pkg.pro.specs.warranty": {
@@ -326,9 +326,9 @@ const dict: TranslationDict = {
     cn: "50,000-250,000+泰铢/月",
   },
   "pkg.enterprise.specs.payback": {
-    th: "ประเมินรายไซต์",
-    en: "Site-specific",
-    cn: "按项目评估",
+    th: "3-5 ปี",
+    en: "3-5 years",
+    cn: "3-5年",
   },
   "pkg.enterprise.specs.lifespan": {
     th: "25+ ปี",
@@ -482,14 +482,14 @@ const dict: TranslationDict = {
   "compare.row.4.label": { th: "คืนทุน", en: "Payback", cn: "回本" },
   "compare.row.4.s": { th: "4-6 ปี", en: "4-6 years", cn: "4-6年" },
   "compare.row.4.m": {
-    th: "ประเมินรายไซต์",
-    en: "Site-specific",
-    cn: "按项目评估",
+    th: "3-5 ปี",
+    en: "3-5 years",
+    cn: "3-5年",
   },
   "compare.row.4.l": {
-    th: "ประเมินรายไซต์",
-    en: "Site-specific",
-    cn: "按项目评估",
+    th: "3-5 ปี",
+    en: "3-5 years",
+    cn: "3-5年",
   },
   "compare.row.5.label": {
     th: "BESS (แบตเตอรี่)",

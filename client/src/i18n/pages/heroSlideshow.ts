@@ -18,9 +18,9 @@ const dict: TranslationDict = {
     cn: "变成太阳能发电站",
   },
   "hero.carport-aerial.desc": {
-    th: "ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger พร้อมประเมินผลประหยัดและคืนทุนจากข้อมูลไซต์จริง",
-    en: "Generate electricity, provide shade, support EV Charger, with savings and payback assessed from real site data.",
-    cn: "发电、遮阳、支持电动车充电，节省和回本需根据现场数据评估。",
+    th: "ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger ลดค่าไฟ 30-100% คืนทุน 3-5 ปีโดยประมาณตามข้อมูลไซต์จริง",
+    en: "Generate electricity, provide shade, and support EV Charger, with estimated 30-100% bill reduction and 3-5 year payback based on real site data.",
+    cn: "发电、遮阳并支持电动车充电，根据现场数据预估降低30-100%电费，3-5年回本。",
   },
   "hero.carport-aerial.cta": {
     th: "ขอใบเสนอราคา Solar Carport",
@@ -82,9 +82,9 @@ const dict: TranslationDict = {
     cn: "降低生产能源成本",
   },
   "hero.rooftop-factory.desc": {
-    th: "ใช้พื้นที่หลังคาให้เกิดประโยชน์สูงสุด ลดต้นทุนพลังงานช่วงกลางวันตาม load profile จริง",
-    en: "Maximize roof space utilization and reduce daytime energy costs based on the real load profile.",
-    cn: "最大化屋顶空间利用，并根据实际负载曲线降低白天能源成本。",
+    th: "ใช้พื้นที่หลังคาให้เกิดประโยชน์สูงสุด ลดค่าไฟ 30-100% โดยประมาณตาม load profile จริง",
+    en: "Maximize roof space utilization with estimated 30-100% bill reduction depending on the real load profile.",
+    cn: "最大化屋顶空间利用，并根据实际负载曲线预估降低30-100%电费。",
   },
   "hero.rooftop-factory.cta": {
     th: "ขอใบเสนอราคา Rooftop Solar",

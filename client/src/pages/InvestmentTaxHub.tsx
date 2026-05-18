@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { trackSolutionVisit } from "@/components/HeroSlideshow";
+import { cfImage, cfImageSrcSet } from "@/lib/cfImage";
 import {
   ArrowRight,
   TrendingUp,
@@ -116,9 +117,14 @@ export default function InvestmentTaxHub() {
       <section className="relative min-h-[45vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src={HERO}
+            src={cfImage(HERO, 1280, { quality: 76 })}
+            srcSet={cfImageSrcSet(HERO, [640, 960, 1280, 1600], { quality: 76 })}
+            sizes="100vw"
             alt="Investment"
             className="w-full h-full object-cover"
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/50" />
         </div>
@@ -258,7 +264,7 @@ export default function InvestmentTaxHub() {
                   { label: "กำลังผลิตโดยประมาณ", value: "200-300 kW" },
                   { label: "เงินลงทุนโดยประมาณ", value: "8-12 ล้านบาท" },
                   { label: "ประหยัดค่าไฟต่อปี", value: "2-3.5 ล้านบาท" },
-                  { label: "คืนทุนโดยประมาณ", value: "รายไซต์", accent: true },
+                  { label: "คืนทุนโดยประมาณ", value: "3-5 ปี", accent: true },
                   {
                     label: "ผลตอบแทนตลอดอายุ 25 ปี",
                     value: "40-70 ล้านบาท",
@@ -326,7 +332,7 @@ export default function InvestmentTaxHub() {
                 {[
                   { label: "เงินลงทุนโดยประมาณ", value: "12-15 ล้านบาท" },
                   { label: "ประหยัดค่าไฟต่อปี", value: "3-4 ล้านบาท" },
-                  { label: "คืนทุนโดยประมาณ", value: "รายไซต์", accent: true },
+                  { label: "คืนทุนโดยประมาณ", value: "3-5 ปี", accent: true },
                   {
                     label: "ผลตอบแทนตลอดอายุ 25 ปี",
                     value: "60-80 ล้านบาท",

@@ -8,6 +8,7 @@ import { Link } from "wouter";
 import { trackSolutionVisit } from "@/components/HeroSlideshow";
 import { usePageTranslation } from "@/i18n";
 import "@/i18n/pages/projects";
+import { cfImage, cfImageSrcSet } from "@/lib/cfImage";
 import {
   ArrowRight, MapPin, Zap, Calendar, TrendingUp, Filter,
   X, ChevronLeft, ChevronRight, CheckCircle2, Car,
@@ -168,7 +169,16 @@ export default function Projects() {
           >
             <div className="grid lg:grid-cols-2">
               <div className="relative aspect-[4/3] lg:aspect-auto overflow-hidden">
-                <img src={featured.image} alt={featured.title} className="w-full h-full object-cover" />
+	                <img
+	                  src={cfImage(featured.image, 960, { quality: 76 })}
+	                  srcSet={cfImageSrcSet(featured.image, [480, 720, 960, 1280], { quality: 76 })}
+	                  sizes="(min-width: 1024px) 50vw, 100vw"
+	                  alt={featured.title}
+	                  className="w-full h-full object-cover"
+	                  loading="eager"
+	                  decoding="async"
+	                  fetchPriority="high"
+	                />
                 <div className="absolute top-4 left-4">
                   <span className="px-3 py-1.5 text-xs font-bold bg-accent-primary text-text-inverse rounded-lg">
                     {t("featuredBadge")}
@@ -252,7 +262,15 @@ export default function Projects() {
                 >
                   <div className="grid sm:grid-cols-[240px_1fr]">
                     <div className="relative h-48 sm:h-full overflow-hidden">
-                      <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+	                      <img
+	                        src={cfImage(project.image, 640)}
+	                        srcSet={cfImageSrcSet(project.image, [320, 480, 640, 960])}
+	                        sizes="(min-width: 768px) 240px, 100vw"
+	                        alt={project.title}
+	                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+	                        loading="lazy"
+	                        decoding="async"
+	                      />
                       <div className="absolute top-3 left-3 flex flex-col gap-1">
                         <span className="px-2 py-0.5 text-[10px] font-medium bg-accent-primary/90 text-text-inverse rounded-md">
                           {project.type}
@@ -429,12 +447,21 @@ export default function Projects() {
               <motion.button
                 key={i}
                 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i % 4}
-                onClick={() => setLightboxIdx(i)}
-                className={`rounded-lg overflow-hidden border border-border-subtle hover:border-border-accent transition-all hover:scale-[1.02] ${
-                  i % 3 === 0 ? "aspect-[4/3]" : "aspect-square"
-                }`}
-              >
-                <img src={src} alt={`SIRINX project photo ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
+	                onClick={() => setLightboxIdx(i)}
+	                aria-label={`เปิดรูปผลงาน SIRINX ลำดับที่ ${i + 1}`}
+	                className={`rounded-lg overflow-hidden border border-border-subtle hover:border-border-accent transition-all hover:scale-[1.02] ${
+	                  i % 3 === 0 ? "aspect-[4/3]" : "aspect-square"
+	                }`}
+	              >
+	                <img
+	                  src={cfImage(src, 420)}
+	                  srcSet={cfImageSrcSet(src, [220, 320, 420, 640])}
+	                  sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+	                  alt={`SIRINX project photo ${i + 1}`}
+	                  className="w-full h-full object-cover"
+	                  loading="lazy"
+	                  decoding="async"
+	                />
               </motion.button>
             ))}
           </div>
@@ -449,27 +476,30 @@ export default function Projects() {
             className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
             onClick={() => setLightboxIdx(null)}
           >
-            <button onClick={() => setLightboxIdx(null)} className="absolute top-4 right-4 text-white/80 hover:text-white z-10">
-              <X className="w-8 h-8" />
-            </button>
-            <button
-              onClick={(e) => { e.stopPropagation(); setLightboxIdx((lightboxIdx - 1 + galleryPhotos.length) % galleryPhotos.length); }}
-              className="absolute left-4 text-white/80 hover:text-white z-10"
-            >
-              <ChevronLeft className="w-10 h-10" />
-            </button>
-            <button
-              onClick={(e) => { e.stopPropagation(); setLightboxIdx((lightboxIdx + 1) % galleryPhotos.length); }}
-              className="absolute right-4 text-white/80 hover:text-white z-10"
-            >
+	            <button onClick={() => setLightboxIdx(null)} className="absolute top-4 right-4 text-white/80 hover:text-white z-10" aria-label="ปิดรูปผลงาน">
+	              <X className="w-8 h-8" />
+	            </button>
+	            <button
+	              onClick={(e) => { e.stopPropagation(); setLightboxIdx((lightboxIdx - 1 + galleryPhotos.length) % galleryPhotos.length); }}
+	              className="absolute left-4 text-white/80 hover:text-white z-10"
+	              aria-label="รูปผลงานก่อนหน้า"
+	            >
+	              <ChevronLeft className="w-10 h-10" />
+	            </button>
+	            <button
+	              onClick={(e) => { e.stopPropagation(); setLightboxIdx((lightboxIdx + 1) % galleryPhotos.length); }}
+	              className="absolute right-4 text-white/80 hover:text-white z-10"
+	              aria-label="รูปผลงานถัดไป"
+	            >
               <ChevronRight className="w-10 h-10" />
             </button>
             <motion.img
               key={lightboxIdx}
               initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }}
-              src={galleryPhotos[lightboxIdx]}
-              alt={`SIRINX project photo ${lightboxIdx + 1}`}
-              className="max-w-full max-h-[85vh] object-contain rounded-lg"
+	              src={cfImage(galleryPhotos[lightboxIdx], 1600, { quality: 82 })}
+	              alt={`SIRINX project photo ${lightboxIdx + 1}`}
+	              className="max-w-full max-h-[85vh] object-contain rounded-lg"
+	              decoding="async"
               onClick={(e) => e.stopPropagation()}
             />
             <div className="absolute bottom-4 text-white/60 text-sm">

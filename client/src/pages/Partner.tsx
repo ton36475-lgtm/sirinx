@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
+import { TrpcProvider } from "@/lib/trpc-provider";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -46,7 +47,7 @@ const partnerTypes = [
   },
 ];
 
-export default function Partner() {
+function PartnerInner() {
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: "", company: "", email: "", phone: "", type: "",
@@ -299,5 +300,13 @@ export default function Partner() {
         </div>
       </section>
     </div>
+  );
+}
+
+export default function Partner() {
+  return (
+    <TrpcProvider>
+      <PartnerInner />
+    </TrpcProvider>
   );
 }
