@@ -13,6 +13,9 @@ const OG_IMAGE =
 
 const SITE_NAME = "SIRINX";
 const PRODUCTION_BASE_URL = "https://www.sirinx.co";
+const ASSET_CDN =
+  "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv";
+const imageResizeBase = `${PRODUCTION_BASE_URL}/cdn-cgi/image/width=1280,quality=76,format=auto,fit=scale-down`;
 const DEFAULT_TITLE =
   "SIRINX | Solar Carport วางแผนลดค่าไฟองค์กร พร้อม EV Charger, BESS & AI Energy";
 const DEFAULT_DESC =
@@ -379,6 +382,62 @@ function replaceCanonical(html: string, href: string): string {
   return html.replace("</head>", `    ${tag}\n  </head>`);
 }
 
+function buildCanonicalUrl(baseUrl: string, urlPath: string): string {
+  const cleanPath =
+    urlPath.split("?")[0].split("#")[0].replace(/\/$/, "") || "/";
+  return cleanPath === "/" ? `${baseUrl}/` : `${baseUrl}${cleanPath}/`;
+}
+
+function getRouteHeroPreload(urlPath: string) {
+  const cleanPath =
+    urlPath.split("?")[0].split("#")[0].replace(/\/$/, "") || "/";
+  if (cleanPath === "/") {
+    return {
+      href: "/assets/optimized/solar-carport-hero.jpg",
+      type: "image/jpeg",
+    };
+  }
+  if (cleanPath === "/home-solution") {
+    return {
+      href: "/assets/home-solution/home-solution-drone-hero-1280.avif",
+      type: "image/avif",
+    };
+  }
+  if (cleanPath === "/solar-carport" || cleanPath.startsWith("/solar-carport/")) {
+    return {
+      href: `${imageResizeBase}/${ASSET_CDN}/carport-wide-1_30e3af4c.jpeg`,
+      type: "image/jpeg",
+    };
+  }
+  const heroByPath: Record<string, string> = {
+    "/about": `${ASSET_CDN}/hero-about-3Trik9L6DrdCwCcjCt2KVz.webp`,
+    "/solutions": `${ASSET_CDN}/hero-solutions-AG25WEja6TRJEEzvpx3wZU.webp`,
+    "/industries": `${ASSET_CDN}/sirinx-agrivoltaic-b6XSpaadLj5vpaTu52tenb.webp`,
+    "/investment": `${ASSET_CDN}/hero-investment-fRtcNVseiLRqovGxudgo83.webp`,
+    "/strategy": `${ASSET_CDN}/sirinx-smart-energy-JXCSVMQTKJHxRxSagYajgy.webp`,
+  };
+  if (heroByPath[cleanPath]) {
+    return {
+      href: `${imageResizeBase}/${heroByPath[cleanPath]}`,
+      type: "image/webp",
+    };
+  }
+  return null;
+}
+
+function injectRouteHeroPreload(html: string, urlPath: string) {
+  const preload = getRouteHeroPreload(urlPath);
+  if (!preload) return html;
+  const tag = `    <link rel="preload" as="image" href="${preload.href}" type="${preload.type}" fetchpriority="high" />`;
+  if (html.includes('rel="preload" as="image"')) {
+    return html.replace(/    <link rel="preload" as="image"[\s\S]*?\/>\n/, `${tag}\n`);
+  }
+  if (html.includes("    <!-- Fonts -->")) {
+    return html.replace("    <!-- Fonts -->", `${tag}\n\n    <!-- Fonts -->`);
+  }
+  return html.replace("</head>", `${tag}\n  </head>`);
+}
+
 function injectNoScriptStaticFallback(html: string, urlPath: string): string {
   const cleanPath =
     urlPath.split("?")[0].split("#")[0].replace(/\/$/, "") || "/";
@@ -423,7 +482,7 @@ export function injectOgTags(
 ): string {
   const meta = getPageMeta(urlPath);
   const image = meta.image || OG_IMAGE;
-  const fullUrl = `${baseUrl}${urlPath === "/" ? "" : urlPath}`;
+  const fullUrl = buildCanonicalUrl(baseUrl, urlPath);
   const title = escapeHtmlAttribute(meta.title);
   const description = escapeHtmlAttribute(meta.description);
   const imageUrl = escapeHtmlAttribute(image);
@@ -460,6 +519,7 @@ export function injectOgTags(
 
   // Replace canonical URL
   html = replaceCanonical(html, canonicalUrl);
+  html = injectRouteHeroPreload(html, urlPath);
   html = injectNoScriptStaticFallback(html, urlPath);
 
   return injectStructuredData(html, getStructuredData(urlPath, baseUrl));

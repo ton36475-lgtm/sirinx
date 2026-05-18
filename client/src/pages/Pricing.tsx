@@ -24,6 +24,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { usePageTranslation } from "@/i18n";
+import { cfImage, cfImageSrcSet } from "@/lib/cfImage";
 import "@/i18n/pages/pricing";
 
 const fadeUp = {
@@ -232,12 +233,15 @@ export default function Pricing() {
 
                 {/* Package Image */}
                 <div className="-mx-6 -mt-6 lg:-mx-8 lg:-mt-8 mb-6 rounded-t-2xl overflow-hidden">
-                  <img
-                    src={pkg.image}
-                    alt={`Solar Carport ${pkg.name}`}
-                    className="w-full h-40 lg:h-48 object-cover"
-                    loading="lazy"
-                  />
+	                  <img
+	                    src={cfImage(pkg.image, 640)}
+	                    srcSet={cfImageSrcSet(pkg.image, [320, 480, 640, 960])}
+	                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+	                    alt={`Solar Carport ${pkg.name}`}
+	                    className="w-full h-40 lg:h-48 object-cover"
+	                    loading="lazy"
+	                    decoding="async"
+	                  />
                 </div>
 
                 {/* Header */}
@@ -697,12 +701,15 @@ export default function Pricing() {
                 className={`group relative rounded-xl border ${brochure.color} bg-surface-elevated overflow-hidden hover:shadow-lg transition-all duration-300`}
               >
                 <div className="aspect-[9/16] overflow-hidden">
-                  <img
-                    src={brochure.image}
-                    alt={brochure.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
+	                  <img
+	                    src={cfImage(brochure.image, 360)}
+	                    srcSet={cfImageSrcSet(brochure.image, [220, 300, 360, 480])}
+	                    sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw"
+	                    alt={brochure.title}
+	                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+	                    loading="lazy"
+	                    decoding="async"
+	                  />
                 </div>
                 <div className="p-3">
                   <h4 className="font-display font-semibold text-foreground text-xs mb-0.5">{brochure.title}</h4>
@@ -732,7 +739,7 @@ export default function Pricing() {
                 <video
                   controls
                   preload="metadata"
-                  poster="https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/video_ref_house-WHrscP32nbpwfKEtkXxgSY.webp"
+	                  poster={cfImage("https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/video_ref_house-WHrscP32nbpwfKEtkXxgSY.webp", 960)}
                   className="w-full h-full object-cover"
                 >
                   <source src="https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/sirinx_marketing_video_f99c477e.mp4" type="video/mp4" />

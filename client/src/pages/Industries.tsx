@@ -8,6 +8,7 @@ import { Link } from "wouter";
 import { trackSolutionVisit } from "@/components/HeroSlideshow";
 import { usePageTranslation } from "@/i18n";
 import "@/i18n/pages/industries";
+import { cfImage, cfImageSrcSet } from "@/lib/cfImage";
 import {
   ArrowRight, Factory, Wheat, Hotel, GraduationCap, Building2, Landmark,
   CheckCircle2, Car
@@ -90,7 +91,16 @@ export default function Industries() {
       {/* ===== HERO ===== */}
       <section className="relative min-h-[45vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src={HERO} alt="SIRINX Industries" className="w-full h-full object-cover" />
+          <img
+            src={cfImage(HERO, 1280, { quality: 76 })}
+            srcSet={cfImageSrcSet(HERO, [640, 960, 1280, 1600], { quality: 76 })}
+            sizes="100vw"
+            alt="SIRINX Industries"
+            className="w-full h-full object-cover"
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/50" />
         </div>
         <div className="container relative z-10 pt-20">

@@ -204,7 +204,7 @@ export default function HomeSolution() {
           name="description"
           content="SIRINX Home Solar Solution สำหรับบ้านขนาดใหญ่ โฮมออฟฟิศ และโครงการหมู่บ้านพรีเมียมที่ใช้ไฟสูง พร้อม Rooftop Solar, Solar Carport, BESS, EV Charger และ AI Energy Monitoring"
         />
-        <link rel="canonical" href="https://www.sirinx.co/home-solution" />
+        <link rel="canonical" href="https://www.sirinx.co/home-solution/" />
         <meta property="og:title" content="Home Solar Solution บ้านใหญ่และโฮมออฟฟิศ | SIRINX" />
         <meta
           property="og:description"

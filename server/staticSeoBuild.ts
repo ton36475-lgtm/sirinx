@@ -39,7 +39,10 @@ function changefreqForRoute(route: string) {
 function buildSitemap(routes: string[]) {
   const urls = routes
     .map(route => {
-      const loc = `${PRODUCTION_BASE_URL}${route === "/" ? "" : route}`;
+      const loc =
+        route === "/"
+          ? `${PRODUCTION_BASE_URL}/`
+          : `${PRODUCTION_BASE_URL}${route.replace(/\/$/, "")}/`;
       return [
         "  <url>",
         `    <loc>${loc}</loc>`,

@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { trackSolutionVisit } from "@/components/HeroSlideshow";
+import { cfImage, cfImageSrcSet } from "@/lib/cfImage";
 import {
   ArrowRight, Target, Eye, Cpu, Users, ShieldCheck, Phone, Mail, MapPin,
   Car, Zap
@@ -43,7 +44,16 @@ export default function About() {
       {/* ===== HERO ===== */}
       <section className="relative min-h-[50vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src={HERO} alt="SIRINX Team" className="w-full h-full object-cover" />
+          <img
+            src={cfImage(HERO, 1280, { quality: 76 })}
+            srcSet={cfImageSrcSet(HERO, [640, 960, 1280, 1600], { quality: 76 })}
+            sizes="100vw"
+            alt="SIRINX Team"
+            className="w-full h-full object-cover"
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/50" />
         </div>
         <div className="container relative z-10 pt-20">
@@ -160,7 +170,15 @@ export default function About() {
           <div className="grid lg:grid-cols-2 gap-10 items-center">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
               className="flex flex-col items-center text-center lg:text-left lg:items-start">
-              <img src={LOGO_URL} alt="Pitoon Yingyosruangrong" className="w-28 h-28 rounded-full ring-4 ring-brand/30 shadow-2xl mb-5 object-cover" />
+              <img
+                src={cfImage(LOGO_URL, 240)}
+                srcSet={cfImageSrcSet(LOGO_URL, [160, 240, 320])}
+                sizes="112px"
+                alt="Pitoon Yingyosruangrong"
+                className="w-28 h-28 rounded-full ring-4 ring-brand/30 shadow-2xl mb-5 object-cover"
+                loading="lazy"
+                decoding="async"
+              />
               <h2 className="font-display text-2xl font-bold text-foreground mb-1">Pitoon Yingyosruangrong</h2>
               <p className="text-accent-primary font-medium text-sm mb-3">CEO & Founder — SIRINX Co., Ltd.</p>
               <p className="text-sm text-text-secondary leading-relaxed mb-5">

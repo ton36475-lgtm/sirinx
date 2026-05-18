@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { usePageTranslation } from "@/i18n";
+import { cfImage, cfImageSrcSet } from "@/lib/cfImage";
 import "../i18n/pages/solarAssessment";
 
 /* ================================================================
@@ -785,10 +786,18 @@ export default function SolarAssessment() {
 
           {/* Site photos strip */}
           <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={2} className="mt-10 flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-            {SITE_PHOTOS.map((src, i) => (
-              <img key={i} src={src} alt={`SIRINX installation ${i + 1}`}
-                className="w-32 h-24 lg:w-40 lg:h-28 object-cover rounded-lg border border-border-subtle flex-shrink-0 hover:scale-105 transition-transform" />
-            ))}
+	            {SITE_PHOTOS.map((src, i) => (
+	              <img
+	                key={i}
+	                src={cfImage(src, 320)}
+	                srcSet={cfImageSrcSet(src, [180, 240, 320])}
+	                sizes="(min-width: 1024px) 160px, 128px"
+	                alt={`SIRINX installation ${i + 1}`}
+	                className="w-32 h-24 lg:w-40 lg:h-28 object-cover rounded-lg border border-border-subtle flex-shrink-0 hover:scale-105 transition-transform"
+	                loading="lazy"
+	                decoding="async"
+	              />
+	            ))}
           </motion.div>
         </div>
       </section>
@@ -803,8 +812,11 @@ export default function SolarAssessment() {
                 {STEPS.map((s, i) => {
                   const StepIcon = s.icon;
                   return (
-                    <button key={i} onClick={() => i < step && setStep(i)}
-                      className={`flex items-center gap-1.5 transition-colors ${i <= step ? "text-accent-primary" : "text-text-muted"} ${i < step ? "cursor-pointer hover:text-accent-secondary" : ""}`}>
+	                    <button
+	                      key={i}
+	                      onClick={() => i < step && setStep(i)}
+	                      aria-label={`ขั้นตอนที่ ${i + 1}: ${s.label}`}
+	                      className={`flex items-center gap-1.5 transition-colors ${i <= step ? "text-accent-primary" : "text-text-muted"} ${i < step ? "cursor-pointer hover:text-accent-secondary" : ""}`}>
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
                         i < step ? "bg-accent-primary text-text-inverse" :
                         i === step ? "bg-accent-glow border-2 border-accent-primary text-accent-primary" :
@@ -1408,8 +1420,11 @@ export default function SolarAssessment() {
                         { key: "technical" as const, label: "เทคนิค", icon: Gauge },
                         { key: "projection" as const, label: "ประมาณการ 25 ปี", icon: TrendingUp },
                       ].map((tab) => (
-                        <button key={tab.key} onClick={() => setResultTab(tab.key)}
-                          className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+	                        <button
+	                          key={tab.key}
+	                          onClick={() => setResultTab(tab.key)}
+	                          aria-label={`แสดงผลลัพธ์แท็บ${tab.label}`}
+	                          className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
                             resultTab === tab.key ? "bg-accent-primary text-text-inverse" : "text-text-muted hover:text-foreground hover:bg-surface-overlay"
                           }`}>
                           <tab.icon className="w-3.5 h-3.5" /> {tab.label}

@@ -194,7 +194,7 @@ function ContactInner() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackLINEClick("contact_success_cta")}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#06C755] hover:bg-[#05b34c] text-white rounded-lg text-sm font-semibold transition-colors"
+	              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#047A35] hover:bg-[#03662c] text-white rounded-lg text-sm font-semibold transition-colors"
             >
               <MessageCircle className="w-4 h-4" /> {t("successLineBtn")}
             </a>
@@ -226,7 +226,7 @@ function ContactInner() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackLINEClick("contact_fallback_cta")}
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#06C755] hover:bg-[#05b34c] text-white rounded-lg text-sm font-semibold transition-colors"
+	              className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#047A35] hover:bg-[#03662c] text-white rounded-lg text-sm font-semibold transition-colors"
             >
               <MessageCircle className="w-4 h-4" /> {t("fallbackLineBtn")}
             </a>
@@ -318,26 +318,26 @@ function ContactInner() {
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelName")}</label>
-                      <input type="text" required value={formData.name} onChange={(e) => update("name", e.target.value)} className={inputCls} placeholder={t("phName")} />
+	                      <input type="text" required value={formData.name} onChange={(e) => update("name", e.target.value)} className={inputCls} placeholder={t("phName")} aria-label={t("labelName")} />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelCompany")}</label>
-                      <input type="text" value={formData.company} onChange={(e) => update("company", e.target.value)} className={inputCls} placeholder={t("phCompany")} />
+	                      <input type="text" value={formData.company} onChange={(e) => update("company", e.target.value)} className={inputCls} placeholder={t("phCompany")} aria-label={t("labelCompany")} />
                     </div>
                   </div>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelEmail")}</label>
-                      <input type="email" value={formData.email} onChange={(e) => update("email", e.target.value)} className={inputCls} placeholder="email@company.com" />
+	                      <input type="email" value={formData.email} onChange={(e) => update("email", e.target.value)} className={inputCls} placeholder="email@company.com" aria-label={t("labelEmail")} />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelPhone")}</label>
-                      <input type="tel" required value={formData.phone} onChange={(e) => update("phone", e.target.value)} className={inputCls} placeholder="08X-XXX-XXXX" />
+	                      <input type="tel" required value={formData.phone} onChange={(e) => update("phone", e.target.value)} className={inputCls} placeholder="08X-XXX-XXXX" aria-label={t("labelPhone")} />
                     </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelInterest")}</label>
-                    <select required value={formData.interest} onChange={(e) => update("interest", e.target.value)} className={inputCls}>
+	                    <select required value={formData.interest} onChange={(e) => update("interest", e.target.value)} className={inputCls} aria-label={t("labelInterest")}>
                       <option value="">{t("selectSolution")}</option>
                       {interestOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
                     </select>
@@ -345,14 +345,14 @@ function ContactInner() {
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelBudget")}</label>
-                      <select value={formData.budget} onChange={(e) => update("budget", e.target.value)} className={inputCls}>
+	                        <select value={formData.budget} onChange={(e) => update("budget", e.target.value)} className={inputCls} aria-label={t("labelBudget")}>
                         <option value="">{t("selectBudget")}</option>
                         {budgetRanges.map((r) => <option key={r} value={r}>{r}</option>)}
                       </select>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelTimeline")}</label>
-                      <select value={formData.timeline} onChange={(e) => update("timeline", e.target.value)} className={inputCls}>
+	                      <select value={formData.timeline} onChange={(e) => update("timeline", e.target.value)} className={inputCls} aria-label={t("labelTimeline")}>
                         <option value="">{t("selectTimeline")}</option>
                         {timelineOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
                       </select>
@@ -361,17 +361,17 @@ function ContactInner() {
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelBill")}</label>
-                      <input type="number" min="0" value={formData.monthlyBill} onChange={(e) => update("monthlyBill", e.target.value)} className={inputCls} placeholder={t("phBill")} />
+	                      <input type="number" min="0" value={formData.monthlyBill} onChange={(e) => update("monthlyBill", e.target.value)} className={inputCls} placeholder={t("phBill")} aria-label={t("labelBill")} />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelRoof")}</label>
-                      <input type="number" min="0" value={formData.roofArea} onChange={(e) => update("roofArea", e.target.value)} className={inputCls} placeholder={t("phRoof")} />
+	                      <input type="number" min="0" value={formData.roofArea} onChange={(e) => update("roofArea", e.target.value)} className={inputCls} placeholder={t("phRoof")} aria-label={t("labelRoof")} />
                     </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1.5">{t("labelMessage")}</label>
-                    <textarea rows={4} value={formData.message} onChange={(e) => update("message", e.target.value)}
-                      className={`${inputCls} resize-none`} placeholder={t("phMessage")} />
+	                    <textarea rows={4} value={formData.message} onChange={(e) => update("message", e.target.value)}
+	                      className={`${inputCls} resize-none`} placeholder={t("phMessage")} aria-label={t("labelMessage")} />
                   </div>
                   <button
                     type="submit"
@@ -402,7 +402,7 @@ function ContactInner() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => trackLINEClick("contact_sidebar_cta")}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#06C755] hover:bg-[#05b34c] text-white rounded-lg text-sm font-semibold transition-colors w-full justify-center"
+	                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#047A35] hover:bg-[#03662c] text-white rounded-lg text-sm font-semibold transition-colors w-full justify-center"
                 >
                   <MessageCircle className="w-4 h-4" /> {t("lineBtn")}
                 </a>

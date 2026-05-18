@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { trackSolutionVisit } from "@/components/HeroSlideshow";
+import { cfImage, cfImageSrcSet } from "@/lib/cfImage";
 import {
   ArrowRight,
   TrendingUp,
@@ -116,9 +117,14 @@ export default function InvestmentTaxHub() {
       <section className="relative min-h-[45vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src={HERO}
+            src={cfImage(HERO, 1280, { quality: 76 })}
+            srcSet={cfImageSrcSet(HERO, [640, 960, 1280, 1600], { quality: 76 })}
+            sizes="100vw"
             alt="Investment"
             className="w-full h-full object-cover"
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/50" />
         </div>

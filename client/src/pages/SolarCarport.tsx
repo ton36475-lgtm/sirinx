@@ -10,6 +10,7 @@ import { Helmet } from "react-helmet-async";
 import { trackSolutionVisit } from "@/components/HeroSlideshow";
 import { usePageTranslation } from "@/i18n";
 import "@/i18n/pages/solarCarport";
+import { cfImage, cfImageSrcSet } from "@/lib/cfImage";
 import { getProvinceBySlug } from "@shared/thaiProvinces";
 import {
   Car,
@@ -129,9 +130,14 @@ export default function SolarCarport() {
       <section className="relative min-h-[85vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src={HERO_CARPARK}
+            src={cfImage(HERO_CARPARK, 1280, { quality: 76 })}
+            srcSet={cfImageSrcSet(HERO_CARPARK, [640, 960, 1280, 1600], { quality: 76 })}
+            sizes="100vw"
             alt="Solar Carport by SIRINX"
             className="w-full h-full object-cover"
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/80 to-background/30" />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
@@ -351,9 +357,13 @@ export default function SolarCarport() {
               custom={1}
             >
               <img
-                src={IMG_AI}
+                src={cfImage(IMG_AI, 960)}
+                srcSet={cfImageSrcSet(IMG_AI, [480, 720, 960, 1280])}
+                sizes="(min-width: 1024px) 50vw, 100vw"
                 alt="AI Energy Management Dashboard"
                 className="rounded-2xl w-full aspect-[16/10] object-cover"
+                loading="lazy"
+                decoding="async"
               />
             </motion.div>
           </div>
@@ -502,9 +512,13 @@ export default function SolarCarport() {
               className="order-2 lg:order-1"
             >
               <img
-                src={IMG_OM}
+                src={cfImage(IMG_OM, 960)}
+                srcSet={cfImageSrcSet(IMG_OM, [480, 720, 960, 1280])}
+                sizes="(min-width: 1024px) 50vw, 100vw"
                 alt="SIRINX O&M Service"
                 className="rounded-2xl w-full aspect-[16/10] object-cover"
+                loading="lazy"
+                decoding="async"
               />
             </motion.div>
             <motion.div
@@ -685,12 +699,15 @@ export default function SolarCarport() {
                 onClick={() => setLightboxIdx(i)}
               >
                 <div className="aspect-[4/3] rounded-xl overflow-hidden border border-border-subtle hover:border-accent-primary/40 transition-all">
-                  <img
-                    src={src}
-                    alt={`${t("sc.gallery.imgAlt")} ${i + 1}`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
+	                  <img
+	                    src={cfImage(src, 480)}
+	                    srcSet={cfImageSrcSet(src, [240, 360, 480, 640])}
+	                    sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+	                    alt={`${t("sc.gallery.imgAlt")} ${i + 1}`}
+	                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+	                    loading="lazy"
+	                    decoding="async"
+	                  />
                 </div>
               </motion.div>
             ))}
@@ -712,15 +729,17 @@ export default function SolarCarport() {
           className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
           onClick={() => setLightboxIdx(null)}
         >
-          <button
-            className="absolute top-4 right-4 text-white/70 hover:text-white z-50"
-            onClick={() => setLightboxIdx(null)}
-          >
+	          <button
+	            className="absolute top-4 right-4 text-white/70 hover:text-white z-50"
+	            onClick={() => setLightboxIdx(null)}
+	            aria-label="ปิดแกลเลอรี Solar Carport"
+	          >
             <X className="w-8 h-8" />
           </button>
-          <button
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white z-50"
-            onClick={e => {
+	          <button
+	            className="absolute left-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white z-50"
+	            aria-label="รูปก่อนหน้า"
+	            onClick={e => {
               e.stopPropagation();
               setLightboxIdx(
                 (lightboxIdx - 1 + IMG_CARPORT_GALLERY.length) %
@@ -730,21 +749,23 @@ export default function SolarCarport() {
           >
             <ChevronLeft className="w-10 h-10" />
           </button>
-          <button
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white z-50"
-            onClick={e => {
+	          <button
+	            className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white z-50"
+	            aria-label="รูปถัดไป"
+	            onClick={e => {
               e.stopPropagation();
               setLightboxIdx((lightboxIdx + 1) % IMG_CARPORT_GALLERY.length);
             }}
           >
             <ChevronRight className="w-10 h-10" />
           </button>
-          <img
-            src={IMG_CARPORT_GALLERY[lightboxIdx]}
-            alt={`Solar Carport ${lightboxIdx + 1}`}
-            className="max-h-[85vh] max-w-[90vw] object-contain rounded-lg"
-            onClick={e => e.stopPropagation()}
-          />
+	          <img
+	            src={cfImage(IMG_CARPORT_GALLERY[lightboxIdx], 1600, { quality: 82 })}
+	            alt={`Solar Carport ${lightboxIdx + 1}`}
+	            className="max-h-[85vh] max-w-[90vw] object-contain rounded-lg"
+	            decoding="async"
+	            onClick={e => e.stopPropagation()}
+	          />
           <div className="absolute bottom-4 text-white/60 text-sm">
             {lightboxIdx + 1} / {IMG_CARPORT_GALLERY.length}
           </div>
