@@ -783,10 +783,49 @@
   @media (max-width: 640px) {
     .sirinx-live-energy::before {
       opacity: 0.22;
+      animation-duration: 72s;
     }
 
     .sirinx-energy-grid {
       opacity: 0.26;
+      animation-duration: 84s;
+    }
+
+    .sirinx-energy-flow {
+      height: 1px;
+      animation-duration: 18s;
+    }
+
+    .sirinx-energy-flow-c,
+    .sirinx-energy-scan-b,
+    .sirinx-energy-node-c,
+    .sirinx-live-avatar-orbit-b,
+    .sirinx-live-avatar-trail-b {
+      display: none;
+    }
+
+    .sirinx-energy-node {
+      width: 0.36rem;
+      height: 0.36rem;
+      animation-duration: 18s;
+    }
+
+    .sirinx-live-avatar-trigger::before {
+      filter: blur(2px);
+      animation-duration: 16s;
+    }
+
+    .sirinx-live-avatar-trigger::after {
+      animation-duration: 7s;
+    }
+
+    .sirinx-live-avatar-core {
+      animation-duration: 14s;
+    }
+
+    .sirinx-avatar-mark__tail path,
+    .sirinx-avatar-mark__spark path {
+      animation-duration: 6.8s;
     }
 
     .sirinx-avatar-watermark {
@@ -795,6 +834,12 @@
       width: 24rem;
       height: 24rem;
       opacity: 0.075;
+      animation-duration: 34s;
+    }
+
+    .sirinx-avatar-watermark::before,
+    .sirinx-avatar-watermark::after {
+      animation-duration: 52s;
     }
   }
 }

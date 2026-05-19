@@ -254,6 +254,16 @@ describe("injectOgTags", () => {
     expect(result).toContain("carport-wide-1_30e3af4c.jpeg");
   });
 
+  it("uses responsive preload candidates for the homepage hero", () => {
+    const result = injectOgTags(sampleHtml, "/", "https://www.sirinx.co");
+
+    expect(result).toContain('rel="preload" as="image"');
+    expect(result).toContain("imagesrcset=");
+    expect(result).toContain("solar-carport-hero-640.avif 640w");
+    expect(result).toContain('imagesizes="(max-width: 767px) 80vw, 100vw"');
+    expect(result).toContain('type="image/avif"');
+  });
+
   it("uses responsive preload candidates for the home solution hero", () => {
     const result = injectOgTags(
       sampleHtml,
@@ -264,7 +274,7 @@ describe("injectOgTags", () => {
     expect(result).toContain('rel="preload" as="image"');
     expect(result).toContain("imagesrcset=");
     expect(result).toContain("home-solution-drone-hero-640.avif 640w");
-    expect(result).toContain('imagesizes="100vw"');
+    expect(result).toContain('imagesizes="(max-width: 767px) 80vw, 100vw"');
   });
 
   it("builds AEO service schema for province pages", () => {

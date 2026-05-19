@@ -19,6 +19,7 @@ const SITE_NAME = "SIRINX";
 const PRODUCTION_BASE_URL = "https://www.sirinx.co";
 const ASSET_CDN =
   "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv";
+const MOBILE_FIRST_HERO_IMAGE_SIZES = "(max-width: 767px) 80vw, 100vw";
 const imageResizeBase = `${PRODUCTION_BASE_URL}/cdn-cgi/image/width=1280,quality=76,format=auto,fit=scale-down`;
 const DEFAULT_TITLE =
   "SIRINX | Solar Carport วางแผนลดค่าไฟองค์กร พร้อม EV Charger, BESS & AI Energy";
@@ -420,16 +421,19 @@ function getRouteHeroPreload(urlPath: string) {
     urlPath.split("?")[0].split("#")[0].replace(/\/$/, "") || "/";
   if (cleanPath === "/") {
     return {
-      href: "/assets/optimized/solar-carport-hero.jpg",
-      type: "image/jpeg",
+      href: "/assets/optimized/solar-carport-hero-960.avif",
+      imageSrcSet:
+        "/assets/optimized/solar-carport-hero-640.avif 640w, /assets/optimized/solar-carport-hero-960.avif 960w, /assets/optimized/solar-carport-hero-1280.avif 1280w",
+      imageSizes: MOBILE_FIRST_HERO_IMAGE_SIZES,
+      type: "image/avif",
     };
   }
   if (cleanPath === "/home-solution") {
     return {
-      href: "/assets/home-solution/home-solution-drone-hero-1280.avif",
+      href: "/assets/home-solution/home-solution-drone-hero-960.avif",
       imageSrcSet:
         "/assets/home-solution/home-solution-drone-hero-640.avif 640w, /assets/home-solution/home-solution-drone-hero-960.avif 960w, /assets/home-solution/home-solution-drone-hero-1280.avif 1280w",
-      imageSizes: "100vw",
+      imageSizes: MOBILE_FIRST_HERO_IMAGE_SIZES,
       type: "image/avif",
     };
   }

@@ -18,6 +18,14 @@ interface HeroSlide {
   id: string;
   category: SolutionCategory;
   image: string;
+  imageSet?: {
+    avifSrcSet: string;
+    fallback: string;
+    height: number;
+    jpgSrcSet: string;
+    sizes: string;
+    width: number;
+  };
   badge: string;
   headline: string;
   highlightLine: string;
@@ -26,11 +34,31 @@ interface HeroSlide {
   secondaryCta?: { label: string; href: string };
 }
 
+const responsiveHeroWidths = [640, 960, 1280] as const;
+const optimizedAsset = (
+  name: string,
+  width: number,
+  extension: "avif" | "jpg"
+) => `/assets/optimized/${name}-${width}.${extension}`;
+const responsiveHeroSrcSet = (name: string, extension: "avif" | "jpg") =>
+  responsiveHeroWidths
+    .map(width => `${optimizedAsset(name, width, extension)} ${width}w`)
+    .join(", ");
+const heroImageSizes = "(max-width: 767px) 80vw, 100vw";
+
 const ALL_SLIDES: HeroSlide[] = [
   {
     id: "carport-aerial",
     category: "solar-carport",
     image: "/assets/optimized/solar-carport-hero.jpg",
+    imageSet: {
+      avifSrcSet: responsiveHeroSrcSet("solar-carport-hero", "avif"),
+      fallback: optimizedAsset("solar-carport-hero", 1280, "jpg"),
+      height: 720,
+      jpgSrcSet: responsiveHeroSrcSet("solar-carport-hero", "jpg"),
+      sizes: heroImageSizes,
+      width: 1280,
+    },
     badge: "Solar Carport",
     headline: "เปลี่ยนที่จอดรถ",
     highlightLine: "เป็นโรงไฟฟ้าพลังงานแสงอาทิตย์",
@@ -279,6 +307,13 @@ export default function HeroSlideshow() {
   // Auto-rotation
   useEffect(() => {
     if (isPaused) return;
+    if (typeof window !== "undefined") {
+      const lowMotionMobile = window.matchMedia(
+        "(max-width: 767px), (prefers-reduced-motion: reduce)"
+      );
+      if (lowMotionMobile.matches) return;
+    }
+
     initialRotationRef.current = setTimeout(() => {
       next();
       timerRef.current = setInterval(next, INTERVAL);
@@ -307,16 +342,38 @@ export default function HeroSlideshow() {
           transition={{ duration: 1.2, ease: "easeInOut" }}
           className="absolute inset-0"
         >
-          <img
-            src={slide.image}
-            alt={slide.badge}
-            width={1500}
-            height={838}
-            className="w-full h-full object-cover"
-            loading={current === 0 ? "eager" : "lazy"}
-            fetchPriority={current === 0 ? "high" : "low"}
-            decoding={current === 0 ? "sync" : "async"}
-          />
+          {slide.imageSet ? (
+            <picture className="block h-full w-full">
+              <source
+                type="image/avif"
+                srcSet={slide.imageSet.avifSrcSet}
+                sizes={slide.imageSet.sizes}
+              />
+              <img
+                src={slide.imageSet.fallback}
+                srcSet={slide.imageSet.jpgSrcSet}
+                sizes={slide.imageSet.sizes}
+                alt={slide.badge}
+                width={slide.imageSet.width}
+                height={slide.imageSet.height}
+                className="h-full w-full object-cover"
+                loading={current === 0 ? "eager" : "lazy"}
+                fetchPriority={current === 0 ? "high" : "low"}
+                decoding={current === 0 ? "sync" : "async"}
+              />
+            </picture>
+          ) : (
+            <img
+              src={slide.image}
+              alt={slide.badge}
+              width={1500}
+              height={838}
+              className="w-full h-full object-cover"
+              loading={current === 0 ? "eager" : "lazy"}
+              fetchPriority={current === 0 ? "high" : "low"}
+              decoding={current === 0 ? "sync" : "async"}
+            />
+          )}
           {/* Gradient overlays for text readability */}
           <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/75 to-background/30" />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />

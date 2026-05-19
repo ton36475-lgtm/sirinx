@@ -7,6 +7,7 @@ import Layout from "./components/Layout";
 import RouteSeo from "./components/RouteSeo";
 import { usePageViewTracking } from "@/hooks/useAnalytics";
 import AntiCopy from "./components/AntiCopy";
+import AILiveAvatarMark from "./components/AILiveAvatarMark";
 
 const NotFound = lazy(() => import("@/pages/NotFound"));
 const Home = lazy(() => import("./pages/Home"));
@@ -31,10 +32,14 @@ const DashboardLayout = lazy(() => import("./components/DashboardLayout"));
 const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
 const AdminLeads = lazy(() => import("./pages/admin/Leads"));
 const AdminBlogCMS = lazy(() => import("./pages/admin/BlogCMS"));
-const AdminContactSubmissions = lazy(() => import("./pages/admin/ContactSubmissions"));
+const AdminContactSubmissions = lazy(
+  () => import("./pages/admin/ContactSubmissions")
+);
 const AdminAnalytics = lazy(() => import("./pages/admin/Analytics"));
 const AdminAgentMonitor = lazy(() => import("./pages/admin/AgentMonitor"));
-const FloatingChatWidget = lazy(() => import("./components/FloatingChatWidget"));
+const FloatingChatWidget = lazy(
+  () => import("./components/FloatingChatWidget")
+);
 const Toaster = lazy(() =>
   import("@/components/ui/sonner").then(module => ({ default: module.Toaster }))
 );
@@ -52,30 +57,37 @@ function RouteFallback() {
 function DeferredFloatingChatWidget() {
   const [shouldLoad, setShouldLoad] = useState(false);
 
-  useEffect(() => {
-    if (shouldLoad) return;
-
-    const reveal = () => setShouldLoad(true);
-    const timeout = window.setTimeout(reveal, 9000);
-    const events: Array<keyof WindowEventMap> = ["pointerdown", "keydown", "touchstart"];
-
-    for (const event of events) {
-      window.addEventListener(event, reveal, { once: true, passive: true });
-    }
-
-    return () => {
-      window.clearTimeout(timeout);
-      for (const event of events) {
-        window.removeEventListener(event, reveal);
-      }
-    };
-  }, [shouldLoad]);
-
-  if (!shouldLoad) return null;
+  if (!shouldLoad) {
+    return (
+      <button
+        type="button"
+        aria-label="เปิดแชท SIRINX Solar Assistant"
+        className="sirinx-live-avatar-trigger fixed right-4 bottom-5 z-50 flex h-16 w-16 items-center justify-center overflow-hidden rounded-full shadow-2xl sm:right-6 sm:bottom-6"
+        style={{
+          background:
+            "linear-gradient(135deg, #06b6d4 0%, #0d9488 50%, #00C300 100%)",
+        }}
+        onClick={() => setShouldLoad(true)}
+      >
+        <span className="absolute inset-0 rounded-full bg-cyan-400 opacity-20 animate-ping" />
+        <span className="sirinx-live-avatar-orbit sirinx-live-avatar-orbit-a" />
+        <span className="sirinx-live-avatar-orbit sirinx-live-avatar-orbit-b" />
+        <span className="sirinx-live-avatar-trail sirinx-live-avatar-trail-a" />
+        <span className="sirinx-live-avatar-trail sirinx-live-avatar-trail-b" />
+        <span className="absolute inset-1 rounded-full bg-gradient-to-br from-cyan-400/30 to-green-400/30" />
+        <span className="sirinx-live-avatar-core relative flex items-center justify-center">
+          <AILiveAvatarMark className="h-14 w-14 drop-shadow-md" />
+        </span>
+        <span className="absolute -top-0.5 -right-0.5 z-10 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-[#00C300] text-[9px] font-bold text-white shadow-md">
+          AI
+        </span>
+      </button>
+    );
+  }
 
   return (
     <Suspense fallback={null}>
-      <FloatingChatWidget />
+      <FloatingChatWidget initialOpen />
     </Suspense>
   );
 }
@@ -87,15 +99,17 @@ function DeferredToaster() {
     if (shouldLoad) return;
 
     const reveal = () => setShouldLoad(true);
-    const timeout = window.setTimeout(reveal, 9000);
-    const events: Array<keyof WindowEventMap> = ["pointerdown", "keydown", "touchstart"];
+    const events: Array<keyof WindowEventMap> = [
+      "pointerdown",
+      "keydown",
+      "touchstart",
+    ];
 
     for (const event of events) {
       window.addEventListener(event, reveal, { once: true, passive: true });
     }
 
     return () => {
-      window.clearTimeout(timeout);
       for (const event of events) {
         window.removeEventListener(event, reveal);
       }
@@ -161,7 +175,12 @@ function isInternalHost() {
   if (typeof window === "undefined") return false;
 
   const hostname = window.location.hostname.toLowerCase();
-  if (hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1") return true;
+  if (
+    hostname === "localhost" ||
+    hostname === "127.0.0.1" ||
+    hostname === "::1"
+  )
+    return true;
   if (hostname === "dev.sirinx.co") return true;
   if (/^10\./.test(hostname) || /^192\.168\./.test(hostname)) return true;
   if (/^172\.(1[6-9]|2\d|3[0-1])\./.test(hostname)) return true;
@@ -174,10 +193,18 @@ function Router() {
 
   return (
     <Switch>
-      {internalRoutesEnabled ? <Route path="/admin/:rest*" component={AdminRouter} /> : null}
-      {internalRoutesEnabled ? <Route path="/admin" component={AdminRouter} /> : null}
-      {!internalRoutesEnabled ? <Route path="/admin/:rest*" component={NotFound} /> : null}
-      {!internalRoutesEnabled ? <Route path="/admin" component={NotFound} /> : null}
+      {internalRoutesEnabled ? (
+        <Route path="/admin/:rest*" component={AdminRouter} />
+      ) : null}
+      {internalRoutesEnabled ? (
+        <Route path="/admin" component={AdminRouter} />
+      ) : null}
+      {!internalRoutesEnabled ? (
+        <Route path="/admin/:rest*" component={NotFound} />
+      ) : null}
+      {!internalRoutesEnabled ? (
+        <Route path="/admin" component={NotFound} />
+      ) : null}
       <Route component={PublicRouter} />
     </Switch>
   );

@@ -33,10 +33,16 @@ type ChatMessage = ChatbotMessage;
 
 const LINE_OA_URL_DEFAULT = "https://line.me/R/ti/p/@sirinx";
 
-function FloatingChatWidgetInner() {
-  const [isOpen, setIsOpen] = useState(false);
+type FloatingChatWidgetProps = {
+  initialOpen?: boolean;
+};
+
+function FloatingChatWidgetInner({
+  initialOpen = false,
+}: FloatingChatWidgetProps) {
+  const [isOpen, setIsOpen] = useState(initialOpen);
   const [showBubble, setShowBubble] = useState(false);
-  const [bubbleDismissed, setBubbleDismissed] = useState(false);
+  const [bubbleDismissed, setBubbleDismissed] = useState(initialOpen);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [localReplyPending, setLocalReplyPending] = useState(false);
@@ -448,10 +454,12 @@ function FloatingChatWidgetInner() {
   );
 }
 
-export default function FloatingChatWidget() {
+export default function FloatingChatWidget({
+  initialOpen = false,
+}: FloatingChatWidgetProps) {
   return (
     <TrpcProvider>
-      <FloatingChatWidgetInner />
+      <FloatingChatWidgetInner initialOpen={initialOpen} />
     </TrpcProvider>
   );
 }
