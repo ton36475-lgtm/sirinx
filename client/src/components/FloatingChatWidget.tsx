@@ -24,7 +24,7 @@ const LINEIcon = ({ className }: { className?: string }) => (
 
 // ===== SIRINX Bot Avatar =====
 const BotAvatar = () => (
-  <div className="w-8 h-8 rounded-full bg-[#07131f] ring-1 ring-cyan-300/40 flex items-center justify-center shrink-0 overflow-hidden shadow-lg shadow-cyan-500/15">
+  <div className="sirinx-chat-avatar-mini w-8 h-8 rounded-full bg-[#07131f] ring-1 ring-cyan-300/40 flex items-center justify-center shrink-0 overflow-hidden shadow-lg shadow-cyan-500/15">
     <AILiveAvatarMark className="w-8 h-8" />
   </div>
 );
@@ -216,7 +216,7 @@ function FloatingChatWidgetInner() {
               aria-label="เปิดแชท SIRINX Solar Assistant"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
-              className="relative w-16 h-16 rounded-full shadow-2xl flex items-center justify-center overflow-hidden group"
+              className="sirinx-live-avatar-trigger relative w-16 h-16 rounded-full shadow-2xl flex items-center justify-center overflow-hidden group"
               style={{
                 background:
                   "linear-gradient(135deg, #06b6d4 0%, #0d9488 50%, #00C300 100%)",
@@ -224,14 +224,18 @@ function FloatingChatWidgetInner() {
             >
               {/* Pulse ring */}
               <span className="absolute inset-0 rounded-full animate-ping opacity-20 bg-cyan-400" />
+              <span className="sirinx-live-avatar-orbit sirinx-live-avatar-orbit-a" />
+              <span className="sirinx-live-avatar-orbit sirinx-live-avatar-orbit-b" />
+              <span className="sirinx-live-avatar-trail sirinx-live-avatar-trail-a" />
+              <span className="sirinx-live-avatar-trail sirinx-live-avatar-trail-b" />
               {/* Inner glow */}
               <span className="absolute inset-1 rounded-full bg-gradient-to-br from-cyan-400/30 to-green-400/30 group-hover:from-cyan-400/50 group-hover:to-green-400/50 transition-all" />
               {/* Icon */}
-              <div className="relative flex items-center justify-center">
+              <div className="sirinx-live-avatar-core relative flex items-center justify-center">
                 <AILiveAvatarMark className="w-14 h-14 drop-shadow-md" />
               </div>
               {/* LINE badge */}
-              <div className="absolute -top-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#00C300] border-2 border-white flex items-center justify-center shadow-md">
+              <div className="absolute -top-0.5 -right-0.5 z-10 w-5 h-5 rounded-full bg-[#00C300] border-2 border-white flex items-center justify-center shadow-md">
                 <LINEIcon className="w-3 h-3 text-white" />
               </div>
             </motion.button>

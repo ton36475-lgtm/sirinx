@@ -746,6 +746,9 @@ export default function Layout({ children }: { children: ReactNode }) {
         <span className="sirinx-energy-flow sirinx-energy-flow-c" />
         <span className="sirinx-energy-scan sirinx-energy-scan-a" />
         <span className="sirinx-energy-scan sirinx-energy-scan-b" />
+        <span className="sirinx-energy-node sirinx-energy-node-a" />
+        <span className="sirinx-energy-node sirinx-energy-node-b" />
+        <span className="sirinx-energy-node sirinx-energy-node-c" />
         <span className="sirinx-avatar-watermark">
           <AILiveAvatarMark className="w-full h-full" decorative />
         </span>
