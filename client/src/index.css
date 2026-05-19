@@ -352,6 +352,7 @@
       92px 92px,
       92px 92px;
     transform: rotate(-7deg) translate3d(0, 0, 0);
+    will-change: transform;
     animation: sirinx-energy-grid 28s linear infinite;
   }
 
@@ -370,6 +371,7 @@
     );
     box-shadow: 0 0 18px oklch(0.82 0.17 192 / 0.28);
     transform: rotate(-12deg) translate3d(0, 0, 0);
+    will-change: transform, opacity;
     animation: sirinx-energy-flow 11s ease-in-out infinite;
   }
 
@@ -402,6 +404,7 @@
       transparent
     );
     transform: rotate(18deg) translate3d(0, 0, 0);
+    will-change: transform, opacity;
     animation: sirinx-energy-scan 13s ease-in-out infinite;
   }
 
@@ -438,7 +441,6 @@
     background-size:
       190% 100%,
       120px 120px;
-    animation: sirinx-section-energy 24s linear infinite;
   }
 
   main section > * {
@@ -462,16 +464,10 @@
 
 @keyframes sirinx-energy-grid {
   from {
-    background-position:
-      0 0,
-      0 0,
-      0 0;
+    transform: rotate(-7deg) translate3d(-3%, -1%, 0);
   }
   to {
-    background-position:
-      120% 0,
-      92px 0,
-      0 92px;
+    transform: rotate(-7deg) translate3d(3%, 1%, 0);
   }
 }
 
@@ -504,24 +500,10 @@
   }
 }
 
-@keyframes sirinx-section-energy {
-  from {
-    background-position:
-      0 0,
-      0 0;
-  }
-  to {
-    background-position:
-      190% 0,
-      120px 0;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .sirinx-energy-grid,
   .sirinx-energy-flow,
-  .sirinx-energy-scan,
-  main section::before {
+  .sirinx-energy-scan {
     animation: none;
   }
 }
