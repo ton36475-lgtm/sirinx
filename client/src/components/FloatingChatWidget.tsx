@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { AnimatePresence, motion } from "@/lib/static-motion";
-import { X, Send, Loader2, MessageCircle, Zap, ArrowRight } from "lucide-react";
+import { X, Send, Loader2, Zap, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { trpc } from "@/lib/trpc";
 import { TrpcProvider } from "@/lib/trpc-provider";
 import { useEventTracking } from "@/hooks/useAnalytics";
+import AILiveAvatarMark from "@/components/AILiveAvatarMark";
 import {
   CHATBOT_QUICK_REPLIES,
   analyzeChatbotConversation,
@@ -23,8 +24,8 @@ const LINEIcon = ({ className }: { className?: string }) => (
 
 // ===== SIRINX Bot Avatar =====
 const BotAvatar = () => (
-  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-teal-600 flex items-center justify-center shrink-0">
-    <Zap className="w-4 h-4 text-white" />
+  <div className="w-8 h-8 rounded-full bg-[#07131f] ring-1 ring-cyan-300/40 flex items-center justify-center shrink-0 overflow-hidden shadow-lg shadow-cyan-500/15">
+    <AILiveAvatarMark className="w-8 h-8" />
   </div>
 );
 
@@ -122,7 +123,10 @@ function FloatingChatWidgetInner() {
         window.setTimeout(() => {
           setMessages(prev => [
             ...prev,
-            { role: "assistant", content: createSmartChatbotReply(newMessages) },
+            {
+              role: "assistant",
+              content: createSmartChatbotReply(newMessages),
+            },
           ]);
           setLocalReplyPending(false);
         }, 350);
@@ -136,7 +140,14 @@ function FloatingChatWidgetInner() {
         })),
       });
     },
-    [input, messages, isReplyPending, remoteChatEnabled, chatMutation, trackEvent]
+    [
+      input,
+      messages,
+      isReplyPending,
+      remoteChatEnabled,
+      chatMutation,
+      trackEvent,
+    ]
   );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -217,7 +228,7 @@ function FloatingChatWidgetInner() {
               <span className="absolute inset-1 rounded-full bg-gradient-to-br from-cyan-400/30 to-green-400/30 group-hover:from-cyan-400/50 group-hover:to-green-400/50 transition-all" />
               {/* Icon */}
               <div className="relative flex items-center justify-center">
-                <MessageCircle className="w-7 h-7 text-white drop-shadow-md" />
+                <AILiveAvatarMark className="w-14 h-14 drop-shadow-md" />
               </div>
               {/* LINE badge */}
               <div className="absolute -top-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#00C300] border-2 border-white flex items-center justify-center shadow-md">

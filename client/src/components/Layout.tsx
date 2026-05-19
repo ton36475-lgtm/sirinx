@@ -6,6 +6,7 @@
 import { ReactNode, useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { AnimatePresence, motion } from "@/lib/static-motion";
+import AILiveAvatarMark from "@/components/AILiveAvatarMark";
 import {
   Menu,
   X,
@@ -228,9 +229,12 @@ function Navbar() {
           </Link>
           <Link
             href="/contact"
-            className="btn-accent px-4 py-2 text-sm font-medium rounded-lg"
+            className="sirinx-avatar-button sirinx-avatar-button--nav"
+            aria-label={t("nav.getQuote")}
+            title={t("nav.getQuote")}
           >
-            {t("nav.getQuote")}
+            <AILiveAvatarMark className="sirinx-avatar-button__mark" />
+            <span className="sr-only">{t("nav.getQuote")}</span>
           </Link>
         </div>
 
@@ -416,10 +420,12 @@ function Navbar() {
                 </Link>
                 <Link
                   href="/contact"
-                  className="flex items-center justify-center gap-2 w-full btn-accent-outline px-4 py-3.5 text-sm font-display font-medium rounded-xl"
+                  className="sirinx-avatar-button sirinx-avatar-button--menu"
+                  aria-label={t("nav.getQuote")}
+                  title={t("nav.getQuote")}
                 >
-                  <Phone className="w-4 h-4" />
-                  {t("nav.getQuote")}
+                  <AILiveAvatarMark className="sirinx-avatar-button__mark" />
+                  <span className="sr-only">{t("nav.getQuote")}</span>
                 </Link>
               </div>
 
@@ -740,6 +746,9 @@ export default function Layout({ children }: { children: ReactNode }) {
         <span className="sirinx-energy-flow sirinx-energy-flow-c" />
         <span className="sirinx-energy-scan sirinx-energy-scan-a" />
         <span className="sirinx-energy-scan sirinx-energy-scan-b" />
+        <span className="sirinx-avatar-watermark">
+          <AILiveAvatarMark className="w-full h-full" decorative />
+        </span>
       </div>
       <Navbar />
       <main className="relative z-10 flex-1">{children}</main>

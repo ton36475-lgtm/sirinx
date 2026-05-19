@@ -313,6 +313,84 @@
     background: var(--accent-glow);
   }
 
+  .sirinx-avatar-button {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    min-width: 3rem;
+    border-radius: 999px;
+    border: 1px solid oklch(0.82 0.17 192 / 0.46);
+    background:
+      linear-gradient(145deg, oklch(0.82 0.17 192 / 0.22), transparent 44%),
+      linear-gradient(320deg, oklch(0.82 0.17 80 / 0.28), transparent 48%),
+      oklch(0.1 0.02 260 / 0.88);
+    box-shadow:
+      0 0 0 1px oklch(0.82 0.17 192 / 0.08) inset,
+      0 14px 34px oklch(0.82 0.17 192 / 0.14),
+      0 0 28px oklch(0.82 0.17 80 / 0.12);
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      transform 0.18s ease;
+  }
+
+  .sirinx-avatar-button::before {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    z-index: -1;
+    border-radius: inherit;
+    border: 1px solid oklch(0.82 0.17 192 / 0.18);
+    opacity: 0.62;
+    transform: scale(0.92);
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  .sirinx-avatar-button:hover {
+    border-color: oklch(0.82 0.17 80 / 0.62);
+    box-shadow:
+      0 0 0 1px oklch(0.82 0.17 192 / 0.14) inset,
+      0 16px 40px oklch(0.82 0.17 192 / 0.18),
+      0 0 36px oklch(0.82 0.17 80 / 0.18);
+    transform: translateY(-1px);
+  }
+
+  .sirinx-avatar-button:hover::before {
+    opacity: 0.95;
+    transform: scale(1.04);
+  }
+
+  .sirinx-avatar-button__mark {
+    position: relative;
+    z-index: 1;
+    width: 2.35rem;
+    height: 2.35rem;
+  }
+
+  .sirinx-avatar-button--nav {
+    width: 3.05rem;
+    height: 3.05rem;
+    min-width: 3.05rem;
+  }
+
+  .sirinx-avatar-button--menu {
+    width: 100%;
+    height: 3.75rem;
+    min-width: 0;
+    border-radius: 1rem;
+  }
+
+  .sirinx-avatar-button--menu .sirinx-avatar-button__mark {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
   /* Accent divider line */
   .divider-accent {
     height: 1px;
@@ -330,30 +408,58 @@
     z-index: 20;
     pointer-events: none;
     overflow: hidden;
-    opacity: 0.28;
+    opacity: 1;
     mix-blend-mode: screen;
     contain: paint;
+  }
+
+  .sirinx-live-energy::before {
+    content: "";
+    position: absolute;
+    inset: -16%;
+    background-image:
+      linear-gradient(
+        118deg,
+        transparent 0 34%,
+        oklch(0.82 0.17 192 / 0.08) 35%,
+        transparent 37% 100%
+      ),
+      linear-gradient(
+        24deg,
+        transparent 0 57%,
+        oklch(0.82 0.17 80 / 0.05) 58%,
+        transparent 60% 100%
+      ),
+      repeating-linear-gradient(
+        90deg,
+        oklch(0.82 0.17 192 / 0.035) 0 1px,
+        transparent 1px 96px
+      );
+    opacity: 0.34;
+    transform: rotate(-7deg) translate3d(-2%, -1%, 0);
+    will-change: transform;
+    animation: sirinx-energy-grid 34s ease-in-out infinite alternate;
   }
 
   .sirinx-energy-grid {
     position: absolute;
     inset: -18%;
     background-image:
+      repeating-linear-gradient(
+        0deg,
+        oklch(0.82 0.17 192 / 0.025) 0 1px,
+        transparent 1px 88px
+      ),
       linear-gradient(
         112deg,
-        transparent 0 39%,
-        oklch(0.82 0.17 192 / 0.12) 41%,
-        transparent 44% 100%
-      ),
-      linear-gradient(90deg, oklch(0.82 0.17 192 / 0.06) 1px, transparent 1px),
-      linear-gradient(0deg, oklch(0.82 0.17 192 / 0.05) 1px, transparent 1px);
-    background-size:
-      128% 100%,
-      92px 92px,
-      92px 92px;
-    transform: rotate(-7deg) translate3d(0, 0, 0);
+        transparent,
+        oklch(0.82 0.17 80 / 0.04),
+        transparent 62%
+      );
+    opacity: 0.44;
+    transform: rotate(-7deg) translate3d(2%, 1%, 0);
     will-change: transform;
-    animation: sirinx-energy-grid 28s linear infinite;
+    animation: sirinx-energy-lattice 42s ease-in-out infinite alternate;
   }
 
   .sirinx-energy-flow {
@@ -365,14 +471,15 @@
     background: linear-gradient(
       90deg,
       transparent,
-      oklch(0.82 0.17 192 / 0.16),
-      oklch(0.82 0.17 80 / 0.42),
+      oklch(0.82 0.17 192 / 0.1),
+      oklch(0.82 0.17 80 / 0.32),
       transparent
     );
-    box-shadow: 0 0 18px oklch(0.82 0.17 192 / 0.28);
+    box-shadow: 0 0 20px oklch(0.82 0.17 192 / 0.22);
+    opacity: 0;
     transform: rotate(-12deg) translate3d(0, 0, 0);
     will-change: transform, opacity;
-    animation: sirinx-energy-flow 11s ease-in-out infinite;
+    animation: sirinx-energy-flow 13s ease-in-out infinite;
   }
 
   .sirinx-energy-flow-a {
@@ -400,12 +507,13 @@
     background: linear-gradient(
       90deg,
       transparent,
-      oklch(0.82 0.17 192 / 0.28),
+      oklch(0.82 0.17 192 / 0.2),
       transparent
     );
+    opacity: 0.2;
     transform: rotate(18deg) translate3d(0, 0, 0);
     will-change: transform, opacity;
-    animation: sirinx-energy-scan 13s ease-in-out infinite;
+    animation: sirinx-energy-scan 16s ease-in-out infinite;
   }
 
   .sirinx-energy-scan-a {
@@ -443,21 +551,40 @@
       120px 120px;
   }
 
+  .sirinx-avatar-watermark {
+    position: absolute;
+    top: clamp(6rem, 18vh, 14rem);
+    right: clamp(-10rem, -3vw, 2rem);
+    width: clamp(18rem, 36vw, 34rem);
+    height: clamp(18rem, 36vw, 34rem);
+    opacity: 0.09;
+    transform: rotate(-8deg) translate3d(0, 0, 0);
+    filter: drop-shadow(0 0 32px oklch(0.82 0.17 192 / 0.28));
+    will-change: transform;
+    animation: sirinx-avatar-float 18s ease-in-out infinite alternate;
+  }
+
   main section > * {
     position: relative;
     z-index: 1;
   }
 
   @media (max-width: 640px) {
-    .sirinx-live-energy {
+    .sirinx-live-energy::before {
       opacity: 0.22;
     }
 
-    .sirinx-energy-grid {
-      background-size:
-        150% 100%,
-        76px 76px,
-        76px 76px;
+    .sirinx-energy-grid,
+    main section::before {
+      opacity: 0.26;
+    }
+
+    .sirinx-avatar-watermark {
+      top: 8.5rem;
+      right: -10.5rem;
+      width: 24rem;
+      height: 24rem;
+      opacity: 0.075;
     }
   }
 }
@@ -468,6 +595,15 @@
   }
   to {
     transform: rotate(-7deg) translate3d(3%, 1%, 0);
+  }
+}
+
+@keyframes sirinx-energy-lattice {
+  from {
+    transform: rotate(-7deg) translate3d(2%, 1%, 0);
+  }
+  to {
+    transform: rotate(-7deg) translate3d(-2%, -1%, 0);
   }
 }
 
@@ -500,10 +636,21 @@
   }
 }
 
+@keyframes sirinx-avatar-float {
+  from {
+    transform: rotate(-8deg) translate3d(0, 0, 0) scale(0.98);
+  }
+  to {
+    transform: rotate(-5deg) translate3d(-2%, 1.5%, 0) scale(1.02);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .sirinx-live-energy::before,
   .sirinx-energy-grid,
   .sirinx-energy-flow,
-  .sirinx-energy-scan {
+  .sirinx-energy-scan,
+  .sirinx-avatar-watermark {
     animation: none;
   }
 }
