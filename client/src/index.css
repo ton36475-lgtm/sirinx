@@ -726,26 +726,6 @@
     position: relative;
   }
 
-  main section::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background-image:
-      linear-gradient(
-        112deg,
-        transparent 0 37%,
-        oklch(0.82 0.17 192 / 0.04) 39%,
-        oklch(0.82 0.17 80 / 0.035) 41%,
-        transparent 44% 100%
-      ),
-      linear-gradient(90deg, oklch(0.82 0.17 192 / 0.018) 1px, transparent 1px);
-    background-size:
-      190% 100%,
-      120px 120px;
-  }
-
   .sirinx-avatar-watermark {
     position: absolute;
     top: clamp(6rem, 18vh, 14rem);
@@ -805,8 +785,7 @@
       opacity: 0.22;
     }
 
-    .sirinx-energy-grid,
-    main section::before {
+    .sirinx-energy-grid {
       opacity: 0.26;
     }
 
