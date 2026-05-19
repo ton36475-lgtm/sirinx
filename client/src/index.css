@@ -324,94 +324,139 @@
     );
   }
 
-  .energy-live-overlay {
-    position: absolute;
+  .sirinx-live-energy {
+    position: fixed;
     inset: 0;
+    z-index: 20;
     pointer-events: none;
     overflow: hidden;
-    opacity: 0.72;
+    opacity: 0.28;
     mix-blend-mode: screen;
+    contain: paint;
   }
 
-  .energy-grid {
+  .sirinx-energy-grid {
     position: absolute;
-    inset: -20% -10%;
+    inset: -18%;
     background-image:
       linear-gradient(
-        110deg,
-        transparent 0 42%,
-        oklch(0.82 0.17 192 / 0.18) 44%,
-        transparent 47% 100%
+        112deg,
+        transparent 0 39%,
+        oklch(0.82 0.17 192 / 0.12) 41%,
+        transparent 44% 100%
       ),
-      linear-gradient(90deg, oklch(0.82 0.17 192 / 0.08) 1px, transparent 1px),
-      linear-gradient(0deg, oklch(0.82 0.17 192 / 0.07) 1px, transparent 1px);
+      linear-gradient(90deg, oklch(0.82 0.17 192 / 0.06) 1px, transparent 1px),
+      linear-gradient(0deg, oklch(0.82 0.17 192 / 0.05) 1px, transparent 1px);
     background-size:
-      120% 100%,
-      84px 84px,
-      84px 84px;
+      128% 100%,
+      92px 92px,
+      92px 92px;
     transform: rotate(-7deg) translate3d(0, 0, 0);
-    animation: sirinx-energy-grid 18s linear infinite;
+    animation: sirinx-energy-grid 28s linear infinite;
   }
 
-  .energy-beam {
+  .sirinx-energy-flow {
     position: absolute;
-    left: -18%;
-    width: 48%;
+    left: -24%;
+    width: 54%;
     height: 2px;
     border-radius: 999px;
     background: linear-gradient(
       90deg,
       transparent,
-      oklch(0.82 0.17 192 / 0.18),
-      oklch(0.82 0.17 80 / 0.5),
+      oklch(0.82 0.17 192 / 0.16),
+      oklch(0.82 0.17 80 / 0.42),
       transparent
     );
-    box-shadow: 0 0 18px oklch(0.82 0.17 192 / 0.32);
+    box-shadow: 0 0 18px oklch(0.82 0.17 192 / 0.28);
     transform: rotate(-12deg) translate3d(0, 0, 0);
-    animation: sirinx-energy-beam 8s ease-in-out infinite;
+    animation: sirinx-energy-flow 11s ease-in-out infinite;
   }
 
-  .energy-beam-a {
-    top: 30%;
+  .sirinx-energy-flow-a {
+    top: 22%;
     animation-delay: 0s;
   }
 
-  .energy-beam-b {
-    top: 52%;
-    width: 56%;
-    animation-delay: 2.2s;
+  .sirinx-energy-flow-b {
+    top: 50%;
+    width: 62%;
+    animation-delay: 3.1s;
   }
 
-  .energy-beam-c {
-    top: 72%;
-    width: 38%;
-    animation-delay: 4.6s;
+  .sirinx-energy-flow-c {
+    top: 76%;
+    width: 42%;
+    animation-delay: 6.4s;
   }
 
-  .energy-pulse {
+  .sirinx-energy-scan {
     position: absolute;
-    width: 28%;
+    width: 34%;
     height: 1px;
     border-radius: 999px;
     background: linear-gradient(
       90deg,
       transparent,
-      oklch(0.82 0.17 192 / 0.35),
+      oklch(0.82 0.17 192 / 0.28),
       transparent
     );
     transform: rotate(18deg) translate3d(0, 0, 0);
-    animation: sirinx-energy-pulse 7s ease-in-out infinite;
+    animation: sirinx-energy-scan 13s ease-in-out infinite;
   }
 
-  .energy-pulse-a {
+  .sirinx-energy-scan-a {
     right: -8%;
     top: 24%;
   }
 
-  .energy-pulse-b {
+  .sirinx-energy-scan-b {
     right: 6%;
     bottom: 26%;
-    animation-delay: 3s;
+    animation-delay: 5s;
+  }
+
+  main section {
+    position: relative;
+  }
+
+  main section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(
+        112deg,
+        transparent 0 37%,
+        oklch(0.82 0.17 192 / 0.04) 39%,
+        oklch(0.82 0.17 80 / 0.035) 41%,
+        transparent 44% 100%
+      ),
+      linear-gradient(90deg, oklch(0.82 0.17 192 / 0.018) 1px, transparent 1px);
+    background-size:
+      190% 100%,
+      120px 120px;
+    animation: sirinx-section-energy 24s linear infinite;
+  }
+
+  main section > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (max-width: 640px) {
+    .sirinx-live-energy {
+      opacity: 0.22;
+    }
+
+    .sirinx-energy-grid {
+      background-size:
+        150% 100%,
+        76px 76px,
+        76px 76px;
+    }
   }
 }
 
@@ -425,12 +470,12 @@
   to {
     background-position:
       120% 0,
-      84px 0,
-      0 84px;
+      92px 0,
+      0 92px;
   }
 }
 
-@keyframes sirinx-energy-beam {
+@keyframes sirinx-energy-flow {
   0% {
     opacity: 0;
     transform: rotate(-12deg) translate3d(-12%, 0, 0);
@@ -447,7 +492,7 @@
   }
 }
 
-@keyframes sirinx-energy-pulse {
+@keyframes sirinx-energy-scan {
   0%,
   100% {
     opacity: 0.12;
@@ -459,10 +504,24 @@
   }
 }
 
+@keyframes sirinx-section-energy {
+  from {
+    background-position:
+      0 0,
+      0 0;
+  }
+  to {
+    background-position:
+      190% 0,
+      120px 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .energy-grid,
-  .energy-beam,
-  .energy-pulse {
+  .sirinx-energy-grid,
+  .sirinx-energy-flow,
+  .sirinx-energy-scan,
+  main section::before {
     animation: none;
   }
 }

@@ -320,14 +320,6 @@ export default function HeroSlideshow() {
           {/* Gradient overlays for text readability */}
           <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/75 to-background/30" />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-          <div className="energy-live-overlay" aria-hidden="true">
-            <span className="energy-grid" />
-            <span className="energy-beam energy-beam-a" />
-            <span className="energy-beam energy-beam-b" />
-            <span className="energy-beam energy-beam-c" />
-            <span className="energy-pulse energy-pulse-a" />
-            <span className="energy-pulse energy-pulse-b" />
-          </div>
         </motion.div>
       </AnimatePresence>
 
