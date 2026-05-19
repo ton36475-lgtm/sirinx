@@ -38,6 +38,12 @@ const metaByPath: Record<string, SeoMeta> = {
     description:
       "รวมโซลูชัน Solar Carport, Rooftop Solar, Floating Solar, BESS, EV Charging, AI Energy Management และ O&M สำหรับองค์กร",
   },
+  "/home-solution": {
+    path: "/home-solution",
+    title: "Home Solar Solution บ้านใหญ่และโฮมออฟฟิศ | Rooftop Solar, Carport, BESS, EV | SIRINX",
+    description:
+      "SIRINX Home Solar Solution สำหรับบ้านขนาดใหญ่ โฮมออฟฟิศ และโครงการหมู่บ้านพรีเมียมที่ใช้ไฟสูง พร้อม Rooftop Solar, Solar Carport, BESS, EV Charger, AI Energy Monitoring และหลักฐาน commissioning",
+  },
   "/industries": {
     path: "/industries",
     title: "โซลูชันโซลาร์สำหรับอุตสาหกรรม โรงงาน โรงแรม และอาคาร | SIRINX",
