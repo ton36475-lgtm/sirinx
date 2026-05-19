@@ -1,4 +1,5 @@
 import { blogPosts } from "@/lib/blogData";
+import { getProvinceBySlug } from "@shared/thaiProvinces";
 
 export type SeoMeta = {
   title: string;
@@ -16,7 +17,8 @@ const DEFAULT_IMAGE =
 const metaByPath: Record<string, SeoMeta> = {
   "/": {
     path: "/",
-    title: "SIRINX | Solar Carport ลดค่าไฟองค์กร พร้อม EV Charger, BESS และ AI Energy",
+    title:
+      "SIRINX | Solar Carport ลดค่าไฟองค์กร พร้อม EV Charger, BESS และ AI Energy",
     description:
       "SIRINX ออกแบบและติดตั้ง Solar Carport, Rooftop Solar, BESS, EV Charger และ AI Energy Management สำหรับโรงงาน อาคาร โรงแรม และธุรกิจไทย",
   },
@@ -40,7 +42,8 @@ const metaByPath: Record<string, SeoMeta> = {
   },
   "/home-solution": {
     path: "/home-solution",
-    title: "Home Solar Solution บ้านใหญ่และโฮมออฟฟิศ | Rooftop Solar, Carport, BESS, EV | SIRINX",
+    title:
+      "Home Solar Solution บ้านใหญ่และโฮมออฟฟิศ | Rooftop Solar, Carport, BESS, EV | SIRINX",
     description:
       "SIRINX Home Solar Solution สำหรับบ้านขนาดใหญ่ โฮมออฟฟิศ และโครงการหมู่บ้านพรีเมียมที่ใช้ไฟสูง พร้อม Rooftop Solar, Solar Carport, BESS, EV Charger, AI Energy Monitoring และหลักฐาน commissioning",
   },
@@ -123,12 +126,28 @@ function normalizePath(pathname: string) {
   return clean.length > 1 ? clean.replace(/\/$/, "") : clean;
 }
 
+function getProvinceSeoMeta(path: string): SeoMeta | null {
+  if (!path.startsWith("/solar-carport/")) return null;
+
+  const province = getProvinceBySlug(path.replace("/solar-carport/", ""));
+  if (!province) return null;
+
+  return {
+    path,
+    title: `ติดตั้ง Solar Carport ${province.nameTh} | โซลาร์ที่จอดรถ EV Charger BESS | SIRINX`,
+    description: `SIRINX รับออกแบบและติดตั้ง Solar Carport ${province.nameTh} สำหรับโรงงาน โรงแรม อาคาร และลานจอดรถองค์กร พร้อม EV Charger, BESS, AI Energy, O&M และประเมินลดค่าไฟ 30-100% คืนทุนเฉลี่ย 3-5 ปีตามข้อมูลไซต์จริง`,
+  };
+}
+
 export function getSeoMeta(pathname: string): SeoMeta {
   const path = normalizePath(pathname);
 
+  const provinceMeta = getProvinceSeoMeta(path);
+  if (provinceMeta) return provinceMeta;
+
   if (path.startsWith("/blog/")) {
     const slug = path.replace("/blog/", "");
-    const post = blogPosts.find((item) => item.slug === slug);
+    const post = blogPosts.find(item => item.slug === slug);
     if (post) {
       return {
         path,
@@ -143,7 +162,8 @@ export function getSeoMeta(pathname: string): SeoMeta {
     metaByPath[path] ?? {
       path,
       title: "ไม่พบหน้าที่คุณต้องการ | SIRINX",
-      description: "หน้านี้อาจถูกย้ายหรือลบไปแล้ว กรุณากลับไปหน้าหลักของ SIRINX",
+      description:
+        "หน้านี้อาจถูกย้ายหรือลบไปแล้ว กรุณากลับไปหน้าหลักของ SIRINX",
       noindex: true,
     }
   );
