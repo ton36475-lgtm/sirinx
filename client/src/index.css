@@ -68,8 +68,8 @@
   --color-border-accent: var(--border-accent);
 
   /* Fonts */
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
-  --font-body: 'IBM Plex Sans Thai', system-ui, sans-serif;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans Thai", system-ui, sans-serif;
 }
 
 /* ===== LIGHT THEME (White + Orange) ===== */
@@ -196,9 +196,16 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-display);
   }
   button:not(:disabled),
@@ -247,7 +254,11 @@
 
   /* Gradient text using accent-primary */
   .text-gradient-accent {
-    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary, var(--accent-primary)));
+    background: linear-gradient(
+      135deg,
+      var(--accent-primary),
+      var(--accent-secondary, var(--accent-primary))
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -255,7 +266,9 @@
 
   /* Glow effects */
   .glow-accent {
-    box-shadow: 0 0 20px var(--accent-glow), 0 0 60px oklch(from var(--accent-primary) l c h / 0.08);
+    box-shadow:
+      0 0 20px var(--accent-glow),
+      0 0 60px oklch(from var(--accent-primary) l c h / 0.08);
   }
 
   /* Glass card */
@@ -276,9 +289,15 @@
 
   /* Accent button primary */
   .btn-accent {
-    background: linear-gradient(135deg, var(--accent-primary), oklch(from var(--accent-primary) calc(l - 0.1) c h));
+    background: linear-gradient(
+      135deg,
+      var(--accent-primary),
+      oklch(from var(--accent-primary) calc(l - 0.1) c h)
+    );
     color: var(--text-inverse);
-    transition: box-shadow 0.3s ease, transform 0.15s ease;
+    transition:
+      box-shadow 0.3s ease,
+      transform 0.15s ease;
   }
   .btn-accent:hover {
     box-shadow: 0 0 30px var(--accent-glow);
@@ -297,7 +316,154 @@
   /* Accent divider line */
   .divider-accent {
     height: 1px;
-    background: linear-gradient(to right, transparent, var(--border-accent), transparent);
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--border-accent),
+      transparent
+    );
+  }
+
+  .energy-live-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    opacity: 0.72;
+    mix-blend-mode: screen;
+  }
+
+  .energy-grid {
+    position: absolute;
+    inset: -20% -10%;
+    background-image:
+      linear-gradient(
+        110deg,
+        transparent 0 42%,
+        oklch(0.82 0.17 192 / 0.18) 44%,
+        transparent 47% 100%
+      ),
+      linear-gradient(90deg, oklch(0.82 0.17 192 / 0.08) 1px, transparent 1px),
+      linear-gradient(0deg, oklch(0.82 0.17 192 / 0.07) 1px, transparent 1px);
+    background-size:
+      120% 100%,
+      84px 84px,
+      84px 84px;
+    transform: rotate(-7deg) translate3d(0, 0, 0);
+    animation: sirinx-energy-grid 18s linear infinite;
+  }
+
+  .energy-beam {
+    position: absolute;
+    left: -18%;
+    width: 48%;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      oklch(0.82 0.17 192 / 0.18),
+      oklch(0.82 0.17 80 / 0.5),
+      transparent
+    );
+    box-shadow: 0 0 18px oklch(0.82 0.17 192 / 0.32);
+    transform: rotate(-12deg) translate3d(0, 0, 0);
+    animation: sirinx-energy-beam 8s ease-in-out infinite;
+  }
+
+  .energy-beam-a {
+    top: 30%;
+    animation-delay: 0s;
+  }
+
+  .energy-beam-b {
+    top: 52%;
+    width: 56%;
+    animation-delay: 2.2s;
+  }
+
+  .energy-beam-c {
+    top: 72%;
+    width: 38%;
+    animation-delay: 4.6s;
+  }
+
+  .energy-pulse {
+    position: absolute;
+    width: 28%;
+    height: 1px;
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      oklch(0.82 0.17 192 / 0.35),
+      transparent
+    );
+    transform: rotate(18deg) translate3d(0, 0, 0);
+    animation: sirinx-energy-pulse 7s ease-in-out infinite;
+  }
+
+  .energy-pulse-a {
+    right: -8%;
+    top: 24%;
+  }
+
+  .energy-pulse-b {
+    right: 6%;
+    bottom: 26%;
+    animation-delay: 3s;
+  }
+}
+
+@keyframes sirinx-energy-grid {
+  from {
+    background-position:
+      0 0,
+      0 0,
+      0 0;
+  }
+  to {
+    background-position:
+      120% 0,
+      84px 0,
+      0 84px;
+  }
+}
+
+@keyframes sirinx-energy-beam {
+  0% {
+    opacity: 0;
+    transform: rotate(-12deg) translate3d(-12%, 0, 0);
+  }
+  18% {
+    opacity: 0.95;
+  }
+  62% {
+    opacity: 0.42;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(-12deg) translate3d(280%, 0, 0);
+  }
+}
+
+@keyframes sirinx-energy-pulse {
+  0%,
+  100% {
+    opacity: 0.12;
+    transform: rotate(18deg) translate3d(0, 0, 0) scaleX(0.72);
+  }
+  45% {
+    opacity: 0.7;
+    transform: rotate(18deg) translate3d(-18%, 0, 0) scaleX(1.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .energy-grid,
+  .energy-beam,
+  .energy-pulse {
+    animation: none;
   }
 }
 
