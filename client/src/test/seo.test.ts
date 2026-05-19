@@ -9,7 +9,7 @@ describe("client SEO metadata", () => {
     expect(meta.title).toContain("Home Solar Solution");
     expect(meta.description).toContain("บ้านขนาดใหญ่");
     expect(meta.noindex).toBeUndefined();
-    expect(absoluteUrl(meta.path)).toBe("https://www.sirinx.co/home-solution");
+    expect(absoluteUrl(meta.path)).toBe("https://www.sirinx.co/home-solution/");
   });
 
   it("marks unknown routes as noindex", () => {

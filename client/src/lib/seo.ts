@@ -150,7 +150,8 @@ export function getSeoMeta(pathname: string): SeoMeta {
 }
 
 export function absoluteUrl(path: string) {
-  return `${SITE_URL}${path === "/" ? "/" : path}`;
+  const cleanPath = path === "/" ? "/" : path.replace(/\/$/, "");
+  return cleanPath === "/" ? `${SITE_URL}/` : `${SITE_URL}${cleanPath}/`;
 }
 
 export const seoDefaults = {
