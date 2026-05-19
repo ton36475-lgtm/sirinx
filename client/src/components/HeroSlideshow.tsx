@@ -253,6 +253,7 @@ function getPersonalizedSlides(): HeroSlide[] {
 
 // ─── Slideshow interval (ms) ────────────────────────────────────────
 const INTERVAL = 6000;
+const FIRST_ROTATION_DELAY = 12000;
 
 // ─── Component ──────────────────────────────────────────────────────
 export default function HeroSlideshow() {
@@ -260,6 +261,7 @@ export default function HeroSlideshow() {
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const initialRotationRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { t } = usePageTranslation("heroSlideshow");
 
   const next = useCallback(() => {
@@ -277,8 +279,12 @@ export default function HeroSlideshow() {
   // Auto-rotation
   useEffect(() => {
     if (isPaused) return;
-    timerRef.current = setInterval(next, INTERVAL);
+    initialRotationRef.current = setTimeout(() => {
+      next();
+      timerRef.current = setInterval(next, INTERVAL);
+    }, FIRST_ROTATION_DELAY);
     return () => {
+      if (initialRotationRef.current) clearTimeout(initialRotationRef.current);
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [isPaused, next]);

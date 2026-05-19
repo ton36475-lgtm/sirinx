@@ -28,7 +28,16 @@ function priorityForRoute(route: string) {
   if (route === "/") return "1.0";
   if (route === "/solar-carport") return "0.95";
   if (route.startsWith("/solar-carport/")) return "0.75";
-  if (["/assessment", "/contact", "/pricing", "/projects", "/home-solution"].includes(route)) return "0.85";
+  if (
+    [
+      "/assessment",
+      "/contact",
+      "/pricing",
+      "/projects",
+      "/home-solution",
+    ].includes(route)
+  )
+    return "0.85";
   return "0.70";
 }
 
@@ -91,7 +100,8 @@ const routeChunkPrefixes = new Map<string, string[]>([
 ]);
 
 function getRouteChunkPrefixes(route: string) {
-  if (route.startsWith("/solar-carport/")) return routeChunkPrefixes.get("/solar-carport") ?? [];
+  if (route.startsWith("/solar-carport/"))
+    return routeChunkPrefixes.get("/solar-carport") ?? [];
   if (route.startsWith("/blog/")) return ["BlogPost-"];
   return routeChunkPrefixes.get(route) ?? [];
 }
@@ -101,39 +111,9 @@ function findBuiltAsset(prefix: string) {
 
   const match = fs
     .readdirSync(distAssets)
-    .find((fileName) => fileName.startsWith(prefix) && fileName.endsWith(".js"));
+    .find(fileName => fileName.startsWith(prefix) && fileName.endsWith(".js"));
 
   return match ?? null;
-}
-
-function collectStaticImports(fileName: string, visited = new Set<string>()) {
-  if (initialRuntimeAssets.has(fileName)) return [];
-  if (visited.has(fileName)) return [];
-  visited.add(fileName);
-
-  const filePath = path.join(distAssets, fileName);
-  if (!fs.existsSync(filePath)) return [fileName];
-
-  const source = fs.readFileSync(filePath, "utf-8");
-  const imports = new Set<string>();
-  const patterns = [
-    /from"\.\/([^"]+\.js)"/g,
-    /import\("\.\/([^"]+\.js)"\)/g,
-  ];
-
-  for (const pattern of patterns) {
-    for (const match of Array.from(source.matchAll(pattern))) {
-      imports.add(match[1]);
-    }
-  }
-
-  const collected = [fileName];
-  for (const importedFile of Array.from(imports)) {
-    if (initialRuntimeAssets.has(importedFile)) continue;
-    collected.push(...collectStaticImports(importedFile, visited));
-  }
-
-  return collected;
 }
 
 function getInitialRuntimeAssets(html: string) {
@@ -153,20 +133,22 @@ function getInitialRuntimeAssets(html: string) {
 }
 
 function injectRouteModulePreloads(html: string, route: string) {
-  const seedFiles = getRouteChunkPrefixes(route)
+  const files = getRouteChunkPrefixes(route)
     .map(findBuiltAsset)
-    .filter((fileName): fileName is string => Boolean(fileName));
-
-  if (seedFiles.length === 0) return html;
-
-  const files = Array.from(
-    new Set(seedFiles.flatMap((fileName) => collectStaticImports(fileName)))
-  ).filter((fileName) => !html.includes(`/assets/${fileName}`));
+    .filter((fileName): fileName is string => Boolean(fileName))
+    .filter(
+      fileName =>
+        !initialRuntimeAssets.has(fileName) &&
+        !html.includes(`/assets/${fileName}`)
+    );
 
   if (files.length === 0) return html;
 
   const tags = files
-    .map((fileName) => `    <link rel="modulepreload" crossorigin href="/assets/${fileName}">`)
+    .map(
+      fileName =>
+        `    <link rel="modulepreload" crossorigin href="/assets/${fileName}">`
+    )
     .join("\n");
 
   return html.replace("</head>", `${tags}\n  </head>`);

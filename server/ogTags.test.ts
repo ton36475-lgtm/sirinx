@@ -30,7 +30,9 @@ describe("getPageMeta", () => {
     expect(meta.title).toContain("บ้านใหญ่");
     expect(meta.description).toContain("โฮมออฟฟิศ");
     expect(meta.description).toContain("BESS");
-    expect(meta.image).toContain("/assets/home-solution/home-solution-drone-hero.jpg");
+    expect(meta.image).toContain(
+      "/assets/home-solution/home-solution-drone-hero.jpg"
+    );
   });
 
   it("returns promotional meta for /contact", () => {
@@ -178,10 +180,10 @@ describe("injectOgTags", () => {
       "/contact",
       "https://sirinxsolar-dfabnh7l.manus.space"
     );
-	    expect(result).toContain(
-	      'og:url" content="https://sirinxsolar-dfabnh7l.manus.space/contact/"'
-	    );
-	  });
+    expect(result).toContain(
+      'og:url" content="https://sirinxsolar-dfabnh7l.manus.space/contact/"'
+    );
+  });
 
   it("injects og:image with CDN URL", () => {
     const result = injectOgTags(
@@ -211,21 +213,21 @@ describe("injectOgTags", () => {
       "/blog",
       "https://sirinxsolar-dfabnh7l.manus.space"
     );
-	    expect(result).toContain(
-	      'canonical" href="https://sirinxsolar-dfabnh7l.manus.space/blog/"'
-	    );
-	  });
+    expect(result).toContain(
+      'canonical" href="https://sirinxsolar-dfabnh7l.manus.space/blog/"'
+    );
+  });
 
-	  it("handles homepage URL with final trailing slash", () => {
-	    const result = injectOgTags(
-	      sampleHtml,
-	      "/",
-	      "https://sirinxsolar-dfabnh7l.manus.space"
-	    );
-	    expect(result).toContain(
-	      'og:url" content="https://sirinxsolar-dfabnh7l.manus.space/"'
-	    );
-	  });
+  it("handles homepage URL with final trailing slash", () => {
+    const result = injectOgTags(
+      sampleHtml,
+      "/",
+      "https://sirinxsolar-dfabnh7l.manus.space"
+    );
+    expect(result).toContain(
+      'og:url" content="https://sirinxsolar-dfabnh7l.manus.space/"'
+    );
+  });
 
   it("injects province canonical, OG tags, and structured data", () => {
     const result = injectOgTags(
@@ -234,23 +236,36 @@ describe("injectOgTags", () => {
       "https://www.sirinx.co"
     );
     expect(result).toContain("Solar Carport พิษณุโลก");
-	    expect(result).toContain(
-	      'canonical" href="https://www.sirinx.co/solar-carport/phitsanulok/"'
-	    );
-	    expect(result).toContain('data-sirinx-seo="route"');
-	    expect(result).toContain("AdministrativeArea");
-	  });
+    expect(result).toContain(
+      'canonical" href="https://www.sirinx.co/solar-carport/phitsanulok/"'
+    );
+    expect(result).toContain('data-sirinx-seo="route"');
+    expect(result).toContain("AdministrativeArea");
+  });
 
-	  it("injects route-specific hero image preload", () => {
-	    const result = injectOgTags(
-	      sampleHtml,
-	      "/solar-carport",
-	      "https://www.sirinx.co"
-	    );
-	    expect(result).toContain('rel="preload" as="image"');
-	    expect(result).toContain("/cdn-cgi/image/width=1280");
-	    expect(result).toContain("carport-wide-1_30e3af4c.jpeg");
-	  });
+  it("injects route-specific hero image preload", () => {
+    const result = injectOgTags(
+      sampleHtml,
+      "/solar-carport",
+      "https://www.sirinx.co"
+    );
+    expect(result).toContain('rel="preload" as="image"');
+    expect(result).toContain("/cdn-cgi/image/width=1280");
+    expect(result).toContain("carport-wide-1_30e3af4c.jpeg");
+  });
+
+  it("uses responsive preload candidates for the home solution hero", () => {
+    const result = injectOgTags(
+      sampleHtml,
+      "/home-solution",
+      "https://www.sirinx.co"
+    );
+
+    expect(result).toContain('rel="preload" as="image"');
+    expect(result).toContain("imagesrcset=");
+    expect(result).toContain("home-solution-drone-hero-640.avif 640w");
+    expect(result).toContain('imagesizes="100vw"');
+  });
 
   it("builds AEO service schema for province pages", () => {
     const data = getStructuredData(

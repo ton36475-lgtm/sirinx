@@ -6,7 +6,11 @@
  * Content strategy: SEO/AEO-focused promotional copy with high-value keywords.
  */
 
-import { getProvinceBySlug, thaiProvinces, type ThaiProvince } from "../shared/thaiProvinces";
+import {
+  getProvinceBySlug,
+  thaiProvinces,
+  type ThaiProvince,
+} from "../shared/thaiProvinces";
 
 const OG_IMAGE =
   "https://d2xsxph8kpxj0f.cloudfront.net/310519663541525436/DfaBNh7LYBahFVi2JKfAUv/sirinx-og-image-hbNko5JADXArPGo26hmGrN.png";
@@ -139,19 +143,23 @@ const routeMetaMap: Record<string, PageMeta> = {
   },
   "/partner": {
     title: "ร่วมเป็นพันธมิตรพลังงานสะอาดกับ SIRINX",
-    description: "เปิดรับพันธมิตรด้าน EPC, EV Charging, BESS, อสังหาริมทรัพย์ และการลงทุนพลังงานสะอาดกับ SIRINX",
+    description:
+      "เปิดรับพันธมิตรด้าน EPC, EV Charging, BESS, อสังหาริมทรัพย์ และการลงทุนพลังงานสะอาดกับ SIRINX",
   },
   "/privacy": {
     title: "นโยบายความเป็นส่วนตัว | SIRINX",
-    description: "นโยบายการเก็บ ใช้ และคุ้มครองข้อมูลส่วนบุคคลสำหรับผู้ใช้งานเว็บไซต์ SIRINX และผู้สนใจบริการพลังงานสะอาด",
+    description:
+      "นโยบายการเก็บ ใช้ และคุ้มครองข้อมูลส่วนบุคคลสำหรับผู้ใช้งานเว็บไซต์ SIRINX และผู้สนใจบริการพลังงานสะอาด",
   },
   "/terms": {
     title: "เงื่อนไขการใช้งาน | SIRINX",
-    description: "เงื่อนไขการใช้งานเว็บไซต์ SIRINX ข้อมูลบริการ ใบเสนอราคา การประเมินระบบ และข้อจำกัดความรับผิดชอบ",
+    description:
+      "เงื่อนไขการใช้งานเว็บไซต์ SIRINX ข้อมูลบริการ ใบเสนอราคา การประเมินระบบ และข้อจำกัดความรับผิดชอบ",
   },
   "/cookies": {
     title: "Cookie Policy | SIRINX",
-    description: "นโยบายคุกกี้ของเว็บไซต์ SIRINX สำหรับการวิเคราะห์การใช้งาน การปรับปรุงประสบการณ์ และการวัดผลบริการออนไลน์",
+    description:
+      "นโยบายคุกกี้ของเว็บไซต์ SIRINX สำหรับการวิเคราะห์การใช้งาน การปรับปรุงประสบการณ์ และการวัดผลบริการออนไลน์",
   },
 };
 
@@ -199,9 +207,7 @@ export function getPageMeta(urlPath: string): PageMeta {
 function getBreadcrumbItems(urlPath: string, baseUrl: string) {
   const cleanPath =
     urlPath.split("?")[0].split("#")[0].replace(/\/$/, "") || "/";
-  const items = [
-    { name: "หน้าแรก", item: baseUrl },
-  ];
+  const items = [{ name: "หน้าแรก", item: baseUrl }];
 
   if (cleanPath.startsWith("/solar-carport")) {
     items.push({ name: "Solar Carport", item: `${baseUrl}/solar-carport` });
@@ -307,7 +313,8 @@ export function getStructuredData(urlPath: string, baseUrl: string) {
         priceSpecification: {
           "@type": "PriceSpecification",
           priceCurrency: "THB",
-          description: "Project-specific quotation after site survey and engineering assessment.",
+          description:
+            "Project-specific quotation after site survey and engineering assessment.",
         },
       },
     },
@@ -317,7 +324,7 @@ export function getStructuredData(urlPath: string, baseUrl: string) {
   if (isHomeSolution) {
     graph.push({
       "@type": "FAQPage",
-      mainEntity: homeSolutionFaqs.map((faq) => ({
+      mainEntity: homeSolutionFaqs.map(faq => ({
         "@type": "Question",
         name: faq.question,
         acceptedAnswer: {
@@ -373,7 +380,11 @@ function injectStructuredData(html: string, data: unknown): string {
   return html;
 }
 
-function replaceMetaByName(html: string, name: string, content: string): string {
+function replaceMetaByName(
+  html: string,
+  name: string,
+  content: string
+): string {
   const pattern = new RegExp(`<meta\\s+name="${name}"[\\s\\S]*?\\/>`);
   const tag = `<meta name="${name}" content="${content}" />`;
   if (pattern.test(html)) return html.replace(pattern, tag);
@@ -416,22 +427,46 @@ function getRouteHeroPreload(urlPath: string) {
   if (cleanPath === "/home-solution") {
     return {
       href: "/assets/home-solution/home-solution-drone-hero-1280.avif",
+      imageSrcSet:
+        "/assets/home-solution/home-solution-drone-hero-640.avif 640w, /assets/home-solution/home-solution-drone-hero-960.avif 960w, /assets/home-solution/home-solution-drone-hero-1280.avif 1280w",
+      imageSizes: "100vw",
       type: "image/avif",
     };
   }
-  if (cleanPath === "/solar-carport" || cleanPath.startsWith("/solar-carport/")) {
+  if (
+    cleanPath === "/solar-carport" ||
+    cleanPath.startsWith("/solar-carport/")
+  ) {
     return {
       href: `${imageResizeBase}/${ASSET_CDN}/carport-wide-1_30e3af4c.jpeg`,
       type: "image/jpeg",
     };
   }
   const heroByPath: Record<string, { src: string; type: string }> = {
-    "/about": { src: `${ASSET_CDN}/hero-about-3Trik9L6DrdCwCcjCt2KVz.webp`, type: "image/webp" },
-    "/solutions": { src: `${ASSET_CDN}/hero-solutions-AG25WEja6TRJEEzvpx3wZU.webp`, type: "image/webp" },
-    "/industries": { src: `${ASSET_CDN}/sirinx-agrivoltaic-b6XSpaadLj5vpaTu52tenb.webp`, type: "image/webp" },
-    "/investment": { src: `${ASSET_CDN}/hero-investment-fRtcNVseiLRqovGxudgo83.webp`, type: "image/webp" },
-    "/projects": { src: `${ASSET_CDN}/carport-wide-1_30e3af4c.jpeg`, type: "image/jpeg" },
-    "/strategy": { src: `${ASSET_CDN}/sirinx-smart-energy-JXCSVMQTKJHxRxSagYajgy.webp`, type: "image/webp" },
+    "/about": {
+      src: `${ASSET_CDN}/hero-about-3Trik9L6DrdCwCcjCt2KVz.webp`,
+      type: "image/webp",
+    },
+    "/solutions": {
+      src: `${ASSET_CDN}/hero-solutions-AG25WEja6TRJEEzvpx3wZU.webp`,
+      type: "image/webp",
+    },
+    "/industries": {
+      src: `${ASSET_CDN}/sirinx-agrivoltaic-b6XSpaadLj5vpaTu52tenb.webp`,
+      type: "image/webp",
+    },
+    "/investment": {
+      src: `${ASSET_CDN}/hero-investment-fRtcNVseiLRqovGxudgo83.webp`,
+      type: "image/webp",
+    },
+    "/projects": {
+      src: `${ASSET_CDN}/carport-wide-1_30e3af4c.jpeg`,
+      type: "image/jpeg",
+    },
+    "/strategy": {
+      src: `${ASSET_CDN}/sirinx-smart-energy-JXCSVMQTKJHxRxSagYajgy.webp`,
+      type: "image/webp",
+    },
   };
   if (heroByPath[cleanPath]) {
     return {
@@ -445,9 +480,16 @@ function getRouteHeroPreload(urlPath: string) {
 function injectRouteHeroPreload(html: string, urlPath: string) {
   const preload = getRouteHeroPreload(urlPath);
   if (!preload) return html;
-  const tag = `    <link rel="preload" as="image" href="${preload.href}" type="${preload.type}" fetchpriority="high" />`;
+  const responsiveAttrs =
+    "imageSrcSet" in preload
+      ? ` imagesrcset="${preload.imageSrcSet}" imagesizes="${preload.imageSizes}"`
+      : "";
+  const tag = `    <link rel="preload" as="image" href="${preload.href}"${responsiveAttrs} type="${preload.type}" fetchpriority="high" />`;
   if (html.includes('rel="preload" as="image"')) {
-    return html.replace(/    <link rel="preload" as="image"[\s\S]*?\/>\n/, `${tag}\n`);
+    return html.replace(
+      /    <link rel="preload" as="image"[\s\S]*?\/>\n/,
+      `${tag}\n`
+    );
   }
   if (html.includes("    <!-- Fonts -->")) {
     return html.replace("    <!-- Fonts -->", `${tag}\n\n    <!-- Fonts -->`);
@@ -458,7 +500,10 @@ function injectRouteHeroPreload(html: string, urlPath: string) {
 function injectNoScriptStaticFallback(html: string, urlPath: string): string {
   const cleanPath =
     urlPath.split("?")[0].split("#")[0].replace(/\/$/, "") || "/";
-  if (cleanPath !== "/home-solution" || html.includes("data-sirinx-static-fallback")) {
+  if (
+    cleanPath !== "/home-solution" ||
+    html.includes("data-sirinx-static-fallback")
+  ) {
     return html;
   }
 
@@ -483,7 +528,10 @@ function injectNoScriptStaticFallback(html: string, urlPath: string): string {
     </noscript>`;
 
   if (html.includes('<div id="root"></div>')) {
-    return html.replace('<div id="root"></div>', `<div id="root"></div>\n${fallback}`);
+    return html.replace(
+      '<div id="root"></div>',
+      `<div id="root"></div>\n${fallback}`
+    );
   }
   return html.replace("</body>", `${fallback}\n  </body>`);
 }
