@@ -1,6 +1,7 @@
 import { spawnSync } from "node:child_process";
 
 const startedAt = new Date();
+const localOnly = process.argv.includes("--local-only");
 
 const steps = [
   {
@@ -40,6 +41,9 @@ const steps = [
     requiredForProduction: true,
   },
 ];
+const activeSteps = localOnly
+  ? steps.filter(step => step.requiredForLocalCommit)
+  : steps;
 
 function runStep(step) {
   const [command, ...args] = step.command;
@@ -69,7 +73,7 @@ function runStep(step) {
 
 const results = [];
 
-for (const step of steps) {
+for (const step of activeSteps) {
   console.error(`[quote:gate] ${step.id}: ${step.command.join(" ")}`);
   results.push(runStep(step));
 }
@@ -84,12 +88,24 @@ const localReady = localBlockers.length === 0;
 const productionReady = productionBlockers.length === 0;
 
 const report = {
+  mode: localOnly ? "local-only" : "production",
   localReady,
-  productionReady,
+  productionReady: localOnly ? null : productionReady,
   generatedAt: new Date().toISOString(),
   durationMs: Date.now() - startedAt.getTime(),
   steps: results,
-  nextActions: productionReady
+  nextActions: localOnly
+    ? localReady
+      ? [
+          "Local quotation gate is ready for code review.",
+          "Run pnpm quote:gate with production environment variables before migration or deploy.",
+        ]
+      : [
+          ...localBlockers.map(
+            result => `${result.id} is blocked; inspect ${result.command}`
+          ),
+        ]
+    : productionReady
     ? [
         "Run pnpm db:push against the intended production database.",
         "Deploy with the same environment variables used by this gate.",
@@ -104,4 +120,10 @@ const report = {
 };
 
 console.log(JSON.stringify(report, null, 2));
-process.exitCode = productionReady ? 0 : 1;
+process.exitCode = localOnly
+  ? localReady
+    ? 0
+    : 1
+  : productionReady
+    ? 0
+    : 1;

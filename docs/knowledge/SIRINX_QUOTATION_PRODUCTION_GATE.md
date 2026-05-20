@@ -12,6 +12,12 @@ The gate is intentionally fail-closed. It does not run migrations, deploy code, 
 pnpm quote:gate
 ```
 
+For pull-request CI and code review without production secrets:
+
+```bash
+pnpm quote:gate:local
+```
+
 ## What The Gate Checks
 
 1. TypeScript correctness with `pnpm check`.
@@ -22,6 +28,8 @@ pnpm quote:gate
    - `leads`
    - `contact_submissions`
    - `quotations`
+
+`pnpm quote:gate:local` intentionally stops after steps 1-3. It proves the code path is reviewable without requiring production secrets or a production database.
 
 ## Current External Blockers
 
@@ -39,6 +47,7 @@ Production operation is blocked until these are configured in the target runtime
 Run this sequence only after the target environment has the required variables:
 
 ```bash
+pnpm quote:gate:local
 pnpm quote:gate
 pnpm db:push
 pnpm quote:db:preflight
@@ -64,3 +73,4 @@ The smoke quotation must prove:
 - Do not run `pnpm db:push` without confirming the target database.
 - Do not send a real customer notification without a test recipient or explicit production approval.
 - Do not deploy if `pnpm quote:gate` reports `productionReady=false`.
+- Keep pull-request CI on `pnpm quote:gate:local`; production readiness stays a separate deployment gate.
