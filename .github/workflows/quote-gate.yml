@@ -1,32 +1,9 @@
 name: Quote Gate
 
 on:
-  pull_request:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/quote-gate.yml"
-      - "client/**"
-      - "server/**"
-      - "shared/**"
-      - "drizzle/**"
-      - "scripts/quotation-*.mjs"
-      - "package.json"
-      - "pnpm-lock.yaml"
-      - "tsconfig.json"
-  push:
-    branches:
-      - "codex/**"
-    paths:
-      - ".github/workflows/quote-gate.yml"
-      - "client/**"
-      - "server/**"
-      - "shared/**"
-      - "drizzle/**"
-      - "scripts/quotation-*.mjs"
-      - "package.json"
-      - "pnpm-lock.yaml"
-      - "tsconfig.json"
+  # Manual until GitHub Actions billing is unlocked for this account.
+  # Re-enable pull_request/push triggers after billing is healthy.
+  workflow_dispatch:
 
 permissions:
   contents: read

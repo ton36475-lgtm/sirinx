@@ -31,6 +31,14 @@ pnpm quote:gate:local
 
 `pnpm quote:gate:local` intentionally stops after steps 1-3. It proves the code path is reviewable without requiring production secrets or a production database.
 
+## GitHub Actions Status
+
+`.github/workflows/quote-gate.yml` is currently manual-only because GitHub reported:
+
+> The job was not started because your account is locked due to a billing issue.
+
+After billing is healthy, re-enable pull request and push triggers for this workflow so PR #2 can show the local quotation gate automatically.
+
 ## Current External Blockers
 
 Production operation is blocked until these are configured in the target runtime:
