@@ -58,9 +58,22 @@ function pass(report) {
   console.log(JSON.stringify({ success: true, ...report }, null, 2));
 }
 
+function parseExpectedBoolean(name, value) {
+  if (value === undefined) return undefined;
+
+  const normalized = value.trim().toLowerCase();
+  if (["1", "true", "yes", "y"].includes(normalized)) return true;
+  if (["0", "false", "no", "n"].includes(normalized)) return false;
+
+  fail(`${name} must be a boolean expectation: use 1/0, true/false, or yes/no.`, {
+    received: value,
+  });
+  process.exit();
+}
+
 function expectationMatches(actual, expected) {
   if (expected === undefined) return true;
-  return String(actual) === expected;
+  return actual === expected;
 }
 
 if (!approved) {
@@ -85,6 +98,15 @@ if (!baseUrl) {
   fail("QUOTE_SMOKE_BASE_URL is required when smoke approval is enabled.");
   process.exit();
 }
+
+const expectedQueuedBoolean = parseExpectedBoolean(
+  "QUOTE_SMOKE_EXPECT_QUEUED",
+  expectedQueued
+);
+const expectedNotificationBoolean = parseExpectedBoolean(
+  "QUOTE_SMOKE_EXPECT_NOTIFICATION",
+  expectedNotification
+);
 
 const endpoint = `${normalizeBaseUrl(baseUrl)}/api/trpc/quotation.create?batch=1`;
 
@@ -141,10 +163,10 @@ try {
   if (observed.panelCount !== 80) failures.push("panelCount must be 80");
   if (observed.actualKwp !== 49.6) failures.push("actualKwp must be 49.6");
   if (observed.grandTotal !== 2069808) failures.push("grandTotal must be 2069808");
-  if (!expectationMatches(observed.queued, expectedQueued)) {
+  if (!expectationMatches(observed.queued, expectedQueuedBoolean)) {
     failures.push(`queued must match QUOTE_SMOKE_EXPECT_QUEUED=${expectedQueued}`);
   }
-  if (!expectationMatches(observed.notificationSent, expectedNotification)) {
+  if (!expectationMatches(observed.notificationSent, expectedNotificationBoolean)) {
     failures.push(
       `notificationSent must match QUOTE_SMOKE_EXPECT_NOTIFICATION=${expectedNotification}`
     );

@@ -92,6 +92,11 @@ QUOTE_SMOKE_EXPECT_NOTIFICATION=0 \
 pnpm quote:smoke
 ```
 
+`QUOTE_SMOKE_EXPECT_QUEUED` and `QUOTE_SMOKE_EXPECT_NOTIFICATION` accept `1/0`,
+`true/false`, or `yes/no`. Use the explicit expectations so the smoke test fails
+closed if the selected environment changes from fallback queue mode to live
+database/notification mode.
+
 ## Smoke Acceptance
 
 The smoke quotation must prove:
