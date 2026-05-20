@@ -14,6 +14,7 @@
     "quote:gate:local": "node scripts/quotation-production-gate.mjs --local-only",
     "quote:readiness": "node scripts/quotation-production-readiness.mjs",
     "quote:db:preflight": "node scripts/quotation-db-preflight.mjs",
+    "quote:smoke": "node scripts/quotation-smoke.mjs",
     "db:push": "drizzle-kit generate && drizzle-kit migrate"
   },
   "dependencies": {

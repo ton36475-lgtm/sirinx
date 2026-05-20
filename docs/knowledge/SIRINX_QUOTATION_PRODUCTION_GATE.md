@@ -64,6 +64,34 @@ pnpm build
 
 Then deploy through the approved Cloudflare pipeline and run one approved smoke quotation.
 
+## Smoke Command
+
+Dry run; does not write:
+
+```bash
+pnpm quote:smoke
+```
+
+Approved write against a confirmed preview or production target:
+
+```bash
+SIRINX_QUOTE_SMOKE_APPROVED=1 \
+QUOTE_SMOKE_BASE_URL=https://preview-or-production.example \
+QUOTE_SMOKE_EXPECT_QUEUED=0 \
+QUOTE_SMOKE_EXPECT_NOTIFICATION=1 \
+pnpm quote:smoke
+```
+
+For local fallback testing where no database/notification service is configured:
+
+```bash
+SIRINX_QUOTE_SMOKE_APPROVED=1 \
+QUOTE_SMOKE_BASE_URL=http://127.0.0.1:4177 \
+QUOTE_SMOKE_EXPECT_QUEUED=1 \
+QUOTE_SMOKE_EXPECT_NOTIFICATION=0 \
+pnpm quote:smoke
+```
+
 ## Smoke Acceptance
 
 The smoke quotation must prove:
