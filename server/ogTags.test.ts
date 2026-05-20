@@ -85,6 +85,13 @@ describe("getPageMeta", () => {
     expect(meta.description).toContain("ROI");
   });
 
+  it("returns quotation PDF meta for /quote", () => {
+    const meta = getPageMeta("/quote");
+    expect(meta.title).toContain("ใบเสนอราคา");
+    expect(meta.description).toContain("PDF");
+    expect(meta.description).toContain("VAT");
+  });
+
   it("returns strategy meta for /strategy", () => {
     const meta = getPageMeta("/strategy");
     expect(meta.title).toContain("ลดค่าไฟระยะยาว");
@@ -318,6 +325,7 @@ describe("injectOgTags", () => {
       "/investment",
       "/assessment",
       "/pricing",
+      "/quote",
       "/unknown-page",
     ];
 

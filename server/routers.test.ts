@@ -5,6 +5,7 @@ import path from "node:path";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
 import * as db from "./db";
+import { notifyOwner } from "./_core/notification";
 
 // ==================== MOCK DB ====================
 
@@ -44,6 +45,10 @@ vi.mock("./db", () => ({
   deleteProject: vi.fn().mockResolvedValue({ success: true }),
   createContactSubmission: vi.fn().mockResolvedValue({ id: 1 }),
   getContactSubmissions: vi.fn().mockResolvedValue([]),
+  createQuotationRecord: vi
+    .fn()
+    .mockResolvedValue({ id: 10, quoteNumber: "SIRINX-QT-20260520-0001" }),
+  getQuotations: vi.fn().mockResolvedValue([]),
   recordPageView: vi.fn().mockResolvedValue({ success: true }),
   recordEvent: vi.fn().mockResolvedValue({ success: true }),
   getPageViewAnalytics: vi.fn().mockResolvedValue({
@@ -242,6 +247,139 @@ describe("lead.list (admin only)", () => {
   it("rejects unauthenticated users", async () => {
     const caller = appRouter.createCaller(createPublicContext());
     await expect(caller.lead.list()).rejects.toThrow();
+  });
+});
+
+describe("quotation.create", () => {
+  beforeEach(() => {
+    vi.mocked(db.createLead).mockResolvedValue({ id: 1 });
+    vi.mocked(db.createQuotationRecord).mockResolvedValue({
+      id: 10,
+      quoteNumber: "SIRINX-QT-20260520-0001",
+    });
+    vi.mocked(notifyOwner).mockResolvedValue(true);
+  });
+
+  it("creates a lead, quotation record, contact audit, and notification", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const result = await caller.quotation.create({
+      customer: {
+        name: "Quote Lead",
+        phone: "0812345678",
+        email: "quote@sirinx.co",
+        company: "SIRINX Test",
+        lineId: "@sirinx",
+        address: "Phitsanulok",
+        note: "จาก calculator",
+      },
+      lines: [
+        {
+          serviceId: "solar-carport-pro",
+          quantity: 1,
+          targetKwp: 49.6,
+          panelModelId: "aiko-comet-3n-620",
+        },
+      ],
+      sourceAction: "preview",
+      clientQuoteNumber: "SIRINX-QT-20260520-0001",
+      issuedAt: "2026-05-20T00:00:00.000Z",
+    });
+
+    expect(result.success).toBe(true);
+    expect(result.quoteNumber).toBe("SIRINX-QT-20260520-0001");
+    expect(result.notificationSent).toBe(true);
+    expect(result.totals.grandTotal).toBeGreaterThan(0);
+    expect(db.createLead).toHaveBeenCalledWith(
+      expect.objectContaining({
+        source: "quote",
+        status: "proposal",
+        name: "Quote Lead",
+        systemSize: expect.stringContaining("kWp"),
+      })
+    );
+    expect(db.createQuotationRecord).toHaveBeenCalledWith(
+      expect.objectContaining({
+        customerName: "Quote Lead",
+        primaryPanelWatts: 620,
+        grandTotal: expect.any(Number),
+      })
+    );
+    expect(db.createContactSubmission).toHaveBeenCalledWith(
+      expect.objectContaining({ sourcePage: "quote" })
+    );
+    expect(notifyOwner).toHaveBeenCalledWith(
+      expect.objectContaining({
+        title: expect.stringContaining("SIRINX-QT-20260520-0001"),
+      })
+    );
+  });
+
+  it("returns a saved quotation even when notification delivery is not accepted", async () => {
+    vi.mocked(notifyOwner).mockResolvedValueOnce(false);
+
+    const caller = appRouter.createCaller(createPublicContext());
+    const result = await caller.quotation.create({
+      customer: {
+        name: "Quote Lead",
+        phone: "0812345678",
+      },
+      lines: [
+        {
+          serviceId: "home-solar-large",
+          quantity: 1,
+          targetKwp: 12.4,
+          panelModelId: "aiko-comet-3n-620",
+        },
+      ],
+      sourceAction: "preview",
+      clientQuoteNumber: "SIRINX-QT-20260520-0002",
+      issuedAt: "2026-05-20T00:00:00.000Z",
+    });
+
+    expect(result.success).toBe(true);
+    expect(result.quoteNumber).toBe("SIRINX-QT-20260520-0001");
+    expect(result.notificationSent).toBe(false);
+  });
+
+  it("queues quotation locally when database is unavailable", async () => {
+    const queueDir = await fs.mkdtemp(
+      path.join(os.tmpdir(), "sirinx-router-quotes-")
+    );
+    process.env.SIRINX_LOCAL_QUEUE_DIR = queueDir;
+    vi.mocked(db.createLead).mockRejectedValueOnce(
+      new Error("Database not available")
+    );
+
+    const caller = appRouter.createCaller(createPublicContext());
+    const result = await caller.quotation.create({
+      customer: {
+        name: "Queued Quote",
+        phone: "0812345678",
+      },
+      lines: [
+        {
+          serviceId: "home-solar-large",
+          quantity: 1,
+          targetKwp: 12.4,
+          panelModelId: "aiko-comet-3n-620",
+        },
+      ],
+      sourceAction: "print",
+      clientQuoteNumber: "SIRINX-QT-20260520-0099",
+      issuedAt: "2026-05-20T00:00:00.000Z",
+    });
+
+    expect(result.success).toBe(true);
+    expect(result).toHaveProperty("queued", true);
+    expect(result).toHaveProperty("notificationSent", true);
+
+    const queuedContent = await fs.readFile(
+      path.join(queueDir, "quotations.jsonl"),
+      "utf-8"
+    );
+    expect(queuedContent).toContain("Queued Quote");
+
+    delete process.env.SIRINX_LOCAL_QUEUE_DIR;
   });
 });
 

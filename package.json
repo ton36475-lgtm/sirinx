@@ -10,6 +10,8 @@
     "check": "tsc --noEmit",
     "format": "prettier --write .",
     "test": "vitest run",
+    "quote:readiness": "node scripts/quotation-production-readiness.mjs",
+    "quote:db:preflight": "node scripts/quotation-db-preflight.mjs",
     "db:push": "drizzle-kit generate && drizzle-kit migrate"
   },
   "dependencies": {

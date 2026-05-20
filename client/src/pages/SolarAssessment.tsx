@@ -12,6 +12,7 @@ import {
 import { toast } from "sonner";
 import { usePageTranslation } from "@/i18n";
 import { cfImage, cfImageSrcSet } from "@/lib/cfImage";
+import { quotationPricingRules } from "@/lib/quotation";
 import "../i18n/pages/solarAssessment";
 
 /* ================================================================
@@ -160,10 +161,18 @@ const BESS_DOD = 0.90;
 const BESS_CYCLE_LIFE = 6000;
 const BESS_DEGRADATION_YEAR = 0.025;
 
-// ── Panel Constants ──────────────────────────
-const PANEL_WATT = 580;
-const PANEL_EFFICIENCY = 0.215;
-const AREA_PER_KWP = 4.8;
+// ── Panel Constants: AIKO modules used by SIRINX ──────────────────────────
+const ASSESSMENT_PANEL =
+  quotationPricingRules.panelCatalog.find(
+    panel => panel.id === quotationPricingRules.defaultPanelId
+  ) ?? quotationPricingRules.panelCatalog[0];
+const PANEL_WATT = ASSESSMENT_PANEL?.watts ?? 620;
+const PANEL_EFFICIENCY = (ASSESSMENT_PANEL?.efficiencyPercent ?? 23) / 100;
+const PANEL_WEIGHT_KG = ASSESSMENT_PANEL?.weightKg ?? 33.5;
+const PANEL_MODEL_LABEL = ASSESSMENT_PANEL?.displayName ?? "AIKO 620W";
+const AREA_PER_KWP = Math.round(
+  (((ASSESSMENT_PANEL?.areaM2 ?? 2.701) * 1000) / PANEL_WATT) * 1.08 * 10
+) / 10;
 const PERFORMANCE_RATIO = 0.82;
 const YEAR1_DEGRADATION = 0.02;
 const ANNUAL_DEGRADATION = 0.005;
@@ -286,7 +295,7 @@ export function calculateSolar(input: CalcInput): SolarResult {
   const hasInstallableCapacity = actualKwp > 0;
   const numberOfPanels = hasInstallableCapacity ? Math.ceil(actualKwp * 1000 / PANEL_WATT) : 0;
   const requiredRoofArea = Math.round(actualKwp * AREA_PER_KWP);
-  const totalWeight = numberOfPanels * roof.weightPerPanel;
+  const totalWeight = numberOfPanels * PANEL_WEIGHT_KG;
 
   // ── Step 5: Production Estimate ──
   const annualProductionYear1 = hasInstallableCapacity ? actualKwp * effectivePSH * 365 * PERFORMANCE_RATIO : 0;
@@ -1163,7 +1172,7 @@ export default function SolarAssessment() {
                           <div className="grid sm:grid-cols-2 gap-3 text-xs">
                             <div className="p-3 rounded-lg bg-surface-elevated border border-border-subtle">
                               <span className="text-text-muted">{t("sa.s3.panelEff")}</span>
-                              <span className="text-foreground font-semibold ml-2">{PANEL_EFFICIENCY * 100}% (TOPCon {PANEL_WATT}W)</span>
+                              <span className="text-foreground font-semibold ml-2">{Math.round(PANEL_EFFICIENCY * 1000) / 10}% ({PANEL_MODEL_LABEL})</span>
                             </div>
                             <div className="p-3 rounded-lg bg-surface-elevated border border-border-subtle">
                               <span className="text-text-muted">{t("sa.s3.perfRatio")}</span>
@@ -1800,7 +1809,7 @@ export default function SolarAssessment() {
                     {/* ── CTA Section ── */}
                     <div className="mt-8 pt-6 border-t border-border-subtle">
                       <div className="grid sm:grid-cols-2 gap-4">
-                        <Link href={`/contact?system=${result.actualKwp}kWp${result.bessCapacityKwh > 0 ? `+BESS${result.bessCapacityKwh}kWh` : ""}&type=${input.businessType}&bill=${input.monthlyBill}`}
+                        <Link href={`/quote?kwp=${result.actualKwp}&system=${result.actualKwp}kWp${result.bessCapacityKwh > 0 ? `+BESS${result.bessCapacityKwh}kWh` : ""}&type=${input.businessType}&bill=${input.monthlyBill}&package=${result.actualKwp >= 100 ? "enterprise" : result.actualKwp >= 30 ? "pro" : "start"}`}
                           className="flex items-center justify-center gap-2 btn-accent px-6 py-4 rounded-xl text-base font-semibold">
                           <Phone className="w-5 h-5" />
                           ขอใบเสนอราคาจริง
