@@ -6,7 +6,19 @@ import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
+import { createNodeBackendHealthReport } from "./health";
 import { serveStatic, setupVite } from "./vite";
+
+function getTrustProxySetting() {
+  const configured = process.env.SIRINX_TRUST_PROXY;
+  if (configured) {
+    if (configured === "true") return true;
+    if (configured === "false") return false;
+    const numeric = Number(configured);
+    return Number.isFinite(numeric) ? numeric : configured;
+  }
+  return process.env.NODE_ENV === "production" ? "loopback" : false;
+}
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -30,9 +42,17 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 async function startServer() {
   const app = express();
   const server = createServer(app);
+  app.set("trust proxy", getTrustProxySetting());
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
+  app.get(["/healthz", "/api/healthz"], (_req, res) => {
+    res.status(200).json(createNodeBackendHealthReport());
+  });
+  app.get(["/readyz", "/api/readyz"], (_req, res) => {
+    const report = createNodeBackendHealthReport();
+    res.status(report.readyForProduction ? 200 : 503).json(report);
+  });
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
   // tRPC API
@@ -60,6 +80,20 @@ async function startServer() {
   server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
   });
+
+  const shutdown = (signal: string) => {
+    console.log(`Received ${signal}; closing SIRINX backend server`);
+    server.close(error => {
+      if (error) {
+        console.error("SIRINX backend shutdown failed", error);
+        process.exit(1);
+      }
+      process.exit(0);
+    });
+  };
+
+  process.once("SIGTERM", () => shutdown("SIGTERM"));
+  process.once("SIGINT", () => shutdown("SIGINT"));
 }
 
 startServer().catch(console.error);

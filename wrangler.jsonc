@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // Downloaded from Cloudflare Pages project "sirinx-co" on 2026-05-21,
+  // then converted to JSONC so the repo can keep deploy metadata reviewable.
+  "name": "sirinx-co",
+  "pages_build_output_dir": "./dist/public",
+  "compatibility_date": "2026-05-21",
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    "SIRINX_API_HOSTING_STRATEGY": "node-backend-proxy"
+  }
+}

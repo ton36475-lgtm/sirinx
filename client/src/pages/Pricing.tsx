@@ -142,7 +142,7 @@ export default function Pricing() {
               {t("hero.desc")}
             </p>
             <div className="flex flex-wrap gap-3">
-              <Link href="/contact?interest=solar-carport">
+              <Link href="/quote?package=pro">
                 <Button size="lg" className="btn-accent font-display">
                   {t("hero.cta.quote")} <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
@@ -331,7 +331,7 @@ export default function Pricing() {
                 )}
 
                 {/* CTA */}
-                <Link href={`/contact?interest=solar-carport&package=${pkg.id}`}>
+                <Link href={`/quote?package=${pkg.id}`}>
                   <Button
                     className={`w-full font-display ${pkg.popular ? "btn-accent" : ""}`}
                     variant={pkg.popular ? "default" : "outline"}
@@ -594,7 +594,7 @@ export default function Pricing() {
                   <span className="ml-2 text-sm text-text-muted">({roiCalc.systemKwp} kWp)</span>
                 </div>
               </div>
-              <Link href={`/contact?interest=solar-carport&package=${roiCalc.recommendedPkg.toLowerCase()}`}>
+              <Link href={`/quote?package=${roiCalc.recommendedPkg.toLowerCase()}`}>
                 <Button className="btn-accent font-display whitespace-nowrap">
                   {t("roi.cta")} <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>

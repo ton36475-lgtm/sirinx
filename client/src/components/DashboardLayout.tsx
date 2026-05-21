@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/sidebar";
 import { getLoginUrl } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
-import { LayoutDashboard, Users, FileText, Inbox, ArrowLeft, LogOut, PanelLeft, Zap, BarChart3, Activity } from "lucide-react";
+import { LayoutDashboard, Users, FileText, Inbox, ArrowLeft, LogOut, PanelLeft, Zap, BarChart3, Activity, ReceiptText } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
@@ -30,6 +30,7 @@ import { Button } from "./ui/button";
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/admin" },
   { icon: Users, label: "Lead Management", path: "/admin/leads" },
+  { icon: ReceiptText, label: "Quotations", path: "/admin/quotations" },
   { icon: FileText, label: "Blog CMS", path: "/admin/blog" },
   { icon: Inbox, label: "Contact Submissions", path: "/admin/contacts" },
   { icon: BarChart3, label: "Traffic Analytics", path: "/admin/analytics" },

@@ -1,6 +1,6 @@
 import { trpc } from "@/lib/trpc";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, FileText, FolderOpen, TrendingUp, Clock, CheckCircle2, AlertCircle } from "lucide-react";
+import { Users, FileText, CheckCircle2, AlertCircle, ReceiptText } from "lucide-react";
 
 const statusLabels: Record<string, string> = {
   new: "ใหม่",
@@ -24,6 +24,7 @@ export default function AdminDashboard() {
   const { data: leadStats, isLoading: loadingStats } = trpc.lead.stats.useQuery();
   const { data: recentLeads, isLoading: loadingLeads } = trpc.lead.list.useQuery({ limit: 5 });
   const { data: blogPosts, isLoading: loadingBlog } = trpc.blog.adminList.useQuery({ limit: 5 });
+  const { data: quotations, isLoading: loadingQuotations } = trpc.quotation.list.useQuery({ limit: 100 });
 
   return (
     <div className="space-y-6">
@@ -33,7 +34,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Leads ทั้งหมด</CardTitle>
@@ -62,6 +63,17 @@ export default function AdminDashboard() {
           <CardContent>
             <div className="text-2xl font-bold text-green-400">
               {loadingStats ? "..." : leadStats?.byStatus?.won ?? 0}
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">ใบเสนอราคา</CardTitle>
+            <ReceiptText className="h-4 w-4 text-cyan-400" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-cyan-400">
+              {loadingQuotations ? "..." : quotations?.length ?? 0}
             </div>
           </CardContent>
         </Card>

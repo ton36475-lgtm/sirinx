@@ -6,8 +6,14 @@ import {
   InsertBlogPost, blogPosts,
   InsertProject, projects,
   InsertContactSubmission, contactSubmissions,
+  InsertQuotation, quotations,
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
+import {
+  formatQuoteDateKey,
+  generateQuotationNumber,
+  quotationPricingRules,
+} from "@shared/quotation";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -245,6 +251,71 @@ export async function getContactSubmissions(opts?: { limit?: number; offset?: nu
     .limit(opts?.limit ?? 50)
     .offset(opts?.offset ?? 0);
   return rows;
+}
+
+// ==================== QUOTATIONS ====================
+
+function isDuplicateQuoteNumberError(error: unknown) {
+  return (
+    error instanceof Error &&
+    /duplicate|unique|quotations_quoteNumber_unique/i.test(error.message)
+  );
+}
+
+async function getNextQuotationSequence(date: Date) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const dateKey = formatQuoteDateKey(date);
+  const prefix = `${quotationPricingRules.quotePrefix}-${dateKey}-%`;
+  const [result] = await db
+    .select({ count: count() })
+    .from(quotations)
+    .where(like(quotations.quoteNumber, prefix));
+
+  return (result?.count ?? 0) + 1;
+}
+
+export async function createQuotationRecord(
+  data: Omit<InsertQuotation, "quoteNumber"> & { quoteNumber?: string }
+) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const issuedAt = data.issuedAt instanceof Date ? data.issuedAt : new Date();
+  let sequence = await getNextQuotationSequence(issuedAt);
+  let quoteNumber = data.quoteNumber || generateQuotationNumber(issuedAt, sequence);
+
+  for (let attempt = 0; attempt < 5; attempt++) {
+    try {
+      const result = await db.insert(quotations).values({
+        ...data,
+        issuedAt,
+        quoteNumber,
+      });
+
+      return { id: result[0].insertId, quoteNumber };
+    } catch (error) {
+      if (data.quoteNumber || !isDuplicateQuoteNumberError(error)) {
+        throw error;
+      }
+      sequence += 1;
+      quoteNumber = generateQuotationNumber(issuedAt, sequence);
+    }
+  }
+
+  throw new Error("Could not reserve a unique quotation number");
+}
+
+export async function getQuotations(opts?: { limit?: number; offset?: number }) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db
+    .select()
+    .from(quotations)
+    .orderBy(desc(quotations.createdAt))
+    .limit(opts?.limit ?? 50)
+    .offset(opts?.offset ?? 0);
 }
 
 // ==================== ANALYTICS: PAGE VIEWS ====================

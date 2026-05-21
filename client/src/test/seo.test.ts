@@ -13,6 +13,16 @@ describe("client SEO metadata", () => {
     expect(absoluteUrl(meta.path)).toBe("https://www.sirinx.co/home-solution/");
   });
 
+  it("keeps the quotation route indexable after client hydration", () => {
+    const meta = getSeoMeta("/quote/");
+
+    expect(meta.path).toBe("/quote");
+    expect(meta.title).toContain("ใบเสนอราคา");
+    expect(meta.description).toContain("PDF");
+    expect(meta.noindex).toBeUndefined();
+    expect(absoluteUrl(meta.path)).toBe("https://www.sirinx.co/quote/");
+  });
+
   it("marks unknown routes as noindex", () => {
     expect(getSeoMeta("/missing-route").noindex).toBe(true);
   });

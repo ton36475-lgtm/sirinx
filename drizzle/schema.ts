@@ -1,4 +1,4 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, boolean } from "drizzle-orm/mysql-core";
+import { boolean, int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -133,6 +133,43 @@ export const contactSubmissions = mysqlTable("contact_submissions", {
 
 export type ContactSubmission = typeof contactSubmissions.$inferSelect;
 export type InsertContactSubmission = typeof contactSubmissions.$inferInsert;
+
+/**
+ * Quotations table — stores issued website quotation snapshots.
+ * The server recalculates totals before insert; the frontend never writes totals directly.
+ */
+export const quotations = mysqlTable("quotations", {
+  id: int("id").autoincrement().primaryKey(),
+  leadId: int("leadId"),
+  quoteNumber: varchar("quoteNumber", { length: 64 }).notNull().unique(),
+  status: mysqlEnum("quotationStatus", ["draft", "issued", "sent", "accepted", "expired"]).default("issued").notNull(),
+  sourceAction: varchar("sourceAction", { length: 32 }).default("preview"),
+  customerName: varchar("customerName", { length: 255 }).notNull(),
+  customerCompany: varchar("customerCompany", { length: 255 }),
+  customerEmail: varchar("customerEmail", { length: 320 }),
+  customerPhone: varchar("customerPhone", { length: 32 }),
+  customerLineId: varchar("customerLineId", { length: 100 }),
+  customerAddress: text("customerAddress"),
+  customerNote: text("customerNote"),
+  lineItems: text("lineItems").notNull(),
+  totals: text("totals").notNull(),
+  systemDesign: text("systemDesign"),
+  primaryPanelModel: varchar("primaryPanelModel", { length: 255 }),
+  primaryPanelWatts: int("primaryPanelWatts"),
+  subtotal: int("subtotal").notNull().default(0),
+  discount: int("discount").notNull().default(0),
+  vat: int("vat").notNull().default(0),
+  grandTotal: int("grandTotal").notNull().default(0),
+  issuedAt: timestamp("issuedAt").defaultNow().notNull(),
+  validUntil: timestamp("validUntil"),
+  ipAddress: varchar("ipAddress", { length: 45 }),
+  userAgent: text("userAgent"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Quotation = typeof quotations.$inferSelect;
+export type InsertQuotation = typeof quotations.$inferInsert;
 
 /**
  * Page views table — tracks every page visit for traffic analytics.
