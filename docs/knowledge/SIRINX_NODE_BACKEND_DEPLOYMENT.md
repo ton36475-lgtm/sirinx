@@ -54,6 +54,12 @@ Check quotation production readiness after backend readiness:
 pnpm quote:gate
 ```
 
+Review all deploy gates and current blockers without mutating production:
+
+```bash
+pnpm ops:review
+```
+
 Build the dedicated backend container image:
 
 ```bash

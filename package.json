@@ -19,6 +19,8 @@
     "quote:smoke": "node scripts/quotation-smoke.mjs",
     "backend:gate": "node scripts/backend-production-gate.mjs",
     "backend:smoke": "node scripts/backend-origin-smoke.mjs",
+    "ops:review": "node scripts/sirinx-operational-review.mjs",
+    "ops:review:strict": "node scripts/sirinx-operational-review.mjs --strict",
     "deploy:cloudflare:readiness": "node scripts/cloudflare-deploy-readiness.mjs",
     "db:push": "drizzle-kit generate && drizzle-kit migrate"
   },

@@ -19,6 +19,7 @@ const steps = [
       "server/cloudflareApiProxy.test.ts",
       "server/cloudflareDeployReadiness.test.ts",
       "server/backendProductionGate.test.ts",
+      "server/sirinxOperationalReview.test.ts",
       "server/quotationGateState.test.ts",
       "server/routers.test.ts",
       "server/_core/health.test.ts",
