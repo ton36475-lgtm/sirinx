@@ -17,6 +17,8 @@
     "quote:gates:external": "node scripts/quotation-external-gates.mjs",
     "quote:approval:packet": "node scripts/quotation-approval-packet.mjs",
     "quote:smoke": "node scripts/quotation-smoke.mjs",
+    "backend:gate": "node scripts/backend-production-gate.mjs",
+    "backend:smoke": "node scripts/backend-origin-smoke.mjs",
     "deploy:cloudflare:readiness": "node scripts/cloudflare-deploy-readiness.mjs",
     "db:push": "drizzle-kit generate && drizzle-kit migrate"
   },

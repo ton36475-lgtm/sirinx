@@ -18,8 +18,10 @@ const steps = [
       "client/src/test/quotation.test.ts",
       "server/cloudflareApiProxy.test.ts",
       "server/cloudflareDeployReadiness.test.ts",
+      "server/backendProductionGate.test.ts",
       "server/quotationGateState.test.ts",
       "server/routers.test.ts",
+      "server/_core/health.test.ts",
       "server/_core/sdk.test.ts",
     ],
     requiredForLocalCommit: true,
@@ -34,6 +36,12 @@ const steps = [
   {
     id: "cloudflare-deploy-readiness",
     command: ["pnpm", "deploy:cloudflare:readiness"],
+    requiredForLocalCommit: false,
+    requiredForProduction: true,
+  },
+  {
+    id: "node-backend-production-gate",
+    command: ["pnpm", "backend:gate"],
     requiredForLocalCommit: false,
     requiredForProduction: true,
   },

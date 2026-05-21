@@ -36,6 +36,12 @@ To verify that the Cloudflare deploy target is not accidentally static-only:
 pnpm deploy:cloudflare:readiness
 ```
 
+To verify the separate Node backend origin for `api.sirinx.co`:
+
+```bash
+pnpm backend:gate
+```
+
 ## What The Gate Checks
 
 1. TypeScript correctness with `pnpm check`.
@@ -45,8 +51,13 @@ pnpm deploy:cloudflare:readiness
    - root `wrangler.jsonc`, `wrangler.json`, or `wrangler.toml`
    - `dist/public` static output
    - Pages Functions or Worker entrypoint when a Node server bundle exists
-5. Quotation production readiness files, guards, and environment names.
-6. Read-only database schema preflight for:
+5. Node backend production gate:
+   - `dist/index.js` backend bundle
+   - `/healthz` and `/readyz` readiness endpoints
+   - `api.sirinx.co` reverse-proxy/systemd handoff templates
+   - backend runtime env names without printing values
+6. Quotation production readiness files, guards, and environment names.
+7. Read-only database schema preflight for:
    - `leads`
    - `contact_submissions`
    - `quotations`
@@ -123,11 +134,16 @@ Required groups:
 - VITE_APP_ID
 - SIRINX_API_ORIGIN
 
+The backend runtime also requires `JWT_SECRET`. Cloudflare Pages requires
+`SIRINX_API_ORIGIN=https://api.sirinx.co`, while the backend host may set
+`SIRINX_API_PUBLIC_ORIGIN=https://api.sirinx.co` for operator metadata.
+
 ### Phase 3 - Pre-Migration Approval
 
 ```bash
 pnpm quote:gates:external
 pnpm deploy:cloudflare:readiness
+pnpm backend:gate
 pnpm quote:readiness
 pnpm quote:db:preflight
 ```
