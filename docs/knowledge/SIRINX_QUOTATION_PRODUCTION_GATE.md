@@ -18,6 +18,12 @@ For pull-request CI and code review without production secrets:
 pnpm quote:gate:local
 ```
 
+To see the remaining external approval gates without printing secrets:
+
+```bash
+pnpm quote:gates:external
+```
+
 ## What The Gate Checks
 
 1. TypeScript correctness with `pnpm check`.
@@ -49,6 +55,14 @@ Production operation is blocked until these are configured in the target runtime
 - `OAUTH_SERVER_URL`
 - `VITE_OAUTH_PORTAL_URL`
 - `VITE_APP_ID`
+
+`pnpm quote:gates:external` reports these groups as `configured` or `missing`
+without printing values. It also keeps two manual gates visible: GitHub Actions
+billing/account status and Cloudflare production deploy approval.
+
+Current database adapter is MySQL through Drizzle and `mysql2`. Do not point this
+build at Supabase Postgres without a separate adapter/migration plan covering SQL
+dialect, driver, schema, RLS policy, and preflight changes.
 
 ## Production Sequence
 
