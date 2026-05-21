@@ -75,6 +75,7 @@ ${table(gateRows, ["Gate", "Status", "Owner", "Next action"])}
 \`\`\`bash
 pnpm quote:gate:local
 pnpm quote:smoke
+pnpm deploy:cloudflare:readiness
 pnpm quote:gates:external
 pnpm quote:approval:packet
 \`\`\`
@@ -96,6 +97,7 @@ Required groups:
 
 \`\`\`bash
 pnpm quote:gates:external
+pnpm deploy:cloudflare:readiness
 pnpm quote:readiness
 pnpm quote:db:preflight
 \`\`\`
@@ -116,7 +118,8 @@ Run this phase only after the target database and rollback plan are approved.
 
 \`\`\`bash
 pnpm build
-# Deploy through the approved Cloudflare pipeline.
+# Deploy through the approved Cloudflare pipeline only after
+# pnpm deploy:cloudflare:readiness and pnpm quote:gate pass.
 SIRINX_QUOTE_SMOKE_APPROVED=1 \\
 QUOTE_SMOKE_BASE_URL=https://preview-or-production.example \\
 QUOTE_SMOKE_EXPECT_QUEUED=0 \\
@@ -130,6 +133,11 @@ After smoke, confirm the quotation appears in \`/admin/quotations\` with an auth
 
 The current implementation is MySQL through Drizzle and \`mysql2\`. Supabase Postgres is not a drop-in replacement for \`DATABASE_URL\` in this branch.
 Using Supabase Postgres requires a separate adapter, schema, SQL dialect, migration, RLS, and preflight plan.
+
+## Cloudflare Runtime Decision
+
+Cloudflare Pages static upload serves \`dist/public\`; it does not automatically run the Node/Express bundle generated at \`dist/index.js\`.
+Before production deployment, either port the required quotation API routes to Pages Functions/Workers or run \`node dist/index.js\` on a separate backend host and route API traffic there.
 
 ## Current Next Actions
 

@@ -122,9 +122,9 @@ export function buildQuotationExternalGateReport(env = process.env) {
       status: "external_manual_check",
       owner: "Cloudflare account owner",
       evidence:
-        "No deploy command is run by this status check. Production cutover must wait for quote:gate productionReady=true.",
+        "No deploy command is run by this status check. Production cutover must wait for quote:gate productionReady=true and deploy:cloudflare:readiness ready=true.",
       nextAction:
-        "Deploy only after quote:gate passes with target env and db preflight, then run one approved production smoke.",
+        "Run pnpm deploy:cloudflare:readiness, confirm API hosting strategy, deploy only after quote:gate passes with target env and db preflight, then run one approved production smoke.",
     },
   ];
 

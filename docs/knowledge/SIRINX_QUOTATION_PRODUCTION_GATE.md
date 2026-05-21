@@ -30,13 +30,23 @@ To generate the reviewer-facing approval packet:
 pnpm quote:approval:packet
 ```
 
+To verify that the Cloudflare deploy target is not accidentally static-only:
+
+```bash
+pnpm deploy:cloudflare:readiness
+```
+
 ## What The Gate Checks
 
 1. TypeScript correctness with `pnpm check`.
 2. Quotation, router, and auth SDK regression tests.
 3. Production build integrity.
-4. Quotation production readiness files, guards, and environment names.
-5. Read-only database schema preflight for:
+4. Cloudflare deploy metadata:
+   - root `wrangler.jsonc`, `wrangler.json`, or `wrangler.toml`
+   - `dist/public` static output
+   - Pages Functions or Worker entrypoint when a Node server bundle exists
+5. Quotation production readiness files, guards, and environment names.
+6. Read-only database schema preflight for:
    - `leads`
    - `contact_submissions`
    - `quotations`
@@ -70,6 +80,16 @@ Current database adapter is MySQL through Drizzle and `mysql2`. Do not point thi
 build at Supabase Postgres without a separate adapter/migration plan covering SQL
 dialect, driver, schema, RLS policy, and preflight changes.
 
+Cloudflare Pages static upload only serves `dist/public`; it does not run the
+Node/Express bundle generated at `dist/index.js`. Keep quotation API deployment
+blocked until one of these is true:
+
+- The required `/api/trpc/quotation.*` paths are ported to Pages Functions or a Worker.
+- A separate Node backend host runs `node dist/index.js` and the public site routes API traffic to it.
+
+`pnpm deploy:cloudflare:readiness` is intentionally metadata-only. It does not
+deploy, mutate Cloudflare settings, read secrets, or send traffic.
+
 ## Production Sequence
 
 ### Phase 1 - Local Review
@@ -77,6 +97,7 @@ dialect, driver, schema, RLS policy, and preflight changes.
 ```bash
 pnpm quote:gate:local
 pnpm quote:smoke
+pnpm deploy:cloudflare:readiness
 pnpm quote:gates:external
 pnpm quote:approval:packet
 ```
@@ -90,6 +111,7 @@ or print their values.
 
 ```bash
 pnpm quote:gates:external
+pnpm deploy:cloudflare:readiness
 pnpm quote:readiness
 pnpm quote:db:preflight
 ```
@@ -166,4 +188,5 @@ The smoke quotation must prove:
 - Do not run `pnpm db:push` without confirming the target database.
 - Do not send a real customer notification without a test recipient or explicit production approval.
 - Do not deploy if `pnpm quote:gate` reports `productionReady=false`.
+- Do not deploy API-dependent quotation features as static Pages only.
 - Keep pull-request CI on `pnpm quote:gate:local`; production readiness stays a separate deployment gate.

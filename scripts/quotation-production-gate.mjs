@@ -16,6 +16,7 @@ const steps = [
       "pnpm",
       "test",
       "client/src/test/quotation.test.ts",
+      "server/cloudflareDeployReadiness.test.ts",
       "server/quotationGateState.test.ts",
       "server/routers.test.ts",
       "server/_core/sdk.test.ts",
@@ -27,6 +28,12 @@ const steps = [
     id: "production-build",
     command: ["pnpm", "build"],
     requiredForLocalCommit: true,
+    requiredForProduction: true,
+  },
+  {
+    id: "cloudflare-deploy-readiness",
+    command: ["pnpm", "deploy:cloudflare:readiness"],
+    requiredForLocalCommit: false,
     requiredForProduction: true,
   },
   {

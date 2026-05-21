@@ -7,7 +7,7 @@ It is generated from local metadata only. It does not print secrets, run migrati
 
 ## Snapshot
 
-- Generated at: 2026-05-21T05:16:35.532Z
+- Generated at: 2026-05-21T15:01:09.165Z
 - Branch: codex/home-solution-seo-hydration
 - Ready: no
 - Machine-ready: no
@@ -34,7 +34,7 @@ It is generated from local metadata only. It does not print secrets, run migrati
 | database_adapter_decision | locked_mysql_adapter | Backend lead | Do not point this build at Supabase Postgres unless the schema, driver, SQL dialect, RLS policy, and migration plan are updated together. |
 | notification_delivery | blocked | Sales ops / integration owner | Configure Forge notification endpoint and key in the target runtime. |
 | admin_oauth | blocked | Auth owner | Configure OAUTH_SERVER_URL, VITE_OAUTH_PORTAL_URL, and VITE_APP_ID. |
-| cloudflare_deploy | external_manual_check | Cloudflare account owner | Deploy only after quote:gate passes with target env and db preflight, then run one approved production smoke. |
+| cloudflare_deploy | external_manual_check | Cloudflare account owner | Run pnpm deploy:cloudflare:readiness, confirm API hosting strategy, deploy only after quote:gate passes with target env and db preflight, then run one approved production smoke. |
 
 ## Required Sequence
 
@@ -43,6 +43,7 @@ It is generated from local metadata only. It does not print secrets, run migrati
 ```bash
 pnpm quote:gate:local
 pnpm quote:smoke
+pnpm deploy:cloudflare:readiness
 pnpm quote:gates:external
 pnpm quote:approval:packet
 ```
@@ -64,6 +65,7 @@ Required groups:
 
 ```bash
 pnpm quote:gates:external
+pnpm deploy:cloudflare:readiness
 pnpm quote:readiness
 pnpm quote:db:preflight
 ```
@@ -84,7 +86,8 @@ Run this phase only after the target database and rollback plan are approved.
 
 ```bash
 pnpm build
-# Deploy through the approved Cloudflare pipeline.
+# Deploy through the approved Cloudflare pipeline only after
+# pnpm deploy:cloudflare:readiness and pnpm quote:gate pass.
 SIRINX_QUOTE_SMOKE_APPROVED=1 \
 QUOTE_SMOKE_BASE_URL=https://preview-or-production.example \
 QUOTE_SMOKE_EXPECT_QUEUED=0 \
@@ -99,6 +102,11 @@ After smoke, confirm the quotation appears in `/admin/quotations` with an authen
 The current implementation is MySQL through Drizzle and `mysql2`. Supabase Postgres is not a drop-in replacement for `DATABASE_URL` in this branch.
 Using Supabase Postgres requires a separate adapter, schema, SQL dialect, migration, RLS, and preflight plan.
 
+## Cloudflare Runtime Decision
+
+Cloudflare Pages static upload serves `dist/public`; it does not automatically run the Node/Express bundle generated at `dist/index.js`.
+Before production deployment, either port the required quotation API routes to Pages Functions/Workers or run `node dist/index.js` on a separate backend host and route API traffic there.
+
 ## Current Next Actions
 
 - Configure env group database: DATABASE_URL
@@ -111,4 +119,4 @@ Using Supabase Postgres requires a separate adapter, schema, SQL dialect, migrat
 - notification_delivery: Configure Forge notification endpoint and key in the target runtime.
 - admin_oauth: Configure OAUTH_SERVER_URL, VITE_OAUTH_PORTAL_URL, and VITE_APP_ID.
 - github_actions_billing: Resolve GitHub billing/account lock, then re-enable pull_request/push triggers for quote-gate workflow.
-- cloudflare_deploy: Deploy only after quote:gate passes with target env and db preflight, then run one approved production smoke.
+- cloudflare_deploy: Run pnpm deploy:cloudflare:readiness, confirm API hosting strategy, deploy only after quote:gate passes with target env and db preflight, then run one approved production smoke.

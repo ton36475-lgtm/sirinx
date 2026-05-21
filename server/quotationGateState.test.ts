@@ -44,7 +44,7 @@ describe("quotation external gate state", () => {
     );
     expect(report.nextActions).toEqual([
       "github_actions_billing: Resolve GitHub billing/account lock, then re-enable pull_request/push triggers for quote-gate workflow.",
-      "cloudflare_deploy: Deploy only after quote:gate passes with target env and db preflight, then run one approved production smoke.",
+      "cloudflare_deploy: Run pnpm deploy:cloudflare:readiness, confirm API hosting strategy, deploy only after quote:gate passes with target env and db preflight, then run one approved production smoke.",
     ]);
   });
 });
