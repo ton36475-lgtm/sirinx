@@ -24,6 +24,12 @@ To see the remaining external approval gates without printing secrets:
 pnpm quote:gates:external
 ```
 
+To generate the reviewer-facing approval packet:
+
+```bash
+pnpm quote:approval:packet
+```
+
 ## What The Gate Checks
 
 1. TypeScript correctness with `pnpm check`.
@@ -66,13 +72,45 @@ dialect, driver, schema, RLS policy, and preflight changes.
 
 ## Production Sequence
 
-Run this sequence only after the target environment has the required variables:
+### Phase 1 - Local Review
 
 ```bash
 pnpm quote:gate:local
-pnpm quote:gate
+pnpm quote:smoke
+pnpm quote:gates:external
+pnpm quote:approval:packet
+```
+
+### Phase 2 - Target Runtime Setup
+
+Configure the required runtime variables in the target environment. Do not commit
+or print their values.
+
+### Phase 3 - Pre-Migration Approval
+
+```bash
+pnpm quote:gates:external
+pnpm quote:readiness
+pnpm quote:db:preflight
+```
+
+`pnpm quote:db:preflight` may fail before the migration exists. Treat that as a
+recorded blocker, confirm the target database, and verify rollback before running
+any migration.
+
+### Phase 4 - Migration And Post-Migration Gate
+
+```bash
 pnpm db:push
 pnpm quote:db:preflight
+pnpm quote:gate
+```
+
+Run this phase only after the target database and rollback plan are approved.
+
+### Phase 5 - Deploy And Smoke
+
+```bash
 pnpm build
 ```
 

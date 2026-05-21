@@ -98,9 +98,9 @@ const report = {
   },
   nextActions: ready
     ? [
-        "Run pnpm db:push against the intended production database.",
-        "Deploy the application with the same DATABASE_URL and notification environment.",
-        "Create one production smoke quotation and confirm it appears in /admin/quotations.",
+        "Confirm the intended target database and rollback plan.",
+        "Run pnpm db:push against the approved target database.",
+        "Re-run pnpm quote:db:preflight and pnpm quote:gate before deployment.",
       ]
     : [
         ...missingFiles.map(item => `Add missing file: ${item.file}`),

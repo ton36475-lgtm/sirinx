@@ -98,7 +98,7 @@ const report = {
     ? localReady
       ? [
           "Local quotation gate is ready for code review.",
-          "Run pnpm quote:gate with production environment variables before migration or deploy.",
+          "Run pnpm quote:gates:external and pnpm quote:readiness with target runtime variables before migration or deploy.",
         ]
       : [
           ...localBlockers.map(
@@ -107,9 +107,9 @@ const report = {
         ]
     : productionReady
     ? [
-        "Run pnpm db:push against the intended production database.",
+        "Production gate passed for the current runtime environment.",
         "Deploy with the same environment variables used by this gate.",
-        "Create one approved production quotation smoke test.",
+        "Create one approved production quotation smoke test after deploy.",
         "Confirm it appears in /admin/quotations with an admin session.",
       ]
     : [
