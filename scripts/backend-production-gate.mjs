@@ -29,6 +29,26 @@ const REQUIRED_FILES = [
     reason: "long-running backend service handoff",
   },
   {
+    id: "api_dockerfile",
+    file: "infra/docker/Dockerfile.sirinx-api",
+    reason: "containerized backend runtime handoff",
+  },
+  {
+    id: "api_compose_example",
+    file: "infra/docker/docker-compose.sirinx-api.example.yml",
+    reason: "self-host container orchestration example",
+  },
+  {
+    id: "api_env_example",
+    file: "infra/docker/api.env.example",
+    reason: "non-secret env name template for docker compose validation",
+  },
+  {
+    id: "dockerignore",
+    file: ".dockerignore",
+    reason: "keeps env files, runtime output, and local caches out of image build context",
+  },
+  {
     id: "node_backend_runbook",
     file: "docs/knowledge/SIRINX_NODE_BACKEND_DEPLOYMENT.md",
     reason: "operator runbook before production deploy",
@@ -109,6 +129,20 @@ function checkEnvGroup(env, group) {
       configuredNames.length > 0
         ? null
         : `Configure one of ${group.names.join(" or ")}: ${group.reason}`,
+  };
+}
+
+function checkSourceContains(cwd, id, file, patterns, nextAction) {
+  const absolutePath = path.join(cwd, file);
+  const content = fs.existsSync(absolutePath)
+    ? fs.readFileSync(absolutePath, "utf8")
+    : "";
+  const missingPatterns = patterns.filter(pattern => !pattern.test(content));
+  return {
+    id,
+    file,
+    status: missingPatterns.length === 0 ? "ok" : "missing",
+    nextAction: missingPatterns.length === 0 ? null : nextAction,
   };
 }
 
@@ -204,6 +238,22 @@ export async function buildBackendProductionGateReport({
     : {};
   const fileChecks = REQUIRED_FILES.map(item => checkFile(cwd, item));
   const envChecks = REQUIRED_ENV_GROUPS.map(group => checkEnvGroup(env, group));
+  const sourceChecks = [
+    checkSourceContains(
+      cwd,
+      "express_trust_proxy",
+      "server/_core/index.ts",
+      [/app\.set\(["']trust proxy["']/],
+      "Configure Express trust proxy so backend IP/protocol handling is explicit behind Nginx or Cloudflare."
+    ),
+    checkSourceContains(
+      cwd,
+      "graceful_shutdown",
+      "server/_core/index.ts",
+      [/SIGTERM/, /server\.close/],
+      "Handle SIGTERM/SIGINT so systemd and container restarts stop the backend cleanly."
+    ),
+  ];
   const scripts = packageJson.scripts ?? {};
   const scriptChecks = [
     {
@@ -249,6 +299,11 @@ export async function buildBackendProductionGateReport({
       status: item.status,
       nextAction: item.nextAction,
     })),
+    ...sourceChecks.filter(item => item.status !== "ok").map(item => ({
+      id: item.id,
+      status: item.status,
+      nextAction: item.nextAction,
+    })),
     ...envChecks.filter(item => item.status !== "configured").map(item => ({
       id: item.id,
       status: item.status,
@@ -284,6 +339,7 @@ export async function buildBackendProductionGateReport({
     backendStrategy: "Cloudflare Pages frontend + Node Express/tRPC backend origin",
     safeOrigin: origin.safeOrigin,
     files: fileChecks,
+    source: sourceChecks,
     scripts: scriptChecks,
     environment: envChecks,
     originProbe,

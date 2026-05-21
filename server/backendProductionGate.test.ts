@@ -31,11 +31,18 @@ const requiredFiles = {
       start: "cross-env NODE_ENV=production node dist/index.js",
     },
   }),
-  "server/_core/index.ts": "console.log('server');",
+  "server/_core/index.ts": [
+    "app.set('trust proxy', 'loopback');",
+    "process.once('SIGTERM', () => server.close());",
+  ].join("\n"),
   "server/_core/health.ts": "export {};",
   "dist/index.js": "console.log('bundle');",
   "infra/nginx/api.sirinx.co.conf.example": "server_name api.sirinx.co;",
   "infra/systemd/sirinx-api.service.example": "ExecStart=/usr/bin/node dist/index.js",
+  "infra/docker/Dockerfile.sirinx-api": "CMD [\"node\", \"dist/index.js\"]",
+  "infra/docker/docker-compose.sirinx-api.example.yml": "services:",
+  "infra/docker/api.env.example": "DATABASE_URL=\nJWT_SECRET=\n",
+  ".dockerignore": ".env\nruntime-output\nnode_modules\n",
   "docs/knowledge/SIRINX_NODE_BACKEND_DEPLOYMENT.md": "# Backend",
 };
 
@@ -66,6 +73,7 @@ describe("backend production gate", () => {
     expect(report.guardrail).toContain("does not print secrets");
     expect(report.blockers.map(blocker => blocker.id)).toContain("node_server_source");
     expect(report.blockers.map(blocker => blocker.id)).toContain("backend_origin");
+    expect(report.blockers.map(blocker => blocker.id)).toContain("express_trust_proxy");
     expect(JSON.stringify(report)).not.toContain("placeholder");
   });
 
@@ -94,6 +102,7 @@ describe("backend production gate", () => {
     expect(report.safeOrigin).toBe("https://api.example.invalid");
     expect(report.originProbe.status).toBe("ok");
     expect(report.originProbe.service).toBe("sirinx-node-backend");
+    expect(report.source.every(check => check.status === "ok")).toBe(true);
     expect(report.blockers).toEqual([]);
     expect(JSON.stringify(report)).not.toContain("mysql://placeholder");
   });

@@ -54,6 +54,22 @@ Check quotation production readiness after backend readiness:
 pnpm quote:gate
 ```
 
+Build the dedicated backend container image:
+
+```bash
+docker build -f infra/docker/Dockerfile.sirinx-api -t sirinx/api:local .
+```
+
+Run the container example on a self-hosted box after `/etc/sirinx/api.env` is written:
+
+```bash
+docker compose -f infra/docker/docker-compose.sirinx-api.example.yml up -d
+```
+
+The checked-in compose file uses `infra/docker/api.env.example` so `docker compose config`
+can validate locally without real secrets. For production, copy that file to a private
+host path, fill values there, and update `env_file` during host setup.
+
 ## Required Runtime Environment
 
 Configure these in the backend runtime. Do not commit or print values.
@@ -73,6 +89,7 @@ Configure this in Cloudflare Pages production variables:
 Optional backend metadata:
 
 - `PORT=3000`
+- `SIRINX_TRUST_PROXY=loopback`
 - `SIRINX_API_PUBLIC_ORIGIN=https://api.sirinx.co`
 - `SIRINX_PUBLIC_BASE_URL=https://www.sirinx.co`
 - `PUBLIC_PRIMARY_HOST=www.sirinx.co`
@@ -83,6 +100,9 @@ Use these as reviewed templates. Replace paths and users only on the target host
 
 - `infra/systemd/sirinx-api.service.example`
 - `infra/nginx/api.sirinx.co.conf.example`
+- `infra/docker/Dockerfile.sirinx-api`
+- `infra/docker/docker-compose.sirinx-api.example.yml`
+- `infra/docker/api.env.example`
 
 ## Deployment Sequence
 
@@ -117,3 +137,10 @@ Production remains blocked until:
 - Do not point `SIRINX_API_ORIGIN` at a developer tunnel.
 - Do not deploy API-dependent quote features as static-only Pages.
 - Do not send real customer notifications until the smoke recipient is approved.
+
+## Runtime Hardening
+
+- Express `trust proxy` is explicit. Default production value is `loopback`; override with `SIRINX_TRUST_PROXY` only when the reverse-proxy chain is known.
+- `SIGTERM` and `SIGINT` close the HTTP server before exit, so systemd and container restarts are controlled.
+- Docker builds use `.dockerignore` to exclude `.env`, runtime output, local caches, and source-control metadata from the image context.
+- `/readyz` should be used for deploy gating; `/healthz` is only liveness.

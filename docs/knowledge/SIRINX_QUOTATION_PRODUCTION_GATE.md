@@ -55,6 +55,8 @@ pnpm backend:gate
    - `dist/index.js` backend bundle
    - `/healthz` and `/readyz` readiness endpoints
    - `api.sirinx.co` reverse-proxy/systemd handoff templates
+   - Docker/self-host backend handoff templates
+   - explicit proxy trust and graceful shutdown behavior
    - backend runtime env names without printing values
 6. Quotation production readiness files, guards, and environment names.
 7. Read-only database schema preflight for:
