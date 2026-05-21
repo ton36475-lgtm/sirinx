@@ -7,7 +7,7 @@ It is generated from local metadata only. It does not print secrets, run migrati
 
 ## Snapshot
 
-- Generated at: 2026-05-21T15:01:09.165Z
+- Generated at: 2026-05-21T15:13:31.939Z
 - Branch: codex/home-solution-seo-hydration
 - Ready: no
 - Machine-ready: no
@@ -24,6 +24,7 @@ It is generated from local metadata only. It does not print secrets, run migrati
 | oauth_server | missing | OAUTH_SERVER_URL | 0 | admin-quotations |
 | oauth_portal | missing | VITE_OAUTH_PORTAL_URL | 0 | admin-login-url |
 | oauth_app_id | missing | VITE_APP_ID | 0 | admin-login-url |
+| cloudflare_api_origin | missing | SIRINX_API_ORIGIN | 0 | pages-function-api-proxy, production-smoke |
 
 ## Approval Gates
 
@@ -34,7 +35,7 @@ It is generated from local metadata only. It does not print secrets, run migrati
 | database_adapter_decision | locked_mysql_adapter | Backend lead | Do not point this build at Supabase Postgres unless the schema, driver, SQL dialect, RLS policy, and migration plan are updated together. |
 | notification_delivery | blocked | Sales ops / integration owner | Configure Forge notification endpoint and key in the target runtime. |
 | admin_oauth | blocked | Auth owner | Configure OAUTH_SERVER_URL, VITE_OAUTH_PORTAL_URL, and VITE_APP_ID. |
-| cloudflare_deploy | external_manual_check | Cloudflare account owner | Run pnpm deploy:cloudflare:readiness, confirm API hosting strategy, deploy only after quote:gate passes with target env and db preflight, then run one approved production smoke. |
+| cloudflare_deploy | blocked | Cloudflare account owner | Configure SIRINX_API_ORIGIN in the Cloudflare Pages project so /api/trpc can proxy to the approved Node backend. |
 
 ## Required Sequence
 
@@ -60,6 +61,7 @@ Required groups:
 - OAUTH_SERVER_URL
 - VITE_OAUTH_PORTAL_URL
 - VITE_APP_ID
+- SIRINX_API_ORIGIN
 
 ### Phase 3 - Pre-Migration Approval
 
@@ -105,7 +107,8 @@ Using Supabase Postgres requires a separate adapter, schema, SQL dialect, migrat
 ## Cloudflare Runtime Decision
 
 Cloudflare Pages static upload serves `dist/public`; it does not automatically run the Node/Express bundle generated at `dist/index.js`.
-Before production deployment, either port the required quotation API routes to Pages Functions/Workers or run `node dist/index.js` on a separate backend host and route API traffic there.
+Current first-production strategy is Cloudflare Pages static frontend plus a Pages Function proxy for `/api/trpc`.
+The proxy must fail closed until `SIRINX_API_ORIGIN` points at the approved Node backend origin running the existing Express/tRPC server.
 
 ## Current Next Actions
 
@@ -115,8 +118,9 @@ Before production deployment, either port the required quotation API routes to P
 - Configure env group oauth_server: OAUTH_SERVER_URL
 - Configure env group oauth_portal: VITE_OAUTH_PORTAL_URL
 - Configure env group oauth_app_id: VITE_APP_ID
+- Configure env group cloudflare_api_origin: SIRINX_API_ORIGIN
 - database_runtime: Configure DATABASE_URL in the target runtime without committing or printing it.
 - notification_delivery: Configure Forge notification endpoint and key in the target runtime.
 - admin_oauth: Configure OAUTH_SERVER_URL, VITE_OAUTH_PORTAL_URL, and VITE_APP_ID.
+- cloudflare_deploy: Configure SIRINX_API_ORIGIN in the Cloudflare Pages project so /api/trpc can proxy to the approved Node backend.
 - github_actions_billing: Resolve GitHub billing/account lock, then re-enable pull_request/push triggers for quote-gate workflow.
-- cloudflare_deploy: Run pnpm deploy:cloudflare:readiness, confirm API hosting strategy, deploy only after quote:gate passes with target env and db preflight, then run one approved production smoke.

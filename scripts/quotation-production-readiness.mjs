@@ -39,6 +39,10 @@ const requiredEnv = [
     name: "VITE_APP_ID",
     reason: "identifies this website to the OAuth portal",
   },
+  {
+    name: "SIRINX_API_ORIGIN",
+    reason: "lets Cloudflare Pages Functions proxy /api/trpc to the approved Node backend",
+  },
 ];
 
 function exists(relativePath) {

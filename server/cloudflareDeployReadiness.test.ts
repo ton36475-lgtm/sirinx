@@ -58,7 +58,17 @@ describe("cloudflare deploy readiness", () => {
           start: "node dist/index.js",
         },
       }),
-      "wrangler.jsonc": "{\n  \"name\": \"sirinx-preview\"\n}",
+      "wrangler.jsonc": [
+        "{",
+        "  \"name\": \"sirinx-preview\",",
+        "  \"pages_build_output_dir\": \"./dist/public\"",
+        "}",
+      ].join("\n"),
+      "client/public/_routes.json": JSON.stringify({
+        version: 1,
+        include: ["/api/*"],
+        exclude: ["/*"],
+      }),
       "functions/api/trpc.ts": "export const onRequest = () => new Response('ok');",
       "dist/public/index.html": "<div>SIRINX</div>",
       "dist/index.js": "console.log('node api');",

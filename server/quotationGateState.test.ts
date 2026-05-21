@@ -8,6 +8,7 @@ const configuredEnv = {
   OAUTH_SERVER_URL: "https://auth.example.invalid",
   VITE_OAUTH_PORTAL_URL: "https://portal.example.invalid",
   VITE_APP_ID: "sirinx-placeholder",
+  SIRINX_API_ORIGIN: "https://api.example.invalid",
 };
 
 describe("quotation external gate state", () => {

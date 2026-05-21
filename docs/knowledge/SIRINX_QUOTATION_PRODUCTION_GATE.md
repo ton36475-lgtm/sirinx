@@ -71,6 +71,7 @@ Production operation is blocked until these are configured in the target runtime
 - `OAUTH_SERVER_URL`
 - `VITE_OAUTH_PORTAL_URL`
 - `VITE_APP_ID`
+- `SIRINX_API_ORIGIN`
 
 `pnpm quote:gates:external` reports these groups as `configured` or `missing`
 without printing values. It also keeps two manual gates visible: GitHub Actions
@@ -86,6 +87,11 @@ blocked until one of these is true:
 
 - The required `/api/trpc/quotation.*` paths are ported to Pages Functions or a Worker.
 - A separate Node backend host runs `node dist/index.js` and the public site routes API traffic to it.
+
+Current first-production strategy is **Cloudflare Pages static frontend plus a
+Pages Function proxy for `/api/trpc`**. The proxy must fail closed until
+`SIRINX_API_ORIGIN` points at the approved Node backend origin, for example an
+`api.sirinx.co` host that runs the existing Express/tRPC server.
 
 `pnpm deploy:cloudflare:readiness` is intentionally metadata-only. It does not
 deploy, mutate Cloudflare settings, read secrets, or send traffic.
@@ -106,6 +112,16 @@ pnpm quote:approval:packet
 
 Configure the required runtime variables in the target environment. Do not commit
 or print their values.
+
+Required groups:
+
+- DATABASE_URL
+- BUILT_IN_FORGE_API_URL or FORGE_API_URL
+- BUILT_IN_FORGE_API_KEY or FORGE_API_KEY
+- OAUTH_SERVER_URL
+- VITE_OAUTH_PORTAL_URL
+- VITE_APP_ID
+- SIRINX_API_ORIGIN
 
 ### Phase 3 - Pre-Migration Approval
 
@@ -189,4 +205,5 @@ The smoke quotation must prove:
 - Do not send a real customer notification without a test recipient or explicit production approval.
 - Do not deploy if `pnpm quote:gate` reports `productionReady=false`.
 - Do not deploy API-dependent quotation features as static Pages only.
+- Do not point `SIRINX_API_ORIGIN` at an unapproved host or a developer tunnel.
 - Keep pull-request CI on `pnpm quote:gate:local`; production readiness stays a separate deployment gate.

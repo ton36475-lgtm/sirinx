@@ -35,6 +35,12 @@ export const envGroups = [
     names: ["VITE_APP_ID"],
     requiredFor: ["admin-login-url"],
   },
+  {
+    id: "cloudflare_api_origin",
+    label: "Cloudflare API origin",
+    names: ["SIRINX_API_ORIGIN"],
+    requiredFor: ["pages-function-api-proxy", "production-smoke"],
+  },
 ];
 
 function hasAny(env, names) {
@@ -64,6 +70,7 @@ export function buildQuotationExternalGateReport(env = process.env) {
     hasAny(env, ["OAUTH_SERVER_URL"]) &&
     hasAny(env, ["VITE_OAUTH_PORTAL_URL"]) &&
     hasAny(env, ["VITE_APP_ID"]);
+  const apiOriginConfigured = hasAny(env, ["SIRINX_API_ORIGIN"]);
 
   const gates = [
     {
@@ -119,12 +126,14 @@ export function buildQuotationExternalGateReport(env = process.env) {
     },
     {
       id: "cloudflare_deploy",
-      status: "external_manual_check",
+      status: apiOriginConfigured ? "external_manual_check" : "blocked",
       owner: "Cloudflare account owner",
-      evidence:
-        "No deploy command is run by this status check. Production cutover must wait for quote:gate productionReady=true and deploy:cloudflare:readiness ready=true.",
-      nextAction:
-        "Run pnpm deploy:cloudflare:readiness, confirm API hosting strategy, deploy only after quote:gate passes with target env and db preflight, then run one approved production smoke.",
+      evidence: apiOriginConfigured
+        ? "No deploy command is run by this status check. Production cutover must wait for quote:gate productionReady=true and deploy:cloudflare:readiness ready=true."
+        : "SIRINX_API_ORIGIN is missing, so the Pages Function API proxy cannot reach the Node backend.",
+      nextAction: apiOriginConfigured
+        ? "Run pnpm deploy:cloudflare:readiness, confirm API hosting strategy, deploy only after quote:gate passes with target env and db preflight, then run one approved production smoke."
+        : "Configure SIRINX_API_ORIGIN in the Cloudflare Pages project so /api/trpc can proxy to the approved Node backend.",
     },
   ];
 

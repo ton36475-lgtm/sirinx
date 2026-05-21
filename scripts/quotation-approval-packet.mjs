@@ -92,6 +92,7 @@ Required groups:
 - OAUTH_SERVER_URL
 - VITE_OAUTH_PORTAL_URL
 - VITE_APP_ID
+- SIRINX_API_ORIGIN
 
 ### Phase 3 - Pre-Migration Approval
 
@@ -137,7 +138,8 @@ Using Supabase Postgres requires a separate adapter, schema, SQL dialect, migrat
 ## Cloudflare Runtime Decision
 
 Cloudflare Pages static upload serves \`dist/public\`; it does not automatically run the Node/Express bundle generated at \`dist/index.js\`.
-Before production deployment, either port the required quotation API routes to Pages Functions/Workers or run \`node dist/index.js\` on a separate backend host and route API traffic there.
+Current first-production strategy is Cloudflare Pages static frontend plus a Pages Function proxy for \`/api/trpc\`.
+The proxy must fail closed until \`SIRINX_API_ORIGIN\` points at the approved Node backend origin running the existing Express/tRPC server.
 
 ## Current Next Actions
 
