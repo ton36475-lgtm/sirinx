@@ -16,6 +16,7 @@ const steps = [
       "pnpm",
       "test",
       "client/src/test/quotation.test.ts",
+      "server/quotationGateState.test.ts",
       "server/routers.test.ts",
       "server/_core/sdk.test.ts",
     ],
