@@ -1,0 +1,36 @@
+FROM node:20-bookworm-slim AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+WORKDIR /app
+RUN corepack enable && corepack prepare pnpm@10.4.1 --activate
+
+FROM base AS deps
+COPY package.json pnpm-lock.yaml ./
+COPY patches ./patches
+RUN pnpm install --frozen-lockfile
+
+FROM deps AS build
+COPY . .
+RUN pnpm check
+RUN pnpm test server/_core/health.test.ts server/backendProductionGate.test.ts server/cloudflareApiProxy.test.ts server/cloudflareDeployReadiness.test.ts
+RUN pnpm build
+
+FROM base AS runtime
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV SIRINX_TRUST_PROXY=loopback
+WORKDIR /app
+RUN groupadd --system sirinx && useradd --system --gid sirinx --home-dir /app sirinx
+COPY package.json pnpm-lock.yaml ./
+COPY patches ./patches
+RUN pnpm install --prod --frozen-lockfile && pnpm store prune
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/client ./client
+COPY --from=build /app/drizzle ./drizzle
+COPY --from=build /app/shared ./shared
+COPY --from=build /app/brands ./brands
+RUN mkdir -p /app/runtime-output && chown -R sirinx:sirinx /app
+USER sirinx
+EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 CMD node -e "fetch('http://127.0.0.1:3000/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+CMD ["node", "dist/index.js"]

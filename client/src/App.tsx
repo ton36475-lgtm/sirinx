@@ -5,6 +5,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import Layout from "./components/Layout";
 import RouteSeo from "./components/RouteSeo";
+import { TrpcProvider } from "./lib/trpc-provider";
 import { usePageViewTracking } from "@/hooks/useAnalytics";
 import AntiCopy from "./components/AntiCopy";
 import AILiveAvatarMark from "./components/AILiveAvatarMark";
@@ -25,18 +26,11 @@ const Partner = lazy(() => import("./pages/Partner"));
 const Strategy = lazy(() => import("./pages/Strategy"));
 const SolarCarport = lazy(() => import("./pages/SolarCarport"));
 const Pricing = lazy(() => import("./pages/Pricing"));
+const Quote = lazy(() => import("./pages/Quote"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Cookies = lazy(() => import("./pages/Cookies"));
-const DashboardLayout = lazy(() => import("./components/DashboardLayout"));
-const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
-const AdminLeads = lazy(() => import("./pages/admin/Leads"));
-const AdminBlogCMS = lazy(() => import("./pages/admin/BlogCMS"));
-const AdminContactSubmissions = lazy(
-  () => import("./pages/admin/ContactSubmissions")
-);
-const AdminAnalytics = lazy(() => import("./pages/admin/Analytics"));
-const AdminAgentMonitor = lazy(() => import("./pages/admin/AgentMonitor"));
+const AdminRouter = lazy(() => import("./pages/admin/AdminRouter"));
 const FloatingChatWidget = lazy(
   () => import("./components/FloatingChatWidget")
 );
@@ -134,6 +128,7 @@ function PublicRouter() {
         <Route path="/solar-carport/:province" component={SolarCarport} />
         <Route path="/solar-carport" component={SolarCarport} />
         <Route path="/pricing" component={Pricing} />
+        <Route path="/quote" component={Quote} />
         <Route path="/solutions" component={Solutions} />
         <Route path="/home-solution" component={HomeSolution} />
         <Route path="/industries" component={Industries} />
@@ -155,22 +150,6 @@ function PublicRouter() {
   );
 }
 
-function AdminRouter() {
-  return (
-    <DashboardLayout>
-      <Switch>
-        <Route path="/admin" component={AdminDashboard} />
-        <Route path="/admin/leads" component={AdminLeads} />
-        <Route path="/admin/blog" component={AdminBlogCMS} />
-        <Route path="/admin/contacts" component={AdminContactSubmissions} />
-        <Route path="/admin/analytics" component={AdminAnalytics} />
-        <Route path="/admin/agent-monitor" component={AdminAgentMonitor} />
-        <Route component={NotFound} />
-      </Switch>
-    </DashboardLayout>
-  );
-}
-
 function isInternalHost() {
   if (typeof window === "undefined") return false;
 
@@ -188,23 +167,28 @@ function isInternalHost() {
   return false;
 }
 
+const adminRoutePaths = [
+  "/admin",
+  "/admin/leads",
+  "/admin/quotations",
+  "/admin/blog",
+  "/admin/contacts",
+  "/admin/analytics",
+  "/admin/agent-monitor",
+];
+
 function Router() {
   const internalRoutesEnabled = isInternalHost();
 
   return (
     <Switch>
-      {internalRoutesEnabled ? (
-        <Route path="/admin/:rest*" component={AdminRouter} />
-      ) : null}
-      {internalRoutesEnabled ? (
-        <Route path="/admin" component={AdminRouter} />
-      ) : null}
-      {!internalRoutesEnabled ? (
-        <Route path="/admin/:rest*" component={NotFound} />
-      ) : null}
-      {!internalRoutesEnabled ? (
-        <Route path="/admin" component={NotFound} />
-      ) : null}
+      {adminRoutePaths.map(path =>
+        internalRoutesEnabled ? (
+          <Route key={path} path={path} component={AdminRouter} />
+        ) : (
+          <Route key={path} path={path} component={NotFound} />
+        )
+      )}
       <Route component={PublicRouter} />
     </Switch>
   );
@@ -219,16 +203,18 @@ function App() {
   return (
     <ErrorBoundary>
       <LanguageProvider>
-        <ThemeProvider defaultTheme="dark" switchable>
-          <DeferredToaster />
-          <RouteSeo />
-          <PageViewTracker />
-          <AntiCopy enabled={import.meta.env.PROD} />
-          <Suspense fallback={<RouteFallback />}>
-            <Router />
-          </Suspense>
-          <DeferredFloatingChatWidget />
-        </ThemeProvider>
+        <TrpcProvider>
+          <ThemeProvider defaultTheme="dark" switchable>
+            <DeferredToaster />
+            <RouteSeo />
+            <PageViewTracker />
+            <AntiCopy enabled={import.meta.env.PROD} />
+            <Suspense fallback={<RouteFallback />}>
+              <Router />
+            </Suspense>
+            <DeferredFloatingChatWidget />
+          </ThemeProvider>
+        </TrpcProvider>
       </LanguageProvider>
     </ErrorBoundary>
   );

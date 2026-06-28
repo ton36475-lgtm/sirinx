@@ -565,6 +565,12 @@
     );
   }
 
+  .quotation-print-surface {
+    color-adjust: exact;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
   .sirinx-live-energy {
     position: fixed;
     inset: 0;
@@ -841,6 +847,48 @@
     .sirinx-avatar-watermark::after {
       animation-duration: 52s;
     }
+  }
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+
+  nav,
+  footer,
+  .quote-screen-only,
+  .sirinx-live-energy,
+  .sirinx-live-avatar-trigger,
+  .sirinx-avatar-button {
+    display: none !important;
+  }
+
+  .container {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  .quotation-print-surface {
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .quotation-print-surface table {
+    page-break-inside: auto;
+  }
+
+  .quotation-print-surface tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
   }
 }
 

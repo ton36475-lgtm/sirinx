@@ -1,0 +1,171 @@
+{
+  "brand": "SIRINX",
+  "currency": "THB",
+  "vat": 0.07,
+  "defaultValidityDays": 15,
+  "quotePrefix": "SIRINX-QT",
+  "defaultPanelId": "aiko-comet-3n-620",
+  "salesContact": {
+    "company": "SIRINX",
+    "phone": "+66 81 972 3969",
+    "email": "pitoon.sirinx@gmail.com",
+    "website": "www.sirinx.co",
+    "address": "600/99 Midtrapab Rd., Mueang Phitsanulok, Phitsanulok 65000, Thailand"
+  },
+  "panelCatalog": [
+    {
+      "id": "aiko-comet-3n-620",
+      "brand": "AIKO",
+      "model": "AIKO COMET 3N+ 72e",
+      "displayName": "AIKO COMET 3N+ 72e 620W",
+      "watts": 620,
+      "efficiencyPercent": 23.0,
+      "moduleType": "N-Type ABC dual-glass bifacial",
+      "dimensionsMm": "2382 x 1134 x 30",
+      "areaM2": 2.701,
+      "weightKg": 33.5,
+      "sourceUrl": "https://aikosolar.com/en/products/comet-3nplus72e-dual-glass/"
+    },
+    {
+      "id": "aiko-comet-3n-645",
+      "brand": "AIKO",
+      "model": "AIKO COMET 3N+ 72e",
+      "displayName": "AIKO COMET 3N+ 72e 645W",
+      "watts": 645,
+      "efficiencyPercent": 23.9,
+      "moduleType": "N-Type ABC dual-glass bifacial",
+      "dimensionsMm": "2382 x 1134 x 30",
+      "areaM2": 2.701,
+      "weightKg": 33.5,
+      "sourceUrl": "https://aikosolar.com/en/products/comet-3nplus72e-dual-glass/"
+    },
+    {
+      "id": "aiko-neostar-2p54-485",
+      "brand": "AIKO",
+      "model": "AIKO NEOSTAR 2P54",
+      "displayName": "AIKO NEOSTAR 2P54 Mono-Glass 485W",
+      "watts": 485,
+      "efficiencyPercent": 24.3,
+      "moduleType": "ABC mono-glass residential module",
+      "dimensionsMm": "1757 x 1134 x 30",
+      "areaM2": 1.993,
+      "weightKg": 22.5,
+      "sourceUrl": "https://aikosolar.com/en/products/neostar-2p54-mono-glass/"
+    }
+  ],
+  "services": [
+    {
+      "id": "solar-carport-start",
+      "name": "Solar Carport Start",
+      "category": "Solar Carport",
+      "description": "ระบบ Solar Carport สำหรับลานจอดขนาดเล็กถึงกลาง พร้อมประเมินโครงสร้างและ single-line concept",
+      "unit": "project",
+      "basePrice": 850000,
+      "pricePerKwp": 42500,
+      "minimumPrice": 450000,
+      "typicalCapacity": "10-30 kWp",
+      "recommendedFor": "อาคารสำนักงาน โรงแรมขนาดเล็ก ร้านอาหาร หรือบ้านโฮมออฟฟิศที่มีลานจอดหลายคัน",
+      "inclusions": [
+        "สำรวจหน้างานและประเมินพื้นที่จอดรถ",
+        "ออกแบบ concept Solar Carport พร้อม PV layout",
+        "ระบบ inverter และ protection ตามขนาดโครงการ",
+        "เอกสาร commissioning summary หลังส่งมอบ"
+      ]
+    },
+    {
+      "id": "solar-carport-pro",
+      "name": "Solar Carport Pro",
+      "category": "Solar Carport",
+      "description": "ระบบ Solar Carport สำหรับธุรกิจที่ต้องการลดค่าไฟจริง รองรับ EV Charger และต่อยอด BESS",
+      "unit": "project",
+      "basePrice": 1950000,
+      "pricePerKwp": 39000,
+      "minimumPrice": 1200000,
+      "typicalCapacity": "30-100 kWp",
+      "recommendedFor": "โรงแรม อาคารพาณิชย์ โรงงานขนาดกลาง สถานศึกษา และลานจอดองค์กร",
+      "inclusions": [
+        "สำรวจหน้างานพร้อม load profile เบื้องต้น",
+        "แบบ layout, equipment schedule และ ROI scenario",
+        "เตรียมโครงสร้างรองรับ EV Charger",
+        "handover pack สำหรับทีมบริหารและทีมช่าง"
+      ]
+    },
+    {
+      "id": "solar-carport-enterprise",
+      "name": "Solar Carport Enterprise",
+      "category": "Solar Carport",
+      "description": "ระบบ Solar Carport ขนาดใหญ่ พร้อมแผน EV, BESS, monitoring และการออกแบบตามไซต์จริง",
+      "unit": "project",
+      "basePrice": 5200000,
+      "pricePerKwp": 36000,
+      "minimumPrice": 3500000,
+      "typicalCapacity": "100-500+ kWp",
+      "recommendedFor": "โรงงาน โรงแรมขนาดใหญ่ ศูนย์กระจายสินค้า มหาวิทยาลัย และพื้นที่จอดรถจำนวนมาก",
+      "inclusions": [
+        "engineering survey และ phasing plan",
+        "financial scenario แยก self-consumption, export และ EV load",
+        "แผนเชื่อมต่อ BESS / AI Energy Monitoring",
+        "governance pack สำหรับผู้บริหารและฝ่ายการเงิน"
+      ]
+    },
+    {
+      "id": "home-solar-large",
+      "name": "Home Solar Solution",
+      "category": "Home Solution",
+      "description": "ระบบ Solar สำหรับบ้านใหญ่และโฮมออฟฟิศที่ใช้ไฟสูง ออกแบบจากบิลไฟและพฤติกรรมโหลด",
+      "unit": "project",
+      "basePrice": 420000,
+      "pricePerKwp": 35000,
+      "minimumPrice": 290000,
+      "typicalCapacity": "10-20 kWp",
+      "recommendedFor": "บ้านขนาดใหญ่ บ้านผู้บริหาร โฮมออฟฟิศ และบ้านที่มี EV หรือแอร์หลายโซน",
+      "inclusions": [
+        "ประเมินหลังคาและโหลดไฟสำคัญ",
+        "ออกแบบ PV layout และ inverter sizing",
+        "scenario ลดค่าไฟกลางวันและโหลดกลางคืน",
+        "monitoring handover สำหรับเจ้าของบ้าน"
+      ]
+    },
+    {
+      "id": "home-hybrid-bess",
+      "name": "Home Hybrid + BESS",
+      "category": "Home Solution",
+      "description": "ระบบ Hybrid Solar พร้อมแบตเตอรี่สำหรับบ้านที่ต้องการ backup, EV readiness และ energy independence",
+      "unit": "project",
+      "basePrice": 890000,
+      "pricePerKwp": 44500,
+      "minimumPrice": 690000,
+      "typicalCapacity": "10-20 kW hybrid / 16-32 kWh BESS",
+      "recommendedFor": "บ้านที่มีโหลดกลางคืนสูง ต้องการไฟสำรอง หรือมีแผนใช้ EV และระบบสำคัญในบ้าน",
+      "inclusions": [
+        "ออกแบบ backup load และ critical circuit concept",
+        "คำนวณ battery autonomy เบื้องต้น",
+        "hybrid inverter + LFP battery scenario",
+        "แผน monitoring และ maintenance หลังติดตั้ง"
+      ]
+    },
+    {
+      "id": "ai-energy-monitoring",
+      "name": "AI Energy Monitoring",
+      "category": "Digital Energy",
+      "description": "ระบบ dashboard ติดตามพลังงาน ช่วยทีมบริหารดู production, consumption, savings และ anomaly",
+      "unit": "set",
+      "basePrice": 120000,
+      "typicalCapacity": "1 site",
+      "recommendedFor": "ไซต์ที่ต้องการข้อมูลพลังงานสำหรับผู้บริหาร ทีมช่าง หรือการรายงาน ESG",
+      "inclusions": [
+        "dashboard structure สำหรับพลังงานรายไซต์",
+        "KPI savings, production และ consumption",
+        "handover workflow สำหรับทีมขายและ O&M",
+        "เตรียมต่อยอด LINE/CRM/agent workflow"
+      ]
+    }
+  ],
+  "terms": [
+    "ราคานี้เป็นราคาเบื้องต้นเพื่อใช้ประกอบการคุยงานจริง ไม่ใช่ราคาสุดท้ายก่อนสำรวจหน้างาน",
+    "ราคาจริงขึ้นกับโครงสร้าง พื้นที่ติดตั้ง ระบบไฟเดิม อุปกรณ์ที่เลือก และข้อกำหนดของหน่วยงานไฟฟ้า",
+    "ตัวเลขผลประหยัดและคืนทุนต้องยืนยันจากบิลไฟ load profile และข้อมูลไซต์จริง",
+    "จำนวนแผงและกำลังผลิตอ้างอิงจากแผง AIKO ที่เลือกในระบบ และต้องยืนยันกับแบบติดตั้งจริงอีกครั้ง",
+    "ใบเสนอราคามีอายุ 15 วันนับจากวันที่ออกเอกสาร เว้นแต่มีการระบุเงื่อนไขเพิ่มเติม"
+  ]
+}

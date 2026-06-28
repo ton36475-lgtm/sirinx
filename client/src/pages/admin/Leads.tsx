@@ -23,6 +23,7 @@ const sourceLabels: Record<string, string> = {
   assessment: "ประเมินโซลาร์",
   partner: "พาร์ทเนอร์",
   line: "LINE",
+  quote: "ใบเสนอราคา",
 };
 
 export default function AdminLeads() {

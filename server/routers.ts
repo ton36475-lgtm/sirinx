@@ -15,6 +15,16 @@ import {
   isDatabaseUnavailableError,
   queueLocalLeadSubmission,
 } from "./_core/localLeadQueue";
+import { queueLocalQuotationSubmission } from "./_core/localQuotationQueue";
+import {
+  addDays,
+  calculateQuotation,
+  formatThaiMoney,
+  generateQuotationNumber,
+  quotationPricingRules,
+  reserveLocalQuotationNumber,
+  type QuotationLineInput,
+} from "@shared/quotation";
 import * as db from "./db";
 
 // ==================== LEAD ROUTER ====================
@@ -25,7 +35,7 @@ const leadRouter = router({
     .input(
       z.object({
         source: z
-          .enum(["contact", "assessment", "partner", "line"])
+          .enum(["contact", "assessment", "partner", "line", "quote"])
           .default("contact"),
         name: z.string().min(1, "กรุณากรอกชื่อ"),
         company: z.string().optional(),
@@ -134,6 +144,286 @@ const leadRouter = router({
   stats: adminProcedure.query(async () => {
     return db.getLeadStats();
   }),
+});
+
+// ==================== QUOTATION ROUTER ====================
+
+const optionalTrimmedString = z
+  .string()
+  .trim()
+  .optional()
+  .or(z.literal(""));
+
+const quotationCustomerSchema = z.object({
+  name: z.string().trim().min(1, "กรุณากรอกชื่อผู้ติดต่อ"),
+  company: optionalTrimmedString,
+  phone: optionalTrimmedString,
+  email: z.string().trim().email("อีเมลไม่ถูกต้อง").optional().or(z.literal("")),
+  lineId: optionalTrimmedString,
+  address: optionalTrimmedString,
+  note: optionalTrimmedString,
+});
+
+const quotationLineSchema = z.object({
+  serviceId: z.string().min(1),
+  quantity: z.number().min(1).max(999).default(1),
+  discountPercent: z.number().min(0).max(80).optional(),
+  customUnitPrice: z.number().min(0).optional(),
+  targetKwp: z.number().min(0).max(10000).optional(),
+  panelModelId: z.string().optional(),
+});
+
+type QuotationCustomerInput = z.infer<typeof quotationCustomerSchema>;
+
+const cleanOptional = (value: string | undefined) => {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : undefined;
+};
+
+function summarizeQuotationLines(lines: ReturnType<typeof calculateQuotation>["lines"]) {
+  return lines
+    .map(line => {
+      const capacity = line.panelLayout
+        ? `${line.panelLayout.actualKwp} kWp / ${line.panelLayout.panelCount} แผง ${line.panel?.displayName}`
+        : line.service.typicalCapacity;
+      return `- ${line.service.name}: ${capacity} = ${formatThaiMoney(line.lineTotal)}`;
+    })
+    .join("\n");
+}
+
+function buildQuotationLeadMessage(
+  customer: QuotationCustomerInput,
+  totals: ReturnType<typeof calculateQuotation>,
+  quoteNumber: string,
+  sourceAction: string
+) {
+  return [
+    `Quote: ${quoteNumber}`,
+    `Action: ${sourceAction}`,
+    `Total: ${formatThaiMoney(totals.grandTotal)}`,
+    "Items:",
+    summarizeQuotationLines(totals.lines),
+    customer.note ? `Customer note: ${customer.note}` : null,
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+function buildQuotationNotificationContent(
+  customer: QuotationCustomerInput,
+  totals: ReturnType<typeof calculateQuotation>,
+  quoteNumber: string,
+  sourceAction: string
+) {
+  return [
+    `เลขใบเสนอราคา: ${quoteNumber}`,
+    `Action: ${sourceAction}`,
+    `ลูกค้า: ${customer.name}`,
+    `บริษัท/โครงการ: ${cleanOptional(customer.company) ?? "-"}`,
+    `โทร: ${cleanOptional(customer.phone) ?? "-"}`,
+    `อีเมล: ${cleanOptional(customer.email) ?? "-"}`,
+    `LINE: ${cleanOptional(customer.lineId) ?? "-"}`,
+    `พื้นที่: ${cleanOptional(customer.address) ?? "-"}`,
+    "",
+    "รายการ:",
+    summarizeQuotationLines(totals.lines),
+    "",
+    `ยอดสุทธิ: ${formatThaiMoney(totals.grandTotal)}`,
+    customer.note ? `หมายเหตุ: ${customer.note}` : null,
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+function getPrimaryPanelLine(totals: ReturnType<typeof calculateQuotation>) {
+  return totals.lines.find(line => line.panel && line.panelLayout) ?? totals.lines[0];
+}
+
+const quotationRouter = router({
+  /** Public: create a real quotation record and sales notification from /quote */
+  create: publicProcedure
+    .input(
+      z.object({
+        customer: quotationCustomerSchema,
+        lines: z.array(quotationLineSchema).min(1),
+        sourceAction: z.enum(["preview", "print"]).default("preview"),
+        clientQuoteNumber: z.string().optional(),
+        issuedAt: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const issuedAt = input.issuedAt ? new Date(input.issuedAt) : new Date();
+      const validUntil = addDays(
+        issuedAt,
+        quotationPricingRules.defaultValidityDays
+      );
+      const totals = calculateQuotation(input.lines as QuotationLineInput[]);
+
+      if (totals.lines.length === 0 || totals.grandTotal <= 0) {
+        throw new Error("Quotation has no valid line items.");
+      }
+
+      const fallbackQuoteNumber =
+        input.clientQuoteNumber || reserveLocalQuotationNumber(issuedAt);
+      const customer = input.customer;
+      const primaryLine = getPrimaryPanelLine(totals);
+      const systemSize = primaryLine?.panelLayout
+        ? `${primaryLine.panelLayout.actualKwp} kWp`
+        : primaryLine?.service.typicalCapacity;
+      const systemType = totals.lines.map(line => line.service.name).join(", ");
+      const ipAddress =
+        ctx.req.ip || ctx.req.headers["x-forwarded-for"]?.toString() || null;
+      const userAgent = ctx.req.headers["user-agent"]?.toString() || null;
+
+      try {
+        const lead = await db.createLead({
+          source: "quote",
+          status: "proposal",
+          name: customer.name,
+          company: cleanOptional(customer.company),
+          email: cleanOptional(customer.email),
+          phone: cleanOptional(customer.phone),
+          interest: systemType,
+          budget: formatThaiMoney(totals.grandTotal),
+          systemSize,
+          systemType,
+          message: buildQuotationLeadMessage(
+            customer,
+            totals,
+            fallbackQuoteNumber,
+            input.sourceAction
+          ),
+          lineUserId: cleanOptional(customer.lineId),
+        });
+
+        const quote = await db.createQuotationRecord({
+          leadId: lead.id,
+          sourceAction: input.sourceAction,
+          customerName: customer.name,
+          customerCompany: cleanOptional(customer.company),
+          customerEmail: cleanOptional(customer.email),
+          customerPhone: cleanOptional(customer.phone),
+          customerLineId: cleanOptional(customer.lineId),
+          customerAddress: cleanOptional(customer.address),
+          customerNote: cleanOptional(customer.note),
+          lineItems: JSON.stringify(totals.lines),
+          totals: JSON.stringify(totals),
+          systemDesign: JSON.stringify({
+            systemSize,
+            systemType,
+            panelLayouts: totals.lines
+              .filter(line => line.panelLayout)
+              .map(line => ({
+                serviceId: line.serviceId,
+                serviceName: line.service.name,
+                panel: line.panel,
+                layout: line.panelLayout,
+              })),
+          }),
+          primaryPanelModel: primaryLine?.panel?.displayName,
+          primaryPanelWatts: primaryLine?.panel?.watts,
+          subtotal: Math.round(totals.subtotal),
+          discount: Math.round(totals.discount),
+          vat: Math.round(totals.vat),
+          grandTotal: Math.round(totals.grandTotal),
+          issuedAt,
+          validUntil,
+          ipAddress,
+          userAgent,
+        });
+
+        await db.createContactSubmission({
+          leadId: lead.id,
+          formData: JSON.stringify({
+            ...input,
+            quoteNumber: quote.quoteNumber,
+            totals,
+          }),
+          sourcePage: "quote",
+          ipAddress,
+        });
+
+        let notificationSent = false;
+        try {
+          notificationSent = await notifyOwner({
+            title: `ใบเสนอราคาใหม่ ${quote.quoteNumber}: ${customer.name}`,
+            content: buildQuotationNotificationContent(
+              customer,
+              totals,
+              quote.quoteNumber,
+              input.sourceAction
+            ),
+          });
+        } catch (error) {
+          console.warn("[Quotation] Failed to notify owner:", error);
+        }
+
+        return {
+          success: true,
+          id: quote.id,
+          leadId: lead.id,
+          quoteNumber: quote.quoteNumber,
+          totals,
+          notificationSent,
+        };
+      } catch (error) {
+        if (!isDatabaseUnavailableError(error)) {
+          throw error;
+        }
+
+        const queued = await queueLocalQuotationSubmission(
+          {
+            ...input,
+            quoteNumber: fallbackQuoteNumber,
+            totals,
+            queuedSource: "quotation.create",
+          },
+          { ipAddress, userAgent }
+        );
+
+        console.warn(
+          `[Quotation] Database unavailable; queued quotation locally at ${queued.path}`
+        );
+
+        let notificationSent = false;
+        try {
+          notificationSent = await notifyOwner({
+            title: `Queued quotation ${fallbackQuoteNumber}: ${customer.name}`,
+            content: buildQuotationNotificationContent(
+              customer,
+              totals,
+              fallbackQuoteNumber,
+              input.sourceAction
+            ),
+          });
+        } catch {
+          /* notification is best-effort when database is unavailable */
+        }
+
+        return {
+          success: true,
+          id: queued.id,
+          quoteNumber: fallbackQuoteNumber,
+          totals,
+          queued: true as const,
+          notificationSent,
+        };
+      }
+    }),
+
+  /** Admin: list quotation snapshots for sales follow-up */
+  list: adminProcedure
+    .input(
+      z
+        .object({
+          limit: z.number().min(1).max(200).default(50),
+          offset: z.number().min(0).default(0),
+        })
+        .optional()
+    )
+    .query(async ({ input }) => {
+      return db.getQuotations(input);
+    }),
 });
 
 // ==================== BLOG ROUTER ====================
@@ -545,6 +835,7 @@ export const appRouter = router({
     }),
   }),
   lead: leadRouter,
+  quotation: quotationRouter,
   blog: blogRouter,
   project: projectRouter,
   contact: contactRouter,

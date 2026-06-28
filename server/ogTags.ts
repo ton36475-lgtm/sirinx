@@ -142,6 +142,12 @@ const routeMetaMap: Record<string, PageMeta> = {
     description:
       "เปรียบเทียบแพ็คเกจ Solar Carport 3 ระดับ Start / Pro / Enterprise (10-500+ kWp) — ผลิตไฟฟ้า ให้ร่มเงา รองรับ EV Charger และประเมินคืนทุนตามไซต์จริง",
   },
+  "/quote": {
+    title:
+      "สร้างใบเสนอราคา Solar, BESS และ AI Energy | ดาวน์โหลด PDF | SIRINX",
+    description:
+      "ระบบใบเสนอราคาเบื้องต้นของ SIRINX สำหรับ Solar Carport, Home Solar, Hybrid BESS และ AI Energy Monitoring พร้อมคำนวณ VAT และพิมพ์เป็น PDF จากหน้าเว็บ",
+  },
   "/partner": {
     title: "ร่วมเป็นพันธมิตรพลังงานสะอาดกับ SIRINX",
     description:

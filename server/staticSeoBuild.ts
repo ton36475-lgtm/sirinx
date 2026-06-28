@@ -33,6 +33,7 @@ function priorityForRoute(route: string) {
     [
       "/assessment",
       "/contact",
+      "/quote",
       "/pricing",
       "/projects",
       "/home-solution",
@@ -92,6 +93,7 @@ const routeChunkPrefixes = new Map<string, string[]>([
   ["/investment", ["InvestmentTaxHub-"]],
   ["/partner", ["Partner-"]],
   ["/pricing", ["Pricing-"]],
+  ["/quote", ["Quote-"]],
   ["/privacy", ["Privacy-"]],
   ["/projects", ["Projects-"]],
   ["/solar-carport", ["SolarCarport-"]],

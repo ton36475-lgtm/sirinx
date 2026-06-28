@@ -34,6 +34,13 @@ const metaByPath: Record<string, SeoMeta> = {
     description:
       "เปรียบเทียบแพ็คเกจ Solar Carport 10-500+ kWp พร้อม EV Charger, BESS, สิทธิประโยชน์ภาษี และ ROI สำหรับธุรกิจ",
   },
+  "/quote": {
+    path: "/quote",
+    title:
+      "สร้างใบเสนอราคา Solar, BESS และ AI Energy | ดาวน์โหลด PDF | SIRINX",
+    description:
+      "กรอกข้อมูลลูกค้า เลือกแพ็กเกจ Solar Carport, Home Solar, Hybrid BESS หรือ AI Energy Monitoring แล้วสร้างใบเสนอราคาเบื้องต้นพร้อมพิมพ์หรือบันทึกเป็น PDF",
+  },
   "/solutions": {
     path: "/solutions",
     title: "โซลูชันพลังงานครบวงจร | Solar, BESS, EV, AI Energy | SIRINX",

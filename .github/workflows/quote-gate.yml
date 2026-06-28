@@ -1,0 +1,33 @@
+name: Quote Gate
+
+on:
+  # Manual until GitHub Actions billing is unlocked for this account.
+  # Re-enable pull_request/push triggers after billing is healthy.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quote-local-gate:
+    name: Quote local gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: pnpm
+
+      - name: Enable pnpm
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run local quotation gate
+        run: pnpm quote:gate:local

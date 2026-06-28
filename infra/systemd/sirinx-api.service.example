@@ -1,0 +1,24 @@
+[Unit]
+Description=SIRINX Node API backend
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=sirinx
+Group=sirinx
+WorkingDirectory=/opt/sirinx/current
+Environment=NODE_ENV=production
+EnvironmentFile=/etc/sirinx/api.env
+ExecStart=/usr/bin/node dist/index.js
+Restart=always
+RestartSec=5
+TimeoutStopSec=20
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/opt/sirinx/current/runtime-output
+
+[Install]
+WantedBy=multi-user.target
