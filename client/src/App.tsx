@@ -82,7 +82,7 @@ function DeferredFloatingChatWidget() {
         <button
           type="button"
           aria-label="เปิดแชท SIRINX Solar Assistant"
-          className="sirinx-live-avatar-trigger flex h-16 w-16 items-center justify-center overflow-hidden rounded-full shadow-2xl"
+          className="sirinx-live-avatar-trigger relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full shadow-2xl"
           style={{
             background:
               "linear-gradient(135deg, #06b6d4 0%, #0d9488 50%, #00C300 100%)",
