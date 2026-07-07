@@ -1,5 +1,6 @@
 import { Route, Switch } from "wouter";
 import { Suspense, lazy, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
@@ -8,6 +9,7 @@ import RouteSeo from "./components/RouteSeo";
 import { usePageViewTracking, useTrackLINEClick } from "@/hooks/useAnalytics";
 import AntiCopy from "./components/AntiCopy";
 import AILiveAvatarMark from "./components/AILiveAvatarMark";
+import FooterLineOA from "./components/FooterLineOA";
 
 const NotFound = lazy(() => import("@/pages/NotFound"));
 const Home = lazy(() => import("./pages/Home"));
@@ -288,6 +290,28 @@ function DeferredFloatingChatWidget() {
   );
 }
 
+function FooterLineOAPortal() {
+  const [footerTarget, setFooterTarget] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const resolveTarget = () => {
+      const target = document.querySelector("footer .lg\\:col-span-2");
+      setFooterTarget(target instanceof HTMLElement ? target : null);
+    };
+
+    resolveTarget();
+
+    const observer = new MutationObserver(resolveTarget);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => observer.disconnect();
+  }, []);
+
+  if (!footerTarget) return null;
+
+  return createPortal(<FooterLineOA />, footerTarget);
+}
+
 function DeferredToaster() {
   const [shouldLoad, setShouldLoad] = useState(false);
 
@@ -423,6 +447,7 @@ function App() {
           <Suspense fallback={<RouteFallback />}>
             <Router />
           </Suspense>
+          <FooterLineOAPortal />
           <DeferredFloatingChatWidget />
         </ThemeProvider>
       </LanguageProvider>
