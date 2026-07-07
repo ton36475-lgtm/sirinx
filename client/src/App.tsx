@@ -5,9 +5,10 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import Layout from "./components/Layout";
 import RouteSeo from "./components/RouteSeo";
-import { usePageViewTracking } from "@/hooks/useAnalytics";
+import { usePageViewTracking, useTrackLINEClick } from "@/hooks/useAnalytics";
 import AntiCopy from "./components/AntiCopy";
 import AILiveAvatarMark from "./components/AILiveAvatarMark";
+import { MessageCircle } from "lucide-react";
 
 const NotFound = lazy(() => import("@/pages/NotFound"));
 const Home = lazy(() => import("./pages/Home"));
@@ -44,6 +45,10 @@ const Toaster = lazy(() =>
   import("@/components/ui/sonner").then(module => ({ default: module.Toaster }))
 );
 
+const LINE_OA_URL =
+  (typeof import.meta !== "undefined" && import.meta.env?.VITE_LINE_OA_URL) ||
+  "https://lin.ee/sirinx";
+
 function RouteFallback() {
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -56,32 +61,48 @@ function RouteFallback() {
 
 function DeferredFloatingChatWidget() {
   const [shouldLoad, setShouldLoad] = useState(false);
+  const trackLINEClick = useTrackLINEClick();
 
   if (!shouldLoad) {
     return (
-      <button
-        type="button"
-        aria-label="เปิดแชท SIRINX Solar Assistant"
-        className="sirinx-live-avatar-trigger fixed right-4 bottom-5 z-50 flex h-16 w-16 items-center justify-center overflow-hidden rounded-full shadow-2xl sm:right-6 sm:bottom-6"
-        style={{
-          background:
-            "linear-gradient(135deg, #06b6d4 0%, #0d9488 50%, #00C300 100%)",
-        }}
-        onClick={() => setShouldLoad(true)}
-      >
-        <span className="absolute inset-0 rounded-full bg-cyan-400 opacity-20 animate-ping" />
-        <span className="sirinx-live-avatar-orbit sirinx-live-avatar-orbit-a" />
-        <span className="sirinx-live-avatar-orbit sirinx-live-avatar-orbit-b" />
-        <span className="sirinx-live-avatar-trail sirinx-live-avatar-trail-a" />
-        <span className="sirinx-live-avatar-trail sirinx-live-avatar-trail-b" />
-        <span className="absolute inset-1 rounded-full bg-gradient-to-br from-cyan-400/30 to-green-400/30" />
-        <span className="sirinx-live-avatar-core relative flex items-center justify-center">
-          <AILiveAvatarMark className="h-14 w-14 drop-shadow-md" />
-        </span>
-        <span className="absolute -top-0.5 -right-0.5 z-10 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-[#00C300] text-[9px] font-bold text-white shadow-md">
-          AI
-        </span>
-      </button>
+      <div className="fixed right-4 bottom-5 z-50 flex flex-col items-end gap-3 sm:right-6 sm:bottom-6">
+        <a
+          href={LINE_OA_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="เพิ่มเพื่อน LINE Official SIRINX"
+          title="เพิ่มเพื่อน LINE Official SIRINX"
+          onClick={() => trackLINEClick("floating_line_oa_quick_action")}
+          className="group flex h-12 items-center gap-2 rounded-full border border-[#06C755]/70 bg-[#06C755] px-3.5 text-sm font-bold text-white shadow-2xl shadow-[#06C755]/25 transition hover:-translate-y-0.5 hover:bg-[#05B94F] focus:outline-none focus:ring-2 focus:ring-[#06C755]/70 focus:ring-offset-2 focus:ring-offset-background"
+        >
+          <MessageCircle className="h-5 w-5" />
+          <span className="hidden sm:inline">เพิ่มเพื่อน LINE</span>
+          <span className="sm:hidden">LINE</span>
+        </a>
+        <button
+          type="button"
+          aria-label="เปิดแชท SIRINX Solar Assistant"
+          className="sirinx-live-avatar-trigger flex h-16 w-16 items-center justify-center overflow-hidden rounded-full shadow-2xl"
+          style={{
+            background:
+              "linear-gradient(135deg, #06b6d4 0%, #0d9488 50%, #00C300 100%)",
+          }}
+          onClick={() => setShouldLoad(true)}
+        >
+          <span className="absolute inset-0 rounded-full bg-cyan-400 opacity-20 animate-ping" />
+          <span className="sirinx-live-avatar-orbit sirinx-live-avatar-orbit-a" />
+          <span className="sirinx-live-avatar-orbit sirinx-live-avatar-orbit-b" />
+          <span className="sirinx-live-avatar-trail sirinx-live-avatar-trail-a" />
+          <span className="sirinx-live-avatar-trail sirinx-live-avatar-trail-b" />
+          <span className="absolute inset-1 rounded-full bg-gradient-to-br from-cyan-400/30 to-green-400/30" />
+          <span className="sirinx-live-avatar-core relative flex items-center justify-center">
+            <AILiveAvatarMark className="h-14 w-14 drop-shadow-md" />
+          </span>
+          <span className="absolute -top-0.5 -right-0.5 z-10 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-[#00C300] text-[9px] font-bold text-white shadow-md">
+            AI
+          </span>
+        </button>
+      </div>
     );
   }
 
