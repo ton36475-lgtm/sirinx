@@ -48,7 +48,7 @@ const Toaster = lazy(() =>
 
 const LINE_OA_URL =
   (typeof import.meta !== "undefined" && import.meta.env?.VITE_LINE_OA_URL) ||
-  "https://lin.ee/sirinx";
+  "https://lin.ee/WSAn5L4";
 
 function RouteFallback() {
   return (
