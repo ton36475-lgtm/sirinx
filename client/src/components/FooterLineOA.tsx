@@ -2,8 +2,9 @@ import { useTrackLINEClick } from "@/hooks/useAnalytics";
 
 const LINE_OA_URL =
   (typeof import.meta !== "undefined" && import.meta.env?.VITE_LINE_OA_URL) ||
-  "https://lin.ee/sirinx";
-const LINE_OA_QR_URL = "/assets/line/sirinx-line-oa-qr.svg";
+  "https://lin.ee/WSAn5L4";
+const LINE_OA_QR_URL =
+  "https://qr-official.line.me/gs/M_304zrttj_GW.png?oat_content=qr";
 
 export default function FooterLineOA() {
   const trackLINEClick = useTrackLINEClick();
@@ -73,7 +74,6 @@ export default function FooterLineOA() {
           >
             เพิ่มเพื่อน LINE OA
           </a>
-          <p className="mt-2 text-[11px] text-text-muted">LINE ID: @sirinx</p>
         </div>
       </div>
     </section>
