@@ -1,8 +1,6 @@
 import { useTrackLINEClick } from "@/hooks/useAnalytics";
 
-const LINE_OA_URL =
-  (typeof import.meta !== "undefined" && import.meta.env?.VITE_LINE_OA_URL) ||
-  "https://lin.ee/WSAn5L4";
+const LINE_OA_URL = "https://lin.ee/WSAn5L4";
 const LINE_OA_QR_URL =
   "https://qr-official.line.me/gs/M_304zrttj_GW.png?oat_content=qr";
 
